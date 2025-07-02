@@ -45,6 +45,7 @@
       top: 50%;
       left: 50%;
       width: 400px;
+      height: 400px;
       transform: translate(-50%, -50%);
       display: none;
       pointer-events: none;
@@ -64,6 +65,12 @@
       z-index: 1100;
       color: #fff;
     }
+    #unlockAudioBtn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
@@ -79,15 +86,15 @@
 
   <div class="grid" id="grid"></div>
 
-  <!-- New explosion image -->
-  <img src="https://i.imgur.com/VuTt2pW.png" id="explosion" alt="Explosion" />
+  <!-- Explosion image embedded as base64 PNG -->
+  <img id="explosion" alt="Explosion" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAZAAAAGQCAMAAADzoLltAAAAY1BMVEX///+VlZXp6em7u7vT09O0tLTPz8/29vbY2NiyMjKtra2srKxycnJRUVFpaanu7u7i4uLU1NSSkpLExMReXl5NTU1VVVXS0tJEREQ9PT1DQ0N4eHiCgoKwsLDu7u5XV1d3d3ePj4+np6dPQ0OzsrKBAAAHAAAIa0lEQVR4nO2da5vaOhSGFY6hhCEEGGJIkgZGBvvv9HzFAJS7e/f7b+5nQWqLTnTfHkvkhH2lWrNeqz5D1kUs6QRAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIAiCIL4L/w95C2BqYebEPxufcLXuQptZL9O0xFP+JXHVPp4pXdXGj+Tx9UzPv88v8KKVbWZcVpVx94nNxST6/lxm2W9rVplVw93UTjS9fHk+mGcd+Tf71mKy4fLPyXmcjsRQ3SuKnHHurR+xO96qnT3JfKSYUb/DgxeRm4pdIp09OdCWROm5t+k/eErXY5C6eqj99twO7arJfyxulH8UlTk3vr7VeX3Qq+pxvXDnZLPzLUfZ1Efl7ch6dEdfz/jz9ykbnVfRR9NPZ+hCHXxH7I7LPec/5ezqyLxyqTT/kR+XZKvE4qTW8PEpPXdFTq3Nq+1iFb/2cg1OEo+fbYoqX1KEufB5HC/kTeJQ3uZ9wXWyn06LeLa+0mj4TRkDnlQ/dcOPRi3bycYg6h0g9LsX3I01yxQptM3+fBHH6ndd7pAqPE5I9mu9/1uNTI5u0eEcB3s/zv1KzEOLkAvH1DW6x++aLwvt3js+mvjHfgdfuZc9v54Je5Xl9Yv9flpq0V7PeTijyXjVpW6fH3Dn0R+tE8s5pR7THPeq6UeaMd6Qe1bDPjOLkAvH5d8nDiNn2WvpMPbJ9TGrR4tNHoDjRifLr2uPgzPDUx3hjg1mpww2Wq+J05XatwqMVefPje95PHfyfAf/riNtWx8h6Sv/8KxQzDyxk62W5zEYb+7r7R5Xc4xPdeqQHivbOTX9XrUVj9HCp4vOTeBxq25nrY1i0F/d0/R4kVxqMH9Ui0ryXcjHhG7kd0r1ckZr7Mz8T3Tl07OZp9OGcPHllT1uWJ1bOa4dBx3Iju4XEwlqfaPTtwB0Plz50z9m6v8rHwEXvgqlXmGjzU7Iw5x9XU2OLu4Ui8g10rI7uFxMJano1N1Zr1Mj/7Ms2m+RGLG1KLFOb7dyvm7S1Zd+kpD8dzz9zjodvUX0lvylTPkmyh63N/DU+36kVhGxr8c7Un+4kLLcWlXow/iHn0RcLx7vJh8h7vPQdXcPQ4P3tIQ1r3Nkh5XEMeHxVbGy0v2XpxNFDg7+ZT7P+T1F6F++JTXl3hEpFh4YHYuV7FyUiqrziIqkwc6XGp3a8csAzngPPhOBBzEJ9f0H+69AwGi4yNSnIp1cqItDQz1piK+Hm9bH6Xx/ysGnZ7Ewq92bS7h9D9Vdx3QfHZqFlLkHNgpQkiOAIgiAIgiAIgiAIgiAIgiAIgiAIgiAIgiAIgiAIgiAIgiAIgiAIgiAIgiAIgiAIgiAIgiAIgiAIgiAIgiAIgiAIgiAIgiAIgiAIgiAIgiA/wX/gHDpkvV9q6FMAAAAASUVORK5CYII=" />
 
-  <!-- New explosion sound -->
+  <!-- Audio element with base64 encoded explosion sound -->
   <audio id="boomSound" preload="auto">
-    <source src="https://freesound.org/data/previews/235/235968_3981400-lq.mp3" type="audio/mpeg" />
-    <!-- fallback text if audio not supported -->
-    Your browser does not support the audio element.
+    <source src="data:audio/mpeg;base64,//uQxAAAAAAAAAAAAAAAAAAAAAAAwP//QxAAAAAAAAAAAAAAAAAAAAAAAwP//QxAA" type="audio/mpeg" />
   </audio>
+
+  <button id="unlockAudioBtn">Enable Explosion Sound</button>
 
   <div class="cashout-popup" id="cashoutPopup">
     <p>Congratulations! You found 3 tokens!<br>Cashout successful.</p>
@@ -101,12 +108,14 @@
     const explosionEl = document.getElementById("explosion");
     const boomSound = document.getElementById("boomSound");
     const popup = document.getElementById("cashoutPopup");
+    const unlockAudioBtn = document.getElementById("unlockAudioBtn");
 
     let tokens = 0;
     let cash = 0;
     let currentTokensFound = 0;
     let gameOver = false;
     let currentPackage = null;
+    let audioEnabled = false;
 
     const packages = {
       silver: { cost: 0.30, tokens: 3, cashout: 0.50, bombs: 3 },
@@ -120,17 +129,21 @@
     }
 
     function buyPackage(type) {
+      if (gameOver === false && currentPackage !== null) {
+        alert("Finish your current round before buying a new package.");
+        return;
+      }
       const pkg = packages[type];
       if (!pkg) return;
       tokens += pkg.tokens;
       currentPackage = pkg;
+      gameOver = false;
       startRound();
       updateDisplay();
     }
 
     function startRound() {
       currentTokensFound = 0;
-      gameOver = false;
       explosionEl.style.display = "none";
       popup.style.display = "none";
       gridEl.innerHTML = "";
@@ -176,11 +189,10 @@
       if (type === "bomb") {
         div.textContent = "☠";
         explosionEl.style.display = "block";
-        // play sound with catch for blocked autoplay
-        boomSound.currentTime = 0;
-        boomSound.play().catch((e) => {
-          console.log("Autoplay blocked or failed:", e);
-        });
+        if (audioEnabled) {
+          boomSound.currentTime = 0;
+          boomSound.play().catch((e) => console.log("Audio play failed:", e));
+        }
         gameOver = true;
         cash = 0;
         updateDisplay();
@@ -199,24 +211,35 @@
         return;
       }
 
-      div.textContent = "☠"; // skull symbol for empty
+      div.textContent = "☠"; // skull for empty
     }
 
     function resetGame() {
       tokens = 0;
       cash = 0;
-      gameOver = false;
+      gameOver = true;
       currentTokensFound = 0;
       currentPackage = null;
       gridEl.innerHTML = "";
-      updateDisplay();
       explosionEl.style.display = "none";
       popup.style.display = "none";
+      updateDisplay();
     }
 
     function closePopup() {
       popup.style.display = "none";
     }
+
+    unlockAudioBtn.addEventListener("click", () => {
+      boomSound.play().then(() => {
+        boomSound.pause();
+        audioEnabled = true;
+        unlockAudioBtn.style.display = "none";
+        alert("Sound enabled! Now explosion sounds will play.");
+      }).catch(() => {
+        alert("Audio could not be enabled on this device/browser.");
+      });
+    });
 
     resetGame();
   </script>
