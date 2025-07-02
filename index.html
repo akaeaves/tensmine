@@ -96,9 +96,11 @@
 
 <div id="game-board"></div>
 
-<img id="explosion" src="https://i.imgur.com/8zL1XbG.png" alt="Explosion" />
+<!-- Reliable explosion gif from public domain -->
+<img id="explosion" src="https://upload.wikimedia.org/wikipedia/commons/1/15/Explosion-animated.gif" alt="Explosion" />
 
-<audio id="explosion-sound" src="https://freesound.org/data/previews/66/66717_634166-lq.mp3"></audio>
+<!-- Reliable explosion sound from freesound.org, hosted via archive.org -->
+<audio id="explosion-sound" src="https://archive.org/download/Explosion-Sound/Explosion%20Sound%20Effect%20(1).mp3" preload="auto"></audio>
 
 <div id="message"></div>
 
@@ -111,11 +113,11 @@
   const maxTokensPerRound = 3;
   const tokenValue = 0.10;
 
-  // Packages config: token count, token winning chance (probability per token square)
+  // Packages config: token count
   const packages = {
-    silver: { tokens: 5, winChance: 0.2 },
-    gold: { tokens: 10, winChance: 0.3 },
-    platinum: { tokens: 20, winChance: 0.4 },
+    silver: { tokens: 5 },
+    gold: { tokens: 10 },
+    platinum: { tokens: 20 },
   };
 
   // Game state
@@ -155,15 +157,14 @@
   // Generate a new board with tokens and bombs
   function generateBoard() {
     gameBoard.innerHTML = '';
-    // Determine token squares (max maxTokensPerRound per round)
-    // We'll assign tokens randomly with the probability based on package winChance but capped to maxTokensPerRound
+    // Pick exactly 3 token squares randomly
     let tokenPositions = new Set();
     while (tokenPositions.size < maxTokensPerRound) {
       const pos = Math.floor(Math.random() * gridSize);
       tokenPositions.add(pos);
     }
 
-    // Store squares as array with type 'token' or 'bomb'
+    // Squares array: 'token' or 'bomb'
     let squares = [];
     for (let i = 0; i < gridSize; i++) {
       squares[i] = tokenPositions.has(i) ? 'token' : 'bomb';
@@ -175,7 +176,7 @@
       sq.classList.add('square');
       sq.dataset.index = index;
       sq.dataset.type = type;
-      sq.textContent = "☠"; // default hidden symbol (skull & crossbones)
+      sq.textContent = "☠"; // hidden skull symbol
       gameBoard.appendChild(sq);
     });
   }
@@ -203,7 +204,7 @@
         gameActive = false;
       }
     } else {
-      // Bomb clicked - reset tokens for this round, show explosion, disable game
+      // Bomb clicked
       sq.classList.add('revealed-bomb');
       sq.textContent = '💥';
       messageDiv.textContent = "BOOM! You hit a bomb! Your tokens for this round are lost!";
@@ -214,6 +215,7 @@
 
       // Show explosion image centered on grid
       explosionImg.style.display = 'block';
+      explosionSound.currentTime = 0;
       explosionSound.play();
 
       // Hide explosion after 2 seconds
