@@ -1,134 +1,124 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Affordable digital solutions with 3 service packages. Start growing your business online today with Tensmine.">
-  <meta name="keywords" content="digital services, website packages, affordable websites, SEO, Silver package, Gold package, Platinum package">
-  <meta name="author" content="Tensmine">
-  <title>Tensmine - Boost Your Online Presence</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tensmine | Simple Packages That Build Your Brand</title>
+  <meta name="description" content="Get your brand online fast with Tensmine. Choose Silver, Gold, or Platinum web packages. Simple pricing. Pay securely via PayPal.">
+  <meta name="keywords" content="web design, website builder, business packages, PayPal, Tensmine, digital services, branding">
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #f9f9f9;
+      background: #f4f4f4;
+      color: #333;
       margin: 0;
       padding: 0;
-      color: #333;
+      text-align: center;
     }
     header {
-      background: #111;
-      color: #fff;
-      padding: 2rem 1rem;
-      text-align: center;
+      background: #2b6cb0;
+      color: white;
+      padding: 2em 1em;
     }
     header h1 {
+      margin: 0 0 0.3em 0;
+    }
+    header p {
+      font-size: 1.2em;
       margin: 0;
-      font-size: 2rem;
     }
     section {
-      padding: 2rem;
-      text-align: center;
-    }
-    .packages {
       display: flex;
-      justify-content: center;
       flex-wrap: wrap;
-      gap: 1.5rem;
-      margin-top: 2rem;
+      justify-content: center;
+      margin: 2em auto;
+      max-width: 1000px;
+      gap: 1.5em;
     }
-    .card {
-      background: #fff;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-      padding: 1.5rem;
-      max-width: 300px;
-      flex: 1 1 250px;
-      transition: transform 0.2s;
+    .package {
+      background: white;
+      border-radius: 12px;
+      padding: 2em;
+      box-shadow: 0 0 12px rgba(0,0,0,0.1);
+      width: 280px;
     }
-    .card:hover {
-      transform: translateY(-5px);
+    .package h2 {
+      margin-top: 0;
+      color: #2b6cb0;
     }
-    .card h3 {
-      color: #444;
+    .package p {
+      font-size: 0.95em;
     }
-    .card p {
-      font-size: 0.95rem;
-    }
-    .card button {
-      margin-top: 1rem;
-      padding: 0.6rem 1.2rem;
-      background: #0066cc;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    .card button:hover {
-      background: #004a99;
+    .price {
+      font-size: 1.5em;
+      font-weight: bold;
+      margin: 1em 0;
     }
     footer {
-      background: #222;
-      color: #bbb;
-      text-align: center;
-      padding: 1rem;
-      font-size: 0.8rem;
+      margin: 3em 0 1em;
+      font-size: 0.85em;
+      color: #777;
     }
   </style>
 </head>
 <body>
   <header>
     <h1>Grow with Tensmine</h1>
-    <p>Digital solutions that scale with your business</p>
+    <p>Choose your package. Pay securely. Start your brand today.</p>
   </header>
 
   <section>
-    <h2>Choose Your Package</h2>
-    <div class="packages">
-      <div class="card">
-        <h3>Silver</h3>
-        <p>Starter website (1 page) + basic SEO setup. Great for personal brands or simple portfolios.</p>
-        <p><strong>$99 one-time</strong></p>
-        <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
-          <input type="hidden" name="cmd" value="_xclick">
-          <input type="hidden" name="business" value="akaeaves@yahoo.com">
-          <input type="hidden" name="item_name" value="Silver Package">
-          <input type="hidden" name="amount" value="99.00">
-          <input type="hidden" name="currency_code" value="USD">
-          <button type="submit">Buy Silver</button>
-        </form>
-      </div>
-      <div class="card">
-        <h3>Gold</h3>
-        <p>Multi-page website, integrated contact form, and intermediate SEO. Ideal for small businesses.</p>
-        <p><strong>$299 one-time</strong></p>
-        <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
-          <input type="hidden" name="cmd" value="_xclick">
-          <input type="hidden" name="business" value="akaeaves@yahoo.com">
-          <input type="hidden" name="item_name" value="Gold Package">
-          <input type="hidden" name="amount" value="299.00">
-          <input type="hidden" name="currency_code" value="USD">
-          <button type="submit">Buy Gold</button>
-        </form>
-      </div>
-      <div class="card">
-        <h3>Platinum</h3>
-        <p>Full-scale custom website with e-commerce setup and SEO strategy. Perfect for scaling online businesses.</p>
-        <p><strong>$799 one-time</strong></p>
-        <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
-          <input type="hidden" name="cmd" value="_xclick">
-          <input type="hidden" name="business" value="akaeaves@yahoo.com">
-          <input type="hidden" name="item_name" value="Platinum Package">
-          <input type="hidden" name="amount" value="799.00">
-          <input type="hidden" name="currency_code" value="USD">
-          <button type="submit">Buy Platinum</button>
-        </form>
-      </div>
+    <!-- Silver Package -->
+    <div class="package">
+      <h2>Silver</h2>
+      <p>One-page starter website + Basic SEO setup</p>
+      <div class="price">$99</div>
+      <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+        <input type="hidden" name="cmd" value="_xclick" />
+        <input type="hidden" name="business" value="akaeaves@yahoo.com" />
+        <input type="hidden" name="item_name" value="Silver Package" />
+        <input type="hidden" name="amount" value="99.00" />
+        <input type="hidden" name="currency_code" value="USD" />
+        <input type="hidden" name="return" value="https://tensmine.com/thankyou.html" />
+        <input type="submit" value="Buy Now" />
+      </form>
+    </div>
+
+    <!-- Gold Package -->
+    <div class="package">
+      <h2>Gold</h2>
+      <p>Multi-page site + Contact form + Intermediate SEO</p>
+      <div class="price">$299</div>
+      <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+        <input type="hidden" name="cmd" value="_xclick" />
+        <input type="hidden" name="business" value="akaeaves@yahoo.com" />
+        <input type="hidden" name="item_name" value="Gold Package" />
+        <input type="hidden" name="amount" value="299.00" />
+        <input type="hidden" name="currency_code" value="USD" />
+        <input type="hidden" name="return" value="https://tensmine.com/thankyou.html" />
+        <input type="submit" value="Buy Now" />
+      </form>
+    </div>
+
+    <!-- Platinum Package -->
+    <div class="package">
+      <h2>Platinum</h2>
+      <p>E-commerce site + Full SEO strategy + Brand scaling tools</p>
+      <div class="price">$799</div>
+      <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+        <input type="hidden" name="cmd" value="_xclick" />
+        <input type="hidden" name="business" value="akaeaves@yahoo.com" />
+        <input type="hidden" name="item_name" value="Platinum Package" />
+        <input type="hidden" name="amount" value="799.00" />
+        <input type="hidden" name="currency_code" value="USD" />
+        <input type="hidden" name="return" value="https://tensmine.com/thankyou.html" />
+        <input type="submit" value="Buy Now" />
+      </form>
     </div>
   </section>
 
   <footer>
-    &copy; 2025 Tensmine. All rights reserved. | SEO-optimized by default | Non-copyright original business
+    &copy; 2025 Tensmine. All rights reserved.
   </footer>
 </body>
 </html>
-
