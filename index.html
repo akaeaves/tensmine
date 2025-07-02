@@ -67,9 +67,13 @@
   <h1>Tens Mine</h1>
 
   <div>
-    <button class="package-button" onclick="startGame('silver')">Silver ($0.25)</button>
-    <button class="package-button" onclick="startGame('gold')">Gold ($0.50)</button>
-    <button class="package-button" onclick="startGame('platinum')">Platinum ($1.00)</button>
+    <button class="package-button" onclick="buyPackage('silver')">Buy Silver (2 Tokens - $0.25)</button>
+    <button class="package-button" onclick="buyPackage('gold')">Buy Gold (4 Tokens - $0.50)</button>
+    <button class="package-button" onclick="buyPackage('platinum')">Buy Platinum (6 Tokens - $1.00)</button>
+  </div>
+
+  <div>
+    <button class="package-button" onclick="startGame()">Start Game</button>
   </div>
 
   <div id="grid"></div>
@@ -103,8 +107,32 @@
       localStorage.setItem("userTokens", tokens);
     }
 
-    function startGame(pkg) {
+    function buyPackage(pkg) {
       const settings = packages[pkg];
+      tokens += settings.maxTokens;
+      updateBalance();
+      status.textContent = `You bought the ${pkg} package. You can now start the game.`;
+    }
+
+    function startGame() {
+      if (tokens <= 0) {
+        status.textContent = "Not enough tokens. Buy a package to play.";
+        return;
+      }
+
+      let activePackage = null;
+      for (let key in packages) {
+        if (tokens >= packages[key].maxTokens) {
+          activePackage = packages[key];
+        }
+      }
+
+      if (!activePackage) {
+        status.textContent = "You don't have enough tokens for a full game. Please buy a package.";
+        return;
+      }
+
+      const settings = activePackage;
       grid.innerHTML = "";
       status.textContent = "Click a square to start playing...";
       collected = 0;
@@ -115,7 +143,6 @@
       const total = 20;
       let layout = Array(total).fill("empty");
 
-      // Place bombs
       for (let b = 0; b < settings.bombs;) {
         const idx = Math.floor(Math.random() * total);
         if (layout[idx] === "empty") {
@@ -124,7 +151,6 @@
         }
       }
 
-      // Place token spots
       let placed = 0;
       while (placed < settings.maxTokens) {
         const idx = Math.floor(Math.random() * total);
@@ -134,7 +160,6 @@
         }
       }
 
-      // Render squares
       layout.forEach((type) => {
         const sq = document.createElement("div");
         sq.classList.add("square");
@@ -152,7 +177,7 @@
       if (type === "bomb") {
         sq.textContent = "💣";
         triggerExplosion(sq);
-        status.textContent = "💥 GAME OVER! You hit a bomb and lost your tokens!";
+        status.textContent = "💥 GAME OVER! You hit a bomb and lost your tokens for this round!";
         gameActive = false;
         roundTokens = 0;
         updateBalance();
