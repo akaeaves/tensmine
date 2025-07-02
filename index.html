@@ -2,226 +2,199 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Tens Mine Game</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tens Mine</title>
   <style>
     body {
-      margin: 0;
-      font-family: sans-serif;
-      background: #111;
-      color: white;
+      font-family: Arial, sans-serif;
       text-align: center;
+      background-color: #111;
+      color: #fff;
     }
-    h1 {
-      margin-top: 20px;
-    }
-    #grid {
+    .grid {
       display: grid;
       grid-template-columns: repeat(5, 80px);
       grid-gap: 10px;
       justify-content: center;
       margin-top: 20px;
-      position: relative;
     }
-    .square {
+    .cell {
       width: 80px;
       height: 80px;
-      background: #333;
-      border: 2px solid #555;
-      font-size: 20px;
+      background-color: #444;
+      border-radius: 8px;
       display: flex;
       align-items: center;
       justify-content: center;
+      font-size: 24px;
       cursor: pointer;
       user-select: none;
     }
-    #status, #balance {
-      margin-top: 20px;
-      font-size: 18px;
-    }
-    #explosion {
-      position: absolute;
-      width: 150px;
-      height: 150px;
-      display: none;
+    .disabled {
       pointer-events: none;
-      z-index: 10;
-      transition: none;
+      opacity: 0.6;
     }
-    .package-button {
-      margin: 5px;
-      padding: 10px 20px;
-      background: #007bff;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    #redeem-link {
-      display: block;
+    .info {
       margin-top: 20px;
-      color: #0af;
-      text-decoration: underline;
+    }
+    .explosion {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 200px;
+      z-index: 999;
+      display: none;
+    }
+    .cashout-popup {
+      position: fixed;
+      top: 30%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #222;
+      padding: 20px;
+      border: 2px solid #fff;
+      border-radius: 10px;
+      display: none;
+      z-index: 1000;
     }
   </style>
 </head>
 <body>
   <h1>Tens Mine</h1>
-
-  <div>
-    <button class="package-button" onclick="buyPackage('silver')">Buy Silver (2 Tokens - $0.25)</button>
-    <button class="package-button" onclick="buyPackage('gold')">Buy Gold (4 Tokens - $0.50)</button>
-    <button class="package-button" onclick="buyPackage('platinum')">Buy Platinum (6 Tokens - $1.00)</button>
+  <div class="info">
+    <p>Tokens: <span id="tokens">0</span> | Cash: $<span id="cash">0.00</span></p>
+    <button onclick="buyPackage('silver')">Buy Silver ($0.30 for 3 tokens)</button>
+    <button onclick="buyPackage('gold')">Buy Gold ($0.60 for 6 tokens)</button>
+    <button onclick="buyPackage('platinum')">Buy Platinum ($1.00 for 10 tokens)</button>
+    <button onclick="resetGame()">Reset</button>
   </div>
-
-  <div>
-    <button class="package-button" onclick="startGame()">Start Game</button>
+  <div class="grid" id="grid"></div>
+  <img src="https://i.imgur.com/3tO4n1F.gif" class="explosion" id="explosion" />
+  <div class="cashout-popup" id="cashoutPopup">
+    <p>Congratulations! You found 3 tokens!<br>Cashout successful.</p>
+    <button onclick="closePopup()">OK</button>
   </div>
-
-  <div id="grid"></div>
-  <p id="status"></p>
-  <p id="balance"></p>
-  <img id="explosion" src="https://media.tenor.com/NOYF3f82b_gAAAAC/explosion.gif" alt="Explosion" />
-
-  <a id="redeem-link" href="redeem.html">Redeem Tokens</a>
 
   <script>
-    const grid = document.getElementById("grid");
-    const status = document.getElementById("status");
-    const balanceDisplay = document.getElementById("balance");
-    const explosion = document.getElementById("explosion");
+    const gridEl = document.getElementById("grid");
+    const tokenEl = document.getElementById("tokens");
+    const cashEl = document.getElementById("cash");
+    const explosionEl = document.getElementById("explosion");
+    const popup = document.getElementById("cashoutPopup");
 
-    // Reset tokens every new browser session:
     let tokens = 0;
-    localStorage.setItem("userTokens", tokens);
-
-    let squares = [];
-    let gameActive = false;
-    let maxCollect = 0;
-    let collected = 0;
-    let roundTokens = 0;
+    let cash = 0;
+    let currentTokensFound = 0;
+    let gameOver = false;
+    let currentPackage = null;
 
     const packages = {
-      silver: { cost: 0.25, maxTokens: 2, bombs: 3 },
-      gold: { cost: 0.5, maxTokens: 4, bombs: 4 },
-      platinum: { cost: 1.0, maxTokens: 6, bombs: 5 }
+      silver: { cost: 0.30, tokens: 3, cashout: 0.50, bombs: 3 },
+      gold: { cost: 0.60, tokens: 6, cashout: 0.75, bombs: 3 },
+      platinum: { cost: 1.00, tokens: 10, cashout: 1.00, bombs: 2 },
     };
 
-    function updateBalance() {
-      balanceDisplay.textContent = `Your Tokens: ${tokens} ($${(tokens * 0.10).toFixed(2)})`;
-      localStorage.setItem("userTokens", tokens);
+    function updateDisplay() {
+      tokenEl.textContent = tokens;
+      cashEl.textContent = cash.toFixed(2);
     }
 
-    function buyPackage(pkg) {
-      const settings = packages[pkg];
-      tokens += settings.maxTokens;
-      updateBalance();
-      status.textContent = `You bought the ${pkg} package. You can now start the game.`;
+    function buyPackage(type) {
+      const pkg = packages[type];
+      if (!pkg) return;
+      tokens += pkg.tokens;
+      currentPackage = pkg;
+      startRound();
+      updateDisplay();
     }
 
-    function startGame() {
-      if (tokens <= 0) {
-        status.textContent = "Not enough tokens. Buy a package to play.";
-        return;
-      }
+    function startRound() {
+      currentTokensFound = 0;
+      gameOver = false;
+      explosionEl.style.display = "none";
+      popup.style.display = "none";
+      gridEl.innerHTML = "";
 
-      let activePackage = null;
-      for (let key in packages) {
-        if (tokens >= packages[key].maxTokens) {
-          activePackage = packages[key];
-        }
-      }
-
-      if (!activePackage) {
-        status.textContent = "You don't have enough tokens for a full game. Please buy a package.";
-        return;
-      }
-
-      const settings = activePackage;
-      grid.innerHTML = "";
-      status.textContent = "Click a square to start playing...";
-      collected = 0;
-      roundTokens = 0;
-      maxCollect = settings.maxTokens;
-      gameActive = true;
-
-      const total = 20;
-      let layout = Array(total).fill("empty");
+      const cells = new Array(20).fill("empty");
+      const bombIndices = [];
 
       // Place bombs
-      for (let b = 0; b < settings.bombs;) {
-        const idx = Math.floor(Math.random() * total);
-        if (layout[idx] === "empty") {
-          layout[idx] = "bomb";
-          b++;
+      while (bombIndices.length < currentPackage.bombs) {
+        let index = Math.floor(Math.random() * 20);
+        if (cells[index] === "empty") {
+          cells[index] = "bomb";
+          bombIndices.push(index);
         }
       }
 
-      // Place tokens
-      let placed = 0;
-      while (placed < settings.maxTokens) {
-        const idx = Math.floor(Math.random() * total);
-        if (layout[idx] === "empty") {
-          layout[idx] = "token";
-          placed++;
+      // Place token squares (exactly 3)
+      let tokenCount = 0;
+      while (tokenCount < 3) {
+        let index = Math.floor(Math.random() * 20);
+        if (cells[index] === "empty") {
+          cells[index] = "token";
+          tokenCount++;
         }
       }
 
-      layout.forEach((type) => {
-        const sq = document.createElement("div");
-        sq.classList.add("square");
-        sq.dataset.type = type;
-        sq.textContent = "?";
-        sq.onclick = () => handleClick(sq);
-        grid.appendChild(sq);
+      // Fill grid
+      cells.forEach((type, i) => {
+        const div = document.createElement("div");
+        div.className = "cell";
+        div.addEventListener("click", () => handleClick(type, div));
+        gridEl.appendChild(div);
       });
+
+      tokens -= 3; // cost to play a round
+      updateDisplay();
     }
 
-    function handleClick(sq) {
-      if (!gameActive || sq.textContent !== "?") return;
-      const type = sq.dataset.type;
+    function handleClick(type, div) {
+      if (gameOver || div.classList.contains("disabled")) return;
+      div.classList.add("disabled");
 
       if (type === "bomb") {
-        sq.textContent = "💀";  // skull & crossbones
-        triggerExplosion(sq);
-        status.textContent = "💥 GAME OVER! You hit a bomb and lost your tokens for this round!";
-        gameActive = false;
-        roundTokens = 0;
-        // lose tokens used for this round:
-        tokens = Math.max(0, tokens - maxCollect);
-        updateBalance();
+        div.textContent = "☠";
+        explosionEl.style.display = "block";
+        gameOver = true;
+        cash = 0;
+        updateDisplay();
         return;
       }
 
       if (type === "token") {
-        sq.textContent = "🪙";
-        roundTokens++;
-        collected++;
-
-        if (collected >= maxCollect) {
-          tokens += roundTokens; // reward tokens collected
-          updateBalance();
-          status.textContent = `🎉 You collected ${roundTokens} tokens this round!`;
-          gameActive = false;
+        div.textContent = "●";
+        currentTokensFound++;
+        if (currentTokensFound === 3) {
+          cash += currentPackage.cashout;
+          popup.style.display = "block";
+          gameOver = true;
+          updateDisplay();
         }
-      } else {
-        sq.textContent = "☠️";
+        return;
       }
+
+      div.textContent = "☠"; // skull symbol for empty
     }
 
-    function triggerExplosion(sq) {
-      const rect = sq.getBoundingClientRect();
-      const gridRect = grid.getBoundingClientRect();
-      // Place explosion at the center of the grid container (relative to viewport)
-      explosion.style.left = `${gridRect.left + gridRect.width/2 - 75}px`;
-      explosion.style.top = `${gridRect.top + gridRect.height/2 - 75 + window.scrollY}px`;
-      explosion.style.display = "block";
-      setTimeout(() => {
-        explosion.style.display = "none";
-      }, 1500);
+    function resetGame() {
+      tokens = 0;
+      cash = 0;
+      gameOver = false;
+      currentTokensFound = 0;
+      currentPackage = null;
+      gridEl.innerHTML = "";
+      updateDisplay();
+      explosionEl.style.display = "none";
+      popup.style.display = "none";
     }
 
-    updateBalance();
+    function closePopup() {
+      popup.style.display = "none";
+    }
+
+    resetGame(); // ensure clean state on load
   </script>
 </body>
 </html>
