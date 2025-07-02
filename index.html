@@ -3,186 +3,184 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tens Mine</title>
+  <title>Tens Mine Game</title>
   <style>
     body {
-      font-family: 'Arial', sans-serif;
-      background-color: #111;
-      color: #fff;
-      text-align: center;
       margin: 0;
-      padding: 20px;
+      font-family: sans-serif;
+      background: #111;
+      color: white;
+      text-align: center;
     }
     h1 {
-      margin-bottom: 10px;
+      margin-top: 20px;
     }
-    .package-select {
-      margin-bottom: 20px;
-    }
-    .game-info {
-      margin: 10px 0;
-    }
-    .grid-container {
-      position: relative;
-      display: flex;
-      justify-content: center;
-    }
-    .grid {
+    #grid {
       display: grid;
-      grid-template-columns: repeat(5, 60px);
+      grid-template-columns: repeat(5, 80px);
       grid-gap: 10px;
       justify-content: center;
       margin-top: 20px;
     }
     .square {
-      width: 60px;
-      height: 60px;
-      background-color: #333;
+      width: 80px;
+      height: 80px;
+      background: #333;
       border: 2px solid #555;
+      font-size: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       cursor: pointer;
-      font-size: 24px;
-      line-height: 60px;
+      user-select: none;
     }
-    .disabled {
-      pointer-events: none;
-      opacity: 0.5;
+    #status, #balance {
+      margin-top: 20px;
+      font-size: 18px;
     }
-    .popup {
+    #explosion {
       position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: transparent;
-      z-index: 100;
+      width: 150px;
+      height: 150px;
       display: none;
+      pointer-events: none;
+      z-index: 10;
     }
-    .explosion {
-      width: 200px;
-      height: 200px;
+    .package-button {
+      margin: 5px;
+      padding: 10px 20px;
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    #redeem-link {
+      display: block;
+      margin-top: 20px;
+      color: #0af;
+      text-decoration: underline;
     }
   </style>
 </head>
 <body>
-  <h1>☠️ Tens Mine ☠️</h1>
-  <div class="package-select">
-    <label>Select Package:</label>
-    <select id="package">
-      <option value="silver">Silver - $0.25</option>
-      <option value="gold">Gold - $0.50</option>
-      <option value="platinum">Platinum - $1.00</option>
-    </select>
-    <button onclick="startGame()">Start Game</button>
+  <h1>Tens Mine</h1>
+
+  <div>
+    <button class="package-button" onclick="startGame('silver')">Silver ($0.25)</button>
+    <button class="package-button" onclick="startGame('gold')">Gold ($0.50)</button>
+    <button class="package-button" onclick="startGame('platinum')">Platinum ($1.00)</button>
   </div>
-  <div class="game-info">
-    <p id="tokenDisplay">Tokens: 0 ($0.00)</p>
-  </div>
-  <div class="grid-container">
-    <div id="grid" class="grid"></div>
-    <div class="popup" id="explosionPopup">
-      <img src="https://media.giphy.com/media/oe33xf3B50fsc/giphy.gif" alt="Explosion" class="explosion" />
-    </div>
-  </div>
+
+  <div id="grid"></div>
+  <p id="status"></p>
+  <p id="balance"></p>
+  <img id="explosion" src="https://media.tenor.com/NOYF3f82b_gAAAAC/explosion.gif" alt="Explosion" />
+
+  <a id="redeem-link" href="redeem.html">Redeem Tokens</a>
 
   <script>
-    const tokenValue = 0.10;
-    let tokenCount = 0;
-    let maxTokens = 0;
-    let gridData = [];
-    let clickedCount = 0;
+    const grid = document.getElementById("grid");
+    const status = document.getElementById("status");
+    const balanceDisplay = document.getElementById("balance");
+    const explosion = document.getElementById("explosion");
 
-    const packageSettings = {
-      silver: { cost: 0.25, maxTokens: 3, tokenSpots: 5, bombs: 5 },
-      gold: { cost: 0.50, maxTokens: 6, tokenSpots: 8, bombs: 6 },
-      platinum: { cost: 1.00, maxTokens: 12, tokenSpots: 14, bombs: 8 }, // Will be adjusted dynamically
+    let tokens = parseInt(localStorage.getItem("userTokens")) || 0;
+    let squares = [];
+    let gameActive = false;
+    let maxCollect = 0;
+    let collected = 0;
+
+    const packages = {
+      silver: { cost: 0.25, maxTokens: 3, bombs: 3, winChance: 0.15 },
+      gold: { cost: 0.5, maxTokens: 6, bombs: 4, winChance: 0.2 },
+      platinum: { cost: 1.0, maxTokens: 12, bombs: 5, winChance: 0.25 }
     };
 
-    function startGame() {
-      const selectedPackage = document.getElementById("package").value;
-      const settings = packageSettings[selectedPackage];
-      maxTokens = settings.maxTokens;
-      tokenCount = 0;
-      clickedCount = 0;
-      updateTokenDisplay();
-
-      // Hide explosion popup and clear grid
-      const popup = document.getElementById("explosionPopup");
-      popup.style.display = "none";
-
-      generateGrid(settings);
+    function updateBalance() {
+      balanceDisplay.textContent = `Your Tokens: ${tokens} ($${(tokens * 0.10).toFixed(2)})`;
+      localStorage.setItem("userTokens", tokens);
     }
 
-    function generateGrid(settings) {
-      const grid = document.getElementById("grid");
+    function startGame(pkg) {
+      const settings = packages[pkg];
       grid.innerHTML = "";
-      void grid.offsetWidth; // Force reflow to help clear memory
+      status.textContent = "Click a square to start playing...";
+      collected = 0;
+      maxCollect = settings.maxTokens;
+      gameActive = true;
 
-      const totalSquares = 20;
+      const total = 20;
+      let layout = Array(total).fill("empty");
 
-      // Ensure tokens + bombs do not exceed total squares
-      let tokenSpots = Math.min(settings.tokenSpots, totalSquares);
-      let bombSpots = Math.min(settings.bombs, totalSquares - tokenSpots);
+      // Place bombs
+      for (let b = 0; b < settings.bombs;) {
+        const idx = Math.floor(Math.random() * total);
+        if (layout[idx] === "empty") {
+          layout[idx] = "bomb";
+          b++;
+        }
+      }
 
-      gridData = Array(totalSquares).fill("empty");
-
+      // Place token spots
       let placed = 0;
-      while (placed < tokenSpots) {
-        let i = Math.floor(Math.random() * totalSquares);
-        if (gridData[i] === "empty") {
-          gridData[i] = "token";
+      while (placed < settings.maxTokens) {
+        const idx = Math.floor(Math.random() * total);
+        if (layout[idx] === "empty") {
+          layout[idx] = "token";
           placed++;
         }
       }
 
-      placed = 0;
-      while (placed < bombSpots) {
-        let i = Math.floor(Math.random() * totalSquares);
-        if (gridData[i] === "empty") {
-          gridData[i] = "bomb";
-          placed++;
-        }
-      }
-
-      for (let i = 0; i < totalSquares; i++) {
-        const div = document.createElement("div");
-        div.classList.add("square");
-        div.addEventListener("click", () => handleClick(i, div), { once: true });
-        grid.appendChild(div);
-      }
+      // Render squares
+      layout.forEach((type, i) => {
+        const sq = document.createElement("div");
+        sq.classList.add("square");
+        sq.dataset.type = type;
+        sq.textContent = "?";
+        sq.onclick = () => handleClick(sq);
+        grid.appendChild(sq);
+      });
     }
 
-    function handleClick(index, element) {
-      const value = gridData[index];
-      if (value === "token") {
-        if (tokenCount < maxTokens) {
-          tokenCount++;
-          element.textContent = "🌟";
-          element.style.backgroundColor = "green";
-          updateTokenDisplay();
-        } else {
-          element.textContent = "⚪";
-          element.style.backgroundColor = "#666";
+    function handleClick(sq) {
+      if (!gameActive || sq.textContent !== "?") return;
+      const type = sq.dataset.type;
+
+      if (type === "bomb") {
+        sq.textContent = "💣";
+        triggerExplosion(sq);
+        status.textContent = "💥 GAME OVER! You hit a bomb!";
+        gameActive = false;
+        return;
+      }
+
+      if (type === "token") {
+        sq.textContent = "🪙";
+        tokens++;
+        collected++;
+        updateBalance();
+
+        if (collected >= maxCollect) {
+          status.textContent = `🎉 You collected ${collected} tokens!`;
+          gameActive = false;
         }
-      } else if (value === "bomb") {
-        element.textContent = "☠️";
-        element.style.backgroundColor = "red";
-        document.getElementById("explosionPopup").style.display = "block";
-        endGame();
       } else {
-        element.textContent = "☣";
-        element.style.backgroundColor = "#888";
+        sq.textContent = "☠️";
       }
-      element.classList.add("disabled");
     }
 
-    function updateTokenDisplay() {
-      document.getElementById("tokenDisplay").textContent =
-        `Tokens: ${tokenCount} ($${(tokenCount * tokenValue).toFixed(2)})`;
+    function triggerExplosion(sq) {
+      const rect = sq.getBoundingClientRect();
+      explosion.style.left = `${rect.left + rect.width/2 - 75}px`;
+      explosion.style.top = `${rect.top + rect.height/2 - 75 + window.scrollY}px`;
+      explosion.style.display = "block";
+      setTimeout(() => {
+        explosion.style.display = "none";
+      }, 1500);
     }
 
-    function endGame() {
-      const squares = document.querySelectorAll(".square");
-      squares.forEach(sq => sq.classList.add("disabled"));
-    }
+    updateBalance();
   </script>
 </body>
 </html>
