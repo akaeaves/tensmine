@@ -42,7 +42,7 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      width: 200px;
+      width: 400px;
       z-index: 999;
       display: none;
     }
@@ -70,7 +70,8 @@
     <button onclick="resetGame()">Reset</button>
   </div>
   <div class="grid" id="grid"></div>
-  <img src="https://media.giphy.com/media/oe33xf3B50fsc/giphy.gif" class="explosion" id="explosion" />
+  <img src="https://media.giphy.com/media/xT0xeJpnrWC4XWblEk/giphy.gif" class="explosion" id="explosion" />
+  <audio id="boomSound" src="https://www.soundjay.com/explosion/explosion-01.mp3" preload="auto"></audio>
   <div class="cashout-popup" id="cashoutPopup">
     <p>Congratulations! You found 3 tokens!<br>Cashout successful.</p>
     <button onclick="closePopup()">OK</button>
@@ -81,6 +82,7 @@
     const tokenEl = document.getElementById("tokens");
     const cashEl = document.getElementById("cash");
     const explosionEl = document.getElementById("explosion");
+    const boomSound = document.getElementById("boomSound");
     const popup = document.getElementById("cashoutPopup");
 
     let tokens = 0;
@@ -157,6 +159,7 @@
       if (type === "bomb") {
         div.textContent = "☠";
         explosionEl.style.display = "block";
+        boomSound.play();
         gameOver = true;
         cash = 0;
         updateDisplay();
@@ -194,7 +197,7 @@
       popup.style.display = "none";
     }
 
-    resetGame(); // ensure clean state on load
+    resetGame();
   </script>
 </body>
 </html>
