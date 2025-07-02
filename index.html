@@ -71,7 +71,9 @@
   </div>
   <div class="grid" id="grid"></div>
   <img src="https://media.giphy.com/media/xT0xeJpnrWC4XWblEk/giphy.gif" class="explosion" id="explosion" />
-  <audio id="boomSound" src="https://www.soundjay.com/explosion/explosion-01.mp3" preload="auto"></audio>
+  <audio id="boomSound" preload="auto">
+    <source src="https://assets.mixkit.co/sfx/preview/mixkit-game-explosion-2920.mp3" type="audio/mpeg">
+  </audio>
   <div class="cashout-popup" id="cashoutPopup">
     <p>Congratulations! You found 3 tokens!<br>Cashout successful.</p>
     <button onclick="closePopup()">OK</button>
@@ -159,7 +161,9 @@
       if (type === "bomb") {
         div.textContent = "☠";
         explosionEl.style.display = "block";
-        boomSound.play();
+        boomSound.play().catch((e) => {
+          console.log("Autoplay blocked or failed:", e);
+        });
         gameOver = true;
         cash = 0;
         updateDisplay();
