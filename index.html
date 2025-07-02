@@ -15,10 +15,55 @@
   h1 {
     margin-bottom: 10px;
   }
-  #score {
+  #tokenCount {
     font-size: 24px;
     margin-bottom: 20px;
   }
+  #explosion {
+    width: 300px;
+    height: 300px;
+    margin: 20px auto 30px auto;
+    position: relative;
+    pointer-events: none;
+    display: none;
+  }
+  .circle {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle, #ffdd44 0%, #ff8800 70%, transparent 100%);
+    animation: explode 1s ease-out forwards;
+    opacity: 0.9;
+  }
+  .circle:nth-child(1) {
+    width: 300px;
+    height: 300px;
+    top: 0; left: 0;
+    animation-delay: 0s;
+  }
+  .circle:nth-child(2) {
+    width: 200px;
+    height: 200px;
+    top: 50px; left: 50px;
+    animation-delay: 0.2s;
+  }
+  .circle:nth-child(3) {
+    width: 150px;
+    height: 150px;
+    top: 75px; left: 75px;
+    animation-delay: 0.4s;
+  }
+
+  @keyframes explode {
+    0% {
+      transform: scale(0.5);
+      opacity: 0.9;
+    }
+    100% {
+      transform: scale(3);
+      opacity: 0;
+    }
+  }
+
   #grid {
     display: grid;
     grid-template-columns: repeat(5, 80px);
@@ -50,7 +95,7 @@
   #gameOverPopup {
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0,0,0,0.85);
+    background: rgba(0,0,0,0.9);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -64,7 +109,7 @@
   #gameOverPopup.visible {
     visibility: visible;
   }
-  #restartBtn {
+  #restartBtn, #cashOutBtn {
     margin-top: 30px;
     padding: 15px 30px;
     font-size: 24px;
@@ -73,92 +118,160 @@
     color: #fff;
     border: none;
     border-radius: 10px;
+    margin-left: 10px;
   }
-  #restartBtn:hover {
+  #restartBtn:hover, #cashOutBtn:hover {
     background: #c00;
+  }
+  #cashOutBtn:disabled {
+    background: #555;
+    cursor: not-allowed;
   }
 </style>
 </head>
 <body>
 
 <h1>Tens Mine</h1>
-<div id="score">Money: $0.00</div>
+<div id="tokenCount">Tokens: 0 (worth $0.00)</div>
+
+<div id="explosion">
+  <div class="circle"></div>
+  <div class="circle"></div>
+  <div class="circle"></div>
+</div>
+
 <div id="grid"></div>
+
+<div>
+  <button id="cashOutBtn" disabled>Cash Out</button>
+  <button id="restartBtn">Restart</button>
+</div>
 
 <div id="gameOverPopup">
   GAME OVER!
-  <button id="restartBtn">Restart</button>
+  <button id="restartBtnPopup" style="font-size:24px; margin-top:20px; padding:10px 25px; cursor:pointer; border:none; border-radius:8px; background:#f00; color:#fff;">Restart</button>
 </div>
 
 <script>
   const grid = document.getElementById('grid');
-  const scoreDisplay = document.getElementById('score');
+  const tokenCountDisplay = document.getElementById('tokenCount');
   const gameOverPopup = document.getElementById('gameOverPopup');
   const restartBtn = document.getElementById('restartBtn');
+  const restartBtnPopup = document.getElementById('restartBtnPopup');
+  const cashOutBtn = document.getElementById('cashOutBtn');
+  const explosion = document.getElementById('explosion');
 
   const NUM_SQUARES = 20;
-  const BOMB_COUNT = 3; // You can adjust difficulty here
+  const BOMB_COUNT = 5;
+  const MONEY_COUNT = 5;
+  const EMPTY_COUNT = NUM_SQUARES - BOMB_COUNT - MONEY_COUNT;
 
-  let score = 0;
+  const MAX_TOKENS = 3;
+  const TOKEN_VALUE = 0.10;
+  const CASHOUT_MIN = 0.25;
+
+  let tokens = 0;
   let squares = [];
   let bombs = new Set();
+  let moneySquares = new Set();
+  let gameOver = false;
 
-  // Initialize game
   function initGame() {
-    score = 0;
-    scoreDisplay.textContent = 'Money: $0.00';
+    tokens = 0;
+    gameOver = false;
+    tokenCountDisplay.textContent = `Tokens: 0 (worth $0.00)`;
     grid.innerHTML = '';
     gameOverPopup.classList.remove('visible');
+    cashOutBtn.disabled = true;
+    explosion.style.display = 'none';
+
     squares = [];
     bombs.clear();
+    moneySquares.clear();
 
-    // Randomly pick bomb positions
-    while (bombs.size < BOMB_COUNT) {
-      bombs.add(Math.floor(Math.random() * NUM_SQUARES));
-    }
+    let squareTypes = [];
+    for(let i = 0; i < BOMB_COUNT; i++) squareTypes.push('bomb');
+    for(let i = 0; i < MONEY_COUNT; i++) squareTypes.push('money');
+    for(let i = 0; i < EMPTY_COUNT; i++) squareTypes.push('empty');
+
+    squareTypes = squareTypes.sort(() => Math.random() - 0.5);
 
     for (let i = 0; i < NUM_SQUARES; i++) {
       const sq = document.createElement('div');
       sq.classList.add('square');
       sq.dataset.index = i;
+      sq.dataset.type = squareTypes[i];
       sq.addEventListener('click', onSquareClick);
       grid.appendChild(sq);
       squares.push(sq);
+
+      if (squareTypes[i] === 'bomb') bombs.add(i);
+      if (squareTypes[i] === 'money') moneySquares.add(i);
     }
   }
 
   function onSquareClick(e) {
+    if(gameOver) return;
+
     const sq = e.currentTarget;
     const index = parseInt(sq.dataset.index);
+    const type = sq.dataset.type;
 
-    if (sq.classList.contains('revealed') || gameOverPopup.classList.contains('visible')) {
-      return; // Ignore clicks after reveal or game over
-    }
+    if (sq.classList.contains('revealed')) return;
 
-    if (bombs.has(index)) {
+    if (type === 'bomb') {
       sq.classList.add('bomb', 'revealed');
-      showGameOver();
+      showExplosionThenGameOver();
+    } else if (type === 'money') {
+      if(tokens >= MAX_TOKENS) return;
+      sq.classList.add('revealed');
+      sq.textContent = '🔷';
+      tokens++;
+      updateTokenDisplay();
+      checkCashOutAvailability();
     } else {
       sq.classList.add('revealed');
-      sq.textContent = '$0.10';
-      score += 0.10;
-      scoreDisplay.textContent = `Money: $${score.toFixed(2)}`;
+      sq.textContent = '☠';
+      sq.style.color = '#f4e842';
     }
   }
 
-  function showGameOver() {
-    // Reveal all bombs
+  function showExplosionThenGameOver() {
+    gameOver = true;
     bombs.forEach(idx => {
       const sq = squares[idx];
       sq.classList.add('bomb', 'revealed');
       sq.textContent = '💣';
     });
-    gameOverPopup.classList.add('visible');
+
+    explosion.style.display = 'block';
+
+    cashOutBtn.disabled = tokens < Math.ceil(CASHOUT_MIN / TOKEN_VALUE);
+
+    setTimeout(() => {
+      explosion.style.display = 'none';
+      gameOverPopup.classList.add('visible');
+    }, 1000);
   }
 
-  restartBtn.addEventListener('click', initGame);
+  function updateTokenDisplay() {
+    const value = (tokens * TOKEN_VALUE).toFixed(2);
+    tokenCountDisplay.textContent = `Tokens: ${tokens} (worth $${value})`;
+  }
 
-  // Start the game initially
+  function checkCashOutAvailability() {
+    cashOutBtn.disabled = tokens * TOKEN_VALUE < CASHOUT_MIN;
+  }
+
+  cashOutBtn.addEventListener('click', () => {
+    if(tokens * TOKEN_VALUE >= CASHOUT_MIN) {
+      window.location.href = '/cashout.html';
+    }
+  });
+
+  restartBtn.addEventListener('click', initGame);
+  restartBtnPopup.addEventListener('click', initGame);
+
   initGame();
 </script>
 
