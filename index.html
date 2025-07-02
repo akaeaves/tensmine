@@ -2,14 +2,16 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Tens Mine</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      text-align: center;
       background-color: #111;
       color: #fff;
+      text-align: center;
+      margin: 0;
+      padding: 20px;
     }
     .grid {
       display: grid;
@@ -17,6 +19,7 @@
       grid-gap: 10px;
       justify-content: center;
       margin-top: 20px;
+      position: relative;
     }
     .cell {
       width: 80px;
@@ -26,7 +29,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 24px;
+      font-size: 30px;
       cursor: pointer;
       user-select: none;
     }
@@ -35,16 +38,18 @@
       opacity: 0.6;
     }
     .info {
-      margin-top: 20px;
+      margin-top: 15px;
     }
-    .explosion {
+    #explosion {
       position: absolute;
       top: 50%;
       left: 50%;
-      transform: translate(-50%, -50%);
       width: 400px;
-      z-index: 999;
+      transform: translate(-50%, -50%);
       display: none;
+      pointer-events: none;
+      z-index: 1000;
+      user-select: none;
     }
     .cashout-popup {
       position: fixed;
@@ -56,12 +61,14 @@
       border: 2px solid #fff;
       border-radius: 10px;
       display: none;
-      z-index: 1000;
+      z-index: 1100;
+      color: #fff;
     }
   </style>
 </head>
 <body>
   <h1>Tens Mine</h1>
+
   <div class="info">
     <p>Tokens: <span id="tokens">0</span> | Cash: $<span id="cash">0.00</span></p>
     <button onclick="buyPackage('silver')">Buy Silver ($0.30 for 3 tokens)</button>
@@ -69,11 +76,19 @@
     <button onclick="buyPackage('platinum')">Buy Platinum ($1.00 for 10 tokens)</button>
     <button onclick="resetGame()">Reset</button>
   </div>
+
   <div class="grid" id="grid"></div>
-  <img src="https://media.giphy.com/media/xT0xeJpnrWC4XWblEk/giphy.gif" class="explosion" id="explosion" />
+
+  <!-- New explosion image -->
+  <img src="https://i.imgur.com/VuTt2pW.png" id="explosion" alt="Explosion" />
+
+  <!-- New explosion sound -->
   <audio id="boomSound" preload="auto">
-    <source src="https://assets.mixkit.co/sfx/preview/mixkit-game-explosion-2920.mp3" type="audio/mpeg">
+    <source src="https://freesound.org/data/previews/235/235968_3981400-lq.mp3" type="audio/mpeg" />
+    <!-- fallback text if audio not supported -->
+    Your browser does not support the audio element.
   </audio>
+
   <div class="cashout-popup" id="cashoutPopup">
     <p>Congratulations! You found 3 tokens!<br>Cashout successful.</p>
     <button onclick="closePopup()">OK</button>
@@ -161,6 +176,8 @@
       if (type === "bomb") {
         div.textContent = "☠";
         explosionEl.style.display = "block";
+        // play sound with catch for blocked autoplay
+        boomSound.currentTime = 0;
         boomSound.play().catch((e) => {
           console.log("Autoplay blocked or failed:", e);
         });
