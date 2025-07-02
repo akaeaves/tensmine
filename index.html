@@ -103,13 +103,19 @@
       tokenCount = 0;
       clickedCount = 0;
       updateTokenDisplay();
-      document.getElementById("explosionPopup").style.display = "none";
+
+      // Hide explosion popup and clear grid
+      const popup = document.getElementById("explosionPopup");
+      popup.style.display = "none";
+
       generateGrid(settings);
     }
 
     function generateGrid(settings) {
       const grid = document.getElementById("grid");
       grid.innerHTML = "";
+      void grid.offsetWidth; // Force reflow to help clear memory
+
       const totalSquares = 20;
       const tokenSpots = settings.tokenSpots;
       const bombSpots = settings.bombs;
@@ -137,7 +143,7 @@
       for (let i = 0; i < totalSquares; i++) {
         const div = document.createElement("div");
         div.classList.add("square");
-        div.addEventListener("click", () => handleClick(i, div));
+        div.addEventListener("click", () => handleClick(i, div), { once: true });
         grid.appendChild(div);
       }
     }
@@ -160,7 +166,7 @@
         document.getElementById("explosionPopup").style.display = "block";
         endGame();
       } else {
-        element.textContent = "☣"; // Biohazard for empty
+        element.textContent = "☣";
         element.style.backgroundColor = "#888";
       }
       element.classList.add("disabled");
