@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Tens Mine Game</title>
   <style>
     body {
@@ -21,6 +21,7 @@
       grid-gap: 10px;
       justify-content: center;
       margin-top: 20px;
+      position: relative;
     }
     .square {
       width: 80px;
@@ -45,6 +46,7 @@
       display: none;
       pointer-events: none;
       z-index: 10;
+      transition: none;
     }
     .package-button {
       margin: 5px;
@@ -89,7 +91,10 @@
     const balanceDisplay = document.getElementById("balance");
     const explosion = document.getElementById("explosion");
 
-    let tokens = parseInt(localStorage.getItem("userTokens")) || 0;
+    // Reset tokens every new browser session:
+    let tokens = 0;
+    localStorage.setItem("userTokens", tokens);
+
     let squares = [];
     let gameActive = false;
     let maxCollect = 0;
@@ -143,6 +148,7 @@
       const total = 20;
       let layout = Array(total).fill("empty");
 
+      // Place bombs
       for (let b = 0; b < settings.bombs;) {
         const idx = Math.floor(Math.random() * total);
         if (layout[idx] === "empty") {
@@ -151,6 +157,7 @@
         }
       }
 
+      // Place tokens
       let placed = 0;
       while (placed < settings.maxTokens) {
         const idx = Math.floor(Math.random() * total);
@@ -175,11 +182,13 @@
       const type = sq.dataset.type;
 
       if (type === "bomb") {
-        sq.textContent = "💣";
+        sq.textContent = "💀";  // skull & crossbones
         triggerExplosion(sq);
         status.textContent = "💥 GAME OVER! You hit a bomb and lost your tokens for this round!";
         gameActive = false;
         roundTokens = 0;
+        // lose tokens used for this round:
+        tokens = Math.max(0, tokens - maxCollect);
         updateBalance();
         return;
       }
@@ -190,7 +199,7 @@
         collected++;
 
         if (collected >= maxCollect) {
-          tokens += roundTokens;
+          tokens += roundTokens; // reward tokens collected
           updateBalance();
           status.textContent = `🎉 You collected ${roundTokens} tokens this round!`;
           gameActive = false;
@@ -202,8 +211,10 @@
 
     function triggerExplosion(sq) {
       const rect = sq.getBoundingClientRect();
-      explosion.style.left = `${rect.left + rect.width / 2 - 75}px`;
-      explosion.style.top = `${rect.top + rect.height / 2 - 75 + window.scrollY}px`;
+      const gridRect = grid.getBoundingClientRect();
+      // Place explosion at the center of the grid container (relative to viewport)
+      explosion.style.left = `${gridRect.left + gridRect.width/2 - 75}px`;
+      explosion.style.top = `${gridRect.top + gridRect.height/2 - 75 + window.scrollY}px`;
       explosion.style.display = "block";
       setTimeout(() => {
         explosion.style.display = "none";
