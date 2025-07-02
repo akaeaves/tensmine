@@ -1,248 +1,241 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Tens Mine</title>
-<style>
-  body {
-    font-family: Arial, sans-serif;
-    background: #111;
-    color: #eee;
-    text-align: center;
-    padding: 20px;
-  }
-  h1 {
-    margin-bottom: 10px;
-  }
-  #package-selection button {
-    margin: 10px;
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-    border-radius: 6px;
-    border: none;
-    background-color: #444;
-    color: #eee;
-  }
-  #status {
-    margin: 15px 0;
-    font-size: 18px;
-  }
-  #game-board {
-    margin: 20px auto;
-    width: max-content;
-    position: relative;
-    display: grid;
-    grid-template-columns: repeat(5, 80px);
-    grid-template-rows: repeat(4, 80px);
-    gap: 10px;
-  }
-  .square {
-    width: 80px;
-    height: 80px;
-    background-color: #333;
-    border-radius: 8px;
-    font-size: 36px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    color: #fff;
-  }
-  .revealed-token {
-    background-color: #2a8;
-  }
-  .revealed-bomb {
-    background-color: #b33;
-  }
-  #explosion {
-    position: absolute;
-    width: 160px;
-    height: 160px;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 5;
-    display: none;
-    pointer-events: none;
-  }
-  #message {
-    font-size: 18px;
-    min-height: 30px;
-    margin-top: 10px;
-  }
-  #cashout-btn {
-    margin-top: 20px;
-    padding: 10px 25px;
-    font-size: 16px;
-    background: #2a8;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    display: none;
-  }
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tens Mine</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #111;
+      color: #fff;
+      text-align: center;
+      padding: 20px;
+    }
+    h1 {
+      margin-bottom: 10px;
+    }
+    #package-selection button {
+      margin: 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 6px;
+      border: none;
+      background-color: #444;
+      color: #eee;
+    }
+    #status {
+      margin: 15px 0;
+      font-size: 18px;
+    }
+    #game-board {
+      margin: 20px auto;
+      width: max-content;
+      display: grid;
+      grid-template-columns: repeat(5, 80px);
+      grid-template-rows: repeat(4, 80px);
+      gap: 10px;
+    }
+    .square {
+      width: 80px;
+      height: 80px;
+      background-color: #333;
+      border-radius: 8px;
+      font-size: 36px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+    }
+    .revealed-token {
+      background-color: #2a8;
+    }
+    .revealed-bomb {
+      background-color: #b33;
+    }
+    #explosion {
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 10;
+      display: none;
+      pointer-events: none;
+    }
+    #message {
+      font-size: 18px;
+      min-height: 30px;
+      margin-top: 10px;
+    }
+    #cashout-btn {
+      margin-top: 20px;
+      padding: 10px 25px;
+      font-size: 16px;
+      background: #2a8;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      display: none;
+    }
+  </style>
 </head>
 <body>
 
-<h1>Tens Mine</h1>
+  <h1>Tens Mine</h1>
 
-<div id="package-selection">
-  <button data-package="silver">Silver (5 tokens)</button>
-  <button data-package="gold">Gold (10 tokens)</button>
-  <button data-package="platinum">Platinum (20 tokens)</button>
-</div>
+  <div id="package-selection">
+    <button data-package="silver">Silver (5 tokens) - $0.50</button>
+    <button data-package="gold">Gold (10 tokens) - $1.00</button>
+    <button data-package="platinum">Platinum (20 tokens) - $2.00</button>
+  </div>
 
-<div id="status">
-  Tokens: <span id="tokens">0</span> |
-  Cash: $<span id="cash">0.00</span>
-</div>
+  <div id="status">
+    Tokens: <span id="tokens">0</span> |
+    Cash: $<span id="cash">0.00</span>
+  </div>
 
-<div id="game-board"></div>
+  <div id="game-board"></div>
 
-<img id="explosion" src="data:image/gif;base64,R0lGODlhIAAgAPQAAP///wAAAMLCwv///wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAAAAAAALAAAAAAgACAAAAVTICSOZGmeaKqubOu+cCzPdFSCXBsGiGIGgSIaAcHKEECS4mh0MBpEIEwVImEdqkq6vOK9p98YQgUAOw==" alt="Explosion" />
+  <!-- Explosion Image (Base64) -->
+  <img id="explosion" src="https://i.imgur.com/lrMG6aB.gif" alt="Explosion" />
 
-<audio id="explosion-sound" preload="auto">
-  <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_b8c2091e9a.mp3" type="audio/mpeg">
-</audio>
+  <!-- Explosion Sound -->
+  <audio id="explosion-sound" preload="auto">
+    <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_b8c2091e9a.mp3" type="audio/mpeg">
+  </audio>
 
-<div id="message">Buy a package to begin!</div>
+  <div id="message">Buy a package to begin!</div>
 
-<button id="cashout-btn">Cash Out</button>
+  <button id="cashout-btn">Cash Out</button>
 
-<script>
-(() => {
-  const gameBoard = document.getElementById('game-board');
-  const tokensDisplay = document.getElementById('tokens');
-  const cashDisplay = document.getElementById('cash');
-  const message = document.getElementById('message');
-  const explosion = document.getElementById('explosion');
-  const explosionSound = document.getElementById('explosion-sound');
-  const cashoutBtn = document.getElementById('cashout-btn');
+  <script>
+    (() => {
+      const gameBoard = document.getElementById('game-board');
+      const tokensDisplay = document.getElementById('tokens');
+      const cashDisplay = document.getElementById('cash');
+      const message = document.getElementById('message');
+      const explosion = document.getElementById('explosion');
+      const explosionSound = document.getElementById('explosion-sound');
+      const cashoutBtn = document.getElementById('cashout-btn');
 
-  const packages = {
-    silver: 5,
-    gold: 10,
-    platinum: 20,
-  };
+      const packages = {
+        silver: 5,
+        gold: 10,
+        platinum: 20
+      };
 
-  const tokenValue = 0.10;
-  const maxTokensPerRound = 3;
-  const gridSize = 20;
+      const tokenValue = 0.10;
+      const maxTokensPerRound = 3;
+      const gridSize = 20;
 
-  let tokens = 0;
-  let cash = 0;
-  let currentTokensThisRound = 0;
-  let gameActive = false;
+      let tokens = 0;
+      let cash = 0;
+      let currentTokensThisRound = 0;
+      let gameActive = false;
 
-  function updateDisplay() {
-    tokensDisplay.textContent = tokens;
-    cashDisplay.textContent = cash.toFixed(2);
-  }
-
-  function generateBoard() {
-    gameBoard.innerHTML = "";
-    let board = [];
-
-    const tokenIndices = new Set();
-    while (tokenIndices.size < maxTokensPerRound) {
-      tokenIndices.add(Math.floor(Math.random() * gridSize));
-    }
-
-    for (let i = 0; i < gridSize; i++) {
-      const type = tokenIndices.has(i) ? 'token' : 'bomb';
-      const div = document.createElement('div');
-      div.classList.add('square');
-      div.dataset.type = type;
-      div.addEventListener('click', handleSquareClick, { once: true });
-      gameBoard.appendChild(div);
-    }
-  }
-
-  function handleSquareClick(e) {
-    if (!gameActive || tokens <= 0) return;
-
-    const sq = e.target;
-    const type = sq.dataset.type;
-
-    if (type === 'token') {
-      sq.classList.add('revealed-token');
-      sq.textContent = '💰';
-      tokens--;
-      cash += tokenValue;
-      currentTokensThisRound++;
-
-      message.textContent = `You found a token! (${currentTokensThisRound} this round)`;
-
-      if (currentTokensThisRound === maxTokensPerRound) {
-        message.textContent = "Max tokens found this round. You can cash out or buy another package.";
-        gameActive = false;
-        cashoutBtn.style.display = 'inline-block';
+      function updateDisplay() {
+        tokensDisplay.textContent = tokens;
+        cashDisplay.textContent = cash.toFixed(2);
       }
-    } else {
-      sq.classList.add('revealed-bomb');
-      sq.textContent = '💥';
-      message.textContent = "BOOM! You hit a bomb! All progress lost.";
-      showExplosion();
-      playExplosionSound();
-      resetRound();
-    }
 
-    updateDisplay();
-  }
+      function generateBoard() {
+        gameBoard.innerHTML = "";
+        let tokenIndices = new Set();
+        while (tokenIndices.size < maxTokensPerRound) {
+          tokenIndices.add(Math.floor(Math.random() * gridSize));
+        }
 
-  function showExplosion() {
-    explosion.style.display = 'block';
-    setTimeout(() => {
-      explosion.style.display = 'none';
-    }, 2000);
-  }
+        for (let i = 0; i < gridSize; i++) {
+          const div = document.createElement('div');
+          div.classList.add('square');
+          div.dataset.type = tokenIndices.has(i) ? 'token' : 'bomb';
+          div.addEventListener('click', handleSquareClick, { once: true });
+          gameBoard.appendChild(div);
+        }
+      }
 
-  function playExplosionSound() {
-    explosionSound.pause();
-    explosionSound.currentTime = 0;
-    explosionSound.play().catch(e => console.log("Audio play blocked:", e));
-  }
+      function handleSquareClick(e) {
+        if (!gameActive || tokens <= 0) return;
 
-  function resetRound() {
-    currentTokensThisRound = 0;
-    tokens = 0;
-    gameActive = false;
-    cashoutBtn.style.display = 'none';
-  }
+        const square = e.target;
+        const type = square.dataset.type;
 
-  function startGame(packageType) {
-    tokens = packages[packageType];
-    currentTokensThisRound = 0;
-    gameActive = true;
-    cashoutBtn.style.display = 'none';
-    message.textContent = "Game started! Click squares.";
-    updateDisplay();
-    generateBoard();
-  }
+        tokens--;
 
-  function cashOut() {
-    alert(`You cashed out $${cash.toFixed(2)}!`);
-    cash = 0;
-    updateDisplay();
-    gameBoard.innerHTML = "";
-    message.textContent = "Buy a new package to play again.";
-    cashoutBtn.style.display = 'none';
-  }
+        if (type === 'token') {
+          square.classList.add('revealed-token');
+          square.textContent = '💰';
+          currentTokensThisRound++;
+          cash += tokenValue;
+          message.textContent = `You found a token! (${currentTokensThisRound})`;
+        } else {
+          square.classList.add('revealed-bomb');
+          square.textContent = '💥';
+          message.textContent = "BOOM! You lost all cash!";
+          cash = 0;
+          gameActive = false;
+          showExplosion();
+          playExplosionSound();
+          cashoutBtn.style.display = 'none';
+        }
 
-  document.getElementById('package-selection').addEventListener('click', (e) => {
-    if (e.target.tagName === 'BUTTON') {
-      const pkg = e.target.dataset.package;
-      startGame(pkg);
-    }
-  });
+        updateDisplay();
 
-  cashoutBtn.addEventListener('click', cashOut);
+        if (currentTokensThisRound >= maxTokensPerRound || tokens <= 0) {
+          gameActive = false;
+          message.textContent += " Round over.";
+          cashoutBtn.style.display = cash > 0 ? 'inline-block' : 'none';
+        }
+      }
 
-  updateDisplay();
-})();
-</script>
+      function showExplosion() {
+        explosion.style.display = 'block';
+        setTimeout(() => {
+          explosion.style.display = 'none';
+        }, 2000);
+      }
+
+      function playExplosionSound() {
+        explosionSound.pause();
+        explosionSound.currentTime = 0;
+        explosionSound.play().catch(err => console.log("Audio failed:", err));
+      }
+
+      function startGame(packageType) {
+        tokens = packages[packageType];
+        currentTokensThisRound = 0;
+        gameActive = true;
+        cashoutBtn.style.display = 'none';
+        message.textContent = "Game started. Click a square!";
+        updateDisplay();
+        generateBoard();
+      }
+
+      function cashOut() {
+        alert(`You cashed out $${cash.toFixed(2)}!`);
+        cash = 0;
+        updateDisplay();
+        gameBoard.innerHTML = "";
+        message.textContent = "Buy a new package to play again.";
+        cashoutBtn.style.display = 'none';
+      }
+
+      document.getElementById('package-selection').addEventListener('click', (e) => {
+        if (e.target.tagName === 'BUTTON') {
+          const pkg = e.target.dataset.package;
+          startGame(pkg);
+        }
+      });
+
+      cashoutBtn.addEventListener('click', cashOut);
+
+      updateDisplay();
+    })();
+  </script>
+
 </body>
 </html>
