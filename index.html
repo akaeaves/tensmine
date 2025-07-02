@@ -93,7 +93,7 @@
     const packageSettings = {
       silver: { cost: 0.25, maxTokens: 3, tokenSpots: 5, bombs: 5 },
       gold: { cost: 0.50, maxTokens: 6, tokenSpots: 8, bombs: 6 },
-      platinum: { cost: 1.00, maxTokens: 12, tokenSpots: 14, bombs: 8 },
+      platinum: { cost: 1.00, maxTokens: 12, tokenSpots: 14, bombs: 8 }, // Will be adjusted dynamically
     };
 
     function startGame() {
@@ -117,8 +117,10 @@
       void grid.offsetWidth; // Force reflow to help clear memory
 
       const totalSquares = 20;
-      const tokenSpots = settings.tokenSpots;
-      const bombSpots = settings.bombs;
+
+      // Ensure tokens + bombs do not exceed total squares
+      let tokenSpots = Math.min(settings.tokenSpots, totalSquares);
+      let bombSpots = Math.min(settings.bombs, totalSquares - tokenSpots);
 
       gridData = Array(totalSquares).fill("empty");
 
