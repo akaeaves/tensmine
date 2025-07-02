@@ -1,91 +1,166 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Welcome to Tensmine</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Get your business website built automatically with Tensmine. Purchase a package and receive a live custom site.">
-  <meta name="keywords" content="automated website, custom web design, business packages, SEO, Tensmine">
-  <meta name="author" content="Tensmine">
-  <style>
-    body {
-      font-family: sans-serif;
-      background: #f8f9fa;
-      margin: 0;
-      padding: 2em;
-      text-align: center;
-    }
-    .container {
-      max-width: 700px;
-      margin: auto;
-      background: #fff;
-      border-radius: 10px;
-      padding: 2em;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    }
-    h1 { color: #2c3e50; }
-    p { color: #555; }
-    .packages {
-      display: flex;
-      flex-direction: column;
-      gap: 1.5em;
-      margin-top: 2em;
-    }
-    .package {
-      border: 1px solid #ddd;
-      padding: 1.5em;
-      border-radius: 8px;
-    }
-    .package h2 {
-      margin-top: 0;
-    }
-    .btn {
-      background: #2980b9;
-      color: white;
-      padding: 0.7em 1.5em;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      text-decoration: none;
-    }
-    .btn:hover { background: #1c5980; }
-    iframe {
-      margin-top: 2em;
-      width: 100%;
-      height: 600px;
-      border: none;
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Tens Mine</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #222;
+    color: #eee;
+    text-align: center;
+    margin: 0; padding: 20px;
+  }
+  h1 {
+    margin-bottom: 10px;
+  }
+  #score {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  #grid {
+    display: grid;
+    grid-template-columns: repeat(5, 80px);
+    grid-gap: 12px;
+    justify-content: center;
+  }
+  .square {
+    background: #444;
+    border-radius: 8px;
+    width: 80px;
+    height: 80px;
+    cursor: pointer;
+    font-size: 28px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    user-select: none;
+    transition: background 0.3s;
+  }
+  .square.revealed {
+    cursor: default;
+    background: #0a0;
+    color: #0f0;
+  }
+  .square.bomb {
+    background: #a00;
+    color: #f00;
+  }
+  #gameOverPopup {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.85);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #f00;
+    font-size: 72px;
+    font-weight: bold;
+    z-index: 9999;
+    flex-direction: column;
+    visibility: hidden;
+  }
+  #gameOverPopup.visible {
+    visibility: visible;
+  }
+  #restartBtn {
+    margin-top: 30px;
+    padding: 15px 30px;
+    font-size: 24px;
+    cursor: pointer;
+    background: #f00;
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+  }
+  #restartBtn:hover {
+    background: #c00;
+  }
+</style>
 </head>
 <body>
-  <div class="container">
-    <h1>Welcome to Tensmine</h1>
-    <p>Your business website delivered automatically. Select a package and submit your details—we do the rest.</p>
 
-    <div class="packages">
-      <div class="package">
-        <h2>Silver Package - $99</h2>
-        <p>One-page responsive website with SEO and contact info.</p>
-        <a class="btn" href="https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=akaeaves@yahoo.com&item_name=Silver+Website+Package&amount=99.00&currency_code=USD&return=https://tensmine.com/thankyou.html">Buy Now</a>
-      </div>
-      <div class="package">
-        <h2>Gold Package - $199</h2>
-        <p>Up to 3 pages with contact form and enhanced design features.</p>
-        <a class="btn" href="https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=akaeaves@yahoo.com&item_name=Gold+Website+Package&amount=199.00&currency_code=USD&return=https://tensmine.com/thankyou.html">Buy Now</a>
-      </div>
-      <div class="package">
-        <h2>Platinum Package - $299</h2>
-        <p>5 pages, custom branding, form integration, and email delivery.</p>
-        <a class="btn" href="https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=akaeaves@yahoo.com&item_name=Platinum+Website+Package&amount=299.00&currency_code=USD&return=https://tensmine.com/thankyou.html">Buy Now</a>
-      </div>
-    </div>
+<h1>Tens Mine</h1>
+<div id="score">Money: $0.00</div>
+<div id="grid"></div>
 
-    <h2 style="margin-top:3em">Submit Your Info After Purchase</h2>
-    <p>Please fill out the form below to automatically begin your custom website build.</p>
+<div id="gameOverPopup">
+  GAME OVER!
+  <button id="restartBtn">Restart</button>
+</div>
 
-    <!-- Embedded form (replace with your own Google/Tally form) -->
-    <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSdDummyFormID/viewform?embedded=true" loading="lazy">Loading…</iframe>
+<script>
+  const grid = document.getElementById('grid');
+  const scoreDisplay = document.getElementById('score');
+  const gameOverPopup = document.getElementById('gameOverPopup');
+  const restartBtn = document.getElementById('restartBtn');
 
-  </div>
+  const NUM_SQUARES = 20;
+  const BOMB_COUNT = 3; // You can adjust difficulty here
+
+  let score = 0;
+  let squares = [];
+  let bombs = new Set();
+
+  // Initialize game
+  function initGame() {
+    score = 0;
+    scoreDisplay.textContent = 'Money: $0.00';
+    grid.innerHTML = '';
+    gameOverPopup.classList.remove('visible');
+    squares = [];
+    bombs.clear();
+
+    // Randomly pick bomb positions
+    while (bombs.size < BOMB_COUNT) {
+      bombs.add(Math.floor(Math.random() * NUM_SQUARES));
+    }
+
+    for (let i = 0; i < NUM_SQUARES; i++) {
+      const sq = document.createElement('div');
+      sq.classList.add('square');
+      sq.dataset.index = i;
+      sq.addEventListener('click', onSquareClick);
+      grid.appendChild(sq);
+      squares.push(sq);
+    }
+  }
+
+  function onSquareClick(e) {
+    const sq = e.currentTarget;
+    const index = parseInt(sq.dataset.index);
+
+    if (sq.classList.contains('revealed') || gameOverPopup.classList.contains('visible')) {
+      return; // Ignore clicks after reveal or game over
+    }
+
+    if (bombs.has(index)) {
+      sq.classList.add('bomb', 'revealed');
+      showGameOver();
+    } else {
+      sq.classList.add('revealed');
+      sq.textContent = '$0.10';
+      score += 0.10;
+      scoreDisplay.textContent = `Money: $${score.toFixed(2)}`;
+    }
+  }
+
+  function showGameOver() {
+    // Reveal all bombs
+    bombs.forEach(idx => {
+      const sq = squares[idx];
+      sq.classList.add('bomb', 'revealed');
+      sq.textContent = '💣';
+    });
+    gameOverPopup.classList.add('visible');
+  }
+
+  restartBtn.addEventListener('click', initGame);
+
+  // Start the game initially
+  initGame();
+</script>
+
 </body>
 </html>
