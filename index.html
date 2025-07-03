@@ -18,7 +18,6 @@
       flex-direction: column;
       align-items: center;
       justify-content: flex-start;
-      /* subtle dark overlay for better contrast */
       position: relative;
       z-index: 0;
     }
@@ -62,18 +61,16 @@
     .square:hover {
       background: rgba(55, 110, 55, 1);
     }
-    .dashboard {
-      margin-top: 30px;
-      background: rgba(0, 50, 0, 0.85);
-      padding: 15px;
-      border-radius: 10px;
-      width: 320px;
-      margin-left: auto;
-      margin-right: auto;
-      box-shadow: 0 0 15px #004400;
+    #balance {
+      margin-top: 12px;
+      font-weight: 700;
+      font-size: 1.2rem;
+    }
+    #tokens {
+      margin-top: 8px;
       font-weight: 600;
-      font-size: 1rem;
-      color: #d7f3d7;
+      font-size: 1.1rem;
+      color: #b7e6b7;
     }
     .cashout {
       margin-top: 15px;
@@ -143,15 +140,10 @@
     <button onclick="buyPackage()">Buy Package</button>
   </div>
 
-  <div id="balance" style="margin-top:12px; font-weight:700; font-size:1.2rem;">Balance: $0.00</div>
+  <div id="balance">Balance: $0.00</div>
   <div id="tokens">Tokens This Round: 0</div>
   <div id="grid" class="grid hidden"></div>
   <button onclick="cashout()" class="cashout">Cash Out</button>
-
-  <div class="dashboard" aria-live="polite" aria-atomic="true" role="region">
-    <h3>Profit Dashboard</h3>
-    <div id="stats"></div>
-  </div>
 
   <footer>
     <p><strong>Disclaimer:</strong> Tens Mine is an entertainment game with real-money mechanics. Players have a chance to win, but losses are possible.</p>
@@ -168,7 +160,6 @@
       balance: 0,
       currentPackage: null,
       tokensFound: 0,
-      sessionLog: [],
     };
 
     const prices = { silver: 0.5, gold: 1.0, platinum: 2.0 };
@@ -214,8 +205,6 @@
         sq.onclick = () => handleClick(sq);
         gridElement.appendChild(sq);
       }
-
-      trackEvent("package_purchase", { package: pkg, amount: prices[pkg] });
     }
 
     function handleClick(square) {
@@ -232,7 +221,6 @@
           player.balance += payout;
           balanceDiv.textContent = `Balance: $${player.balance.toFixed(2)}`;
           alert(`You won $${payout.toFixed(2)}!`);
-          trackEvent("round_win", { payout });
           endRound();
         }
       } else if (val === "bomb") {
@@ -240,7 +228,6 @@
         player.balance = 0;
         balanceDiv.textContent = `Balance: $0.00`;
         alert("You hit a bomb and lost your progress!");
-        trackEvent("bomb_hit", {});
         endRound();
       } else {
         square.textContent = "☠️";
@@ -249,47 +236,17 @@
 
     function endRound() {
       document.querySelectorAll(".square").forEach(sq => sq.onclick = null);
-      updateDashboard();
     }
 
     function cashout() {
       if (player.balance >= 1) {
         alert(`You cashed out $${player.balance.toFixed(2)}!`);
-        trackEvent("cashout", { amount: player.balance });
         player.balance = 0;
         balanceDiv.textContent = `Balance: $0.00`;
       } else {
         alert("You need at least $1.00 to cash out.");
       }
     }
-
-    function trackEvent(eventType, data) {
-      const logs = JSON.parse(localStorage.getItem("gameLogs") || "[]");
-      logs.push({ eventType, data, timestamp: new Date().toISOString() });
-      localStorage.setItem("gameLogs", JSON.stringify(logs));
-    }
-
-    function updateDashboard() {
-      const logs = JSON.parse(localStorage.getItem("gameLogs") || "[]");
-      let revenue = 0, payouts = 0, sessions = 0;
-      logs.forEach(log => {
-        if (log.eventType === "package_purchase") {
-          revenue += log.data.amount;
-          sessions++;
-        } else if (log.eventType === "round_win") {
-          payouts += log.data.payout;
-        }
-      });
-      const profit = revenue - payouts;
-      document.getElementById("stats").innerHTML = `
-        Sessions: ${sessions}<br>
-        Revenue: $${revenue.toFixed(2)}<br>
-        Payouts: $${payouts.toFixed(2)}<br>
-        Net Profit: $${profit.toFixed(2)}
-      `;
-    }
-
-    updateDashboard();
   </script>
 </body>
 </html>
