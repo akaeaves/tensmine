@@ -1,144 +1,435 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tens Mine</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      background-color: #222;
-      color: #fff;
-    }
-    #game-container {
-      margin-top: 20px;
-    }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(5, 80px);
-      grid-gap: 10px;
-      justify-content: center;
-      margin: 20px auto;
-    }
-    .cell {
-      width: 80px;
-      height: 80px;
-      background-color: #444;
-      border: 2px solid #999;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      cursor: pointer;
-      font-size: 20px;
-    }
-    .cell.revealed {
-      background-color: #222;
-      cursor: default;
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Tens Mine - Play & Win</title>
+<style>
+  body {
+    background: #222;
+    color: #eee;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 0; padding: 0;
+  }
+  h1 { margin-top: 20px; }
+  #package-buttons button {
+    margin: 10px;
+    padding: 12px 25px;
+    font-size: 18px;
+    cursor: pointer;
+    border: none;
+    border-radius: 6px;
+    background: #3498db;
+    color: white;
+    transition: background 0.3s;
+  }
+  #package-buttons button:hover {
+    background: #2980b9;
+  }
+  #status, #balance, #freeplay-msg {
+    margin: 15px 0;
+    font-size: 20px;
+  }
+  #game-container {
+    margin: 20px auto;
+    width: fit-content;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(5, 80px);
+    grid-gap: 12px;
+    justify-content: center;
+  }
+  .cell {
+    background: #444;
+    border: 2px solid #888;
+    width: 80px; height: 80px;
+    font-size: 36px;
+    line-height: 80px;
+    color: #eee;
+    cursor: pointer;
+    user-select: none;
+    border-radius: 6px;
+    transition: background 0.3s;
+  }
+  .cell.revealed {
+    background: #222;
+    cursor: default;
+  }
+  #winners-feed {
+    margin: 20px auto;
+    width: 300px;
+    background: #111;
+    border: 1px solid #555;
+    border-radius: 6px;
+    padding: 10px;
+    height: 100px;
+    overflow-y: auto;
+    text-align: left;
+    font-size: 14px;
+  }
+  #footer {
+    margin: 40px 0 20px 0;
+    font-size: 14px;
+    color: #aaa;
+  }
+  #footer a {
+    margin: 0 8px;
+    color: #3498db;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+
+  /* Modal styles */
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.7);
+    overflow: auto;
+  }
+  .modal-content {
+    background: #333;
+    color: #eee;
+    margin: 10% auto;
+    padding: 20px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 600px;
+    text-align: left;
+  }
+  .modal-content h2 {
+    margin-top: 0;
+  }
+  .close-btn {
+    float: right;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #bbb;
+  }
+  .close-btn:hover {
+    color: #eee;
+  }
+</style>
 </head>
 <body>
-  <h1>Tens Mine</h1>
-  <div>
-    <button onclick="buyPackage('silver')">Silver - $0.50</button>
-    <button onclick="buyPackage('gold')">Gold - $1.00</button>
-    <button onclick="buyPackage('platinum')">Platinum - $2.00</button>
+
+<h1>Tens Mine</h1>
+
+<div id="package-buttons">
+  <button onclick="buyPackage('silver')">Silver - $0.50</button>
+  <button onclick="buyPackage('gold')">Gold - $1.00</button>
+  <button onclick="buyPackage('platinum')">Platinum - $2.00</button>
+</div>
+
+<div id="balance">Balance: $0.00</div>
+<div id="status">Buy a package to start playing.</div>
+<div id="freeplay-msg" style="color:#2ecc71;font-weight:bold;"></div>
+
+<div id="game-container">
+  <div class="grid" id="grid"></div>
+</div>
+
+<div id="winners-feed">
+  <strong>Latest Winners:</strong>
+  <ul id="winners-list" style="padding-left:20px; margin-top:8px; max-height: 80px; overflow-y: auto;"></ul>
+</div>
+
+<div id="footer">
+  <a onclick="showModal('termsModal')">Terms of Service</a> |
+  <a onclick="showModal('privacyModal')">Privacy Policy</a> |
+  <a onclick="showModal('cashoutModal')">Cashout Policy</a> |
+  <a onclick="showModal('responsibleModal')">Responsible Play</a>
+</div>
+
+<!-- Modal Templates -->
+<div id="termsModal" class="modal">
+  <div class="modal-content">
+    <span class="close-btn" onclick="closeModal('termsModal')">&times;</span>
+    <h2>Terms of Service</h2>
+    <p>Welcome to Tens Mine. By playing, you agree to the following terms:</p>
+    <ul>
+      <li>All purchases are final.</li>
+      <li>You acknowledge the game is chance-based.</li>
+      <li>Winning depends on luck; no guaranteed payouts.</li>
+      <li>You must be of legal age to play.</li>
+      <li>We reserve the right to modify or suspend the game anytime.</li>
+    </ul>
   </div>
-  <div id="status"></div>
-  <div id="game-container">
-    <div class="grid" id="grid"></div>
+</div>
+
+<div id="privacyModal" class="modal">
+  <div class="modal-content">
+    <span class="close-btn" onclick="closeModal('privacyModal')">&times;</span>
+    <h2>Privacy Policy</h2>
+    <p>We respect your privacy. We collect no personal data within this demo game. Any payment data will be processed securely by trusted third parties.</p>
   </div>
+</div>
 
-  <script>
-    const packages = {
-      silver: { price: 0.5, gridSize: 6 },
-      gold: { price: 1.0, gridSize: 12 },
-      platinum: { price: 2.0, gridSize: 20 }
-    };
+<div id="cashoutModal" class="modal">
+  <div class="modal-content">
+    <span class="close-btn" onclick="closeModal('cashoutModal')">&times;</span>
+    <h2>Cashout Policy</h2>
+    <p>You can cash out once your balance reaches or exceeds your package's double value (e.g., $1.00 for silver package).</p>
+    <p>Cashouts are subject to verification and processing times.</p>
+    <p>We reserve the right to refuse cashouts in case of suspected abuse or fraud.</p>
+  </div>
+</div>
 
-    let gameState = {
-      balance: 0,
-      tokensFound: 0,
-      board: [],
-      active: false,
-      targetTokens: 3,
-      payout: 0,
-    };
+<div id="responsibleModal" class="modal">
+  <div class="modal-content">
+    <span class="close-btn" onclick="closeModal('responsibleModal')">&times;</span>
+    <h2>Responsible Play</h2>
+    <p>Enjoy the game responsibly. Remember:</p>
+    <ul>
+      <li>This is a game of chance, no guaranteed wins.</li>
+      <li>Only spend what you can afford to lose.</li>
+      <li>If you feel compulsive, seek help.</li>
+    </ul>
+  </div>
+</div>
 
-    function buyPackage(type) {
-      const pkg = packages[type];
-      resetGame();
-      generateBoard(pkg.gridSize);
-      gameState.active = true;
+<script>
+  // Packages definition
+  const packages = {
+    silver: { price: 0.5, gridSize: 10 },
+    gold: { price: 1.0, gridSize: 15 },
+    platinum: { price: 2.0, gridSize: 20 }
+  };
+
+  let gameState = {
+    balance: 0,
+    tokensFound: 0,
+    board: [],
+    active: false,
+    targetTokens: 3,
+    payout: 0,
+    lossesInRow: 0,
+    freePlayAvailable: false,
+    currentPackage: null
+  };
+
+  const winnersList = [
+    "Alice won $1.00!",
+    "Bob won $2.00!",
+    "Cindy won $4.00!",
+    "Dan won $1.00!",
+    "Eva won $2.00!",
+    "Frank won $4.00!",
+    "Gina won $1.00!",
+    "Harry won $2.00!",
+    "Ivy won $4.00!"
+  ];
+
+  function buyPackage(type) {
+    if (gameState.active) {
+      alert("Finish your current game first!");
+      return;
+    }
+    const pkg = packages[type];
+    resetGame();
+    gameState.currentPackage = type;
+    gameState.tokensFound = 0;
+    gameState.payout = pkg.price * 2; // Double payout
+    gameState.active = true;
+    generateBoard(pkg.gridSize);
+    document.getElementById("status").innerText = 
+      `Package: ${type.toUpperCase()} ($${pkg.price.toFixed(2)}). Find 3 tokens to win $${gameState.payout.toFixed(2)}!`;
+    document.getElementById("freeplay-msg").innerText = "";
+  }
+
+  function generateBoard(size) {
+    const grid = document.getElementById("grid");
+    grid.innerHTML = "";
+    gameState.board = new Array(size).fill("skull");
+
+    // Place exactly 3 tokens
+    let placedTokens = 0;
+    while (placedTokens < 3) {
+      let idx = Math.floor(Math.random() * size);
+      if (gameState.board[idx] === "skull") {
+        gameState.board[idx] = "token";
+        placedTokens++;
+      }
+    }
+
+    // Place bombs - number tuned to ~25% bomb chance
+    const bombCount = Math.floor(size * 0.25);
+    let placedBombs = 0;
+    while (placedBombs < bombCount) {
+      let idx = Math.floor(Math.random() * size);
+      if (gameState.board[idx] === "skull") {
+        gameState.board[idx] = "bomb";
+        placedBombs++;
+      }
+    }
+
+    // Now create cells
+    for (let i = 0; i < size; i++) {
+      const cell = document.createElement("div");
+      cell.classList.add("cell");
+      cell.dataset.index = i;
+      cell.onclick = () => handleCellClick(i);
+      grid.appendChild(cell);
+    }
+  }
+
+  function handleCellClick(idx) {
+    if (!gameState.active) return;
+    const cell = document.querySelector(`.cell[data-index='${idx}']`);
+    if (cell.classList.contains("revealed")) return;
+
+    const tile = gameState.board[idx];
+    cell.classList.add("revealed");
+
+    if (tile === "bomb") {
+      cell.innerHTML = "☠️";
+      gameState.balance = 0;
+      gameState.active = false;
+      gameState.lossesInRow++;
+      document.getElementById("status").innerText = 
+        `💥 You hit a bomb! Game over. Your balance reset to $0.`;
+      document.getElementById("balance").innerText = `Balance: $${gameState.balance.toFixed(2)}`;
       gameState.tokensFound = 0;
-      gameState.payout = pkg.price * 2; // Double payout
-      document.getElementById("status").innerText = `You bought the ${type} package. Find 3 tokens to win $${gameState.payout.toFixed(2)}!`;
+      updateFreePlay();
+      revealAll();
+      return;
     }
-
-    function generateBoard(size) {
-      const grid = document.getElementById("grid");
-      grid.innerHTML = "";
-      gameState.board = new Array(size).fill("skull");
-
-      // Place 3 tokens
-      let placed = 0;
-      while (placed < 3) {
-        const idx = Math.floor(Math.random() * size);
-        if (gameState.board[idx] === "skull") {
-          gameState.board[idx] = "token";
-          placed++;
-        }
-      }
-
-      // Place 2 bombs max (for fairness)
-      let bombs = 0;
-      while (bombs < 2) {
-        const idx = Math.floor(Math.random() * size);
-        if (gameState.board[idx] === "skull") {
-          gameState.board[idx] = "bomb";
-          bombs++;
-        }
-      }
-
-      for (let i = 0; i < size; i++) {
-        const cell = document.createElement("div");
-        cell.className = "cell";
-        cell.dataset.index = i;
-        cell.onclick = revealCell;
-        grid.appendChild(cell);
-      }
-    }
-
-    function revealCell(e) {
-      if (!gameState.active) return;
-      const idx = e.target.dataset.index;
-      const cellValue = gameState.board[idx];
-
-      e.target.classList.add("revealed");
-      e.target.onclick = null;
-
-      if (cellValue === "token") {
-        e.target.innerHTML = "💰";
-        gameState.tokensFound++;
-        if (gameState.tokensFound === gameState.targetTokens) {
-          gameState.balance += gameState.payout;
-          document.getElementById("status").innerText = `🎉 You won $${gameState.payout.toFixed(2)}! Total balance: $${gameState.balance.toFixed(2)}`;
-          gameState.active = false;
-        }
-      } else if (cellValue === "bomb") {
-        e.target.innerHTML = "💣";
-        document.getElementById("status").innerText = `💥 You hit a bomb! Balance reset to $0.`;
-        gameState.balance = 0;
+    else if (tile === "token") {
+      cell.innerHTML = "💰";
+      gameState.tokensFound++;
+      if (gameState.tokensFound === gameState.targetTokens) {
+        // Player wins
+        gameState.balance += gameState.payout;
         gameState.active = false;
-      } else {
-        e.target.innerHTML = "☠️";
+        gameState.lossesInRow = 0;
+        document.getElementById("status").innerText = 
+          `🎉 Congratulations! You found all 3 tokens and won $${gameState.payout.toFixed(2)}! You can cash out or play again.`;
+        document.getElementById("balance").innerText = `Balance: $${gameState.balance.toFixed(2)}`;
+        addWinner(`Player won $${gameState.payout.toFixed(2)}!`);
+        revealAll();
+        return;
+      }
+      else {
+        document.getElementById("status").innerText = 
+          `Tokens found: ${gameState.tokensFound} / 3. Keep going or cash out!`;
+      }
+    } else {
+      // Skull (empty)
+      cell.innerHTML = "☠️";
+      document.getElementById("status").innerText = `No token here. Keep looking!`;
+    }
+  }
+
+  function revealAll() {
+    const grid = document.getElementById("grid");
+    for (let i = 0; i < gameState.board.length; i++) {
+      const cell = grid.children[i];
+      if (!cell.classList.contains("revealed")) {
+        cell.classList.add("revealed");
+        if (gameState.board[i] === "token") cell.innerHTML = "💰";
+        else if (gameState.board[i] === "bomb") cell.innerHTML = "💣";
+        else cell.innerHTML = "☠️";
       }
     }
+  }
 
-    function resetGame() {
-      document.getElementById("grid").innerHTML = "";
+  function addWinner(text) {
+    const list = document.getElementById("winners-list");
+    const li = document.createElement("li");
+    li.textContent = text;
+    list.prepend(li);
+    if (list.children.length > 20) list.removeChild(list.lastChild);
+  }
+
+  function updateFreePlay() {
+    if (gameState.lossesInRow >= 3) {
+      gameState.freePlayAvailable = true;
+      document.getElementById("freeplay-msg").innerText = "🎁 Free Play unlocked! Click a package to use it.";
+    } else {
+      gameState.freePlayAvailable = false;
+      document.getElementById("freeplay-msg").innerText = "";
     }
-  </script>
+  }
+
+  function resetGame() {
+    gameState.tokensFound = 0;
+    gameState.active = false;
+    gameState.balance = 0;
+    gameState.lossesInRow = 0;
+    gameState.freePlayAvailable = false;
+    gameState.currentPackage = null;
+    document.getElementById("balance").innerText = `Balance: $0.00`;
+    document.getElementById("status").innerText = "Buy a package to start playing.";
+    document.getElementById("freeplay-msg").innerText = "";
+    document.getElementById("grid").innerHTML = "";
+  }
+
+  // Cashout function (just alert for demo)
+  function cashOut() {
+    if (gameState.balance === 0) {
+      alert("You have no balance to cash out.");
+      return;
+    }
+    if (!gameState.currentPackage) {
+      alert("You must buy a package first.");
+      return;
+    }
+    const doublePrice = packages[gameState.currentPackage].price * 2;
+    if (gameState.balance < doublePrice) {
+      alert(`You need at least $${doublePrice.toFixed(2)} to cash out.`);
+      return;
+    }
+    alert(`Congrats! You cashed out $${gameState.balance.toFixed(2)}.`);
+    resetGame();
+  }
+
+  // Modals show/hide
+  function showModal(id) {
+    document.getElementById(id).style.display = "block";
+  }
+  function closeModal(id) {
+    document.getElementById(id).style.display = "none";
+  }
+
+  // Close modals if user clicks outside content
+  window.onclick = function(event) {
+    ["termsModal", "privacyModal", "cashoutModal", "responsibleModal"].forEach(id => {
+      const modal = document.getElementById(id);
+      if (event.target === modal) {
+        modal.style.display = "none";
+      }
+    });
+  };
+
+  // Add cashout button below status
+  const cashoutBtn = document.createElement("button");
+  cashoutBtn.innerText = "Cash Out";
+  cashoutBtn.style.margin = "12px";
+  cashoutBtn.style.padding = "10px 20px";
+  cashoutBtn.style.fontSize = "18px";
+  cashoutBtn.style.border = "none";
+  cashoutBtn.style.borderRadius = "6px";
+  cashoutBtn.style.cursor = "pointer";
+  cashoutBtn.style.backgroundColor = "#27ae60";
+  cashoutBtn.style.color = "white";
+  cashoutBtn.onclick = cashOut;
+  document.body.insertBefore(cashoutBtn, document.getElementById("game-container"));
+
+  // Initialize
+  resetGame();
+
+  // Optional: Scroll winners feed periodically to simulate activity
+  setInterval(() => {
+    const idx = Math.floor(Math.random() * winnersList.length);
+    addWinner(winnersList[idx]);
+  }, 10000);
+
+</script>
+
 </body>
 </html>
