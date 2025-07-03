@@ -1,358 +1,122 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Tens Mine - Jungle Edition</title>
-<style>
-  body {
-    margin:0; 
-    font-family: Arial, sans-serif;
-    background: url('https://upload.wikimedia.org/wikipedia/commons/6/6f/Climbing_plant_in_the_Jungle.jpg') no-repeat center center fixed;
-    background-size: cover;
-    color: #f0f0f0;
-  }
-  .overlay {
-    background-color: rgba(0, 50, 0, 0.7);
-    min-height: 100vh;
-    padding: 20px;
-    box-sizing: border-box;
-  }
-  h1 {
-    text-align:center;
-    margin-bottom: 10px;
-    font-size: 2.8rem;
-    text-shadow: 1px 1px 3px #000;
-  }
-  #packageSelect {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 20px;
-    gap: 20px;
-  }
-  .package {
-    background: #064d00;
-    border: 2px solid #2ecc71;
-    border-radius: 10px;
-    padding: 15px 20px;
-    cursor: pointer;
-    user-select: none;
-    text-align:center;
-    width: 120px;
-    transition: background 0.3s;
-  }
-  .package.selected, .package:hover {
-    background: #2ecc71;
-    color: #004400;
-    font-weight: bold;
-  }
-  #grid {
-    display: grid;
-    grid-template-columns: repeat(5, 60px);
-    grid-gap: 10px;
-    justify-content: center;
-    margin-bottom: 20px;
-  }
-  @media (max-width: 480px) {
-    #grid {
-      grid-template-columns: repeat(3, 60px);
-    }
-  }
-  .square {
-    background-color: #0b3d00;
-    border: 2px solid #2ecc71;
-    border-radius: 6px;
-    height: 60px;
-    width: 60px;
-    font-size: 30px;
-    color: #2ecc71;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    user-select: none;
-    transition: background 0.3s;
-  }
-  .square.revealed {
-    cursor: default;
-    background-color: #144d00;
-  }
-  #status {
-    text-align: center;
-    font-size: 1.2rem;
-    margin-bottom: 10px;
-    min-height: 1.4rem;
-  }
-  #balance {
-    text-align: center;
-    margin-bottom: 20px;
-    font-weight: bold;
-    font-size: 1.2rem;
-  }
-  #cashoutBtn {
-    display: block;
-    margin: 0 auto 30px auto;
-    padding: 10px 20px;
-    font-size: 1.1rem;
-    background-color: #2ecc71;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    color: #004400;
-    font-weight: bold;
-    user-select: none;
-  }
-  #cashoutBtn:disabled {
-    background-color: #666;
-    cursor: not-allowed;
-    color: #ccc;
-  }
-  footer {
-    text-align: center;
-    font-size: 0.9rem;
-    margin-top: 40px;
-  }
-  footer a {
-    color: #2ecc71;
-    text-decoration: none;
-    margin: 0 10px;
-    cursor: pointer;
-  }
-  /* Modal styles */
-  .modal-bg {
-    position: fixed;
-    top:0; left:0; right:0; bottom:0;
-    background-color: rgba(0,0,0,0.7);
-    display: none;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-  }
-  .modal-content {
-    background-color: #022a00;
-    padding: 20px;
-    border-radius: 10px;
-    max-width: 500px;
-    max-height: 80vh;
-    overflow-y: auto;
-    color: #c8f7c5;
-    box-shadow: 0 0 10px #2ecc71;
-  }
-  .modal-close {
-    float: right;
-    cursor: pointer;
-    font-weight: bold;
-    font-size: 1.2rem;
-    color: #2ecc71;
-  }
-</style>
-</head>
-<body>
-<div class="overlay">
-  <h1>Tens Mine</h1>
-  <div id="packageSelect">
-    <div class="package" data-package="silver" data-price="0.50" data-tokens="2" data-tries="4">Silver<br>$0.50</div>
-    <div class="package" data-package="gold" data-price="1.00" data-tokens="3" data-tries="5">Gold<br>$1.00</div>
-    <div class="package" data-package="platinum" data-price="2.00" data-tokens="4" data-tries="6">Platinum<br>$2.00</div>
-  </div>
+// Game state
+let selectedPackage = null;
+let triesLeft = 0;
+let tokensFound = 0;
+let squaresData = []; // 'token' or 'bomb'
+let gameOver = false;
 
-  <div id="balance">Tokens Found: 0 | Tries Left: 0 | Cashout: $0.00</div>
-  <div id="grid"></div>
-  <button id="cashoutBtn" disabled>Cash Out</button>
-
-  <footer>
-    <a href="#" id="tosLink">Terms of Service</a> | 
-    <a href="#" id="privacyLink">Privacy Policy</a> | 
-    <a href="#" id="cashoutPolicyLink">Cashout Policy</a>
-  </footer>
-</div>
-
-<!-- Modals -->
-<div class="modal-bg" id="modalBg">
-  <div class="modal-content" id="modalContent">
-    <span class="modal-close" id="modalClose">&times;</span>
-    <div id="modalText"></div>
-  </div>
-</div>
-
-<script>
-  // Elements
-  const packages = document.querySelectorAll('.package');
-  const grid = document.getElementById('grid');
-  const balanceDisplay = document.getElementById('balance');
-  const cashoutBtn = document.getElementById('cashoutBtn');
-
-  const modalBg = document.getElementById('modalBg');
-  const modalContent = document.getElementById('modalContent');
-  const modalText = document.getElementById('modalText');
-  const modalClose = document.getElementById('modalClose');
-
-  // Policies text
-  const policies = {
-    tos: `
-      <h2>Terms of Service</h2>
-      <p>Welcome to Tens Mine. By playing, you agree to our terms and conditions. This game is designed for entertainment purposes. No guaranteed winnings. Play responsibly.</p>
-    `,
-    privacy: `
-      <h2>Privacy Policy</h2>
-      <p>We value your privacy. We do not store personal data except for anonymous game data used to improve the experience.</p>
-    `,
-    cashout: `
-      <h2>Cashout Policy</h2>
-      <p>You can cash out by finding the required tokens before hitting a bomb. The payout doubles your package price. Real transactions are handled securely off-site.</p>
-    `
-  };
-
-  // Game state
-  let selectedPackage = null;
-  let tokenCount = 0;
-  let triesLeft = 0;
-  let tokensFound = 0;
-  let squaresData = []; // 'token' or 'bomb'
-  let balance = 0;
-
-  // Setup packages click
-  packages.forEach(pkg => {
-    pkg.addEventListener('click', () => {
-      packages.forEach(p => p.classList.remove('selected'));
-      pkg.classList.add('selected');
-      selectedPackage = {
-        name: pkg.dataset.package,
-        price: parseFloat(pkg.dataset.price),
-        tokensRequired: parseInt(pkg.dataset.tokens),
-        triesAllowed: parseInt(pkg.dataset.tries)
-      };
-      resetGame();
-    });
-  });
-
-  // Reset & start game
-  function resetGame() {
-    tokensFound = 0;
-    triesLeft = selectedPackage.triesAllowed;
-    balance = 0;
-    updateBalanceDisplay();
-    cashoutBtn.disabled = true;
-    generateGrid();
-  }
-
-  // Generate grid
-  function generateGrid() {
-    grid.innerHTML = '';
-    squaresData = [];
-
-    // Fill with tokens and bombs
-    let tokenPositions = [];
-    while (tokenPositions.length < selectedPackage.tokensRequired) {
-      let pos = Math.floor(Math.random() * 20);
-      if (!tokenPositions.includes(pos)) tokenPositions.push(pos);
-    }
-
-    for (let i = 0; i < 20; i++) {
-      squaresData[i] = tokenPositions.includes(i) ? 'token' : 'bomb';
-    }
-
-    // Create squares
-    for (let i = 0; i < 20; i++) {
-      const sq = document.createElement('div');
-      sq.classList.add('square');
-      sq.dataset.index = i;
-      sq.addEventListener('click', () => clickSquare(i));
-      grid.appendChild(sq);
-    }
-  }
-
-  // Update balance display
-  function updateBalanceDisplay() {
-    const cashoutVal = tokensFound >= selectedPackage.tokensRequired ? (selectedPackage.price * 2).toFixed(2) : '0.00';
-    balanceDisplay.textContent = `Tokens Found: ${tokensFound} | Tries Left: ${triesLeft} | Cashout: $${cashoutVal}`;
-  }
-
-  // Handle square click
-  function clickSquare(i) {
-    if (!selectedPackage) {
-      alert('Please select a package first.');
-      return;
-    }
-    if (triesLeft === 0) {
-      alert('No tries left! Please start a new game.');
-      return;
-    }
-    const sq = grid.children[i];
-    if (sq.classList.contains('revealed')) return; // already clicked
-
-    sq.classList.add('revealed');
-    triesLeft--;
-
-    if (squaresData[i] === 'token') {
-      sq.textContent = '💰';
-      tokensFound++;
-      if (tokensFound >= selectedPackage.tokensRequired) {
-        cashoutBtn.disabled = false;
-        updateBalanceDisplay();
-        alert(`Congrats! You found all tokens and can cash out $${(selectedPackage.price * 2).toFixed(2)}!`);
-        // Auto-disable grid to end round
-        disableGrid();
-        return;
-      }
-    } else {
-      sq.textContent = '💀';
-      alert('Boom! You hit a bomb. Game over and balance reset.');
-      resetGame();
-      return;
-    }
-
-    if (triesLeft === 0) {
-      cashoutBtn.disabled = true;
-      alert('No tries left. You did not find all tokens. Game over.');
-      resetGame();
-      return;
-    }
-    updateBalanceDisplay();
-  }
-
-  // Disable all squares after game ends
-  function disableGrid() {
-    for (let sq of grid.children) {
-      sq.removeEventListener('click', () => {});
-      sq.style.cursor = 'default';
-    }
-  }
-
-  // Cashout button
-  cashoutBtn.addEventListener('click', () => {
-    alert(`Cashing out $${(selectedPackage.price * 2).toFixed(2)}! Thank you for playing!`);
+// Setup packages click
+packages.forEach(pkg => {
+  pkg.addEventListener('click', () => {
+    packages.forEach(p => p.classList.remove('selected'));
+    pkg.classList.add('selected');
+    selectedPackage = {
+      name: pkg.dataset.package,
+      price: parseFloat(pkg.dataset.price),
+      tokensRequired: parseInt(pkg.dataset.tokens),
+      triesAllowed: parseInt(pkg.dataset.tries)
+    };
     resetGame();
   });
+});
 
-  // Modal handlers
-  function showModal(content) {
-    modalText.innerHTML = content;
-    modalBg.style.display = 'flex';
-  }
-  function closeModal() {
-    modalBg.style.display = 'none';
-  }
-  modalClose.addEventListener('click', closeModal);
-  modalBg.addEventListener('click', e => {
-    if (e.target === modalBg) closeModal();
-  });
-
-  document.getElementById('tosLink').addEventListener('click', e => {
-    e.preventDefault();
-    showModal(policies.tos);
-  });
-  document.getElementById('privacyLink').addEventListener('click', e => {
-    e.preventDefault();
-    showModal(policies.privacy);
-  });
-  document.getElementById('cashoutPolicyLink').addEventListener('click', e => {
-    e.preventDefault();
-    showModal(policies.cashout);
-  });
-
-  // Initial UI state
+// Reset & start game
+function resetGame() {
+  tokensFound = 0;
+  triesLeft = selectedPackage.triesAllowed;
+  gameOver = false;
   updateBalanceDisplay();
-</script>
-</body>
-</html>
+  cashoutBtn.disabled = true;
+  generateGrid();
+}
+
+// Generate grid
+function generateGrid() {
+  grid.innerHTML = '';
+  squaresData = [];
+
+  // Fill with tokens and bombs
+  let tokenPositions = [];
+  while (tokenPositions.length < selectedPackage.tokensRequired) {
+    let pos = Math.floor(Math.random() * 20);
+    if (!tokenPositions.includes(pos)) tokenPositions.push(pos);
+  }
+
+  for (let i = 0; i < 20; i++) {
+    squaresData[i] = tokenPositions.includes(i) ? 'token' : 'bomb';
+  }
+
+  // Create squares
+  for (let i = 0; i < 20; i++) {
+    const sq = document.createElement('div');
+    sq.classList.add('square');
+    sq.dataset.index = i;
+    sq.addEventListener('click', () => clickSquare(i));
+    grid.appendChild(sq);
+  }
+}
+
+// Update balance display
+function updateBalanceDisplay() {
+  const cashoutVal = tokensFound >= selectedPackage.tokensRequired ? (selectedPackage.price * 2).toFixed(2) : '0.00';
+  balanceDisplay.textContent = `Tokens Found: ${tokensFound} | Tries Left: ${triesLeft} | Cashout: $${cashoutVal}`;
+}
+
+// Handle square click
+function clickSquare(i) {
+  if (!selectedPackage) {
+    alert('Please select a package first.');
+    return;
+  }
+  if (gameOver) return; // Prevent clicks after game end
+
+  const sq = grid.children[i];
+  if (sq.classList.contains('revealed')) return; // already clicked
+
+  sq.classList.add('revealed');
+  triesLeft--;
+  updateBalanceDisplay();
+
+  if (squaresData[i] === 'token') {
+    sq.textContent = '💰';
+    tokensFound++;
+    updateBalanceDisplay();
+
+    if (tokensFound >= selectedPackage.tokensRequired) {
+      cashoutBtn.disabled = false;
+      alert(`Congrats! You found all tokens and can cash out $${(selectedPackage.price * 2).toFixed(2)}!`);
+      gameOver = true;
+      disableGrid();
+      return;
+    }
+  } else {
+    sq.textContent = '💀';
+    alert('Boom! You hit a bomb. Game over and balance reset.');
+    gameOver = true;
+    disableGrid();
+    resetGame();
+    return;
+  }
+
+  if (triesLeft === 0 && !gameOver) {
+    alert('No tries left. You did not find all tokens. Game over.');
+    gameOver = true;
+    disableGrid();
+    resetGame();
+    return;
+  }
+}
+
+// Disable all squares after game ends
+function disableGrid() {
+  for (let sq of grid.children) {
+    sq.style.cursor = 'default';
+    sq.replaceWith(sq.cloneNode(true)); // Removes all event listeners by replacing element
+  }
+}
+
+// Cashout button
+cashoutBtn.addEventListener('click', () => {
+  alert(`Cashing out $${(selectedPackage.price * 2).toFixed(2)}! Thank you for playing!`);
+  resetGame();
+});
