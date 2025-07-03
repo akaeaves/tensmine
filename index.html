@@ -3,190 +3,196 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Jungle Treasure Game</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <title>Tens Mine</title>
   <style>
     body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       margin: 0;
-      font-family: Arial, sans-serif;
-      background: url('https://cdn.pixabay.com/photo/2016/10/23/01/12/jungle-1767236_1280.jpg') no-repeat center center fixed;
+      padding: 0;
+      background: url('https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?auto=format&fit=crop&w=1350&q=80') no-repeat center center fixed;
       background-size: cover;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
       color: #fff;
     }
-    .container {
+    header {
+      background-color: rgba(0, 0, 0, 0.6);
+      padding: 1rem;
+      width: 100%;
       text-align: center;
-      padding: 20px;
+    }
+    h1 {
+      margin: 0;
     }
     .grid {
       display: grid;
       grid-template-columns: repeat(5, 60px);
-      grid-gap: 10px;
-      justify-content: center;
-      margin: 20px auto;
+      gap: 10px;
+      margin: 20px;
     }
     .square {
       width: 60px;
       height: 60px;
-      background: rgba(0, 0, 0, 0.6);
-      border: 2px solid #fff;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 24px;
+      background-color: #444;
       display: flex;
       align-items: center;
       justify-content: center;
+      font-size: 1.5rem;
+      cursor: pointer;
     }
-    .info, .controls {
-      margin: 15px auto;
-      max-width: 400px;
-    }
-    .leaderboard, .progress {
-      background: rgba(0, 0, 0, 0.6);
-      padding: 10px;
-      margin-top: 15px;
+    .controls, .status {
+      margin: 10px;
+      text-align: center;
+      background-color: rgba(0, 0, 0, 0.5);
+      padding: 1rem;
       border-radius: 8px;
     }
-    button {
-      padding: 10px 20px;
-      margin: 5px;
-      font-size: 16px;
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.8);
+    }
+    .modal-content {
+      background-color: #222;
+      margin: 15% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+      color: white;
+    }
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+    }
+    .close:hover,
+    .close:focus {
+      color: white;
+      text-decoration: none;
       cursor: pointer;
     }
     @media (max-width: 600px) {
       .grid {
-        grid-template-columns: repeat(4, 50px);
-        grid-gap: 8px;
-      }
-      .square {
-        width: 50px;
-        height: 50px;
-        font-size: 18px;
+        grid-template-columns: repeat(4, 60px);
+        gap: 8px;
       }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>🌴 Jungle Treasure</h1>
-    <div class="info">
-      <p><strong>Balance:</strong> $<span id="balance">0.00</span></p>
-      <p><strong>Tokens:</strong> <span id="tokens">0</span></p>
-      <p><strong>Tries Left:</strong> <span id="tries">4</span></p>
+  <header>
+    <h1>Tens Mine</h1>
+  </header>
+  <div class="controls">
+    <button onclick="showModal('tosModal')">Terms of Service</button>
+    <button onclick="showModal('privacyModal')">Privacy Policy</button>
+    <button onclick="showModal('cashoutModal')">Cashout Policy</button>
+  </div>
+  <div class="status">
+    <p>Package: <span id="package">None</span></p>
+    <p>Tokens: <span id="tokens">0</span></p>
+    <p>Cash Balance: $<span id="cash">0.00</span></p>
+    <p>Tries Left: <span id="tries">4</span></p>
+  </div>
+  <div class="grid" id="gameGrid"></div>
+
+  <div id="tosModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('tosModal')">&times;</span>
+      <h2>Terms of Service</h2>
+      <p>You must be 18 years or older. This is not a gambling site. All outcomes are luck-based entertainment. No guaranteed payouts. Misuse may result in ban.</p>
     </div>
-    <div class="controls">
-      <button onclick="buyPackage(0.5, 2)">Silver ($0.50)</button>
-      <button onclick="buyPackage(1.00, 3)">Gold ($1.00)</button>
-      <button onclick="buyPackage(2.00, 4)">Platinum ($2.00)</button>
+  </div>
+  <div id="privacyModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('privacyModal')">&times;</span>
+      <h2>Privacy Policy</h2>
+      <p>We do not collect or sell personal data. Basic session info is used to improve the experience only.</p>
     </div>
-    <div class="grid" id="grid"></div>
-    <div class="progress">
-      <p><strong>Level:</strong> <span id="level">1</span></p>
-      <p><strong>Wins in a row:</strong> <span id="streak">0</span></p>
-    </div>
-    <div class="leaderboard">
-      <h3>🏆 Leaderboard</h3>
-      <ul id="leaderboard"></ul>
-    </div>
-    <div class="controls">
-      <button onclick="shareGame()">📣 Share</button>
+  </div>
+  <div id="cashoutModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('cashoutModal')">&times;</span>
+      <h2>Cashout Policy</h2>
+      <p>Players who double their token investment in a single session may cash out. Verification required.</p>
     </div>
   </div>
 
   <script>
-    let balance = 0;
     let tokens = 0;
-    let currentPackage = null;
-    let streak = 0;
-    let level = 1;
+    let cash = 0.00;
     let tries = 4;
-    const leaderboard = [];
 
-    function updateDisplay() {
-      document.getElementById("balance").textContent = balance.toFixed(2);
-      document.getElementById("tokens").textContent = tokens;
-      document.getElementById("tries").textContent = tries;
-      document.getElementById("streak").textContent = streak;
-      document.getElementById("level").textContent = level;
-      updateLeaderboard();
+    document.getElementById("tokens").textContent = tokens;
+    document.getElementById("cash").textContent = cash.toFixed(2);
+    document.getElementById("tries").textContent = tries;
+
+    function showModal(id) {
+      document.getElementById(id).style.display = "block";
+    }
+    function closeModal(id) {
+      document.getElementById(id).style.display = "none";
     }
 
-    function buyPackage(cost, maxTokens) {
-      if (tries < 4) return alert("Finish your current round first.");
-      balance -= cost;
-      currentPackage = { cost, maxTokens };
+    function setupGame(packageType) {
+      document.getElementById("package").textContent = packageType;
       tries = 4;
-      tokens = 0;
-      generateGrid();
-      updateDisplay();
-    }
-
-    function generateGrid() {
-      const grid = document.getElementById("grid");
+      document.getElementById("tries").textContent = tries;
+      let grid = document.getElementById("gameGrid");
       grid.innerHTML = "";
-      const cells = Array(20).fill("empty");
-      const tokenCount = currentPackage.maxTokens;
-      const bombIndex = Math.floor(Math.random() * 20);
 
-      for (let i = 0; i < tokenCount; i++) {
-        let idx;
-        do {
-          idx = Math.floor(Math.random() * 20);
-        } while (cells[idx] !== "empty" || idx === bombIndex);
-        cells[idx] = "token";
-      }
-      cells[bombIndex] = "bomb";
+      // Configurable odds
+      let odds = packageType === "Platinum" ? 0.25 : packageType === "Gold" ? 0.2 : 0.15;
+      let bombCount = 5;
+      let tokenCount = 20 * odds;
 
-      cells.forEach((type, idx) => {
-        const div = document.createElement("div");
+      let squares = new Array(20).fill("skull");
+      for (let i = 0; i < bombCount; i++) squares[i] = "bomb";
+      for (let i = 0; i < tokenCount; i++) squares[bombCount + i] = "token";
+      squares.sort(() => Math.random() - 0.5);
+
+      squares.forEach((type, i) => {
+        let div = document.createElement("div");
         div.className = "square";
-        div.addEventListener("click", () => handleClick(type, div));
+        div.dataset.type = type;
+        div.addEventListener("click", handleClick);
+        div.textContent = "?";
         grid.appendChild(div);
       });
     }
 
-    function handleClick(type, div) {
-      if (div.textContent) return;
+    function handleClick(e) {
+      if (tries <= 0) return alert("No tries left. Please buy another package.");
+      let div = e.target;
+      let type = div.dataset.type;
+      if (div.textContent !== "?") return;
+      tries--;
+      document.getElementById("tries").textContent = tries;
+
       if (type === "bomb") {
-        div.textContent = "💣";
-        streak = 0;
-        tries = 0;
-        tokens = 0;
-        alert("💥 Boom! You hit a bomb. Balance reset.");
-        updateDisplay();
+        div.textContent = "💥";
+        cash = 0;
+        alert("Boom! You hit a bomb. Balance reset.");
       } else if (type === "token") {
         div.textContent = "💰";
         tokens++;
-        tries--;
-        if (tokens >= 2) {
-          const reward = currentPackage.cost * 2;
-          balance += reward;
-          streak++;
-          if (streak % 3 === 0) level++;
-          leaderboard.push({ name: "Player", reward });
-          alert("🎉 You doubled your money!");
-          tries = 0;
-        }
-        updateDisplay();
+        cash += 0.25;
       } else {
         div.textContent = "☠️";
-        tries--;
-        updateDisplay();
       }
-      if (tries <= 0 && tokens < 2) {
-        alert("Out of tries! Try another package.");
-      }
-    }
 
-    function updateLeaderboard() {
-      const list = document.getElementById("leaderboard");
-      list.innerHTML = leaderboard.slice(-5).reverse().map(p => `<li>${p.name} - $${p.reward.toFixed(2)}</li>`).join('');
+      document.getElementById("tokens").textContent = tokens;
+      document.getElementById("cash").textContent = cash.toFixed(2);
     }
-
-    function shareGame() {
-      alert("Share this game with your friends!");
-    }
-
-    updateDisplay();
   </script>
 </body>
 </html>
