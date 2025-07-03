@@ -3,25 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tens Mine</title>
+  <title>Tens Mine - Token Grid Game</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: sans-serif;
       text-align: center;
-      background-color: #f0f8ff;
+      background: #f4f4f4;
       margin: 0;
       padding: 20px;
     }
-    h1 {
-      color: #333;
-    }
-    #packages button {
-      margin: 10px;
-      padding: 10px 20px;
-      font-size: 16px;
-      cursor: pointer;
-    }
-    #grid {
+    .grid {
       display: grid;
       grid-template-columns: repeat(5, 60px);
       grid-gap: 10px;
@@ -31,151 +22,156 @@
     .square {
       width: 60px;
       height: 60px;
-      background-color: #ccc;
-      border: 2px solid #999;
-      cursor: pointer;
-      font-size: 24px;
+      background: #ccc;
+      border: 1px solid #999;
       display: flex;
       align-items: center;
       justify-content: center;
-    }
-    .square.revealed {
-      background-color: #eee;
-      cursor: default;
-    }
-    #status {
-      margin-top: 20px;
       font-size: 18px;
-      color: #444;
+      cursor: pointer;
     }
-    #links {
-      margin-top: 30px;
+    .controls {
+      margin: 20px 0;
     }
-    #links a {
-      margin: 0 10px;
-      text-decoration: none;
-      color: #007BFF;
+    .modal {
+      position: fixed;
+      top: 10%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: white;
+      padding: 20px;
+      border: 1px solid #ccc;
+      max-width: 400px;
+      z-index: 100;
+      display: none;
+    }
+    .footer-links a {
+      display: inline-block;
+      margin: 10px;
+      font-size: 14px;
     }
   </style>
 </head>
 <body>
   <h1>Tens Mine</h1>
-  <div id="packages">
-    <button onclick="buyPackage('silver')">Silver - $0.50</button>
-    <button onclick="buyPackage('gold')">Gold - $1.00</button>
-    <button onclick="buyPackage('platinum')">Platinum - $2.00</button>
+  <p>Find 2 tokens to double your money! You must choose wisely. No luck here — it’s all strategy.</p>
+
+  <div class="controls">
+    <button onclick="buyPackage('silver', 0.5)">Silver ($0.50)</button>
+    <button onclick="buyPackage('gold', 1.00)">Gold ($1.00)</button>
+    <button onclick="buyPackage('platinum', 2.00)">Platinum ($2.00)</button>
+    <p>Tokens: <span id="tokenCount">0</span></p>
+    <p>Cash Balance: $<span id="cashBalance">0.00</span></p>
   </div>
 
-  <div id="grid"></div>
+  <div class="grid" id="gameGrid"></div>
 
-  <div id="status"></div>
+  <div class="modal" id="modal">
+    <h2 id="modalTitle"></h2>
+    <p id="modalContent"></p>
+    <button onclick="closeModal()">Close</button>
+  </div>
 
-  <div id="links">
-    <a href="#" onclick="showPolicy('terms')">Terms of Service</a>
+  <div class="footer-links">
+    <a href="#" onclick="showPolicy('terms')">Terms of Service</a> |
+    <a href="#" onclick="showPolicy('privacy')">Privacy Policy</a> |
     <a href="#" onclick="showPolicy('cashout')">Cashout Policy</a>
-    <a href="#" onclick="showPolicy('legal')">Legal Info</a>
   </div>
 
   <script>
-    let gameState = {
-      playing: false,
-      tokensFound: 0,
-      targetTokens: 2,
-      payout: 0,
-      balance: 0
-    };
+    let tokens = 0;
+    let cashBalance = 0;
+    let currentPackageCost = 0;
+    let tokenFound = 0;
+    let gameActive = false;
 
-    const packages = {
-      silver: { price: 0.5, payout: 1.0 },
-      gold: { price: 1.0, payout: 2.0 },
-      platinum: { price: 2.0, payout: 4.0 }
-    };
+    function buyPackage(type, cost) {
+      resetGame();
+      currentPackageCost = cost;
+      gameActive = true;
 
-    function buyPackage(type) {
-      const pkg = packages[type];
-      gameState = {
-        playing: true,
-        tokensFound: 0,
-        targetTokens: 2,
-        payout: pkg.payout,
-        balance: 0
-      };
-      document.getElementById("status").innerText = `Package: ${type.toUpperCase()} ($${pkg.price.toFixed(2)}). Find 2 tokens to win $${pkg.payout.toFixed(2)}!`;
-      generateBoard(20);
-    }
+      let grid = document.getElementById('gameGrid');
+      grid.innerHTML = '';
 
-    function generateBoard(size) {
-      const grid = document.getElementById("grid");
-      grid.innerHTML = "";
-      const board = Array(size).fill("empty");
-
-      // Place exactly 2 tokens
-      let placedTokens = 0;
-      while (placedTokens < 2) {
-        let index = Math.floor(Math.random() * size);
-        if (board[index] === "empty") {
-          board[index] = "token";
-          placedTokens++;
-        }
+      let bombIndex = Math.floor(Math.random() * 20);
+      let tokenIndexes = new Set();
+      while (tokenIndexes.size < 2) {
+        let idx = Math.floor(Math.random() * 20);
+        if (idx !== bombIndex) tokenIndexes.add(idx);
       }
 
-      // Place 1 bomb
-      let bombPlaced = false;
-      while (!bombPlaced) {
-        let index = Math.floor(Math.random() * size);
-        if (board[index] === "empty") {
-          board[index] = "bomb";
-          bombPlaced = true;
-        }
-      }
+      for (let i = 0; i < 20; i++) {
+        let square = document.createElement('div');
+        square.classList.add('square');
+        square.dataset.index = i;
+        square.onclick = function () {
+          if (!gameActive || square.textContent !== '') return;
 
-      board.forEach((type, i) => {
-        const square = document.createElement("div");
-        square.className = "square";
-        square.onclick = () => handleClick(square, type);
+          if (parseInt(i) === bombIndex) {
+            square.textContent = '💥';
+            tokenFound = 0;
+            cashBalance = 0;
+            updateUI();
+            showModal('Game Over', 'You hit a bomb and lost your stake. Try again.');
+            gameActive = false;
+          } else if (tokenIndexes.has(parseInt(i))) {
+            square.textContent = '🪙';
+            tokenFound++;
+            if (tokenFound === 2) {
+              tokens += 2;
+              cashBalance += currentPackageCost * 2;
+              updateUI();
+              showModal('You Win!', `You found 2 tokens and doubled your money! $${(currentPackageCost * 2).toFixed(2)} added.`);
+              gameActive = false;
+            }
+          } else {
+            square.textContent = '☠️';
+          }
+        };
         grid.appendChild(square);
-      });
+      }
     }
 
-    function handleClick(square, type) {
-      if (!gameState.playing || square.classList.contains("revealed")) return;
+    function updateUI() {
+      document.getElementById('tokenCount').textContent = tokens;
+      document.getElementById('cashBalance').textContent = cashBalance.toFixed(2);
+    }
 
-      square.classList.add("revealed");
+    function resetGame() {
+      tokenFound = 0;
+      document.getElementById('gameGrid').innerHTML = '';
+    }
 
-      if (type === "token") {
-        square.innerText = "🌟"; // Star for token
-        gameState.tokensFound++;
-        document.getElementById("status").innerText = `Tokens found: ${gameState.tokensFound} / 2. Keep going or cash out!`;
+    function showModal(title, content) {
+      document.getElementById('modalTitle').textContent = title;
+      document.getElementById('modalContent').textContent = content;
+      document.getElementById('modal').style.display = 'block';
+    }
 
-        if (gameState.tokensFound === gameState.targetTokens) {
-          gameState.balance += gameState.payout;
-          gameState.playing = false;
-          document.getElementById("status").innerText = `You won $${gameState.balance.toFixed(2)}! You can now cash out!`;
-        }
-      } else if (type === "bomb") {
-        square.innerText = "💣"; // Bomb icon
-        gameState.balance = 0;
-        gameState.playing = false;
-        document.getElementById("status").innerText = `Boom! You hit a bomb. Balance lost.`;
-      } else {
-        square.innerText = "☠"; // Skull and crossbones
-      }
+    function closeModal() {
+      document.getElementById('modal').style.display = 'none';
     }
 
     function showPolicy(type) {
-      let message = "";
-      switch (type) {
-        case "terms":
-          message = "By playing, you agree to our fair-play policy and that this game is skill-based with random elements.";
+      let title = '';
+      let content = '';
+
+      switch(type) {
+        case 'terms':
+          title = 'Terms of Service';
+          content = 'This is a skill-based game. No real gambling is involved. You must be 18+ to play.';
           break;
-        case "cashout":
-          message = "You may cash out your balance once you win by finding 2 tokens in a package. Winnings are based on package tier.";
+        case 'privacy':
+          title = 'Privacy Policy';
+          content = 'We collect basic info like scores and IP for security. No data is sold or shared.';
           break;
-        case "legal":
-          message = "This game is compliant with local laws regarding prize-based skill games. Not gambling.";
+        case 'cashout':
+          title = 'Cashout Policy';
+          content = 'Cashouts are available after verified winnings. Abuse may result in disqualification.';
           break;
       }
-      alert(message);
+
+      showModal(title, content);
     }
   </script>
 </body>
