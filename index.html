@@ -6,192 +6,211 @@
   <title>Tens Mine</title>
   <style>
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       margin: 0;
-      padding: 0;
-      background: url('https://images.unsplash.com/photo-1506748686214-e9df14d4d9d0?auto=format&fit=crop&w=1350&q=80') no-repeat center center fixed;
+      font-family: Arial, sans-serif;
+      background-image: url('https://images.unsplash.com/photo-1549887534-4ba402d6ec0c');
       background-size: cover;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
+      background-repeat: no-repeat;
+      background-position: center;
       color: #fff;
-    }
-    header {
-      background-color: rgba(0, 0, 0, 0.6);
-      padding: 1rem;
-      width: 100%;
       text-align: center;
     }
-    h1 {
-      margin: 0;
+    .container {
+      padding: 20px;
     }
     .grid {
       display: grid;
       grid-template-columns: repeat(5, 60px);
       gap: 10px;
-      margin: 20px;
+      justify-content: center;
+      margin-top: 20px;
     }
     .square {
       width: 60px;
       height: 60px;
-      background-color: #444;
+      background-color: rgba(255, 255, 255, 0.8);
+      color: black;
+      font-size: 24px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.5rem;
       cursor: pointer;
-    }
-    .controls, .status {
-      margin: 10px;
-      text-align: center;
-      background-color: rgba(0, 0, 0, 0.5);
-      padding: 1rem;
       border-radius: 8px;
+    }
+    .info {
+      margin-top: 15px;
     }
     .modal {
       display: none;
       position: fixed;
-      z-index: 1;
+      z-index: 999;
       left: 0;
       top: 0;
       width: 100%;
       height: 100%;
       overflow: auto;
-      background-color: rgba(0,0,0,0.8);
+      background-color: rgba(0, 0, 0, 0.9);
     }
     .modal-content {
-      background-color: #222;
-      margin: 15% auto;
+      background-color: #fff;
+      margin: 10% auto;
       padding: 20px;
-      border: 1px solid #888;
       width: 80%;
-      color: white;
+      max-width: 600px;
+      color: black;
     }
-    .close {
-      color: #aaa;
+    .modal-close {
       float: right;
-      font-size: 28px;
-      font-weight: bold;
-    }
-    .close:hover,
-    .close:focus {
-      color: white;
-      text-decoration: none;
       cursor: pointer;
+      font-size: 20px;
     }
-    @media (max-width: 600px) {
-      .grid {
-        grid-template-columns: repeat(4, 60px);
-        gap: 8px;
-      }
+    .footer {
+      margin-top: 40px;
+      font-size: 14px;
+    }
+    .footer a {
+      color: #fff;
+      margin: 0 10px;
+      text-decoration: underline;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
-  <header>
+  <div class="container">
     <h1>Tens Mine</h1>
-  </header>
-  <div class="controls">
-    <button onclick="showModal('tosModal')">Terms of Service</button>
-    <button onclick="showModal('privacyModal')">Privacy Policy</button>
-    <button onclick="showModal('cashoutModal')">Cashout Policy</button>
-  </div>
-  <div class="status">
-    <p>Package: <span id="package">None</span></p>
-    <p>Tokens: <span id="tokens">0</span></p>
-    <p>Cash Balance: $<span id="cash">0.00</span></p>
-    <p>Tries Left: <span id="tries">4</span></p>
-  </div>
-  <div class="grid" id="gameGrid"></div>
+    <div>
+      <label>Choose Package:
+        <select id="package">
+          <option value="0.5">Silver ($0.50)</option>
+          <option value="1.0">Gold ($1.00)</option>
+          <option value="2.0">Platinum ($2.00)</option>
+        </select>
+      </label>
+      <button onclick="startGame()">Start Game</button>
+    </div>
 
+    <div class="info">
+      <p>Balance: $<span id="balance">0.00</span></p>
+      <p>Tries Left: <span id="tries">4</span></p>
+    </div>
+
+    <div class="grid" id="gameGrid"></div>
+  </div>
+
+  <div class="footer">
+    <a onclick="openModal('tosModal')">Terms of Service</a>
+    <a onclick="openModal('privacyModal')">Privacy Policy</a>
+    <a onclick="openModal('cashoutModal')">Cashout Policy</a>
+  </div>
+
+  <!-- Modals -->
   <div id="tosModal" class="modal">
     <div class="modal-content">
-      <span class="close" onclick="closeModal('tosModal')">&times;</span>
+      <span class="modal-close" onclick="closeModal('tosModal')">&times;</span>
       <h2>Terms of Service</h2>
-      <p>You must be 18 years or older. This is not a gambling site. All outcomes are luck-based entertainment. No guaranteed payouts. Misuse may result in ban.</p>
+      <p>You must be 18 or older to play. No guarantees of earning money. Abuse will result in ban.</p>
     </div>
   </div>
+
   <div id="privacyModal" class="modal">
     <div class="modal-content">
-      <span class="close" onclick="closeModal('privacyModal')">&times;</span>
+      <span class="modal-close" onclick="closeModal('privacyModal')">&times;</span>
       <h2>Privacy Policy</h2>
-      <p>We do not collect or sell personal data. Basic session info is used to improve the experience only.</p>
+      <p>We do not share your data. We track gameplay anonymously for analytics.</p>
     </div>
   </div>
+
   <div id="cashoutModal" class="modal">
     <div class="modal-content">
-      <span class="close" onclick="closeModal('cashoutModal')">&times;</span>
+      <span class="modal-close" onclick="closeModal('cashoutModal')">&times;</span>
       <h2>Cashout Policy</h2>
-      <p>Players who double their token investment in a single session may cash out. Verification required.</p>
+      <p>If you earn double your package cost, you qualify for cashout. Contact support for redemption.</p>
     </div>
   </div>
 
   <script>
-    let tokens = 0;
-    let cash = 0.00;
-    let tries = 4;
+    let balance = 0;
+    let triesLeft = 4;
+    let tokensFound = 0;
+    let gameActive = false;
+    let packageValue = 0;
 
-    document.getElementById("tokens").textContent = tokens;
-    document.getElementById("cash").textContent = cash.toFixed(2);
-    document.getElementById("tries").textContent = tries;
+    function startGame() {
+      const selected = parseFloat(document.getElementById("package").value);
+      packageValue = selected;
+      balance = 0;
+      tokensFound = 0;
+      triesLeft = 4;
+      gameActive = true;
+      document.getElementById("balance").innerText = balance.toFixed(2);
+      document.getElementById("tries").innerText = triesLeft;
+      generateGrid();
+    }
 
-    function showModal(id) {
+    function generateGrid() {
+      const grid = document.getElementById("gameGrid");
+      grid.innerHTML = "";
+      const bombIndex = Math.floor(Math.random() * 20);
+      const tokenIndexes = new Set();
+      while (tokenIndexes.size < 2) {
+        const idx = Math.floor(Math.random() * 20);
+        if (idx !== bombIndex) tokenIndexes.add(idx);
+      }
+      for (let i = 0; i < 20; i++) {
+        const square = document.createElement("div");
+        square.classList.add("square");
+        square.dataset.index = i;
+        square.onclick = () => handleClick(i, bombIndex, tokenIndexes);
+        square.innerText = "❓";
+        grid.appendChild(square);
+      }
+    }
+
+    function handleClick(index, bombIndex, tokenIndexes) {
+      if (!gameActive || triesLeft <= 0) return;
+      const square = document.querySelector(`.square[data-index='${index}']`);
+      if (!square || square.innerText !== "❓") return;
+
+      if (index === bombIndex) {
+        square.innerText = "💣";
+        alert("Boom! You hit a bomb. Balance reset to $0.00.");
+        balance = 0;
+        gameActive = false;
+        updateDisplay();
+        return;
+      }
+
+      if (tokenIndexes.has(index)) {
+        square.innerText = "💰";
+        tokensFound++;
+      } else {
+        square.innerText = "☠️";
+      }
+
+      triesLeft--;
+      if (triesLeft <= 0) {
+        if (tokensFound >= 2) {
+          balance = packageValue * 2;
+          alert("Congrats! You doubled your money.");
+        } else {
+          alert("Round over. Not enough tokens.");
+        }
+        gameActive = false;
+      }
+      updateDisplay();
+    }
+
+    function updateDisplay() {
+      document.getElementById("balance").innerText = balance.toFixed(2);
+      document.getElementById("tries").innerText = triesLeft;
+    }
+
+    function openModal(id) {
       document.getElementById(id).style.display = "block";
     }
     function closeModal(id) {
       document.getElementById(id).style.display = "none";
-    }
-
-    function setupGame(packageType) {
-      document.getElementById("package").textContent = packageType;
-      tries = 4;
-      document.getElementById("tries").textContent = tries;
-      let grid = document.getElementById("gameGrid");
-      grid.innerHTML = "";
-
-      // Configurable odds
-      let odds = packageType === "Platinum" ? 0.25 : packageType === "Gold" ? 0.2 : 0.15;
-      let bombCount = 5;
-      let tokenCount = 20 * odds;
-
-      let squares = new Array(20).fill("skull");
-      for (let i = 0; i < bombCount; i++) squares[i] = "bomb";
-      for (let i = 0; i < tokenCount; i++) squares[bombCount + i] = "token";
-      squares.sort(() => Math.random() - 0.5);
-
-      squares.forEach((type, i) => {
-        let div = document.createElement("div");
-        div.className = "square";
-        div.dataset.type = type;
-        div.addEventListener("click", handleClick);
-        div.textContent = "?";
-        grid.appendChild(div);
-      });
-    }
-
-    function handleClick(e) {
-      if (tries <= 0) return alert("No tries left. Please buy another package.");
-      let div = e.target;
-      let type = div.dataset.type;
-      if (div.textContent !== "?") return;
-      tries--;
-      document.getElementById("tries").textContent = tries;
-
-      if (type === "bomb") {
-        div.textContent = "💥";
-        cash = 0;
-        alert("Boom! You hit a bomb. Balance reset.");
-      } else if (type === "token") {
-        div.textContent = "💰";
-        tokens++;
-        cash += 0.25;
-      } else {
-        div.textContent = "☠️";
-      }
-
-      document.getElementById("tokens").textContent = tokens;
-      document.getElementById("cash").textContent = cash.toFixed(2);
     }
   </script>
 </body>
