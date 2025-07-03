@@ -13,7 +13,6 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: flex-start;
       padding: 20px;
       min-height: 100vh;
     }
@@ -31,6 +30,7 @@
       width: 100%;
       max-width: 400px;
       text-align: center;
+      margin-bottom: 20px;
     }
 
     .sequence {
@@ -90,20 +90,75 @@
       text-decoration: none;
       margin: 0 5px;
     }
+
+    .store {
+      margin-top: 20px;
+      background: #111;
+      padding: 15px;
+      border-radius: 10px;
+      max-width: 400px;
+      width: 100%;
+    }
+
+    .paypal-btns {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .info {
+      font-size: 0.9rem;
+      margin-bottom: 5px;
+      color: #ccc;
+    }
   </style>
 </head>
 <body>
 
   <h1>Time Tunnels</h1>
+
   <div class="card">
     <p>Memorize the sequence and repeat it.</p>
     <p>Score: <span id="score">0</span></p>
     <p>Time left: <span id="timer">30</span>s</p>
+    <p>💎 Crystals: <span id="crystals">0</span></p>
 
     <div class="sequence" id="sequence"></div>
 
-    <div class="grid" id="input-grid">
-      <!-- Buttons 1–9 -->
+    <div class="grid" id="input-grid"></div>
+
+    <button onclick="useCrystal()">💠 Slow Time (1 Crystal)</button>
+  </div>
+
+  <div class="store">
+    <h3>💎 Buy Time Crystals</h3>
+    <p class="info">Crystals are optional. Your balance is stored in your browser.</p>
+    <div class="paypal-btns">
+      <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
+        <input type="hidden" name="cmd" value="_xclick">
+        <input type="hidden" name="business" value="akaeaves@yahoo.com">
+        <input type="hidden" name="item_name" value="1 Time Crystal">
+        <input type="hidden" name="amount" value="1.00">
+        <input type="hidden" name="currency_code" value="USD">
+        <input type="submit" value="Buy 1 Crystal - $1.00">
+      </form>
+      <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
+        <input type="hidden" name="cmd" value="_xclick">
+        <input type="hidden" name="business" value="akaeaves@yahoo.com">
+        <input type="hidden" name="item_name" value="5 Time Crystals">
+        <input type="hidden" name="amount" value="4.00">
+        <input type="hidden" name="currency_code" value="USD">
+        <input type="submit" value="Buy 5 Crystals - $4.00">
+      </form>
+      <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
+        <input type="hidden" name="cmd" value="_xclick">
+        <input type="hidden" name="business" value="akaeaves@yahoo.com">
+        <input type="hidden" name="item_name" value="10 Time Crystals">
+        <input type="hidden" name="amount" value="7.00">
+        <input type="hidden" name="currency_code" value="USD">
+        <input type="submit" value="Buy 10 Crystals - $7.00">
+      </form>
     </div>
   </div>
 
@@ -122,11 +177,40 @@
     let timer = 30;
     let timerInterval = null;
     let solved = false;
+    let usedCrystal = false;
 
     const sequenceEl = document.getElementById('sequence');
     const scoreEl = document.getElementById('score');
     const timerEl = document.getElementById('timer');
     const gridEl = document.getElementById('input-grid');
+    const crystalsEl = document.getElementById('crystals');
+
+    function getCrystals() {
+      return parseInt(localStorage.getItem('crystals') || '0');
+    }
+
+    function setCrystals(val) {
+      localStorage.setItem('crystals', val);
+      crystalsEl.textContent = val;
+    }
+
+    function addCrystals(n) {
+      setCrystals(getCrystals() + n);
+    }
+
+    function useCrystal() {
+      const current = getCrystals();
+      if (current >= 1 && !usedCrystal && !solved && timer > 0) {
+        setCrystals(current - 1);
+        timer += 10;
+        usedCrystal = true;
+        alert("+10 seconds added!");
+      } else if (usedCrystal) {
+        alert("You can only use one crystal per round.");
+      } else {
+        alert("Not enough crystals.");
+      }
+    }
 
     // Initialize buttons
     for (let i = 1; i <= 9; i++) {
@@ -155,6 +239,7 @@
       sequence = generateSequence();
       input = [];
       solved = false;
+      usedCrystal = false;
       timer = 30;
       scoreEl.textContent = score;
       timerEl.textContent = timer;
@@ -185,6 +270,7 @@
       }
     }
 
+    setCrystals(getCrystals());
     resetGame();
   </script>
 
