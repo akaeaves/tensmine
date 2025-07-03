@@ -1,466 +1,308 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Stick Legends - Fun Stickman Adventure Game with in-game and PayPal store" />
-  <meta name="keywords" content="stickman, adventure, game, online, PayPal store, crystals, fun" />
-  <title>Stick Legends - Stickman Adventure Game</title>
-  <style>
-    /* Basic styles */
-    body {
-      margin: 0; padding: 0; font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #222, #555);
-      color: #eee;
-      display: flex; flex-direction: column; min-height: 100vh;
-    }
-    header {
-      text-align: center; padding: 1rem; background: #111;
-      font-size: 1.8rem; font-weight: bold;
-      letter-spacing: 2px;
-    }
-    #gameCanvas {
-      background: #000;
-      display: block; margin: 1rem auto; border: 2px solid #eee;
-      max-width: 100%;
-    }
-    #hud {
-      text-align: center; margin-bottom: 1rem;
-    }
-    #store {
-      max-width: 600px;
-      margin: 0 auto 2rem;
-      background: #222;
-      padding: 1rem;
-      border-radius: 8px;
-    }
-    #store h2 {
-      margin-top: 0;
-      text-align: center;
-    }
-    .store-item {
-      background: #333;
-      margin: 0.5rem 0;
-      padding: 0.7rem;
-      border-radius: 6px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      color: #eee;
-    }
-    .store-item button {
-      margin-left: 10px;
-      padding: 0.4rem 0.7rem;
-      border: none;
-      border-radius: 4px;
-      background: #0a74da;
-      color: white;
-      cursor: pointer;
-      font-weight: bold;
-    }
-    .store-item button:disabled {
-      background: #444;
-      cursor: not-allowed;
-    }
-    footer {
-      background: #111;
-      color: #888;
-      text-align: center;
-      padding: 1rem 0;
-      margin-top: auto;
-      font-size: 0.85rem;
-      position: relative;
-    }
-    footer a {
-      color: #0a74da;
-      text-decoration: none;
-      margin: 0 0.5rem;
-      cursor: pointer;
-    }
-    /* Modal */
-    .modal {
-      position: fixed;
-      bottom: 0; left: 0; right: 0;
-      background: #222;
-      color: #ddd;
-      padding: 1rem;
-      max-height: 50vh;
-      overflow-y: auto;
-      box-shadow: 0 -3px 8px rgba(0,0,0,0.7);
-      transform: translateY(100%);
-      transition: transform 0.3s ease;
-      z-index: 999;
-    }
-    .modal.active {
-      transform: translateY(0);
-    }
-    .modal h3 {
-      margin-top: 0;
-    }
-    .modal button.close-btn {
-      position: absolute;
-      right: 1rem;
-      top: 0.5rem;
-      background: transparent;
-      border: none;
-      color: #aaa;
-      font-size: 1.5rem;
-      cursor: pointer;
-    }
-    /* Social share */
-    #social-share {
-      text-align: center;
-      margin-bottom: 1rem;
-    }
-    #social-share button {
-      background: #0a74da;
-      color: white;
-      border: none;
-      margin: 0 0.3rem;
-      padding: 0.5rem 0.8rem;
-      border-radius: 5px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="Stick Legends - addictive stickman adventure game with crystals and upgrades." />
+<title>Stick Legends - Adventure Game</title>
+<style>
+  body {
+    margin: 0; font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    color: white;
+  }
+  #gameContainer {
+    width: 100%;
+    max-width: 600px;
+    margin: 20px auto;
+    background: #222;
+    border-radius: 8px;
+    padding: 10px;
+    box-shadow: 0 0 20px #000;
+  }
+  #gameCanvas {
+    background: #333;
+    display: block;
+    margin: 0 auto;
+    border-radius: 4px;
+  }
+  #crystals {
+    font-size: 18px;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+  #store {
+    background: #444;
+    padding: 10px;
+    border-radius: 6px;
+    margin-top: 15px;
+  }
+  #store h2 {
+    margin-top: 0;
+    font-size: 20px;
+  }
+  .store-item {
+    background: #555;
+    margin: 8px 0;
+    padding: 8px;
+    border-radius: 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  button.buy-btn {
+    background: #2ecc71;
+    border: none;
+    padding: 5px 12px;
+    border-radius: 4px;
+    color: white;
+    cursor: pointer;
+  }
+  button.buy-btn:disabled {
+    background: #999;
+    cursor: not-allowed;
+  }
+  #modals {
+    font-size: 12px;
+    color: #ccc;
+    margin-top: 30px;
+    text-align: center;
+  }
+  #modals a {
+    color: #aad;
+    margin: 0 10px;
+    text-decoration: none;
+  }
+  #modals a:hover {
+    text-decoration: underline;
+  }
+  /* Social Share Buttons */
+  #socialShare {
+    margin-top: 15px;
+    text-align: center;
+  }
+  #socialShare button {
+    background: #3b5998;
+    border: none;
+    color: white;
+    margin: 0 5px;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  #socialShare button.twitter {
+    background: #1da1f2;
+  }
+  #socialShare button.linkedin {
+    background: #0077b5;
+  }
+</style>
 </head>
 <body>
-  <header>Stick Legends</header>
-  
-  <canvas id="gameCanvas" width="600" height="400" tabindex="0"></canvas>
-  
-  <div id="hud">
-    <span>Health: <span id="health">100</span></span> |
-    <span>Score: <span id="score">0</span></span> |
-    <span>Crystals: <span id="crystals">0</span></span>
+
+<div id="gameContainer">
+  <div id="crystals">Crystals: 0</div>
+  <canvas id="gameCanvas" width="600" height="300"></canvas>
+
+  <div id="store">
+    <h2>Store</h2>
+    <div class="store-item">
+      <div>Sword Upgrade (+1 attack)</div>
+      <button class="buy-btn" data-cost="10" data-item="sword">Buy 10 Crystals</button>
+    </div>
+    <div class="store-item">
+      <div>Shield Upgrade (+1 defense)</div>
+      <button class="buy-btn" data-cost="15" data-item="shield">Buy 15 Crystals</button>
+    </div>
+    <div class="store-item">
+      <div>Health Potion (Restore 20 HP)</div>
+      <button class="buy-btn" data-cost="8" data-item="potion">Buy 8 Crystals</button>
+    </div>
   </div>
 
-  <div id="social-share">
-    <button id="share-twitter">Share on Twitter</button>
-    <button id="share-facebook">Share on Facebook</button>
-    <button id="share-linkedin">Share on LinkedIn</button>
+  <div id="socialShare">
+    <button class="facebook" onclick="shareFacebook()">Facebook</button>
+    <button class="twitter" onclick="shareTwitter()">Twitter</button>
+    <button class="linkedin" onclick="shareLinkedIn()">LinkedIn</button>
   </div>
 
-  <section id="store">
-    <h2>Store - Buy Upgrades with Crystals or Real Money</h2>
+  <div id="modals">
+    <a href="#">Terms of Service</a> | <a href="#">Privacy Policy</a>
+  </div>
+</div>
 
-    <div class="store-item" data-id="1">
-      <div>
-        <strong>Sword Upgrade (+10 attack)</strong><br />
-        Cost: 20 crystals
-      </div>
-      <div>
-        <button class="buy-crystal">Buy with Crystals</button>
-        <!-- PayPal Buy Now button -->
-        <form style="display:inline;" action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
-          <input type="hidden" name="cmd" value="_xclick" />
-          <input type="hidden" name="business" value="akaeaves@yahoo.com" />
-          <input type="hidden" name="item_name" value="Sword Upgrade" />
-          <input type="hidden" name="amount" value="2.99" />
-          <input type="hidden" name="currency_code" value="USD" />
-          <input type="hidden" name="no_shipping" value="1" />
-          <input type="hidden" name="return" value="" />
-          <input type="submit" value="Buy with PayPal ($2.99)" />
-        </form>
-      </div>
-    </div>
+<script>
+// Game variables
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
+let crystals = 0;
+let attack = 1;
+let defense = 1;
+let health = 100;
+let maxHealth = 100;
+let enemiesDefeated = 0;
 
-    <div class="store-item" data-id="2">
-      <div>
-        <strong>Shield Upgrade (+20 health)</strong><br />
-        Cost: 30 crystals
-      </div>
-      <div>
-        <button class="buy-crystal">Buy with Crystals</button>
-        <form style="display:inline;" action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
-          <input type="hidden" name="cmd" value="_xclick" />
-          <input type="hidden" name="business" value="akaeaves@yahoo.com" />
-          <input type="hidden" name="item_name" value="Shield Upgrade" />
-          <input type="hidden" name="amount" value="3.99" />
-          <input type="hidden" name="currency_code" value="USD" />
-          <input type="hidden" name="no_shipping" value="1" />
-          <input type="hidden" name="return" value="" />
-          <input type="submit" value="Buy with PayPal ($3.99)" />
-        </form>
-      </div>
-    </div>
+// Update crystal display
+function updateCrystals() {
+  document.getElementById('crystals').textContent = `Crystals: ${crystals}`;
+}
 
-    <div class="store-item" data-id="3">
-      <div>
-        <strong>Health Potion (+50 health)</strong><br />
-        Cost: 10 crystals
-      </div>
-      <div>
-        <button class="buy-crystal">Buy with Crystals</button>
-        <form style="display:inline;" action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
-          <input type="hidden" name="cmd" value="_xclick" />
-          <input type="hidden" name="business" value="akaeaves@yahoo.com" />
-          <input type="hidden" name="item_name" value="Health Potion" />
-          <input type="hidden" name="amount" value="1.99" />
-          <input type="hidden" name="currency_code" value="USD" />
-          <input type="hidden" name="no_shipping" value="1" />
-          <input type="hidden" name="return" value="" />
-          <input type="submit" value="Buy with PayPal ($1.99)" />
-        </form>
-      </div>
-    </div>
-  </section>
+// Simple player object
+const player = {
+  x: 50,
+  y: 230,
+  width: 20,
+  height: 50,
+  color: 'white',
+  vx: 0,
+  vy: 0,
+  jumping: false
+};
 
-  <footer>
-    <a href="#" id="termsLink">Terms of Service</a> |
-    <a href="#" id="privacyLink">Privacy Policy</a>
-  </footer>
+// Simple enemy
+function createEnemy() {
+  return {
+    x: 600,
+    y: 230,
+    width: 20,
+    height: 50,
+    color: 'red',
+    speed: 2 + enemiesDefeated * 0.1
+  };
+}
+let enemy = createEnemy();
 
-  <!-- Terms Modal -->
-  <section id="termsModal" class="modal" tabindex="-1" aria-labelledby="termsTitle" role="dialog" aria-modal="true" aria-hidden="true">
-    <button class="close-btn" id="termsClose" aria-label="Close Terms">&times;</button>
-    <h3 id="termsTitle">Terms of Service</h3>
-    <p>By playing Stick Legends, you agree to our terms and conditions...</p>
-    <p>(Add your full terms here.)</p>
-  </section>
+// Draw function
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  
+  // Draw player
+  ctx.fillStyle = player.color;
+  ctx.fillRect(player.x, player.y, player.width, player.height);
 
-  <!-- Privacy Modal -->
-  <section id="privacyModal" class="modal" tabindex="-1" aria-labelledby="privacyTitle" role="dialog" aria-modal="true" aria-hidden="true">
-    <button class="close-btn" id="privacyClose" aria-label="Close Privacy">&times;</button>
-    <h3 id="privacyTitle">Privacy Policy</h3>
-    <p>We respect your privacy and do not collect personal information...</p>
-    <p>(Add your full privacy policy here.)</p>
-  </section>
+  // Draw enemy
+  ctx.fillStyle = enemy.color;
+  ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height);
 
-  <script>
-  (function(){
-    // Game variables
-    const canvas = document.getElementById('gameCanvas');
-    const ctx = canvas.getContext('2d');
-    let health = 100;
-    let score = 0;
-    let crystals = 0;
+  // Draw health bar
+  ctx.fillStyle = 'red';
+  ctx.fillRect(20, 20, maxHealth, 10);
+  ctx.fillStyle = 'green';
+  ctx.fillRect(20, 20, health, 10);
+}
 
-    // Player
-    const player = {
-      x: 50, y: 350, width: 30, height: 50,
-      color: 'white',
-      speed: 5,
-      vx: 0,
-      vy: 0,
-      onGround: false,
-      attackPower: 10,
-      maxHealth: 100,
-    };
+// Game logic update
+function update() {
+  // Enemy moves left
+  enemy.x -= enemy.speed;
 
-    // Enemy constructor
-    class Enemy {
-      constructor(x, y, speed) {
-        this.x = x;
-        this.y = y;
-        this.width = 30;
-        this.height = 50;
-        this.color = 'red';
-        this.speed = speed;
-        this.health = 20;
-      }
-      update() {
-        this.x -= this.speed;
-      }
-      draw() {
-        ctx.fillStyle = this.color;
-        ctx.fillRect(this.x, this.y, this.width, this.height);
-      }
+  // Reset enemy if offscreen
+  if (enemy.x + enemy.width < 0) {
+    enemy = createEnemy();
+  }
+
+  // Simple collision detection (attack on spacebar)
+  if (keys[' ']) {
+    if (Math.abs(player.x - enemy.x) < 30) {
+      // Enemy defeated
+      enemiesDefeated++;
+      crystals += 5;
+      updateCrystals();
+      enemy = createEnemy();
     }
+  }
 
-    let enemies = [];
-
-    // Controls
-    let keys = {};
-    window.addEventListener('keydown', e => { keys[e.key.toLowerCase()] = true; });
-    window.addEventListener('keyup', e => { keys[e.key.toLowerCase()] = false; });
-
-    // Game loop
-    function loop() {
-      update();
-      draw();
-      requestAnimationFrame(loop);
+  // Player gravity & jump
+  if (player.jumping) {
+    player.vy += 1; // gravity
+    player.y += player.vy;
+    if (player.y >= 230) {
+      player.y = 230;
+      player.vy = 0;
+      player.jumping = false;
     }
+  }
 
-    // Update game state
-    function update() {
-      // Player movement
-      if (keys['arrowleft'] || keys['a']) player.vx = -player.speed;
-      else if (keys['arrowright'] || keys['d']) player.vx = player.speed;
-      else player.vx = 0;
+  // Left/right movement
+  if (keys['ArrowLeft']) {
+    player.x -= 5;
+    if (player.x < 0) player.x = 0;
+  }
+  if (keys['ArrowRight']) {
+    player.x += 5;
+    if (player.x + player.width > canvas.width) player.x = canvas.width - player.width;
+  }
 
-      // Jump
-      if ((keys['arrowup'] || keys['w'] || keys[' ']) && player.onGround) {
-        player.vy = -15;
-        player.onGround = false;
-      }
+  draw();
+  requestAnimationFrame(update);
+}
 
-      // Apply gravity
-      player.vy += 0.8;
-      player.x += player.vx;
-      player.y += player.vy;
+// Keyboard input handling
+const keys = {};
+window.addEventListener('keydown', e => {
+  keys[e.key] = true;
 
-      // Floor collision
-      if (player.y + player.height >= canvas.height) {
-        player.y = canvas.height - player.height;
-        player.vy = 0;
-        player.onGround = true;
-      }
+  // Space to attack
+  if (e.key === ' ' && !player.jumping) {
+    player.vy = -15;
+    player.jumping = true;
+  }
+});
+window.addEventListener('keyup', e => {
+  keys[e.key] = false;
+});
 
-      // Keep player inside canvas horizontally
-      if (player.x < 0) player.x = 0;
-      if (player.x + player.width > canvas.width) player.x = canvas.width - player.width;
+// Store purchase handling
+document.querySelectorAll('.buy-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const cost = parseInt(btn.getAttribute('data-cost'));
+    const item = btn.getAttribute('data-item');
 
-      // Spawn enemies randomly
-      if (Math.random() < 0.02) {
-        enemies.push(new Enemy(canvas.width, canvas.height - 50, 2 + Math.random() * 2));
-      }
-
-      // Update enemies and collision
-      enemies = enemies.filter(e => e.x + e.width > 0 && e.health > 0);
-      enemies.forEach(e => {
-        e.update();
-
-        // Collision with player
-        if (rectIntersect(player, e)) {
-          health -= 0.5;
-          if (health < 0) health = 0;
-        }
-      });
-
-      // Attack enemies
-      if ((keys['k'] || keys[' ']) && player.onGround) {
-        enemies.forEach(e => {
-          if (e.x < player.x + player.width + 20 && e.x > player.x) {
-            e.health -= player.attackPower;
-            if (e.health <= 0) {
-              score += 10;
-              crystals += 5;
-            }
-          }
-        });
-      }
-
-      // Update HUD values
-      health = Math.min(health, player.maxHealth);
-      if (health === 0) {
-        alert("Game Over! Your score: " + score);
-        resetGame();
-      }
-      updateHUD();
+    if (crystals >= cost) {
+      crystals -= cost;
+      updateCrystals();
+      applyUpgrade(item);
+    } else {
+      alert('Not enough crystals!');
     }
+  });
+});
 
-    // Draw everything
-    function draw() {
-      ctx.clearRect(0,0,canvas.width,canvas.height);
+function applyUpgrade(item) {
+  switch(item) {
+    case 'sword':
+      attack++;
+      alert('Sword upgraded! Attack is now ' + attack);
+      break;
+    case 'shield':
+      defense++;
+      alert('Shield upgraded! Defense is now ' + defense);
+      break;
+    case 'potion':
+      health += 20;
+      if (health > maxHealth) health = maxHealth;
+      alert('Health restored by 20! Current health: ' + health);
+      break;
+  }
+}
 
-      // Draw player
-      ctx.fillStyle = player.color;
-      ctx.fillRect(player.x, player.y, player.width, player.height);
-
-      // Draw enemies
-      enemies.forEach(e => e.draw());
-    }
-
-    // Utility: check rectangle collision
-    function rectIntersect(r1, r2) {
-      return !(r2.x > r1.x + r1.width ||
-               r2.x + r2.width < r1.x ||
-               r2.y > r1.y + r1.height ||
-               r2.y + r2.height < r1.y);
-    }
-
-    // Reset game
-    function resetGame() {
-      health = 100;
-      score = 0;
-      crystals = 0;
-      player.x = 50;
-      player.y = 350;
-      enemies = [];
-    }
-
-    // HUD update
-    function updateHUD() {
-      document.getElementById('health').textContent = Math.floor(health);
-      document.getElementById('score').textContent = score;
-      document.getElementById('crystals').textContent = crystals;
-    }
-
-    // Store crystal purchases
-    const upgrades = {
-      1: {name: "Sword Upgrade", cost: 20, effect: () => { player.attackPower += 10; }},
-      2: {name: "Shield Upgrade", cost: 30, effect: () => { player.maxHealth += 20; health += 20; }},
-      3: {name: "Health Potion", cost: 10, effect: () => { health += 50; if(health > player.maxHealth) health = player.maxHealth; }}
-    };
-
-    function loadStore() {
-      document.querySelectorAll('.store-item').forEach(item => {
-        const id = item.getAttribute('data-id');
-        const btn = item.querySelector('.buy-crystal');
-        btn.addEventListener('click', () => {
-          const upgrade = upgrades[id];
-          if (crystals >= upgrade.cost) {
-            crystals -= upgrade.cost;
-            upgrade.effect();
-            updateHUD();
-            alert(`${upgrade.name} purchased with crystals!`);
-          } else {
-            alert('Not enough crystals!');
-          }
-        });
-      });
-    }
-
-    // Modal handling
-    const termsModal = document.getElementById('termsModal');
-    const privacyModal = document.getElementById('privacyModal');
-    document.getElementById('termsLink').addEventListener('click', e => {
-      e.preventDefault();
-      termsModal.classList.add('active');
-      termsModal.setAttribute('aria-hidden', 'false');
-      termsModal.focus();
-    });
-    document.getElementById('privacyLink').addEventListener('click', e => {
-      e.preventDefault();
-      privacyModal.classList.add('active');
-      privacyModal.setAttribute('aria-hidden', 'false');
-      privacyModal.focus();
-    });
-    document.getElementById('termsClose').addEventListener('click', () => {
-      termsModal.classList.remove('active');
-      termsModal.setAttribute('aria-hidden', 'true');
-    });
-    document.getElementById('privacyClose').addEventListener('click', () => {
-      privacyModal.classList.remove('active');
-      privacyModal.setAttribute('aria-hidden', 'true');
-    });
-
-    // Social share button logic
-    const pageUrl = encodeURIComponent(window.location.href);
-    const pageTitle = encodeURIComponent("Stick Legends - Fun Stickman Game");
-
-    document.getElementById('share-twitter').addEventListener('click', () => {
-      const twitterUrl = `https://twitter.com/intent/tweet?url=${pageUrl}&text=${pageTitle}`;
-      window.open(twitterUrl, '_blank', 'width=600,height=400');
-    });
-
-    document.getElementById('share-facebook').addEventListener('click', () => {
-      const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${pageUrl}`;
-      window.open(facebookUrl, '_blank', 'width=600,height=400');
-    });
-
-    document.getElementById('share-linkedin').addEventListener('click', () => {
-      const linkedinUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${pageUrl}`;
-      window.open(linkedinUrl, '_blank', 'width=600,height=400');
-    });
-
-    // Init
-    loadStore();
-    updateHUD();
-    loop();
-
-  })();
-  </script>
+updateCrystals();
+update();
+  
+// Social share functions
+function shareFacebook() {
+  const url = encodeURIComponent(window.location.href);
+  window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank');
+}
+function shareTwitter() {
+  const url = encodeURIComponent(window.location.href);
+  const text = encodeURIComponent("Playing Stick Legends - a fun stickman adventure game!");
+  window.open(`https://twitter.com/intent/tweet?url=${url}&text=${text}`, '_blank');
+}
+function shareLinkedIn() {
+  const url = encodeURIComponent(window.location.href);
+  window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${url}`, '_blank');
+}
+</script>
 </body>
 </html>
