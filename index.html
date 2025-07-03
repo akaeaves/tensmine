@@ -1,112 +1,192 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Tens Mine - A thrilling jungle adventure game that rewards players with tokens. Choose your package and start exploring!">
-    <title>Tens Mine - Jungle Adventure Game</title>
-    <link rel="stylesheet" href="styles.css">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-image: url('jungle-background.jpg');
-            background-size: cover;
-            color: #fff;
-        }
-        header {
-            text-align: center;
-            padding: 20px;
-            background-color: rgba(0, 0, 0, 0.7);
-        }
-        main {
-            padding: 20px;
-            background-color: rgba(0, 0, 0, 0.5);
-            border-radius: 10px;
-            margin: 20px auto;
-            max-width: 800px;
-        }
-        section {
-            margin-bottom: 20px;
-        }
-        .package {
-            border: 2px solid #FFD700;
-            border-radius: 10px;
-            padding: 15px;
-            text-align: center;
-            background-color: rgba(255, 255, 255, 0.1);
-            transition: transform 0.2s;
-        }
-        .package:hover {
-            transform: scale(1.05);
-        }
-        button {
-            background-color: #FFD700;
-            color: #000;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        button:hover {
-            background-color: #FFC107;
-        }
-        footer {
-            text-align: center;
-            padding: 20px;
-            background-color: rgba(0, 0, 0, 0.7);
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Time Tunnels</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to bottom right, #111827, #000);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 20px;
+      min-height: 100vh;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
+
+    .card {
+      background: #1f2937;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px #000;
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    .sequence {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .circle {
+      background: #4f46e5;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: pulse 0.6s ease-in-out;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+      100% { transform: scale(1); }
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    button {
+      padding: 12px;
+      font-size: 1rem;
+      background: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #3b82f6;
+    }
+
+    .footer {
+      font-size: 0.8rem;
+      color: #aaa;
+      margin-top: 30px;
+      text-align: center;
+    }
+
+    .footer a {
+      color: #60a5fa;
+      text-decoration: none;
+      margin: 0 5px;
+    }
+  </style>
 </head>
 <body>
 
-<header>
-    <h1>Welcome to Tens Mine!</h1>
-    <p>Embark on a thrilling adventure in the jungle and earn tokens!</p>
-</header>
+  <h1>Time Tunnels</h1>
+  <div class="card">
+    <p>Memorize the sequence and repeat it.</p>
+    <p>Score: <span id="score">0</span></p>
+    <p>Time left: <span id="timer">30</span>s</p>
 
-<main>
-    <section>
-        <h2>Choose Your Package</h2>
-        <div class="package">
-            <h3>Silver Package</h3>
-            <p>Price: $10</p>
-            <p>Tokens: 100</p>
-            <button onclick="purchase('Silver Package', 10, 100)">Purchase</button>
-        </div>
-        <div class="package">
-            <h3>Gold Package</h3>
-            <p>Price: $20</p>
-            <p>Tokens: 250</p>
-            <button onclick="purchase('Gold Package', 20, 250)">Purchase</button>
-        </div>
-        <div class="package">
-            <h3>Platinum Package</h3>
-            <p>Price: $50</p>
-            <p>Tokens: 600</p>
-            <button onclick="purchase('Platinum Package', 50, 600)">Purchase</button>
-        </div>
-    </section>
+    <div class="sequence" id="sequence"></div>
 
-    <section>
-        <h2>Your Adventure Awaits!</h2>
-        <p>Explore the jungle, collect treasures, and compete with friends!</p>
-        <p>Join now and start your journey!</p>
-    </section>
-</main>
+    <div class="grid" id="input-grid">
+      <!-- Buttons 1–9 -->
+    </div>
+  </div>
 
-<footer>
-    <p>Payments are securely processed through PayPal. All payments go to: <a href="mailto:akaeaves@yahoo.com">akaeaves@yahoo.com</a></p>
-</footer>
+  <div class="footer">
+    <p>
+      <a href="#terms">Terms</a> • 
+      <a href="#privacy">Privacy</a> • 
+      <a href="mailto:akaeaves@yahoo.com">Contact</a>
+    </p>
+  </div>
 
-<script>
-    function purchase(packageName, price, tokens) {
-        alert(`You have selected the ${packageName} for $${price}. You will receive ${tokens} tokens!`);
-        // Here you would typically integrate with PayPal API for payment processing
+  <script>
+    let sequence = [];
+    let input = [];
+    let score = 0;
+    let timer = 30;
+    let timerInterval = null;
+    let solved = false;
+
+    const sequenceEl = document.getElementById('sequence');
+    const scoreEl = document.getElementById('score');
+    const timerEl = document.getElementById('timer');
+    const gridEl = document.getElementById('input-grid');
+
+    // Initialize buttons
+    for (let i = 1; i <= 9; i++) {
+      const btn = document.createElement('button');
+      btn.textContent = i;
+      btn.onclick = () => handleInput(i);
+      gridEl.appendChild(btn);
     }
-</script>
+
+    function generateSequence() {
+      return Array.from({ length: 4 }, () => Math.floor(Math.random() * 9) + 1);
+    }
+
+    function showSequence() {
+      sequenceEl.innerHTML = '';
+      sequence.forEach((num, index) => {
+        const div = document.createElement('div');
+        div.className = 'circle';
+        div.textContent = num;
+        sequenceEl.appendChild(div);
+        setTimeout(() => div.classList.add('pulse'), index * 300);
+      });
+    }
+
+    function resetGame() {
+      sequence = generateSequence();
+      input = [];
+      solved = false;
+      timer = 30;
+      scoreEl.textContent = score;
+      timerEl.textContent = timer;
+      showSequence();
+      clearInterval(timerInterval);
+      timerInterval = setInterval(() => {
+        if (timer > 0 && !solved) {
+          timer--;
+          timerEl.textContent = timer;
+        } else {
+          clearInterval(timerInterval);
+        }
+      }, 1000);
+    }
+
+    function handleInput(num) {
+      if (solved || timer === 0) return;
+      input.push(num);
+      if (input.length === sequence.length) {
+        const correct = input.every((val, i) => val === sequence[i]);
+        if (correct) {
+          score++;
+          solved = true;
+          setTimeout(resetGame, 1000);
+        } else {
+          input = [];
+        }
+      }
+    }
+
+    resetGame();
+  </script>
 
 </body>
 </html>
