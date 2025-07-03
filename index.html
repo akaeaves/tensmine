@@ -3,485 +3,365 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Stick Legends: Shadows of the Frame - Action Stickman Adventure Game</title>
-  <meta name="description" content="Play Stick Legends, an action-packed stickman adventure game with exciting combat and collectibles. Buy upgrades in our web store and become a legend!" />
-  <meta name="keywords" content="stickman game, action game, adventure game, web game, online stickman, upgrades" />
+  <title>Stick Legends - Fun Stickman Game</title>
+  <meta name="description" content="Play Stick Legends, an addicting stickman action game with upgrades and a crystal store! Optional in-game purchases via PayPal." />
+  <meta name="keywords" content="stickman game, online game, action game, upgrades, crystals, PayPal store" />
   <meta name="author" content="Jason" />
-  <meta property="og:title" content="Stick Legends: Shadows of the Frame" />
-  <meta property="og:description" content="Action stickman adventure game with web store and upgrades." />
-  <meta property="og:type" content="game" />
+  <meta property="og:title" content="Stick Legends - Fun Stickman Game" />
+  <meta property="og:description" content="Play Stick Legends, an addicting stickman action game with upgrades and a crystal store! Optional in-game purchases via PayPal." />
+  <meta property="og:type" content="website" />
   <meta property="og:url" content="https://yourgithubusername.github.io/yourrepo/" />
-  <!-- Replace the below with your own thumbnail image URL if you have one -->
-  <meta property="og:image" content="https://yourgithubusername.github.io/yourrepo/game-thumbnail.png" />
+  <meta property="og:image" content="https://via.placeholder.com/600x315.png?text=Stick+Legends+Game" />
   <style>
     body {
-      background: linear-gradient(135deg, #1a1a1a, #222);
-      color: #eee;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-height: 100vh;
-    }
-    header {
-      max-width: 640px;
-      padding: 20px;
-      text-align: center;
-    }
-    header h1 {
-      margin-bottom: 0.3em;
-      font-size: 2.5rem;
-      color: #00ffff;
-      text-shadow: 0 0 5px #00ffffaa;
-    }
-    header p {
-      font-size: 1.1rem;
-      line-height: 1.4;
-      color: #ccc;
-    }
-    #game-container {
-      position: relative;
-      width: 640px;
-      height: 480px;
-      border: 2px solid #00ffff;
-      box-shadow: 0 0 20px #00ffffaa;
-      margin-bottom: 10px;
-    }
-    canvas {
-      display: block;
-      background: #111;
-    }
-    #hud {
-      max-width: 640px;
-      margin: 5px auto;
-      font-size: 1rem;
-      color: #0ff;
+      margin: 0; padding: 0; background: #121212; color: #eee; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       user-select: none;
+    }
+    #gameCanvas {
+      display: block;
+      margin: 20px auto;
+      background: linear-gradient(to bottom, #87ceeb 0%, #e0f7fa 100%);
+      border: 2px solid #333;
+      border-radius: 8px;
     }
     #store {
-      max-width: 640px;
-      margin: 15px auto;
-      background: #111;
-      border: 1px solid #00ffff;
+      max-width: 400px;
+      margin: 10px auto;
+      background: #222;
+      border-radius: 8px;
       padding: 10px;
-      border-radius: 5px;
-      color: #0ff;
-    }
-    #store h2 {
-      margin-top: 0;
-      color: #00ffff;
-      text-shadow: 0 0 5px #00ffffaa;
-    }
-    #store button {
-      background: #00cccc;
-      border: none;
-      color: #111;
-      font-weight: bold;
-      padding: 5px 10px;
-      margin-left: 10px;
-      cursor: pointer;
-      border-radius: 3px;
-      transition: background 0.3s ease;
-    }
-    #store button:hover:not(:disabled) {
-      background: #00ffff;
-    }
-    #store button:disabled {
-      background: #005555;
-      cursor: default;
-    }
-    footer {
-      max-width: 640px;
-      font-size: 0.8rem;
-      color: #444;
-      user-select: none;
-      margin: 20px auto 30px;
       text-align: center;
     }
-    footer a {
-      color: #00ffffcc;
-      text-decoration: none;
-      margin: 0 10px;
+    #store h2 {
+      margin: 0 0 10px 0;
     }
-    footer a:hover {
-      text-decoration: underline;
+    #store button {
+      background: #0a74da;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      margin: 5px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
     }
-    /* Modal styles */
-    .modal {
-      display: none;
-      position: fixed;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
+    #store button:disabled {
+      background: #555;
+      cursor: default;
+    }
+    #hud {
+      max-width: 400px;
+      margin: 0 auto 10px auto;
+      padding: 10px;
       background: #222;
-      border-top: 2px solid #00ffff;
+      border-radius: 8px;
+      text-align: center;
+      font-size: 1.1em;
+    }
+    /* Modals */
+    .modal {
+      position: fixed;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      background: #222;
       padding: 20px;
-      max-width: 90vw;
-      max-height: 50vh;
-      overflow-y: auto;
-      color: #ccc;
+      border-radius: 8px;
+      max-width: 400px;
+      width: 90%;
+      display: none;
       z-index: 1000;
-      box-shadow: 0 -2px 10px #00ffff88;
+      color: #eee;
+      box-shadow: 0 0 15px #000;
     }
     .modal.active {
       display: block;
     }
-    .modal-close {
-      display: block;
-      text-align: right;
-      margin-bottom: 10px;
-      cursor: pointer;
-      color: #00ffffcc;
+    .modal header {
       font-weight: bold;
-      font-size: 1.1rem;
+      margin-bottom: 10px;
+      font-size: 1.3em;
     }
-    /* Responsive */
-    @media (max-width: 700px) {
-      #game-container {
-        width: 90vw;
-        height: calc(90vw * 0.75);
-      }
-      canvas {
-        width: 100% !important;
-        height: 100% !important;
-      }
-      #hud, #store, footer, header {
-        max-width: 90vw;
-        margin: auto;
-      }
+    .modal button.close {
+      background: #0a74da;
+      border: none;
+      color: white;
+      padding: 5px 10px;
+      float: right;
+      cursor: pointer;
+      border-radius: 4px;
+    }
+    footer {
+      text-align: center;
+      padding: 10px;
+      background: #111;
+      color: #777;
+      font-size: 0.9em;
+      position: fixed;
+      width: 100%;
+      bottom: 0;
+      left: 0;
+    }
+    footer a {
+      color: #0a74da;
+      margin: 0 8px;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    footer a:hover {
+      text-decoration: underline;
+    }
+    /* Social Share Buttons */
+    #social-share {
+      max-width: 400px;
+      margin: 20px auto;
+      text-align: center;
+    }
+    #social-share button {
+      background: #0a74da;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      margin: 0 5px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 0.95em;
+      user-select: none;
+      transition: background 0.3s ease;
+    }
+    #social-share button:hover {
+      background: #065aab;
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Stick Legends: Shadows of the Frame</h1>
-    <p>Welcome to Stick Legends! An action-packed stickman adventure game where you battle enemies, collect coins, and unlock powerful upgrades through our web store. Move with arrow keys or WASD, jump with space, and attack with J.</p>
-  </header>
-
-  <div id="game-container">
-    <canvas id="game" width="640" height="480" aria-label="Stick Legends game canvas"></canvas>
-  </div>
+  <h1 style="text-align:center; margin-top: 15px;">Stick Legends</h1>
 
   <div id="hud">
-    Score: <span id="score">0</span> | Coins: <span id="coins">0</span> | Crystals: <span id="crystals">0</span>
+    Crystals: <span id="crystalCount">0</span> |
+    Health: <span id="healthCount">100</span>
   </div>
 
-  <section id="store">
-    <h2>Upgrade Store</h2>
-    <p>Buy optional upgrades with PayPal. Items are purely optional and don't block gameplay.</p>
-    <button data-id="doubleJump">Double Jump (100 crystals)</button>
-    <button data-id="flameSword">Flame Sword (300 crystals)</button>
-    <button data-id="redBandana">Red Bandana (150 crystals)</button>
-  </section>
+  <canvas id="gameCanvas" width="600" height="400" tabindex="0" aria-label="Stick Legends game canvas"></canvas>
 
+  <div id="store">
+    <h2>Store (Use Crystals to Buy Upgrades)</h2>
+    <button data-id="doubleJump">Double Jump (300 Crystals)</button>
+    <button data-id="flameSword">Flame Sword (600 Crystals)</button>
+    <button data-id="redBandana">Red Bandana (400 Crystals)</button>
+  </div>
+
+  <!-- Social Share Buttons -->
+  <div id="social-share">
+    <span>Share this game: </span>
+    <button id="share-twitter" aria-label="Share on Twitter">🐦 Twitter</button>
+    <button id="share-facebook" aria-label="Share on Facebook">📘 Facebook</button>
+    <button id="share-linkedin" aria-label="Share on LinkedIn">🔗 LinkedIn</button>
+  </div>
+
+  <!-- Modals -->
   <footer>
-    <a href="#" id="termsLink">Terms of Service</a> | 
-    <a href="#" id="privacyLink">Privacy Policy</a>
+    <a href="#" id="termsLink">Terms</a> | <a href="#" id="privacyLink">Privacy</a> | &copy; 2025 Stick Legends
   </footer>
 
-  <div id="termsModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="termsTitle" tabindex="-1">
-    <div class="modal-close" tabindex="0" id="termsClose" aria-label="Close Terms of Service modal">×</div>
-    <h2 id="termsTitle">Terms of Service</h2>
-    <p>Use this game responsibly. All purchases go through PayPal and are non-refundable.</p>
+  <div id="termsModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="termsHeader" tabindex="-1">
+    <button class="close" id="termsClose" aria-label="Close Terms">&times;</button>
+    <header id="termsHeader">Terms and Conditions</header>
+    <p>This is a demo game. All game content is original and not copyrighted. Payments are made via PayPal to akaeaves@yahoo.com for optional upgrades.</p>
   </div>
 
-  <div id="privacyModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="privacyTitle" tabindex="-1">
-    <div class="modal-close" tabindex="0" id="privacyClose" aria-label="Close Privacy Policy modal">×</div>
-    <h2 id="privacyTitle">Privacy Policy</h2>
-    <p>This site does not store personal information except what PayPal processes. Your data is safe.</p>
+  <div id="privacyModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="privacyHeader" tabindex="-1">
+    <button class="close" id="privacyClose" aria-label="Close Privacy">&times;</button>
+    <header id="privacyHeader">Privacy Policy</header>
+    <p>No personal data is collected by this game. Payment processing is handled by PayPal and is subject to their privacy policies.</p>
   </div>
 
   <script>
-  (function() {
-    const canvas = document.getElementById('game');
+  (function(){
+    const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
-
     const WIDTH = canvas.width;
     const HEIGHT = canvas.height;
     const FLOOR_Y = HEIGHT - 50;
-    const GRAVITY = 0.6;
 
-    // Player state
-    let player = {
-      x: 50,
-      y: FLOOR_Y - 40,
+    // Player object
+    const player = {
+      x: 100,
+      y: FLOOR_Y,
       width: 20,
       height: 40,
-      vx: 0,
-      vy: 0,
-      speed: 4,
+      velocityX: 0,
+      velocityY: 0,
+      speed: 3,
+      jumpStrength: 10,
+      gravity: 0.5,
+      onGround: true,
       health: 100,
       maxHealth: 100,
+      crystals: 0,
       facingRight: true,
-      jumping: false,
-      doubleJumpUsed: false,
-      hasDoubleJump: false,
-      hasFlameSword: false,
-      wearingRedBandana: false,
       attacking: false,
-      attackCooldown: 0,
-      coins: 0,
-      score: 0,
-      crystals: 0
+      hasDoubleJump: false,
+      canDoubleJump: false,
+      hasFlameSword: false,
+      wearingRedBandana: false
     };
 
     // Enemy object
-    let enemy = {
-      x: 400,
-      y: FLOOR_Y - 40,
+    const enemy = {
+      x: 450,
+      y: FLOOR_Y,
       width: 20,
       height: 40,
+      health: 50,
+      maxHealth: 50,
       speed: 2,
-      direction: 1,
-      alive: true,
-      health: 60,
-      maxHealth: 60,
-      hit(dmg) {
-        this.health -= dmg;
-        if(this.health <= 0){
-          this.alive = false;
-          player.score += 50;
-          player.crystals += 20;
-        }
-      },
-      update() {
-        if(!this.alive) return;
-        this.x += this.speed * this.direction;
-        if(this.x < 300 || this.x > 580) this.direction *= -1;
-      },
+      direction: -1,
       draw() {
-        if(!this.alive) return;
-        ctx.strokeStyle = 'red';
-        ctx.lineWidth = 3;
-        ctx.beginPath();
-        ctx.arc(this.x + this.width/2, this.y + this.height/2 - 10, 18, 0, Math.PI * 2);
-        ctx.moveTo(this.x + this.width/2, this.y + this.height/2 - 10);
-        ctx.lineTo(this.x + this.width/2, this.y + this.height - 10);
-        ctx.moveTo(this.x + this.width/2, this.y + this.height - 10);
-        ctx.lineTo(this.x + this.width/2 + 15 * this.direction, this.y + this.height);
-        ctx.stroke();
+        ctx.fillStyle = 'red';
+        ctx.fillRect(this.x, this.y - this.height, this.width, this.height);
+        // Health bar
+        ctx.fillStyle = 'black';
+        ctx.fillRect(this.x, this.y - this.height - 10, this.width, 5);
+        ctx.fillStyle = 'lime';
+        ctx.fillRect(this.x, this.y - this.height - 10, (this.health / this.maxHealth) * this.width, 5);
       }
     };
 
     // Coins
-    let coins = [
-      {x: 200, y: FLOOR_Y - 20, radius: 8, collected: false},
-      {x: 250, y: FLOOR_Y - 20, radius: 8, collected: false},
-      {x: 310, y: FLOOR_Y - 20, radius: 8, collected: false},
-      {x: 350, y: FLOOR_Y - 20, radius: 8, collected: false},
-      {x: 450, y: FLOOR_Y - 20, radius: 8, collected: false}
-    ];
+    let coins = [];
+    function Coin(x,y){
+      this.x = x;
+      this.y = y;
+      this.radius = 6;
+      this.collected = false;
+      this.draw = function(){
+        if(!this.collected){
+          ctx.fillStyle = 'yellow';
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.strokeStyle = '#cc0';
+          ctx.stroke();
+        }
+      };
+      this.update = function(){
+        // Coin pulse animation
+      };
+    }
 
-    // Store purchased items in localStorage
-    let storeItems = {
-      doubleJump: false,
-      flameSword: false,
-      redBandana: false
-    };
-
-    // Load store purchases from localStorage
-    function loadStore(){
-      const saved = localStorage.getItem('stickLegendsStore');
-      if(saved){
-        try {
-          storeItems = JSON.parse(saved);
-          applyStoreEffects();
-          updateStoreButtons();
-        } catch(e){}
+    // Generate coins
+    function generateCoins(){
+      coins = [];
+      for(let i=0; i<10; i++){
+        coins.push(new Coin(80 + i*50, FLOOR_Y - 20));
       }
     }
-    // Save store purchases
-    function saveStore(){
-      localStorage.setItem('stickLegendsStore', JSON.stringify(storeItems));
-    }
+    generateCoins();
 
-    // Apply upgrades
-    function applyStoreEffects(){
-      player.hasDoubleJump = storeItems.doubleJump;
-      player.hasFlameSword = storeItems.flameSword;
-      player.wearingRedBandana = storeItems.redBandana;
-    }
-
-    // Update store button states
-    function updateStoreButtons(){
-      document.querySelectorAll('#store button').forEach(button => {
-        const id = button.getAttribute('data-id');
-        if(storeItems[id]){
-          button.textContent = `${button.textContent.split('(')[0].trim()} (Owned)`;
-          button.disabled = true;
-        }
-      });
-    }
-
-    // Update HUD display
-    function updateHUD(){
-      document.getElementById('score').textContent = player.score;
-      document.getElementById('coins').textContent = player.coins;
-      document.getElementById('crystals').textContent = player.crystals;
-    }
-
-    // Coin animation & drawing
-    coins.forEach(coin => {
-      coin.update = function() {
-        // simple float effect
-        this.floatOffset = (this.floatOffset || 0) + 0.05;
-      };
-      coin.draw = function() {
-        if(this.collected) return;
-        ctx.fillStyle = '#0ff';
-        ctx.beginPath();
-        ctx.arc(this.x, this.y + Math.sin(this.floatOffset) * 5, this.radius, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.strokeStyle = '#00ffffcc';
-        ctx.stroke();
-      };
-    });
-
-    // Keyboard input
-    let keys = {};
+    // Controls
+    const keys = {};
     window.addEventListener('keydown', e => {
-      if(e.repeat) return;
       keys[e.key.toLowerCase()] = true;
+      if(e.key === ' ' || e.key === 'Spacebar') e.preventDefault(); // prevent page scroll
     });
     window.addEventListener('keyup', e => {
       keys[e.key.toLowerCase()] = false;
     });
 
-    // Attack collision detection helper
-    function rectsOverlap(r1, r2) {
-      return !(r2.x > r1.x + r1.width ||
-               r2.x + r2.width < r1.x ||
-               r2.y > r1.y + r1.height ||
-               r2.y + r2.height < r1.y);
-    }
-
-    // Attack enemy if in range
-    function attackHitEnemy() {
-      const range = 25;
-      let attackBox = {
-        x: player.facingRight ? player.x + player.width : player.x - range,
-        y: player.y,
-        width: range,
-        height: player.height,
-      };
-      let enemyBox = { x: enemy.x - 10, y: enemy.y - 30, width: 20, height: 40 };
-
-      if (enemy.alive && rectsOverlap(attackBox, enemyBox)) {
-        let damage = player.hasFlameSword ? 20 : 10;
-        enemy.hit(damage);
-      }
-    }
-
-    // Update game logic
-    function update() {
-      // Movement
-      if (keys['arrowleft'] || keys['a']) {
-        player.vx = -player.speed;
+    // Update function
+    function update(){
+      // Move left/right
+      if(keys['arrowleft'] || keys['a']){
+        player.velocityX = -player.speed;
         player.facingRight = false;
-      } else if (keys['arrowright'] || keys['d']) {
-        player.vx = player.speed;
+      } else if(keys['arrowright'] || keys['d']){
+        player.velocityX = player.speed;
         player.facingRight = true;
       } else {
-        player.vx = 0;
+        player.velocityX = 0;
       }
 
       // Jump
-      if (keys['arrowup'] || keys['w'] || keys[' ']) {
-        if (!player.jumping) {
-          player.vy = -12;
-          player.jumping = true;
-          player.doubleJumpUsed = false;
-        } else if (player.hasDoubleJump && !player.doubleJumpUsed) {
-          player.vy = -12;
-          player.doubleJumpUsed = true;
-        }
+      if((keys['arrowup'] || keys['w'] || keys[' ']) && player.onGround){
+        player.velocityY = -player.jumpStrength;
+        player.onGround = false;
+        player.canDoubleJump = player.hasDoubleJump;
+      } else if((keys['arrowup'] || keys['w'] || keys[' ']) && player.canDoubleJump){
+        player.velocityY = -player.jumpStrength;
+        player.canDoubleJump = false;
       }
 
-      // Gravity
-      player.vy += GRAVITY;
-
-      // Position update
-      player.x += player.vx;
-      player.y += player.vy;
-
-      // Floor collision
-      if (player.y > FLOOR_Y - player.height) {
-        player.y = FLOOR_Y - player.height;
-        player.vy = 0;
-        player.jumping = false;
-        player.doubleJumpUsed = false;
-      }
-
-      // Boundary checks
-      if (player.x < 0) player.x = 0;
-      if (player.x + player.width > WIDTH) player.x = WIDTH - player.width;
-
-      // Enemy update
-      enemy.update();
-
-      // Enemy damages player if close
-      if (enemy.alive) {
-        const playerBox = {x: player.x, y: player.y, width: player.width, height: player.height};
-        const enemyBox = {x: enemy.x - 10, y: enemy.y - 30, width: 20, height: 40};
-        if (rectsOverlap(playerBox, enemyBox)) {
-          player.health -= 0.5;
-          if (player.health < 0) player.health = 0;
-        }
-      }
-
-      // Attack cooldown
-      if (player.attackCooldown > 0) {
-        player.attackCooldown--;
-      }
-
-      // Attack input
-      if (keys['j'] && player.attackCooldown === 0) {
+      // Attack on pressing 'f'
+      if(keys['f']){
         player.attacking = true;
-        player.attackCooldown = 30;
-        attackHitEnemy();
       } else {
         player.attacking = false;
       }
 
+      // Gravity
+      player.velocityY += player.gravity;
+      player.x += player.velocityX;
+      player.y += player.velocityY;
+
+      // Floor collision
+      if(player.y >= FLOOR_Y){
+        player.y = FLOOR_Y;
+        player.velocityY = 0;
+        player.onGround = true;
+      }
+
+      // Keep player in bounds horizontally
+      if(player.x < 0) player.x = 0;
+      if(player.x > WIDTH - player.width) player.x = WIDTH - player.width;
+
+      // Enemy movement (simple back and forth)
+      enemy.x += enemy.speed * enemy.direction;
+      if(enemy.x <= 400) enemy.direction = 1;
+      if(enemy.x >= WIDTH - enemy.width) enemy.direction = -1;
+
+      // Collision with enemy when attacking
+      if(player.attacking && Math.abs(player.x - enemy.x) < 30 && player.y === FLOOR_Y && enemy.health > 0){
+        enemy.health -= player.hasFlameSword ? 2 : 1;
+        if(enemy.health < 0) enemy.health = 0;
+      }
+
+      // Collision with enemy hurts player
+      if(!player.attacking && Math.abs(player.x - enemy.x) < 30 && player.y === FLOOR_Y && enemy.health > 0){
+        player.health -= 0.2;
+        if(player.health < 0) player.health = 0;
+      }
+
       // Collect coins
       coins.forEach(coin => {
-        if (!coin.collected) {
-          let coinBox = {x: coin.x - coin.radius, y: coin.y - coin.radius, width: coin.radius * 2, height: coin.radius * 2};
-          let playerBox = {x: player.x, y: player.y, width: player.width, height: player.height};
-          if (rectsOverlap(playerBox, coinBox)) {
-            coin.collected = true;
-            player.coins++;
-            player.score += 5;
-            player.crystals += 10; // reward crystals too
-          }
+        if(!coin.collected && Math.abs(player.x + player.width/2 - coin.x) < 15 && Math.abs(player.y - coin.y) < 30){
+          coin.collected = true;
+          player.crystals += 50;
+          updateHUD();
         }
       });
 
-      updateHUD();
+      // Remove collected coins and regenerate periodically
+      if(coins.every(c => c.collected)){
+        generateCoins();
+      }
     }
 
     // Draw stick figure player
     function drawStickFigure(x, y, options = {}) {
-      const facingRight = options.facingRight ?? true;
-      const attacking = options.attack ?? false;
-      const redBandana = options.redBandana ?? false;
-
-      ctx.strokeStyle = 'white';
-      ctx.lineWidth = 3;
-
+      const { facingRight = true, attack = false, redBandana = false } = options;
+      ctx.strokeStyle = '#000';
+      ctx.lineWidth = 2;
       ctx.beginPath();
-
       // Head
-      ctx.arc(x + 10, y - 35, 8, 0, Math.PI * 2);
-
+      ctx.arc(x + 10, y - 35, 10, 0, Math.PI * 2);
       // Body
-      ctx.moveTo(x + 10, y - 27);
+      ctx.moveTo(x + 10, y - 25);
       ctx.lineTo(x + 10, y - 10);
 
       // Arms
-      if (attacking) {
+      if (attack) {
         ctx.moveTo(x + 10, y - 25);
         ctx.lineTo(x + (facingRight ? 30 : -10), y - 15);
       } else {
@@ -544,6 +424,48 @@
       ctx.strokeRect(x, y, barWidth, barHeight);
     }
 
+    // Update HUD
+    function updateHUD() {
+      document.getElementById('crystalCount').textContent = player.crystals;
+      document.getElementById('healthCount').textContent = Math.floor(player.health);
+    }
+
+    // Store Items owned
+    let storeItems = {};
+
+    // Save store state in localStorage
+    function saveStore() {
+      localStorage.setItem('stickLegendsStore', JSON.stringify(storeItems));
+    }
+
+    // Load store state
+    function loadStore() {
+      const saved = localStorage.getItem('stickLegendsStore');
+      if(saved){
+        storeItems = JSON.parse(saved);
+        applyStoreEffects();
+        updateStoreButtons();
+      }
+    }
+
+    // Apply store effects
+    function applyStoreEffects(){
+      player.hasDoubleJump = !!storeItems.doubleJump;
+      player.hasFlameSword = !!storeItems.flameSword;
+      player.wearingRedBandana = !!storeItems.redBandana;
+    }
+
+    // Update store buttons disabled state
+    function updateStoreButtons(){
+      document.querySelectorAll('#store button').forEach(button => {
+        const id = button.getAttribute('data-id');
+        if(storeItems[id]){
+          button.disabled = true;
+          button.textContent = `${button.textContent.split('(')[0].trim()} (Owned)`;
+        }
+      });
+    }
+
     // Main render loop
     function render() {
       ctx.clearRect(0, 0, WIDTH, HEIGHT);
@@ -601,42 +523,52 @@
       });
     });
 
-    // Modals
-    const termsLink = document.getElementById('termsLink');
-    const privacyLink = document.getElementById('privacyLink');
+    // Modal handling
     const termsModal = document.getElementById('termsModal');
     const privacyModal = document.getElementById('privacyModal');
-    const termsClose = document.getElementById('termsClose');
-    const privacyClose = document.getElementById('privacyClose');
-
-    function closeModal(modal) {
-      modal.classList.remove('active');
-    }
-    function openModal(modal) {
-      modal.classList.add('active');
-      modal.focus();
-    }
-    termsLink.addEventListener('click', e => {
+    document.getElementById('termsLink').addEventListener('click', e => {
       e.preventDefault();
-      openModal(termsModal);
+      termsModal.classList.add('active');
+      termsModal.focus();
     });
-    privacyLink.addEventListener('click', e => {
+    document.getElementById('privacyLink').addEventListener('click', e => {
       e.preventDefault();
-      openModal(privacyModal);
+      privacyModal.classList.add('active');
+      privacyModal.focus();
     });
-    termsClose.addEventListener('click', () => closeModal(termsModal));
-    privacyClose.addEventListener('click', () => closeModal(privacyModal));
-    // Close modals on Escape key
-    window.addEventListener('keydown', e => {
-      if(e.key === 'Escape'){
-        closeModal(termsModal);
-        closeModal(privacyModal);
-      }
+    document.getElementById('termsClose').addEventListener('click', () => {
+      termsModal.classList.remove('active');
+    });
+    document.getElementById('privacyClose').addEventListener('click', () => {
+      privacyModal.classList.remove('active');
     });
 
-    // Initialization
+    // Initialize HUD and store
+    updateHUD();
     loadStore();
+
+    // Start game loop
     loop();
+
+    // Social share button logic
+    const pageUrl = encodeURIComponent(window.location.href);
+    const pageTitle = encodeURIComponent("Stick Legends - Fun Stickman Game");
+
+    document.getElementById('share-twitter').addEventListener('click', () => {
+      const twitterUrl = `https://twitter.com/intent/tweet?url=${pageUrl}&text=${pageTitle}`;
+      window.open(twitterUrl, '_blank', 'width=600,height=400');
+    });
+
+    document.getElementById('share-facebook').addEventListener('click', () => {
+      const facebookUrl = `https://www.facebook.com/sharer/sharer.php?u=${pageUrl}`;
+      window.open(facebookUrl, '_blank', 'width=600,height=400');
+    });
+
+    document.getElementById('share-linkedin').addEventListener('click', () => {
+      const linkedinUrl = `https://www.linkedin.com/sharing/share-offsite/?url=${pageUrl}`;
+      window.open(linkedinUrl, '_blank', 'width=600,height=400');
+    });
+
   })();
   </script>
 </body>
