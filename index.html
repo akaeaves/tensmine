@@ -2,15 +2,94 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Tens Mine</title>
   <style>
-    body { font-family: Arial, sans-serif; text-align: center; background: #111; color: #fff; }
-    .grid { display: grid; grid-template-columns: repeat(5, 60px); gap: 10px; justify-content: center; margin-top: 20px; }
-    .square { width: 60px; height: 60px; background: #444; border: 2px solid #222; font-size: 24px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
-    .dashboard { margin-top: 30px; background: #222; padding: 10px; border-radius: 8px; width: 300px; margin-left: auto; margin-right: auto; }
-    .hidden { display: none; }
-    .cashout { margin-top: 10px; background: green; color: white; padding: 8px; border: none; cursor: pointer; border-radius: 4px; }
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1350&q=80') no-repeat center center fixed;
+      background-size: cover;
+      color: #e0f7e9;
+      margin: 0;
+      padding: 20px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+    }
+    h1 {
+      text-shadow: 2px 2px 6px #0a3d0a;
+      margin-bottom: 10px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(5, 60px);
+      gap: 10px;
+      justify-content: center;
+      margin-top: 20px;
+    }
+    .square {
+      width: 60px;
+      height: 60px;
+      background: rgba(34, 77, 34, 0.85);
+      border: 2px solid #0b3d0b;
+      font-size: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: #c6f7c6;
+      user-select: none;
+      transition: background-color 0.3s ease;
+    }
+    .square:hover {
+      background: rgba(55, 110, 55, 0.95);
+    }
+    .dashboard {
+      margin-top: 30px;
+      background: rgba(0, 50, 0, 0.8);
+      padding: 10px;
+      border-radius: 8px;
+      width: 300px;
+      margin-left: auto;
+      margin-right: auto;
+      box-shadow: 0 0 10px #003300;
+    }
+    .hidden {
+      display: none;
+    }
+    .cashout {
+      margin-top: 10px;
+      background: #2a8f2a;
+      color: white;
+      padding: 8px 16px;
+      border: none;
+      cursor: pointer;
+      border-radius: 4px;
+      font-weight: bold;
+      box-shadow: 0 0 6px #1a5d1a;
+      transition: background-color 0.3s ease;
+    }
+    .cashout:hover {
+      background: #3cb33c;
+    }
+    select, button {
+      font-size: 16px;
+      margin: 8px 5px;
+      padding: 6px 10px;
+      border-radius: 6px;
+      border: 1px solid #2c7c2c;
+      background: #2f8f2f;
+      color: #e0f7e9;
+      cursor: pointer;
+      box-shadow: 0 0 6px #1a5d1a;
+      transition: background-color 0.3s ease;
+    }
+    select:hover, button:hover {
+      background: #3cb33c;
+    }
   </style>
 </head>
 <body>
@@ -55,9 +134,9 @@
       const pkg = document.getElementById("package").value;
       player.currentPackage = pkg;
       player.tokensFound = 0;
+      tokenDiv.textContent = `Tokens This Round: 0`;
 
       // Generate grid
-      const squares = [];
       const tokenCount = 5;
       const bombCount = 5;
       const tokenIndices = new Set();
@@ -80,6 +159,9 @@
         if (tokenIndices.has(i)) sq.dataset.value = "token";
         else if (bombIndices.has(i)) sq.dataset.value = "bomb";
         else sq.dataset.value = "empty";
+
+        sq.textContent = "❓";
+        sq.style.color = "#c6f7c6";
 
         sq.onclick = () => handleClick(sq);
         gridElement.appendChild(sq);
