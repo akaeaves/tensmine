@@ -8,18 +8,14 @@
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: url('https://images.unsplash.com/photo-1557683316-973673baf926?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80') no-repeat center center fixed;
+      background: url('https://images.unsplash.com/photo-1508780709619-79562169bc64') no-repeat center center fixed;
       background-size: cover;
-      color: #fff;
+      color: white;
     }
     .container {
-      max-width: 1000px;
-      margin: 0 auto;
+      max-width: 800px;
+      margin: auto;
       padding: 20px;
-      background-color: rgba(0, 0, 0, 0.6);
-      border-radius: 10px;
-    }
-    h1, h2 {
       text-align: center;
     }
     .grid {
@@ -29,42 +25,43 @@
       margin-top: 20px;
     }
     .cell {
-      background-color: #2e7d32;
-      border: 2px solid #1b5e20;
+      background-color: rgba(0,0,0,0.7);
+      border: 2px solid white;
+      border-radius: 10px;
       padding: 20px;
-      text-align: center;
-      font-size: 1.5rem;
+      font-size: 24px;
       cursor: pointer;
-      user-select: none;
-      border-radius: 10px;
     }
-    .cell.revealed {
-      background-color: #4caf50;
-      cursor: default;
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 999;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.8);
     }
-    .package-select {
-      display: flex;
-      justify-content: space-around;
-      margin: 20px 0;
-      flex-wrap: wrap;
+    .modal-content {
+      background-color: #222;
+      margin: 15% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+      color: white;
     }
-    .package {
-      background: #388e3c;
-      border: 2px solid #1b5e20;
-      border-radius: 10px;
-      padding: 10px 20px;
-      margin: 10px;
-      cursor: pointer;
+    .modal-close {
+      color: white;
+      float: right;
+      font-size: 28px;
       font-weight: bold;
-    }
-    .footer-links {
-      text-align: center;
-      margin-top: 30px;
+      cursor: pointer;
     }
     .footer-links a {
-      color: #fff;
-      text-decoration: underline;
+      color: white;
       margin: 0 10px;
+      text-decoration: underline;
       cursor: pointer;
     }
     @media (max-width: 600px) {
@@ -72,7 +69,7 @@
         grid-template-columns: repeat(3, 1fr);
       }
       .cell {
-        font-size: 1rem;
+        font-size: 18px;
         padding: 15px;
       }
     }
@@ -81,115 +78,46 @@
 <body>
   <div class="container">
     <h1>Tens Mine</h1>
-    <div class="package-select">
-      <div class="package" onclick="selectPackage(0.5, 2)">Silver ($0.50)</div>
-      <div class="package" onclick="selectPackage(1.00, 4)">Gold ($1.00)</div>
-      <div class="package" onclick="selectPackage(2.00, 8)">Platinum ($2.00)</div>
-    </div>
-    <h2 id="status">Select a package to begin!</h2>
-    <div class="grid" id="gameGrid"></div>
+    <div class="grid" id="grid"></div>
+    <p id="status"></p>
     <div class="footer-links">
-      <a onclick="openModal('terms')">Terms of Service</a>
-      <a onclick="openModal('privacy')">Privacy Policy</a>
-      <a onclick="openModal('cashout')">Cashout Policy</a>
+      <a onclick="openModal('termsModal')">Terms of Service</a>
+      <a onclick="openModal('privacyModal')">Privacy Policy</a>
+      <a onclick="openModal('cashoutModal')">Cashout Policy</a>
     </div>
   </div>
 
-  <!-- Modals -->
-  <div id="modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); color:#fff; z-index:10; padding:20px; overflow:auto;">
-    <div style="max-width:800px; margin:0 auto; background:#222; padding:20px; border-radius:10px;">
-      <h2 id="modalTitle"></h2>
-      <div id="modalContent"></div>
-      <button onclick="closeModal()" style="margin-top:20px; padding:10px; background:#4caf50; border:none; color:#fff; border-radius:5px;">Close</button>
+  <div id="termsModal" class="modal">
+    <div class="modal-content">
+      <span class="modal-close" onclick="closeModal('termsModal')">&times;</span>
+      <h2>Terms of Service</h2>
+      <p>By using Tens Mine, you agree to abide by our rules and mechanics. Misuse or abuse of the system may lead to disqualification or account bans.</p>
+    </div>
+  </div>
+
+  <div id="privacyModal" class="modal">
+    <div class="modal-content">
+      <span class="modal-close" onclick="closeModal('privacyModal')">&times;</span>
+      <h2>Privacy Policy</h2>
+      <p>Your data is only used to enhance game functionality and is not shared with third parties without your consent.</p>
+    </div>
+  </div>
+
+  <div id="cashoutModal" class="modal">
+    <div class="modal-content">
+      <span class="modal-close" onclick="closeModal('cashoutModal')">&times;</span>
+      <h2>Cashout Policy</h2>
+      <p>You can request a cashout after finding two tokens in one game round. The reward is double the package price. Each cashout is subject to review.</p>
     </div>
   </div>
 
   <script>
-    let currentTokens = 0;
-    let requiredTokens = 0;
-    let playerPackage = 0;
-
-    function selectPackage(price, tokensToWin) {
-      playerPackage = price;
-      requiredTokens = tokensToWin;
-      currentTokens = 0;
-      document.getElementById("status").innerText = "Game Started! Find " + requiredTokens + " tokens to double your money.";
-      createBoard();
+    function openModal(id) {
+      document.getElementById(id).style.display = 'block';
     }
 
-    function createBoard() {
-      const grid = document.getElementById("gameGrid");
-      grid.innerHTML = "";
-
-      let cells = new Array(20).fill("empty");
-      let tokenCount = 0;
-      let bombCount = 0;
-
-      // 25% win chance: ~5 cells should have tokens
-      while (tokenCount < requiredTokens) {
-        let idx = Math.floor(Math.random() * 20);
-        if (cells[idx] === "empty") {
-          cells[idx] = "token";
-          tokenCount++;
-        }
-      }
-
-      while (bombCount < 3) {
-        let idx = Math.floor(Math.random() * 20);
-        if (cells[idx] === "empty") {
-          cells[idx] = "bomb";
-          bombCount++;
-        }
-      }
-
-      cells.forEach((type, idx) => {
-        const cell = document.createElement("div");
-        cell.classList.add("cell");
-        cell.onclick = () => reveal(cell, type);
-        grid.appendChild(cell);
-      });
-    }
-
-    function reveal(cell, type) {
-      if (cell.classList.contains("revealed")) return;
-      cell.classList.add("revealed");
-
-      if (type === "token") {
-        cell.innerText = "💰";
-        currentTokens++;
-        if (currentTokens >= requiredTokens) {
-          document.getElementById("status").innerText = `You found ${currentTokens} tokens! You doubled your money to $${(playerPackage * 2).toFixed(2)}!`;
-        }
-      } else if (type === "bomb") {
-        cell.innerText = "💣";
-        currentTokens = 0;
-        document.getElementById("status").innerText = "Boom! You hit a bomb. Game over.";
-      } else {
-        cell.innerText = "☠️";
-      }
-    }
-
-    function openModal(type) {
-      const modal = document.getElementById("modal");
-      const title = document.getElementById("modalTitle");
-      const content = document.getElementById("modalContent");
-
-      if (type === 'terms') {
-        title.innerText = "Terms of Service";
-        content.innerHTML = `<p>Players must be 18 or older. This game offers entertainment with the chance to earn rewards. All winnings are subject to verification. No guarantees of profit. Use at your own risk.</p>`;
-      } else if (type === 'privacy') {
-        title.innerText = "Privacy Policy";
-        content.innerHTML = `<p>We respect your privacy. We do not sell or share your data. Cookies may be used to store session state locally. No personal information is collected without your consent.</p>`;
-      } else if (type === 'cashout') {
-        title.innerText = "Cashout Policy";
-        content.innerHTML = `<p>Players who find at least 2 tokens in a round will double their purchase amount. Payouts are subject to verification and can be requested through the Cashout form (to be implemented).</p>`;
-      }
-
-      modal.style.display = "block";
-    }
-
-    function closeModal() {
-      document.getElementById("modal").style.display = "none";
+    function closeModal(id) {
+      document.getElementById(id).style.display = 'none';
     }
   </script>
 </body>
