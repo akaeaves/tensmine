@@ -2,277 +2,615 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Time Tunnels</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Stick Legends: Shadows of the Frame</title>
   <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(to bottom right, #111827, #000);
+    /* Reset and basic styling */
+    * {
+      box-sizing: border-box;
+      user-select: none;
+    }
+    body, html {
+      margin: 0; padding: 0;
+      height: 100%;
+      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
       color: white;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      overflow: hidden;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 20px;
-      min-height: 100vh;
     }
 
     h1 {
-      font-size: 2.5rem;
-      margin-bottom: 10px;
+      margin: 15px 0 5px;
+      font-weight: 700;
+      text-shadow: 0 0 6px #00ffffcc;
     }
 
-    .card {
-      background: #1f2937;
-      padding: 20px;
+    #gameContainer {
+      position: relative;
+      border: 3px solid #00ffffcc;
       border-radius: 12px;
-      box-shadow: 0 0 10px #000;
-      width: 100%;
-      max-width: 400px;
-      text-align: center;
-      margin-bottom: 20px;
+      background: #121212;
     }
 
-    .sequence {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      margin-bottom: 15px;
-    }
-
-    .circle {
-      background: #4f46e5;
-      border-radius: 50%;
-      width: 40px;
-      height: 40px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      animation: pulse 0.6s ease-in-out;
-    }
-
-    @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.2); }
-      100% { transform: scale(1); }
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      margin-bottom: 20px;
-    }
-
-    button {
-      padding: 12px;
-      font-size: 1rem;
-      background: #2563eb;
-      color: white;
-      border: none;
+    canvas {
+      display: block;
+      background: #0a0a0a;
       border-radius: 8px;
+    }
+
+    #hud {
+      margin-top: 8px;
+      width: 640px;
+      display: flex;
+      justify-content: space-between;
+      font-weight: bold;
+      font-size: 1.1rem;
+      user-select: none;
+      text-shadow: 0 0 4px #00ffffcc;
+    }
+
+    #store {
+      margin-top: 15px;
+      max-width: 640px;
+      background: #222;
+      border-radius: 10px;
+      padding: 15px;
+      box-shadow: 0 0 10px #00ffffcc;
+      font-size: 1rem;
+    }
+
+    #store h2 {
+      margin-top: 0;
+      color: #00ffffcc;
+      text-align: center;
+      font-weight: 700;
+      text-shadow: 0 0 6px #00ffffcc;
+    }
+
+    .store-item {
+      margin: 10px 0;
+      padding: 10px;
+      background: #111;
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 0 4px #00ffffaa;
+    }
+
+    .store-item > .info {
+      max-width: 300px;
+      line-height: 1.3;
+      user-select: text;
+    }
+
+    button.buy-btn {
+      background: #00ffffcc;
+      color: #000;
+      border: none;
+      border-radius: 6px;
+      font-weight: 700;
+      padding: 8px 14px;
       cursor: pointer;
+      transition: background 0.3s ease;
+      user-select: none;
     }
 
-    button:hover {
-      background: #3b82f6;
+    button.buy-btn:hover {
+      background: #00cccc;
     }
 
-    .footer {
+    #modals {
       font-size: 0.8rem;
-      color: #aaa;
-      margin-top: 30px;
+      color: #888;
+      margin: 20px 0 30px;
+      user-select: none;
+      max-width: 640px;
       text-align: center;
     }
 
-    .footer a {
-      color: #60a5fa;
+    #modals a {
+      color: #00ffffcc;
       text-decoration: none;
-      margin: 0 5px;
+      margin: 0 10px;
     }
 
-    .store {
-      margin-top: 20px;
-      background: #111;
-      padding: 15px;
-      border-radius: 10px;
-      max-width: 400px;
-      width: 100%;
+    #modals a:hover {
+      text-decoration: underline;
     }
 
-    .paypal-btns {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-top: 10px;
-    }
-
-    .info {
-      font-size: 0.9rem;
-      margin-bottom: 5px;
-      color: #ccc;
-    }
   </style>
 </head>
 <body>
 
-  <h1>Time Tunnels</h1>
+  <h1>Stick Legends: Shadows of the Frame</h1>
 
-  <div class="card">
-    <p>Memorize the sequence and repeat it.</p>
-    <p>Score: <span id="score">0</span></p>
-    <p>Time left: <span id="timer">30</span>s</p>
-    <p>💎 Crystals: <span id="crystals">0</span></p>
-
-    <div class="sequence" id="sequence"></div>
-
-    <div class="grid" id="input-grid"></div>
-
-    <button onclick="useCrystal()">💠 Slow Time (1 Crystal)</button>
-  </div>
-
-  <div class="store">
-    <h3>💎 Buy Time Crystals</h3>
-    <p class="info">Crystals are optional. Your balance is stored in your browser.</p>
-    <div class="paypal-btns">
-      <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
-        <input type="hidden" name="cmd" value="_xclick">
-        <input type="hidden" name="business" value="akaeaves@yahoo.com">
-        <input type="hidden" name="item_name" value="1 Time Crystal">
-        <input type="hidden" name="amount" value="1.00">
-        <input type="hidden" name="currency_code" value="USD">
-        <input type="submit" value="Buy 1 Crystal - $1.00">
-      </form>
-      <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
-        <input type="hidden" name="cmd" value="_xclick">
-        <input type="hidden" name="business" value="akaeaves@yahoo.com">
-        <input type="hidden" name="item_name" value="5 Time Crystals">
-        <input type="hidden" name="amount" value="4.00">
-        <input type="hidden" name="currency_code" value="USD">
-        <input type="submit" value="Buy 5 Crystals - $4.00">
-      </form>
-      <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
-        <input type="hidden" name="cmd" value="_xclick">
-        <input type="hidden" name="business" value="akaeaves@yahoo.com">
-        <input type="hidden" name="item_name" value="10 Time Crystals">
-        <input type="hidden" name="amount" value="7.00">
-        <input type="hidden" name="currency_code" value="USD">
-        <input type="submit" value="Buy 10 Crystals - $7.00">
-      </form>
+  <div id="gameContainer">
+    <canvas id="gameCanvas" width="640" height="360"></canvas>
+    <div id="hud">
+      <div>Health: <span id="healthDisplay">100</span></div>
+      <div>Score: <span id="scoreDisplay">0</span></div>
+      <div>Coins: <span id="coinsDisplay">0</span></div>
     </div>
   </div>
 
-  <div class="footer">
-    <p>
-      <a href="#terms">Terms</a> • 
-      <a href="#privacy">Privacy</a> • 
-      <a href="mailto:akaeaves@yahoo.com">Contact</a>
-    </p>
+  <div id="store">
+    <h2>🛒 Game Store - Buy Cool Upgrades</h2>
+
+    <div class="store-item" data-id="redBandana" data-price="1.00">
+      <div class="info">
+        <b>Red Bandana</b> <br />
+        Cosmetic: Your stick figure wears a red headband.
+      </div>
+      <button class="buy-btn">Buy $1.00</button>
+    </div>
+
+    <div class="store-item" data-id="flameSword" data-price="3.00">
+      <div class="info">
+        <b>Flame Sword</b> <br />
+        Power-up: Your attack does double damage.
+      </div>
+      <button class="buy-btn">Buy $3.00</button>
+    </div>
+
+    <div class="store-item" data-id="doubleJumpBoots" data-price="5.00">
+      <div class="info">
+        <b>Double Jump Boots</b> <br />
+        Power-up: Allows you to double jump.
+      </div>
+      <button class="buy-btn">Buy $5.00</button>
+    </div>
+
+  </div>
+
+  <div id="modals">
+    <a href="#terms" onclick="alert('Terms of service: This is a demo game. No liability.');return false;">Terms</a> •
+    <a href="#privacy" onclick="alert('Privacy policy: No data is collected except local game progress.');return false;">Privacy</a> •
+    <a href="mailto:akaeaves@yahoo.com">Contact</a>
   </div>
 
   <script>
-    let sequence = [];
-    let input = [];
-    let score = 0;
-    let timer = 30;
-    let timerInterval = null;
-    let solved = false;
-    let usedCrystal = false;
+    (() => {
+      // Canvas Setup
+      const canvas = document.getElementById('gameCanvas');
+      const ctx = canvas.getContext('2d');
 
-    const sequenceEl = document.getElementById('sequence');
-    const scoreEl = document.getElementById('score');
-    const timerEl = document.getElementById('timer');
-    const gridEl = document.getElementById('input-grid');
-    const crystalsEl = document.getElementById('crystals');
+      const WIDTH = canvas.width;
+      const HEIGHT = canvas.height;
 
-    function getCrystals() {
-      return parseInt(localStorage.getItem('crystals') || '0');
-    }
+      // Game variables
+      const GRAVITY = 0.6;
+      const FLOOR_Y = HEIGHT - 50;
+      const PLAYER_WIDTH = 20;
+      const PLAYER_HEIGHT = 40;
 
-    function setCrystals(val) {
-      localStorage.setItem('crystals', val);
-      crystalsEl.textContent = val;
-    }
+      // Player state
+      const player = {
+        x: 50,
+        y: FLOOR_Y - PLAYER_HEIGHT,
+        vx: 0,
+        vy: 0,
+        speed: 4,
+        jumping: false,
+        doubleJumpUsed: false,
+        width: PLAYER_WIDTH,
+        height: PLAYER_HEIGHT,
+        health: 100,
+        maxHealth: 100,
+        score: 0,
+        coins: 0,
+        attackCooldown: 0,
+        facingRight: true,
+        hasFlameSword: false,
+        hasDoubleJump: false,
+        wearingRedBandana: false,
+        attacking: false,
+      };
 
-    function addCrystals(n) {
-      setCrystals(getCrystals() + n);
-    }
+      // Enemy state
+      class Enemy {
+        constructor(x, y, range) {
+          this.x = x;
+          this.y = y;
+          this.width = 20;
+          this.height = 40;
+          this.vx = 2;
+          this.range = range;
+          this.startX = x;
+          this.health = 30;
+          this.alive = true;
+        }
 
-    function useCrystal() {
-      const current = getCrystals();
-      if (current >= 1 && !usedCrystal && !solved && timer > 0) {
-        setCrystals(current - 1);
-        timer += 10;
-        usedCrystal = true;
-        alert("+10 seconds added!");
-      } else if (usedCrystal) {
-        alert("You can only use one crystal per round.");
-      } else {
-        alert("Not enough crystals.");
+        update() {
+          if (!this.alive) return;
+          this.x += this.vx;
+          if (this.x > this.startX + this.range || this.x < this.startX) {
+            this.vx *= -1;
+          }
+        }
+
+        draw() {
+          if (!this.alive) return;
+          ctx.strokeStyle = 'red';
+          ctx.lineWidth = 3;
+          ctx.beginPath();
+          // simple stick enemy body
+          ctx.moveTo(this.x, this.y);
+          ctx.lineTo(this.x, this.y - 30);
+          ctx.moveTo(this.x, this.y - 30);
+          ctx.lineTo(this.x - 10, this.y - 10);
+          ctx.moveTo(this.x, this.y - 30);
+          ctx.lineTo(this.x + 10, this.y - 10);
+          ctx.moveTo(this.x, this.y - 15);
+          ctx.lineTo(this.x - 10, this.y);
+          ctx.moveTo(this.x, this.y - 15);
+          ctx.lineTo(this.x + 10, this.y);
+          ctx.stroke();
+        }
+
+        hit(damage) {
+          this.health -= damage;
+          if (this.health <= 0) {
+            this.alive = false;
+            player.score += 10;
+            updateHUD();
+          }
+        }
       }
-    }
 
-    // Initialize buttons
-    for (let i = 1; i <= 9; i++) {
-      const btn = document.createElement('button');
-      btn.textContent = i;
-      btn.onclick = () => handleInput(i);
-      gridEl.appendChild(btn);
-    }
+      // Coins state
+      class Coin {
+        constructor(x, y) {
+          this.x = x;
+          this.y = y;
+          this.radius = 7;
+          this.collected = false;
+          this.angle = 0;
+        }
 
-    function generateSequence() {
-      return Array.from({ length: 4 }, () => Math.floor(Math.random() * 9) + 1);
-    }
+        update() {
+          this.angle += 0.1;
+        }
 
-    function showSequence() {
-      sequenceEl.innerHTML = '';
-      sequence.forEach((num, index) => {
-        const div = document.createElement('div');
-        div.className = 'circle';
-        div.textContent = num;
-        sequenceEl.appendChild(div);
-        setTimeout(() => div.classList.add('pulse'), index * 300);
+        draw() {
+          if (this.collected) return;
+          ctx.save();
+          ctx.translate(this.x, this.y);
+          ctx.rotate(this.angle);
+          ctx.fillStyle = 'gold';
+          ctx.beginPath();
+          for (let i = 0; i < 5; i++) {
+            ctx.lineTo(0, 7);
+            ctx.rotate((Math.PI * 2) / 10);
+            ctx.lineTo(0, 3);
+            ctx.rotate((Math.PI * 2) / 10);
+          }
+          ctx.closePath();
+          ctx.fill();
+          ctx.restore();
+        }
+      }
+
+      // Input handling
+      const keys = {
+        left: false,
+        right: false,
+        up: false,
+        attack: false,
+      };
+
+      window.addEventListener('keydown', e => {
+        if (e.code === 'ArrowLeft' || e.code === 'KeyA') keys.left = true;
+        if (e.code === 'ArrowRight' || e.code === 'KeyD') keys.right = true;
+        if (e.code === 'ArrowUp' || e.code === 'Space' || e.code === 'KeyW') keys.up = true;
+        if (e.code === 'KeyJ') keys.attack = true;
       });
-    }
+      window.addEventListener('keyup', e => {
+        if (e.code === 'ArrowLeft' || e.code === 'KeyA') keys.left = false;
+        if (e.code === 'ArrowRight' || e.code === 'KeyD') keys.right = false;
+        if (e.code === 'ArrowUp' || e.code === 'Space' || e.code === 'KeyW') keys.up = false;
+        if (e.code === 'KeyJ') keys.attack = false;
+      });
 
-    function resetGame() {
-      sequence = generateSequence();
-      input = [];
-      solved = false;
-      usedCrystal = false;
-      timer = 30;
-      scoreEl.textContent = score;
-      timerEl.textContent = timer;
-      showSequence();
-      clearInterval(timerInterval);
-      timerInterval = setInterval(() => {
-        if (timer > 0 && !solved) {
-          timer--;
-          timerEl.textContent = timer;
-        } else {
-          clearInterval(timerInterval);
+      // Game Objects
+      const enemy = new Enemy(400, FLOOR_Y, 100);
+      const coins = [
+        new Coin(200, FLOOR_Y - 15),
+        new Coin(350, FLOOR_Y - 15),
+        new Coin(520, FLOOR_Y - 15),
+      ];
+
+      // HUD elements
+      const healthDisplay = document.getElementById('healthDisplay');
+      const scoreDisplay = document.getElementById('scoreDisplay');
+      const coinsDisplay = document.getElementById('coinsDisplay');
+
+      function updateHUD() {
+        healthDisplay.textContent = player.health;
+        scoreDisplay.textContent = player.score;
+        coinsDisplay.textContent = player.coins;
+      }
+
+      // Store logic
+      const storeItems = {
+        redBandana: false,
+        flameSword: false,
+        doubleJumpBoots: false,
+      };
+
+      function saveStore() {
+        localStorage.setItem('stickLegendsStore', JSON.stringify(storeItems));
+      }
+      function loadStore() {
+        const saved = localStorage.getItem('stickLegendsStore');
+        if (saved) {
+          Object.assign(storeItems, JSON.parse(saved));
         }
-      }, 1000);
-    }
+        applyStoreEffects();
+      }
 
-    function handleInput(num) {
-      if (solved || timer === 0) return;
-      input.push(num);
-      if (input.length === sequence.length) {
-        const correct = input.every((val, i) => val === sequence[i]);
-        if (correct) {
-          score++;
-          solved = true;
-          setTimeout(resetGame, 1000);
-        } else {
-          input = [];
+      function applyStoreEffects() {
+        player.wearingRedBandana = storeItems.redBandana;
+        player.hasFlameSword = storeItems.flameSword;
+        player.hasDoubleJump = storeItems.doubleJumpBoots;
+      }
+
+      // PayPal buttons handling
+      document.querySelectorAll('.store-item').forEach(itemEl => {
+        const id = itemEl.dataset.id;
+        const price = itemEl.dataset.price;
+        const btn = itemEl.querySelector('button.buy-btn');
+
+        btn.addEventListener('click', () => {
+          if (storeItems[id]) {
+            alert(`You already own the ${id.replace(/([A-Z])/g, ' $1')}.`);
+            return;
+          }
+          // Create and submit PayPal form
+          const form = document.createElement('form');
+          form.action = "https://www.paypal.com/cgi-bin/webscr";
+          form.method = "post";
+          form.target = "_blank";
+
+          form.innerHTML = `
+            <input type="hidden" name="cmd" value="_xclick" />
+            <input type="hidden" name="business" value="akaeaves@yahoo.com" />
+            <input type="hidden" name="item_name" value="${id}" />
+            <input type="hidden" name="amount" value="${price}" />
+            <input type="hidden" name="currency_code" value="USD" />
+          `;
+
+          document.body.appendChild(form);
+          form.submit();
+          document.body.removeChild(form);
+
+          // Optimistically grant item (for demo purposes, no payment verification)
+          storeItems[id] = true;
+          saveStore();
+          applyStoreEffects();
+          alert(`Thank you for purchasing ${id.replace(/([A-Z])/g, ' $1')}! It is now active.`);
+        });
+      });
+
+      // Game loop and logic
+      function rectsOverlap(r1, r2) {
+        return !(r2.x > r1.x + r1.width ||
+                 r2.x + r2.width < r1.x ||
+                 r2.y > r1.y + r1.height ||
+                 r2.y + r2.height < r1.y);
+      }
+
+      function attackHitEnemy() {
+        // Attack range rectangle (in front of player)
+        const range = 25;
+        let attackBox = {
+          x: player.facingRight ? player.x + player.width : player.x - range,
+          y: player.y,
+          width: range,
+          height: player.height,
+        };
+        let enemyBox = { x: enemy.x - 10, y: enemy.y - 30, width: 20, height: 40 };
+
+        if (enemy.alive && rectsOverlap(attackBox, enemyBox)) {
+          let damage = player.hasFlameSword ? 20 : 10;
+          enemy.hit(damage);
         }
       }
-    }
 
-    setCrystals(getCrystals());
-    resetGame();
+      function update() {
+        // Horizontal movement
+        if (keys.left) {
+          player.vx = -player.speed;
+          player.facingRight = false;
+        } else if (keys.right) {
+          player.vx = player.speed;
+          player.facingRight = true;
+        } else {
+          player.vx = 0;
+        }
+
+        // Jumping logic
+        if (keys.up) {
+          if (!player.jumping) {
+            player.vy = -12;
+            player.jumping = true;
+            player.doubleJumpUsed = false;
+          } else if (player.hasDoubleJump && !player.doubleJumpUsed) {
+            player.vy = -12;
+            player.doubleJumpUsed = true;
+          }
+        }
+
+        // Apply gravity
+        player.vy += GRAVITY;
+
+        // Update position
+        player.x += player.vx;
+        player.y += player.vy;
+
+        // Floor collision
+        if (player.y > FLOOR_Y - player.height) {
+          player.y = FLOOR_Y - player.height;
+          player.vy = 0;
+          player.jumping = false;
+          player.doubleJumpUsed = false;
+        }
+
+        // Boundaries
+        if (player.x < 0) player.x = 0;
+        if (player.x + player.width > WIDTH) player.x = WIDTH - player.width;
+
+        // Enemy update
+        enemy.update();
+
+        // Enemy damages player if close
+        if (enemy.alive) {
+          const playerBox = {x: player.x, y: player.y, width: player.width, height: player.height};
+          const enemyBox = {x: enemy.x - 10, y: enemy.y - 30, width: 20, height: 40};
+          if (rectsOverlap(playerBox, enemyBox)) {
+            player.health -= 0.5;
+            if (player.health < 0) player.health = 0;
+          }
+        }
+
+        // Attack cooldown
+        if (player.attackCooldown > 0) {
+          player.attackCooldown--;
+        }
+
+        // Attack input
+        if (keys.attack && player.attackCooldown === 0) {
+          player.attacking = true;
+          player.attackCooldown = 30; // cooldown frames (~0.5 seconds)
+          attackHitEnemy();
+        } else {
+          player.attacking = false;
+        }
+
+        // Coins collection
+        coins.forEach(coin => {
+          if (!coin.collected) {
+            let coinBox = {x: coin.x - coin.radius, y: coin.y - coin.radius, width: coin.radius * 2, height: coin.radius * 2};
+            let playerBox = {x: player.x, y: player.y, width: player.width, height: player.height};
+            if (rectsOverlap(playerBox, coinBox)) {
+              coin.collected = true;
+              player.coins++;
+              player.score += 5;
+              updateHUD();
+            }
+          }
+        });
+
+        updateHUD();
+      }
+
+      function drawStickFigure(x, y, options = {}) {
+        // options: facingRight (bool), attack (bool), redBandana (bool)
+        const facingRight = options.facingRight ?? true;
+        const attacking = options.attack ?? false;
+        const redBandana = options.redBandana ?? false;
+
+        ctx.strokeStyle = 'white';
+        ctx.lineWidth = 3;
+
+        ctx.beginPath();
+
+        // Head
+        ctx.arc(x + 10, y - 35, 8, 0, Math.PI * 2);
+
+        // Body
+        ctx.moveTo(x + 10, y - 27);
+        ctx.lineTo(x + 10, y - 5);
+
+        // Arms
+        if (attacking) {
+          // Attack pose
+          if (facingRight) {
+            ctx.moveTo(x + 10, y - 25);
+            ctx.lineTo(x + 30, y - 15); // extended arm with sword
+          } else {
+            ctx.moveTo(x + 10, y - 25);
+            ctx.lineTo(x - 10, y - 15);
+          }
+        } else {
+          ctx.moveTo(x + 10, y - 20);
+          ctx.lineTo(x - 5, y - 15);
+          ctx.moveTo(x + 10, y - 20);
+          ctx.lineTo(x + 25, y - 15);
+        }
+
+        // Legs
+        ctx.moveTo(x + 10, y - 5);
+        ctx.lineTo(x - 5, y + 15);
+        ctx.moveTo(x + 10, y - 5);
+        ctx.lineTo(x + 25, y + 15);
+
+        ctx.stroke();
+
+        if (redBandana) {
+          ctx.fillStyle = '#ff0000cc';
+          ctx.fillRect(x + 3, y - 43, 14, 5);
+        }
+      }
+
+      function draw() {
+        // Clear screen
+        ctx.clearRect(0, 0, WIDTH, HEIGHT);
+
+        // Draw floor
+        ctx.fillStyle = '#333';
+        ctx.fillRect(0, FLOOR_Y, WIDTH, HEIGHT - FLOOR_Y);
+
+        // Draw player
+        drawStickFigure(player.x, player.y + player.height, {
+          facingRight: player.facingRight,
+          attack: player.attacking,
+          redBandana: player.wearingRedBandana,
+        });
+
+        // Draw enemy
+        enemy.draw();
+
+        // Draw coins
+        coins.forEach(coin => {
+          coin.update();
+          coin.draw();
+        });
+
+        // Draw health bar background
+        ctx.fillStyle = '#222';
+        ctx.fillRect(20, 20, 200, 20);
+
+        // Draw health bar foreground
+        ctx.fillStyle = 'lime';
+        ctx.fillRect(20, 20, 200 * (player.health / player.maxHealth), 20);
+
+        // Draw health text on canvas (redundant with HUD, but for fun)
+        ctx.fillStyle = 'white';
+        ctx.font = '16px Arial';
+        ctx.fillText('Health', 20, 15);
+      }
+
+      function loop() {
+        update();
+        draw();
+        requestAnimationFrame(loop);
+      }
+
+      // Load store state from localStorage on start
+      loadStore();
+      updateHUD();
+      loop();
+
+    })();
   </script>
+
+  <p style="color:#00ffffcc; font-size: 0.8rem; user-select:none; margin-top: 5px;">
+    Controls: Arrow keys/WASD to move, Up/Space to jump, J to attack.
+  </p>
 
 </body>
 </html>
