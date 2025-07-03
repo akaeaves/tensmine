@@ -72,7 +72,7 @@
       generateBoard(pkg.gridSize);
       gameState.active = true;
       gameState.tokensFound = 0;
-      gameState.payout = pkg.price + 0.1; // 10 cents more
+      gameState.payout = pkg.price * 2; // Double payout
       document.getElementById("status").innerText = `You bought the ${type} package. Find 3 tokens to win $${gameState.payout.toFixed(2)}!`;
     }
 
