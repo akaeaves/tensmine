@@ -1,251 +1,326 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Tens Mine</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      background: url('https://images.unsplash.com/photo-1502082553048-f009c37129b9?auto=format&fit=crop&w=1350&q=80') no-repeat center center fixed;
-      background-size: cover;
-      color: #d7f3d7;
-      margin: 0;
-      padding: 20px;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      position: relative;
-      z-index: 0;
-    }
-    body::before {
-      content: "";
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0, 50, 0, 0.6);
-      z-index: -1;
-    }
-    h1 {
-      text-shadow: 2px 2px 8px #013301;
-      margin-bottom: 10px;
-      font-weight: 900;
-      font-size: 2.8rem;
-      letter-spacing: 2px;
-    }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(5, 60px);
-      gap: 10px;
-      justify-content: center;
-      margin-top: 20px;
-    }
-    .square {
-      width: 60px;
-      height: 60px;
-      background: rgba(34, 77, 34, 0.9);
-      border: 2px solid #0b3d0b;
-      font-size: 28px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      color: #c6f7c6;
-      user-select: none;
-      transition: background-color 0.3s ease;
-      border-radius: 8px;
-      box-shadow: 0 0 6px #0a3d0a inset;
-    }
-    .square:hover {
-      background: rgba(55, 110, 55, 1);
-    }
-    #balance {
-      margin-top: 12px;
-      font-weight: 700;
-      font-size: 1.2rem;
-    }
-    #tokens {
-      margin-top: 8px;
-      font-weight: 600;
-      font-size: 1.1rem;
-      color: #b7e6b7;
-    }
-    .cashout {
-      margin-top: 15px;
-      background: #2a8f2a;
-      color: white;
-      padding: 10px 20px;
-      border: none;
-      cursor: pointer;
-      border-radius: 6px;
-      font-weight: bold;
-      box-shadow: 0 0 10px #1a5d1a;
-      transition: background-color 0.3s ease;
-      font-size: 1rem;
-    }
-    .cashout:hover {
-      background: #3cb33c;
-    }
-    select, button {
-      font-size: 16px;
-      margin: 10px 8px;
-      padding: 8px 14px;
-      border-radius: 8px;
-      border: 1px solid #2c7c2c;
-      background: #2f8f2f;
-      color: #d7f3d7;
-      cursor: pointer;
-      box-shadow: 0 0 10px #1a5d1a;
-      transition: background-color 0.3s ease;
-      font-weight: 600;
-    }
-    select:hover, button:hover {
-      background: #3cb33c;
-    }
-    /* Footer for disclaimers and policies */
-    footer {
-      margin-top: auto;
-      background: rgba(0, 40, 0, 0.75);
-      padding: 20px 15px;
-      width: 100%;
-      color: #a9d1a9;
-      font-size: 0.9rem;
-      box-shadow: inset 0 1px 3px rgba(255,255,255,0.1);
-      user-select: none;
-      font-weight: 500;
-    }
-    footer a {
-      color: #85c185;
-      text-decoration: none;
-      margin: 0 10px;
-    }
-    footer a:hover {
-      text-decoration: underline;
-      color: #c2f0c2;
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Tens Mine - Token Mining Game</title>
+<style>
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1400&q=80') no-repeat center center fixed;
+    background-size: cover;
+    color: #fff;
+    text-align: center;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+  header {
+    background: rgba(0,0,0,0.6);
+    padding: 1rem;
+  }
+  h1 {
+    margin: 0;
+    font-size: 2rem;
+  }
+  #game-container {
+    margin: 20px auto;
+    display: grid;
+    grid-template-columns: repeat(5, 80px);
+    grid-gap: 10px;
+    justify-content: center;
+  }
+  .square {
+    width: 80px;
+    height: 80px;
+    background-color: rgba(0,0,0,0.5);
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 40px;
+    line-height: 80px;
+    user-select: none;
+    transition: background-color 0.3s;
+  }
+  .square:hover {
+    background-color: rgba(255,255,255,0.2);
+  }
+  .disabled {
+    pointer-events: none;
+    opacity: 0.6;
+  }
+  #packages {
+    margin: 20px auto;
+  }
+  button.package {
+    margin: 0 10px;
+    padding: 10px 20px;
+    font-size: 1.1rem;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    color: #333;
+  }
+  button.package:hover {
+    background-color: #ddd;
+  }
+  #balance {
+    margin: 20px;
+    font-size: 1.3rem;
+  }
+  #message {
+    margin: 10px;
+    font-size: 1.2rem;
+    min-height: 24px;
+  }
+  /* Modal Styles */
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right:0;
+    bottom:0;
+    background: rgba(0,0,0,0.75);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+  }
+  .modal {
+    background: #222;
+    border-radius: 8px;
+    max-width: 600px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    padding: 20px 30px;
+    color: #eee;
+    text-align: left;
+    position: relative;
+  }
+  .modal h2 {
+    margin-top: 0;
+    font-size: 1.8rem;
+    border-bottom: 1px solid #555;
+    padding-bottom: 8px;
+  }
+  .modal p {
+    line-height: 1.5;
+    margin-bottom: 1rem;
+  }
+  .modal button.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: none;
+    border: none;
+    color: #eee;
+    font-size: 1.5rem;
+    cursor: pointer;
+  }
+  footer {
+    background: rgba(0,0,0,0.6);
+    padding: 10px 0;
+    margin-top: auto;
+    font-size: 0.9rem;
+  }
+  footer a {
+    color: #aaddff;
+    margin: 0 10px;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+</style>
 </head>
 <body>
-  <h1>Tens Mine</h1>
+<header>
+  <h1>Tens Mine - Token Mining Game</h1>
+</header>
 
-  <div>
-    <label for="package">Choose Package:</label>
-    <select id="package">
-      <option value="silver">Silver - $0.50</option>
-      <option value="gold">Gold - $1.00</option>
-      <option value="platinum">Platinum - $2.00</option>
-    </select>
-    <button onclick="buyPackage()">Buy Package</button>
+<div id="packages">
+  <button class="package" data-package="silver">Silver Package - 50¢</button>
+  <button class="package" data-package="gold">Gold Package - $1.00</button>
+  <button class="package" data-package="platinum">Platinum Package - $2.00</button>
+</div>
+
+<div id="balance">Tokens: 0 | Cash Balance: $0.00</div>
+
+<div id="game-container"></div>
+
+<div id="message"></div>
+
+<footer>
+  <a href="#" id="tos-link">Terms of Service</a> |
+  <a href="#" id="privacy-link">Privacy Policy</a> |
+  <a href="#" id="cashout-link">Cashout Policy</a>
+</footer>
+
+<!-- Terms of Service Modal -->
+<div class="modal-overlay" id="tos-modal">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="tos-title">
+    <button class="close-btn" aria-label="Close">&times;</button>
+    <h2 id="tos-title">Terms of Service</h2>
+    <p>Welcome to Tens Mine. By playing, you agree to our rules and policies. This game is intended for entertainment purposes. You must be at least 18 years old to play. Tokens earned can be cashed out according to our Cashout Policy. Use responsibly.</p>
+    <p>All purchases are final. We reserve the right to modify or terminate the game at any time.</p>
   </div>
+</div>
 
-  <div id="balance">Balance: $0.00</div>
-  <div id="tokens">Tokens This Round: 0</div>
-  <div id="grid" class="grid hidden"></div>
-  <button onclick="cashout()" class="cashout">Cash Out</button>
+<!-- Privacy Policy Modal -->
+<div class="modal-overlay" id="privacy-modal">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="privacy-title">
+    <button class="close-btn" aria-label="Close">&times;</button>
+    <h2 id="privacy-title">Privacy Policy</h2>
+    <p>We respect your privacy. Any data collected is used solely to improve game experience and for legal compliance. We do not sell your information. No personal data is shared with third parties beyond what is necessary for processing transactions.</p>
+  </div>
+</div>
 
-  <footer>
-    <p><strong>Disclaimer:</strong> Tens Mine is an entertainment game with real-money mechanics. Players have a chance to win, but losses are possible.</p>
-    <p>By playing, you agree to our
-      <a href="#" target="_blank" rel="noopener noreferrer">Terms of Service</a>,
-      <a href="#" target="_blank" rel="noopener noreferrer">Privacy Policy</a>, and
-      <a href="#" target="_blank" rel="noopener noreferrer">Cashout Policy</a>.
-    </p>
-  </footer>
+<!-- Cashout Policy Modal -->
+<div class="modal-overlay" id="cashout-modal">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="cashout-title">
+    <button class="close-btn" aria-label="Close">&times;</button>
+    <h2 id="cashout-title">Cashout Policy</h2>
+    <p>Players may cash out once they have doubled their purchased package value by finding tokens. For example, if you buy the Silver Package for 50¢, finding 2 tokens doubles it to $1.00 available for cashout.</p>
+    <p>Cashouts are processed manually or automatically depending on payment method. Processing times may vary. Players are responsible for providing accurate payment information.</p>
+  </div>
+</div>
 
-  <script>
-    let player = {
-      balance: 0,
-      currentPackage: null,
-      tokensFound: 0,
-    };
-
-    const prices = { silver: 0.5, gold: 1.0, platinum: 2.0 };
-    const payouts = { silver: 1.0, gold: 2.0, platinum: 4.0 };
-
-    const gridElement = document.getElementById("grid");
-    const tokenDiv = document.getElementById("tokens");
-    const balanceDiv = document.getElementById("balance");
-
-    function buyPackage() {
-      const pkg = document.getElementById("package").value;
-      player.currentPackage = pkg;
-      player.tokensFound = 0;
-      tokenDiv.textContent = `Tokens This Round: 0`;
-
-      // Generate grid: 5 tokens, 5 bombs
-      const tokenCount = 5;
-      const bombCount = 5;
-      const tokenIndices = new Set();
-      const bombIndices = new Set();
-
-      while (tokenIndices.size < tokenCount) {
-        tokenIndices.add(Math.floor(Math.random() * 20));
+<script>
+  // Modal functionality
+  function setupModal(triggerId, modalId) {
+    const trigger = document.getElementById(triggerId);
+    const modal = document.getElementById(modalId);
+    const closeBtn = modal.querySelector('.close-btn');
+    trigger.addEventListener('click', e => {
+      e.preventDefault();
+      modal.style.display = 'flex';
+      document.body.style.overflow = 'hidden'; // Prevent background scroll
+    });
+    closeBtn.addEventListener('click', () => {
+      modal.style.display = 'none';
+      document.body.style.overflow = 'auto';
+    });
+    // Close on outside click
+    modal.addEventListener('click', e => {
+      if (e.target === modal) {
+        modal.style.display = 'none';
+        document.body.style.overflow = 'auto';
       }
-      while (bombIndices.size < bombCount) {
-        const index = Math.floor(Math.random() * 20);
-        if (!tokenIndices.has(index)) bombIndices.add(index);
-      }
+    });
+  }
+  setupModal('tos-link', 'tos-modal');
+  setupModal('privacy-link', 'privacy-modal');
+  setupModal('cashout-link', 'cashout-modal');
 
-      gridElement.innerHTML = "";
-      gridElement.classList.remove("hidden");
+  // Game variables
+  const gridSize = 20;
+  const tokensNeededToWin = 2;
+  const packages = {
+    silver: { cost: 0.5, maxTokens: 3, winningTokens: 2 },
+    gold: { cost: 1.0, maxTokens: 5, winningTokens: 2 },
+    platinum: { cost: 2.0, maxTokens: 8, winningTokens: 2 },
+  };
 
-      for (let i = 0; i < 20; i++) {
-        const sq = document.createElement("div");
-        sq.className = "square";
-        if (tokenIndices.has(i)) sq.dataset.value = "token";
-        else if (bombIndices.has(i)) sq.dataset.value = "bomb";
-        else sq.dataset.value = "empty";
+  let currentPackage = null;
+  let tokensFound = 0;
+  let tokensLeftToFind = 0;
+  let bombs = [];
+  let tokensPositions = [];
+  let gameActive = false;
 
-        sq.textContent = "❓";
-        sq.style.color = "#c6f7c6";
+  const balanceDisplay = document.getElementById('balance');
+  const messageDisplay = document.getElementById('message');
+  const gameContainer = document.getElementById('game-container');
 
-        sq.onclick = () => handleClick(sq);
-        gridElement.appendChild(sq);
-      }
+  function startGame(pkg) {
+    currentPackage = packages[pkg];
+    tokensFound = 0;
+    tokensLeftToFind = currentPackage.winningTokens;
+    gameActive = true;
+    messageDisplay.textContent = `Game started! Find ${tokensLeftToFind} tokens to double your $${currentPackage.cost.toFixed(2)}!`;
+    balanceDisplay.textContent = `Tokens: 0 | Cash Balance: $0.00`;
+    generateGrid();
+  }
+
+  function generateGrid() {
+    gameContainer.innerHTML = '';
+    bombs = [];
+    tokensPositions = [];
+    let positions = [...Array(gridSize).keys()];
+
+    // Place tokens (winning tokens + a few more random tokens up to maxTokens)
+    const totalTokens = currentPackage.maxTokens;
+    while (tokensPositions.length < totalTokens) {
+      let idx = positions.splice(Math.floor(Math.random() * positions.length), 1)[0];
+      tokensPositions.push(idx);
     }
 
-    function handleClick(square) {
-      const val = square.dataset.value;
-      square.style.pointerEvents = "none";
+    // Remaining squares are bombs
+    bombs = [...Array(gridSize).keys()].filter(i => !tokensPositions.includes(i));
 
-      if (val === "token") {
-        square.textContent = "🪙";
-        player.tokensFound++;
-        tokenDiv.textContent = `Tokens This Round: ${player.tokensFound}`;
+    for (let i = 0; i < gridSize; i++) {
+      const sq = document.createElement('div');
+      sq.classList.add('square');
+      sq.dataset.index = i;
+      sq.textContent = '☠️'; // default skull for bomb
+      sq.addEventListener('click', onSquareClick);
+      gameContainer.appendChild(sq);
+    }
+  }
 
-        if (player.tokensFound === 2) {
-          const payout = payouts[player.currentPackage];
-          player.balance += payout;
-          balanceDiv.textContent = `Balance: $${player.balance.toFixed(2)}`;
-          alert(`You won $${payout.toFixed(2)}!`);
-          endRound();
-        }
-      } else if (val === "bomb") {
-        square.textContent = "💣";
-        player.balance = 0;
-        balanceDiv.textContent = `Balance: $0.00`;
-        alert("You hit a bomb and lost your progress!");
-        endRound();
-      } else {
-        square.textContent = "☠️";
+  function onSquareClick(e) {
+    if (!gameActive) return;
+    const sq = e.currentTarget;
+    const idx = parseInt(sq.dataset.index);
+
+    if (tokensPositions.includes(idx)) {
+      tokensFound++;
+      sq.textContent = '💰';
+      sq.classList.add('disabled');
+      tokensLeftToFind--;
+      messageDisplay.textContent = `Good! ${tokensLeftToFind} token${tokensLeftToFind !== 1 ? 's' : ''} left to find.`;
+      updateBalance();
+      if (tokensFound >= currentPackage.winningTokens) {
+        messageDisplay.textContent = `Congrats! You doubled your $${currentPackage.cost.toFixed(2)}! You can cash out now.`;
+        gameActive = false;
+        disableAllSquares();
       }
+    } else if (bombs.includes(idx)) {
+      // Bomb hit: game over
+      showGameOver();
+      resetGame();
     }
+  }
 
-    function endRound() {
-      document.querySelectorAll(".square").forEach(sq => sq.onclick = null);
-    }
+  function updateBalance() {
+    const cash = currentPackage.cost * 2; // double package cost on win
+    balanceDisplay.textContent = `Tokens: ${tokensFound} | Cash Balance: $${tokensFound >= currentPackage.winningTokens ? cash.toFixed(2) : '0.00'}`;
+  }
 
-    function cashout() {
-      if (player.balance >= 1) {
-        alert(`You cashed out $${player.balance.toFixed(2)}!`);
-        player.balance = 0;
-        balanceDiv.textContent = `Balance: $0.00`;
-      } else {
-        alert("You need at least $1.00 to cash out.");
-      }
-    }
-  </script>
+  function disableAllSquares() {
+    document.querySelectorAll('.square').forEach(sq => {
+      sq.classList.add('disabled');
+    });
+  }
+
+  function showGameOver() {
+    messageDisplay.textContent = '💥 Boom! You hit a bomb. Your balance resets to $0.00.';
+    gameActive = false;
+    disableAllSquares();
+  }
+
+  function resetGame() {
+    tokensFound = 0;
+    tokensLeftToFind = 0;
+    currentPackage = null;
+  }
+
+  // Package buttons
+  document.querySelectorAll('.package').forEach(button => {
+    button.addEventListener('click', () => {
+      startGame(button.dataset.package);
+    });
+  });
+</script>
 </body>
 </html>
