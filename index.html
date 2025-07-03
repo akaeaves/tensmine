@@ -3,614 +3,641 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Stick Legends: Shadows of the Frame</title>
+  <title>Stick Legends: Shadows of the Frame - Action Stickman Adventure Game</title>
+  <meta name="description" content="Play Stick Legends, an action-packed stickman adventure game with exciting combat and collectibles. Buy upgrades in our web store and become a legend!" />
+  <meta name="keywords" content="stickman game, action game, adventure game, web game, online stickman, upgrades" />
+  <meta name="author" content="Jason" />
+  <meta property="og:title" content="Stick Legends: Shadows of the Frame" />
+  <meta property="og:description" content="Action stickman adventure game with web store and upgrades." />
+  <meta property="og:type" content="game" />
+  <meta property="og:url" content="https://yourgithubusername.github.io/yourrepo/" />
+  <!-- Replace the below with your own thumbnail image URL if you have one -->
+  <meta property="og:image" content="https://yourgithubusername.github.io/yourrepo/game-thumbnail.png" />
   <style>
-    /* Reset and basic styling */
-    * {
-      box-sizing: border-box;
-      user-select: none;
-    }
-    body, html {
-      margin: 0; padding: 0;
-      height: 100%;
-      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-      color: white;
+    body {
+      background: linear-gradient(135deg, #1a1a1a, #222);
+      color: #eee;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      overflow: hidden;
+      margin: 0;
+      padding: 0;
       display: flex;
       flex-direction: column;
       align-items: center;
+      min-height: 100vh;
     }
-
-    h1 {
-      margin: 15px 0 5px;
-      font-weight: 700;
-      text-shadow: 0 0 6px #00ffffcc;
+    header {
+      max-width: 640px;
+      padding: 20px;
+      text-align: center;
     }
-
-    #gameContainer {
+    header h1 {
+      margin-bottom: 0.3em;
+      font-size: 2.5rem;
+      color: #00ffff;
+      text-shadow: 0 0 5px #00ffffaa;
+    }
+    header p {
+      font-size: 1.1rem;
+      line-height: 1.4;
+      color: #ccc;
+    }
+    #game-container {
       position: relative;
-      border: 3px solid #00ffffcc;
-      border-radius: 12px;
-      background: #121212;
+      width: 640px;
+      height: 480px;
+      border: 2px solid #00ffff;
+      box-shadow: 0 0 20px #00ffffaa;
+      margin-bottom: 10px;
     }
-
     canvas {
       display: block;
-      background: #0a0a0a;
-      border-radius: 8px;
+      background: #111;
     }
-
     #hud {
-      margin-top: 8px;
-      width: 640px;
-      display: flex;
-      justify-content: space-between;
-      font-weight: bold;
-      font-size: 1.1rem;
-      user-select: none;
-      text-shadow: 0 0 4px #00ffffcc;
-    }
-
-    #store {
-      margin-top: 15px;
       max-width: 640px;
-      background: #222;
-      border-radius: 10px;
-      padding: 15px;
-      box-shadow: 0 0 10px #00ffffcc;
+      margin: 5px auto;
       font-size: 1rem;
+      color: #0ff;
+      user-select: none;
     }
-
+    #store {
+      max-width: 640px;
+      margin: 15px auto;
+      background: #111;
+      border: 1px solid #00ffff;
+      padding: 10px;
+      border-radius: 5px;
+      color: #0ff;
+    }
     #store h2 {
       margin-top: 0;
-      color: #00ffffcc;
-      text-align: center;
-      font-weight: 700;
-      text-shadow: 0 0 6px #00ffffcc;
+      color: #00ffff;
+      text-shadow: 0 0 5px #00ffffaa;
     }
-
-    .store-item {
-      margin: 10px 0;
-      padding: 10px;
-      background: #111;
-      border-radius: 8px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      box-shadow: 0 0 4px #00ffffaa;
-    }
-
-    .store-item > .info {
-      max-width: 300px;
-      line-height: 1.3;
-      user-select: text;
-    }
-
-    button.buy-btn {
-      background: #00ffffcc;
-      color: #000;
-      border: none;
-      border-radius: 6px;
-      font-weight: 700;
-      padding: 8px 14px;
-      cursor: pointer;
-      transition: background 0.3s ease;
-      user-select: none;
-    }
-
-    button.buy-btn:hover {
+    #store button {
       background: #00cccc;
+      border: none;
+      color: #111;
+      font-weight: bold;
+      padding: 5px 10px;
+      margin-left: 10px;
+      cursor: pointer;
+      border-radius: 3px;
+      transition: background 0.3s ease;
     }
-
-    #modals {
-      font-size: 0.8rem;
-      color: #888;
-      margin: 20px 0 30px;
-      user-select: none;
+    #store button:hover:not(:disabled) {
+      background: #00ffff;
+    }
+    #store button:disabled {
+      background: #005555;
+      cursor: default;
+    }
+    footer {
       max-width: 640px;
+      font-size: 0.8rem;
+      color: #444;
+      user-select: none;
+      margin: 20px auto 30px;
       text-align: center;
     }
-
-    #modals a {
+    footer a {
       color: #00ffffcc;
       text-decoration: none;
       margin: 0 10px;
     }
-
-    #modals a:hover {
+    footer a:hover {
       text-decoration: underline;
     }
-
+    /* Modal styles */
+    .modal {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #222;
+      border-top: 2px solid #00ffff;
+      padding: 20px;
+      max-width: 90vw;
+      max-height: 50vh;
+      overflow-y: auto;
+      color: #ccc;
+      z-index: 1000;
+      box-shadow: 0 -2px 10px #00ffff88;
+    }
+    .modal.active {
+      display: block;
+    }
+    .modal-close {
+      display: block;
+      text-align: right;
+      margin-bottom: 10px;
+      cursor: pointer;
+      color: #00ffffcc;
+      font-weight: bold;
+      font-size: 1.1rem;
+    }
+    /* Responsive */
+    @media (max-width: 700px) {
+      #game-container {
+        width: 90vw;
+        height: calc(90vw * 0.75);
+      }
+      canvas {
+        width: 100% !important;
+        height: 100% !important;
+      }
+      #hud, #store, footer, header {
+        max-width: 90vw;
+        margin: auto;
+      }
+    }
   </style>
 </head>
 <body>
+  <header>
+    <h1>Stick Legends: Shadows of the Frame</h1>
+    <p>Welcome to Stick Legends! An action-packed stickman adventure game where you battle enemies, collect coins, and unlock powerful upgrades through our web store. Move with arrow keys or WASD, jump with space, and attack with J.</p>
+  </header>
 
-  <h1>Stick Legends: Shadows of the Frame</h1>
-
-  <div id="gameContainer">
-    <canvas id="gameCanvas" width="640" height="360"></canvas>
-    <div id="hud">
-      <div>Health: <span id="healthDisplay">100</span></div>
-      <div>Score: <span id="scoreDisplay">0</span></div>
-      <div>Coins: <span id="coinsDisplay">0</span></div>
-    </div>
+  <div id="game-container">
+    <canvas id="game" width="640" height="480" aria-label="Stick Legends game canvas"></canvas>
   </div>
 
-  <div id="store">
-    <h2>🛒 Game Store - Buy Cool Upgrades</h2>
-
-    <div class="store-item" data-id="redBandana" data-price="1.00">
-      <div class="info">
-        <b>Red Bandana</b> <br />
-        Cosmetic: Your stick figure wears a red headband.
-      </div>
-      <button class="buy-btn">Buy $1.00</button>
-    </div>
-
-    <div class="store-item" data-id="flameSword" data-price="3.00">
-      <div class="info">
-        <b>Flame Sword</b> <br />
-        Power-up: Your attack does double damage.
-      </div>
-      <button class="buy-btn">Buy $3.00</button>
-    </div>
-
-    <div class="store-item" data-id="doubleJumpBoots" data-price="5.00">
-      <div class="info">
-        <b>Double Jump Boots</b> <br />
-        Power-up: Allows you to double jump.
-      </div>
-      <button class="buy-btn">Buy $5.00</button>
-    </div>
-
+  <div id="hud">
+    Score: <span id="score">0</span> | Coins: <span id="coins">0</span> | Crystals: <span id="crystals">0</span>
   </div>
 
-  <div id="modals">
-    <a href="#terms" onclick="alert('Terms of service: This is a demo game. No liability.');return false;">Terms</a> •
-    <a href="#privacy" onclick="alert('Privacy policy: No data is collected except local game progress.');return false;">Privacy</a> •
-    <a href="mailto:akaeaves@yahoo.com">Contact</a>
+  <section id="store">
+    <h2>Upgrade Store</h2>
+    <p>Buy optional upgrades with PayPal. Items are purely optional and don't block gameplay.</p>
+    <button data-id="doubleJump">Double Jump (100 crystals)</button>
+    <button data-id="flameSword">Flame Sword (300 crystals)</button>
+    <button data-id="redBandana">Red Bandana (150 crystals)</button>
+  </section>
+
+  <footer>
+    <a href="#" id="termsLink">Terms of Service</a> | 
+    <a href="#" id="privacyLink">Privacy Policy</a>
+  </footer>
+
+  <div id="termsModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="termsTitle" tabindex="-1">
+    <div class="modal-close" tabindex="0" id="termsClose" aria-label="Close Terms of Service modal">×</div>
+    <h2 id="termsTitle">Terms of Service</h2>
+    <p>Use this game responsibly. All purchases go through PayPal and are non-refundable.</p>
+  </div>
+
+  <div id="privacyModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="privacyTitle" tabindex="-1">
+    <div class="modal-close" tabindex="0" id="privacyClose" aria-label="Close Privacy Policy modal">×</div>
+    <h2 id="privacyTitle">Privacy Policy</h2>
+    <p>This site does not store personal information except what PayPal processes. Your data is safe.</p>
   </div>
 
   <script>
-    (() => {
-      // Canvas Setup
-      const canvas = document.getElementById('gameCanvas');
-      const ctx = canvas.getContext('2d');
+  (function() {
+    const canvas = document.getElementById('game');
+    const ctx = canvas.getContext('2d');
 
-      const WIDTH = canvas.width;
-      const HEIGHT = canvas.height;
+    const WIDTH = canvas.width;
+    const HEIGHT = canvas.height;
+    const FLOOR_Y = HEIGHT - 50;
+    const GRAVITY = 0.6;
 
-      // Game variables
-      const GRAVITY = 0.6;
-      const FLOOR_Y = HEIGHT - 50;
-      const PLAYER_WIDTH = 20;
-      const PLAYER_HEIGHT = 40;
+    // Player state
+    let player = {
+      x: 50,
+      y: FLOOR_Y - 40,
+      width: 20,
+      height: 40,
+      vx: 0,
+      vy: 0,
+      speed: 4,
+      health: 100,
+      maxHealth: 100,
+      facingRight: true,
+      jumping: false,
+      doubleJumpUsed: false,
+      hasDoubleJump: false,
+      hasFlameSword: false,
+      wearingRedBandana: false,
+      attacking: false,
+      attackCooldown: 0,
+      coins: 0,
+      score: 0,
+      crystals: 0
+    };
 
-      // Player state
-      const player = {
-        x: 50,
-        y: FLOOR_Y - PLAYER_HEIGHT,
-        vx: 0,
-        vy: 0,
-        speed: 4,
-        jumping: false,
-        doubleJumpUsed: false,
-        width: PLAYER_WIDTH,
-        height: PLAYER_HEIGHT,
-        health: 100,
-        maxHealth: 100,
-        score: 0,
-        coins: 0,
-        attackCooldown: 0,
-        facingRight: true,
-        hasFlameSword: false,
-        hasDoubleJump: false,
-        wearingRedBandana: false,
-        attacking: false,
-      };
-
-      // Enemy state
-      class Enemy {
-        constructor(x, y, range) {
-          this.x = x;
-          this.y = y;
-          this.width = 20;
-          this.height = 40;
-          this.vx = 2;
-          this.range = range;
-          this.startX = x;
-          this.health = 30;
-          this.alive = true;
+    // Enemy object
+    let enemy = {
+      x: 400,
+      y: FLOOR_Y - 40,
+      width: 20,
+      height: 40,
+      speed: 2,
+      direction: 1,
+      alive: true,
+      health: 60,
+      maxHealth: 60,
+      hit(dmg) {
+        this.health -= dmg;
+        if(this.health <= 0){
+          this.alive = false;
+          player.score += 50;
+          player.crystals += 20;
         }
-
-        update() {
-          if (!this.alive) return;
-          this.x += this.vx;
-          if (this.x > this.startX + this.range || this.x < this.startX) {
-            this.vx *= -1;
-          }
-        }
-
-        draw() {
-          if (!this.alive) return;
-          ctx.strokeStyle = 'red';
-          ctx.lineWidth = 3;
-          ctx.beginPath();
-          // simple stick enemy body
-          ctx.moveTo(this.x, this.y);
-          ctx.lineTo(this.x, this.y - 30);
-          ctx.moveTo(this.x, this.y - 30);
-          ctx.lineTo(this.x - 10, this.y - 10);
-          ctx.moveTo(this.x, this.y - 30);
-          ctx.lineTo(this.x + 10, this.y - 10);
-          ctx.moveTo(this.x, this.y - 15);
-          ctx.lineTo(this.x - 10, this.y);
-          ctx.moveTo(this.x, this.y - 15);
-          ctx.lineTo(this.x + 10, this.y);
-          ctx.stroke();
-        }
-
-        hit(damage) {
-          this.health -= damage;
-          if (this.health <= 0) {
-            this.alive = false;
-            player.score += 10;
-            updateHUD();
-          }
-        }
-      }
-
-      // Coins state
-      class Coin {
-        constructor(x, y) {
-          this.x = x;
-          this.y = y;
-          this.radius = 7;
-          this.collected = false;
-          this.angle = 0;
-        }
-
-        update() {
-          this.angle += 0.1;
-        }
-
-        draw() {
-          if (this.collected) return;
-          ctx.save();
-          ctx.translate(this.x, this.y);
-          ctx.rotate(this.angle);
-          ctx.fillStyle = 'gold';
-          ctx.beginPath();
-          for (let i = 0; i < 5; i++) {
-            ctx.lineTo(0, 7);
-            ctx.rotate((Math.PI * 2) / 10);
-            ctx.lineTo(0, 3);
-            ctx.rotate((Math.PI * 2) / 10);
-          }
-          ctx.closePath();
-          ctx.fill();
-          ctx.restore();
-        }
-      }
-
-      // Input handling
-      const keys = {
-        left: false,
-        right: false,
-        up: false,
-        attack: false,
-      };
-
-      window.addEventListener('keydown', e => {
-        if (e.code === 'ArrowLeft' || e.code === 'KeyA') keys.left = true;
-        if (e.code === 'ArrowRight' || e.code === 'KeyD') keys.right = true;
-        if (e.code === 'ArrowUp' || e.code === 'Space' || e.code === 'KeyW') keys.up = true;
-        if (e.code === 'KeyJ') keys.attack = true;
-      });
-      window.addEventListener('keyup', e => {
-        if (e.code === 'ArrowLeft' || e.code === 'KeyA') keys.left = false;
-        if (e.code === 'ArrowRight' || e.code === 'KeyD') keys.right = false;
-        if (e.code === 'ArrowUp' || e.code === 'Space' || e.code === 'KeyW') keys.up = false;
-        if (e.code === 'KeyJ') keys.attack = false;
-      });
-
-      // Game Objects
-      const enemy = new Enemy(400, FLOOR_Y, 100);
-      const coins = [
-        new Coin(200, FLOOR_Y - 15),
-        new Coin(350, FLOOR_Y - 15),
-        new Coin(520, FLOOR_Y - 15),
-      ];
-
-      // HUD elements
-      const healthDisplay = document.getElementById('healthDisplay');
-      const scoreDisplay = document.getElementById('scoreDisplay');
-      const coinsDisplay = document.getElementById('coinsDisplay');
-
-      function updateHUD() {
-        healthDisplay.textContent = player.health;
-        scoreDisplay.textContent = player.score;
-        coinsDisplay.textContent = player.coins;
-      }
-
-      // Store logic
-      const storeItems = {
-        redBandana: false,
-        flameSword: false,
-        doubleJumpBoots: false,
-      };
-
-      function saveStore() {
-        localStorage.setItem('stickLegendsStore', JSON.stringify(storeItems));
-      }
-      function loadStore() {
-        const saved = localStorage.getItem('stickLegendsStore');
-        if (saved) {
-          Object.assign(storeItems, JSON.parse(saved));
-        }
-        applyStoreEffects();
-      }
-
-      function applyStoreEffects() {
-        player.wearingRedBandana = storeItems.redBandana;
-        player.hasFlameSword = storeItems.flameSword;
-        player.hasDoubleJump = storeItems.doubleJumpBoots;
-      }
-
-      // PayPal buttons handling
-      document.querySelectorAll('.store-item').forEach(itemEl => {
-        const id = itemEl.dataset.id;
-        const price = itemEl.dataset.price;
-        const btn = itemEl.querySelector('button.buy-btn');
-
-        btn.addEventListener('click', () => {
-          if (storeItems[id]) {
-            alert(`You already own the ${id.replace(/([A-Z])/g, ' $1')}.`);
-            return;
-          }
-          // Create and submit PayPal form
-          const form = document.createElement('form');
-          form.action = "https://www.paypal.com/cgi-bin/webscr";
-          form.method = "post";
-          form.target = "_blank";
-
-          form.innerHTML = `
-            <input type="hidden" name="cmd" value="_xclick" />
-            <input type="hidden" name="business" value="akaeaves@yahoo.com" />
-            <input type="hidden" name="item_name" value="${id}" />
-            <input type="hidden" name="amount" value="${price}" />
-            <input type="hidden" name="currency_code" value="USD" />
-          `;
-
-          document.body.appendChild(form);
-          form.submit();
-          document.body.removeChild(form);
-
-          // Optimistically grant item (for demo purposes, no payment verification)
-          storeItems[id] = true;
-          saveStore();
-          applyStoreEffects();
-          alert(`Thank you for purchasing ${id.replace(/([A-Z])/g, ' $1')}! It is now active.`);
-        });
-      });
-
-      // Game loop and logic
-      function rectsOverlap(r1, r2) {
-        return !(r2.x > r1.x + r1.width ||
-                 r2.x + r2.width < r1.x ||
-                 r2.y > r1.y + r1.height ||
-                 r2.y + r2.height < r1.y);
-      }
-
-      function attackHitEnemy() {
-        // Attack range rectangle (in front of player)
-        const range = 25;
-        let attackBox = {
-          x: player.facingRight ? player.x + player.width : player.x - range,
-          y: player.y,
-          width: range,
-          height: player.height,
-        };
-        let enemyBox = { x: enemy.x - 10, y: enemy.y - 30, width: 20, height: 40 };
-
-        if (enemy.alive && rectsOverlap(attackBox, enemyBox)) {
-          let damage = player.hasFlameSword ? 20 : 10;
-          enemy.hit(damage);
-        }
-      }
-
-      function update() {
-        // Horizontal movement
-        if (keys.left) {
-          player.vx = -player.speed;
-          player.facingRight = false;
-        } else if (keys.right) {
-          player.vx = player.speed;
-          player.facingRight = true;
-        } else {
-          player.vx = 0;
-        }
-
-        // Jumping logic
-        if (keys.up) {
-          if (!player.jumping) {
-            player.vy = -12;
-            player.jumping = true;
-            player.doubleJumpUsed = false;
-          } else if (player.hasDoubleJump && !player.doubleJumpUsed) {
-            player.vy = -12;
-            player.doubleJumpUsed = true;
-          }
-        }
-
-        // Apply gravity
-        player.vy += GRAVITY;
-
-        // Update position
-        player.x += player.vx;
-        player.y += player.vy;
-
-        // Floor collision
-        if (player.y > FLOOR_Y - player.height) {
-          player.y = FLOOR_Y - player.height;
-          player.vy = 0;
-          player.jumping = false;
-          player.doubleJumpUsed = false;
-        }
-
-        // Boundaries
-        if (player.x < 0) player.x = 0;
-        if (player.x + player.width > WIDTH) player.x = WIDTH - player.width;
-
-        // Enemy update
-        enemy.update();
-
-        // Enemy damages player if close
-        if (enemy.alive) {
-          const playerBox = {x: player.x, y: player.y, width: player.width, height: player.height};
-          const enemyBox = {x: enemy.x - 10, y: enemy.y - 30, width: 20, height: 40};
-          if (rectsOverlap(playerBox, enemyBox)) {
-            player.health -= 0.5;
-            if (player.health < 0) player.health = 0;
-          }
-        }
-
-        // Attack cooldown
-        if (player.attackCooldown > 0) {
-          player.attackCooldown--;
-        }
-
-        // Attack input
-        if (keys.attack && player.attackCooldown === 0) {
-          player.attacking = true;
-          player.attackCooldown = 30; // cooldown frames (~0.5 seconds)
-          attackHitEnemy();
-        } else {
-          player.attacking = false;
-        }
-
-        // Coins collection
-        coins.forEach(coin => {
-          if (!coin.collected) {
-            let coinBox = {x: coin.x - coin.radius, y: coin.y - coin.radius, width: coin.radius * 2, height: coin.radius * 2};
-            let playerBox = {x: player.x, y: player.y, width: player.width, height: player.height};
-            if (rectsOverlap(playerBox, coinBox)) {
-              coin.collected = true;
-              player.coins++;
-              player.score += 5;
-              updateHUD();
-            }
-          }
-        });
-
-        updateHUD();
-      }
-
-      function drawStickFigure(x, y, options = {}) {
-        // options: facingRight (bool), attack (bool), redBandana (bool)
-        const facingRight = options.facingRight ?? true;
-        const attacking = options.attack ?? false;
-        const redBandana = options.redBandana ?? false;
-
-        ctx.strokeStyle = 'white';
+      },
+      update() {
+        if(!this.alive) return;
+        this.x += this.speed * this.direction;
+        if(this.x < 300 || this.x > 580) this.direction *= -1;
+      },
+      draw() {
+        if(!this.alive) return;
+        ctx.strokeStyle = 'red';
         ctx.lineWidth = 3;
-
         ctx.beginPath();
-
-        // Head
-        ctx.arc(x + 10, y - 35, 8, 0, Math.PI * 2);
-
-        // Body
-        ctx.moveTo(x + 10, y - 27);
-        ctx.lineTo(x + 10, y - 5);
-
-        // Arms
-        if (attacking) {
-          // Attack pose
-          if (facingRight) {
-            ctx.moveTo(x + 10, y - 25);
-            ctx.lineTo(x + 30, y - 15); // extended arm with sword
-          } else {
-            ctx.moveTo(x + 10, y - 25);
-            ctx.lineTo(x - 10, y - 15);
-          }
-        } else {
-          ctx.moveTo(x + 10, y - 20);
-          ctx.lineTo(x - 5, y - 15);
-          ctx.moveTo(x + 10, y - 20);
-          ctx.lineTo(x + 25, y - 15);
-        }
-
-        // Legs
-        ctx.moveTo(x + 10, y - 5);
-        ctx.lineTo(x - 5, y + 15);
-        ctx.moveTo(x + 10, y - 5);
-        ctx.lineTo(x + 25, y + 15);
-
+        ctx.arc(this.x + this.width/2, this.y + this.height/2 - 10, 18, 0, Math.PI * 2);
+        ctx.moveTo(this.x + this.width/2, this.y + this.height/2 - 10);
+        ctx.lineTo(this.x + this.width/2, this.y + this.height - 10);
+        ctx.moveTo(this.x + this.width/2, this.y + this.height - 10);
+        ctx.lineTo(this.x + this.width/2 + 15 * this.direction, this.y + this.height);
         ctx.stroke();
+      }
+    };
 
-        if (redBandana) {
-          ctx.fillStyle = '#ff0000cc';
-          ctx.fillRect(x + 3, y - 43, 14, 5);
+    // Coins
+    let coins = [
+      {x: 200, y: FLOOR_Y - 20, radius: 8, collected: false},
+      {x: 250, y: FLOOR_Y - 20, radius: 8, collected: false},
+      {x: 310, y: FLOOR_Y - 20, radius: 8, collected: false},
+      {x: 350, y: FLOOR_Y - 20, radius: 8, collected: false},
+      {x: 450, y: FLOOR_Y - 20, radius: 8, collected: false}
+    ];
+
+    // Store purchased items in localStorage
+    let storeItems = {
+      doubleJump: false,
+      flameSword: false,
+      redBandana: false
+    };
+
+    // Load store purchases from localStorage
+    function loadStore(){
+      const saved = localStorage.getItem('stickLegendsStore');
+      if(saved){
+        try {
+          storeItems = JSON.parse(saved);
+          applyStoreEffects();
+          updateStoreButtons();
+        } catch(e){}
+      }
+    }
+    // Save store purchases
+    function saveStore(){
+      localStorage.setItem('stickLegendsStore', JSON.stringify(storeItems));
+    }
+
+    // Apply upgrades
+    function applyStoreEffects(){
+      player.hasDoubleJump = storeItems.doubleJump;
+      player.hasFlameSword = storeItems.flameSword;
+      player.wearingRedBandana = storeItems.redBandana;
+    }
+
+    // Update store button states
+    function updateStoreButtons(){
+      document.querySelectorAll('#store button').forEach(button => {
+        const id = button.getAttribute('data-id');
+        if(storeItems[id]){
+          button.textContent = `${button.textContent.split('(')[0].trim()} (Owned)`;
+          button.disabled = true;
+        }
+      });
+    }
+
+    // Update HUD display
+    function updateHUD(){
+      document.getElementById('score').textContent = player.score;
+      document.getElementById('coins').textContent = player.coins;
+      document.getElementById('crystals').textContent = player.crystals;
+    }
+
+    // Coin animation & drawing
+    coins.forEach(coin => {
+      coin.update = function() {
+        // simple float effect
+        this.floatOffset = (this.floatOffset || 0) + 0.05;
+      };
+      coin.draw = function() {
+        if(this.collected) return;
+        ctx.fillStyle = '#0ff';
+        ctx.beginPath();
+        ctx.arc(this.x, this.y + Math.sin(this.floatOffset) * 5, this.radius, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = '#00ffffcc';
+        ctx.stroke();
+      };
+    });
+
+    // Keyboard input
+    let keys = {};
+    window.addEventListener('keydown', e => {
+      if(e.repeat) return;
+      keys[e.key.toLowerCase()] = true;
+    });
+    window.addEventListener('keyup', e => {
+      keys[e.key.toLowerCase()] = false;
+    });
+
+    // Attack collision detection helper
+    function rectsOverlap(r1, r2) {
+      return !(r2.x > r1.x + r1.width ||
+               r2.x + r2.width < r1.x ||
+               r2.y > r1.y + r1.height ||
+               r2.y + r2.height < r1.y);
+    }
+
+    // Attack enemy if in range
+    function attackHitEnemy() {
+      const range = 25;
+      let attackBox = {
+        x: player.facingRight ? player.x + player.width : player.x - range,
+        y: player.y,
+        width: range,
+        height: player.height,
+      };
+      let enemyBox = { x: enemy.x - 10, y: enemy.y - 30, width: 20, height: 40 };
+
+      if (enemy.alive && rectsOverlap(attackBox, enemyBox)) {
+        let damage = player.hasFlameSword ? 20 : 10;
+        enemy.hit(damage);
+      }
+    }
+
+    // Update game logic
+    function update() {
+      // Movement
+      if (keys['arrowleft'] || keys['a']) {
+        player.vx = -player.speed;
+        player.facingRight = false;
+      } else if (keys['arrowright'] || keys['d']) {
+        player.vx = player.speed;
+        player.facingRight = true;
+      } else {
+        player.vx = 0;
+      }
+
+      // Jump
+      if (keys['arrowup'] || keys['w'] || keys[' ']) {
+        if (!player.jumping) {
+          player.vy = -12;
+          player.jumping = true;
+          player.doubleJumpUsed = false;
+        } else if (player.hasDoubleJump && !player.doubleJumpUsed) {
+          player.vy = -12;
+          player.doubleJumpUsed = true;
         }
       }
 
-      function draw() {
-        // Clear screen
-        ctx.clearRect(0, 0, WIDTH, HEIGHT);
+      // Gravity
+      player.vy += GRAVITY;
 
-        // Draw floor
-        ctx.fillStyle = '#333';
-        ctx.fillRect(0, FLOOR_Y, WIDTH, HEIGHT - FLOOR_Y);
+      // Position update
+      player.x += player.vx;
+      player.y += player.vy;
 
-        // Draw player
-        drawStickFigure(player.x, player.y + player.height, {
-          facingRight: player.facingRight,
-          attack: player.attacking,
-          redBandana: player.wearingRedBandana,
-        });
-
-        // Draw enemy
-        enemy.draw();
-
-        // Draw coins
-        coins.forEach(coin => {
-          coin.update();
-          coin.draw();
-        });
-
-        // Draw health bar background
-        ctx.fillStyle = '#222';
-        ctx.fillRect(20, 20, 200, 20);
-
-        // Draw health bar foreground
-        ctx.fillStyle = 'lime';
-        ctx.fillRect(20, 20, 200 * (player.health / player.maxHealth), 20);
-
-        // Draw health text on canvas (redundant with HUD, but for fun)
-        ctx.fillStyle = 'white';
-        ctx.font = '16px Arial';
-        ctx.fillText('Health', 20, 15);
+      // Floor collision
+      if (player.y > FLOOR_Y - player.height) {
+        player.y = FLOOR_Y - player.height;
+        player.vy = 0;
+        player.jumping = false;
+        player.doubleJumpUsed = false;
       }
 
-      function loop() {
-        update();
-        draw();
-        requestAnimationFrame(loop);
+      // Boundary checks
+      if (player.x < 0) player.x = 0;
+      if (player.x + player.width > WIDTH) player.x = WIDTH - player.width;
+
+      // Enemy update
+      enemy.update();
+
+      // Enemy damages player if close
+      if (enemy.alive) {
+        const playerBox = {x: player.x, y: player.y, width: player.width, height: player.height};
+        const enemyBox = {x: enemy.x - 10, y: enemy.y - 30, width: 20, height: 40};
+        if (rectsOverlap(playerBox, enemyBox)) {
+          player.health -= 0.5;
+          if (player.health < 0) player.health = 0;
+        }
       }
 
-      // Load store state from localStorage on start
-      loadStore();
+      // Attack cooldown
+      if (player.attackCooldown > 0) {
+        player.attackCooldown--;
+      }
+
+      // Attack input
+      if (keys['j'] && player.attackCooldown === 0) {
+        player.attacking = true;
+        player.attackCooldown = 30;
+        attackHitEnemy();
+      } else {
+        player.attacking = false;
+      }
+
+      // Collect coins
+      coins.forEach(coin => {
+        if (!coin.collected) {
+          let coinBox = {x: coin.x - coin.radius, y: coin.y - coin.radius, width: coin.radius * 2, height: coin.radius * 2};
+          let playerBox = {x: player.x, y: player.y, width: player.width, height: player.height};
+          if (rectsOverlap(playerBox, coinBox)) {
+            coin.collected = true;
+            player.coins++;
+            player.score += 5;
+            player.crystals += 10; // reward crystals too
+          }
+        }
+      });
+
       updateHUD();
-      loop();
+    }
 
-    })();
+    // Draw stick figure player
+    function drawStickFigure(x, y, options = {}) {
+      const facingRight = options.facingRight ?? true;
+      const attacking = options.attack ?? false;
+      const redBandana = options.redBandana ?? false;
+
+      ctx.strokeStyle = 'white';
+      ctx.lineWidth = 3;
+
+      ctx.beginPath();
+
+      // Head
+      ctx.arc(x + 10, y - 35, 8, 0, Math.PI * 2);
+
+      // Body
+      ctx.moveTo(x + 10, y - 27);
+      ctx.lineTo(x + 10, y - 10);
+
+      // Arms
+      if (attacking) {
+        ctx.moveTo(x + 10, y - 25);
+        ctx.lineTo(x + (facingRight ? 30 : -10), y - 15);
+      } else {
+        ctx.moveTo(x + 10, y - 25);
+        ctx.lineTo(x - 10, y - 20);
+        ctx.moveTo(x + 10, y - 25);
+        ctx.lineTo(x + 30, y - 20);
+      }
+
+      // Legs
+      ctx.moveTo(x + 10, y - 10);
+      ctx.lineTo(x - 5, y + 10);
+      ctx.moveTo(x + 10, y - 10);
+      ctx.lineTo(x + 25, y + 10);
+
+      ctx.stroke();
+
+      if (redBandana) {
+        ctx.fillStyle = '#f00';
+        ctx.beginPath();
+        ctx.moveTo(x + 10, y - 40);
+        ctx.lineTo(x + 20, y - 45);
+        ctx.lineTo(x + 5, y - 50);
+        ctx.fill();
+      }
+    }
+
+    // Draw player with upgrades
+    function drawPlayer() {
+      drawStickFigure(player.x, player.y + player.height, {
+        facingRight: player.facingRight,
+        attack: player.attacking,
+        redBandana: player.wearingRedBandana
+      });
+
+      // Draw flame sword effect if owned and attacking
+      if (player.hasFlameSword && player.attacking) {
+        ctx.strokeStyle = 'orange';
+        ctx.lineWidth = 4;
+        ctx.beginPath();
+        ctx.moveTo(player.facingRight ? player.x + 30 : player.x - 10, player.y + player.height - 15);
+        ctx.lineTo(player.facingRight ? player.x + 45 : player.x - 25, player.y + player.height - 25);
+        ctx.stroke();
+      }
+    }
+
+    // Draw health bar
+    function drawHealthBar() {
+      const barWidth = 100;
+      const barHeight = 10;
+      const x = 10;
+      const y = 10;
+      ctx.fillStyle = '#333';
+      ctx.fillRect(x, y, barWidth, barHeight);
+
+      ctx.fillStyle = '#0f0';
+      ctx.fillRect(x, y, (player.health / player.maxHealth) * barWidth, barHeight);
+
+      ctx.strokeStyle = '#0f0';
+      ctx.strokeRect(x, y, barWidth, barHeight);
+    }
+
+    // Main render loop
+    function render() {
+      ctx.clearRect(0, 0, WIDTH, HEIGHT);
+
+      // Floor
+      ctx.fillStyle = '#222';
+      ctx.fillRect(0, FLOOR_Y, WIDTH, HEIGHT - FLOOR_Y);
+
+      // Coins
+      coins.forEach(coin => {
+        coin.update();
+        coin.draw();
+      });
+
+      // Enemy
+      enemy.draw();
+
+      // Player
+      drawPlayer();
+
+      // Health bar
+      drawHealthBar();
+    }
+
+    // Game loop
+    function loop() {
+      update();
+      render();
+      requestAnimationFrame(loop);
+    }
+
+    // Store button logic
+    document.querySelectorAll('#store button').forEach(button => {
+      button.addEventListener('click', () => {
+        const id = button.getAttribute('data-id');
+        if(storeItems[id]) return; // already owned
+
+        const costs = {
+          doubleJump: 300,
+          flameSword: 600,
+          redBandana: 400
+        };
+
+        if(player.crystals >= costs[id]){
+          player.crystals -= costs[id];
+          storeItems[id] = true;
+          applyStoreEffects();
+          updateStoreButtons();
+          saveStore();
+          updateHUD();
+          alert(`You bought ${button.textContent.split('(')[0].trim()}!`);
+        } else {
+          alert('Not enough crystals!');
+        }
+      });
+    });
+
+    // Modals
+    const termsLink = document.getElementById('termsLink');
+    const privacyLink = document.getElementById('privacyLink');
+    const termsModal = document.getElementById('termsModal');
+    const privacyModal = document.getElementById('privacyModal');
+    const termsClose = document.getElementById('termsClose');
+    const privacyClose = document.getElementById('privacyClose');
+
+    function closeModal(modal) {
+      modal.classList.remove('active');
+    }
+    function openModal(modal) {
+      modal.classList.add('active');
+      modal.focus();
+    }
+    termsLink.addEventListener('click', e => {
+      e.preventDefault();
+      openModal(termsModal);
+    });
+    privacyLink.addEventListener('click', e => {
+      e.preventDefault();
+      openModal(privacyModal);
+    });
+    termsClose.addEventListener('click', () => closeModal(termsModal));
+    privacyClose.addEventListener('click', () => closeModal(privacyModal));
+    // Close modals on Escape key
+    window.addEventListener('keydown', e => {
+      if(e.key === 'Escape'){
+        closeModal(termsModal);
+        closeModal(privacyModal);
+      }
+    });
+
+    // Initialization
+    loadStore();
+    loop();
+  })();
   </script>
-
-  <p style="color:#00ffffcc; font-size: 0.8rem; user-select:none; margin-top: 5px;">
-    Controls: Arrow keys/WASD to move, Up/Space to jump, J to attack.
-  </p>
-
 </body>
 </html>
