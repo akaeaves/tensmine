@@ -8,195 +8,183 @@
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background-image: url('https://images.unsplash.com/photo-1585089842874-2deab3e432c0');
+      background: url('https://images.unsplash.com/photo-1557683316-973673baf926?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80') no-repeat center center fixed;
       background-size: cover;
-      background-position: center;
       color: #fff;
     }
     .container {
-      text-align: center;
+      max-width: 1000px;
+      margin: 0 auto;
       padding: 20px;
+      background-color: rgba(0, 0, 0, 0.6);
+      border-radius: 10px;
+    }
+    h1, h2 {
+      text-align: center;
     }
     .grid {
       display: grid;
-      grid-template-columns: repeat(5, 80px);
+      grid-template-columns: repeat(5, 1fr);
       gap: 10px;
-      justify-content: center;
       margin-top: 20px;
     }
     .cell {
-      width: 80px;
-      height: 80px;
-      background-color: #222;
-      border: 2px solid #fff;
-      font-size: 2rem;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      background-color: #2e7d32;
+      border: 2px solid #1b5e20;
+      padding: 20px;
+      text-align: center;
+      font-size: 1.5rem;
       cursor: pointer;
+      user-select: none;
+      border-radius: 10px;
     }
-    .cell.clicked {
+    .cell.revealed {
+      background-color: #4caf50;
       cursor: default;
     }
-    .info {
-      margin-top: 10px;
+    .package-select {
+      display: flex;
+      justify-content: space-around;
+      margin: 20px 0;
+      flex-wrap: wrap;
     }
-    .linkbar {
+    .package {
+      background: #388e3c;
+      border: 2px solid #1b5e20;
+      border-radius: 10px;
+      padding: 10px 20px;
+      margin: 10px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .footer-links {
+      text-align: center;
       margin-top: 30px;
-      font-size: 0.9rem;
     }
-    .linkbar a {
-      color: #ccc;
+    .footer-links a {
+      color: #fff;
+      text-decoration: underline;
       margin: 0 10px;
+      cursor: pointer;
+    }
+    @media (max-width: 600px) {
+      .grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      .cell {
+        font-size: 1rem;
+        padding: 15px;
+      }
     }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>Tens Mine</h1>
-
-    <div>
-      <label>Select Package:</label>
-      <select id="packageSelect">
-        <option value="silver">Silver ($0.50)</option>
-        <option value="gold">Gold ($1.00)</option>
-        <option value="platinum">Platinum ($2.00)</option>
-      </select>
-      <button onclick="startGame()">Buy & Play</button>
+    <div class="package-select">
+      <div class="package" onclick="selectPackage(0.5, 2)">Silver ($0.50)</div>
+      <div class="package" onclick="selectPackage(1.00, 4)">Gold ($1.00)</div>
+      <div class="package" onclick="selectPackage(2.00, 8)">Platinum ($2.00)</div>
     </div>
-
-    <div class="info">
-      <p id="tokens">Tokens: 0</p>
-      <p id="balance">Balance: $0.00</p>
-      <p id="message"></p>
-    </div>
-
-    <div class="grid" id="grid"></div>
-
-    <div class="linkbar">
-      <a href="#" onclick="showModal('terms')">Terms of Service</a>
-      <a href="#" onclick="showModal('privacy')">Privacy Policy</a>
-      <a href="#" onclick="showModal('cashout')">Cashout Policy</a>
+    <h2 id="status">Select a package to begin!</h2>
+    <div class="grid" id="gameGrid"></div>
+    <div class="footer-links">
+      <a onclick="openModal('terms')">Terms of Service</a>
+      <a onclick="openModal('privacy')">Privacy Policy</a>
+      <a onclick="openModal('cashout')">Cashout Policy</a>
     </div>
   </div>
 
-  <!-- Modal -->
-  <div id="modal" style="display:none; position:fixed; top:10%; left:10%; right:10%; background:#111; padding:20px; border:2px solid #fff; color:#fff; z-index:1000;">
-    <div id="modalContent"></div>
-    <button onclick="closeModal()">Close</button>
+  <!-- Modals -->
+  <div id="modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); color:#fff; z-index:10; padding:20px; overflow:auto;">
+    <div style="max-width:800px; margin:0 auto; background:#222; padding:20px; border-radius:10px;">
+      <h2 id="modalTitle"></h2>
+      <div id="modalContent"></div>
+      <button onclick="closeModal()" style="margin-top:20px; padding:10px; background:#4caf50; border:none; color:#fff; border-radius:5px;">Close</button>
+    </div>
   </div>
 
   <script>
-    let tokens = 0;
-    let balance = 0;
-    let picksLeft = 3;
-    let winningBoard = false;
-    let board = [];
-    let currentPackage = null;
+    let currentTokens = 0;
+    let requiredTokens = 0;
+    let playerPackage = 0;
 
-    const payoutByPackage = {
-      silver: 1.00,
-      gold: 2.00,
-      platinum: 4.00
-    };
-
-    function startGame() {
-      picksLeft = 3;
-      currentPackage = document.getElementById("packageSelect").value;
-      tokens = 0;
-      updateDisplay();
-
-      // Determine if this is a winning board (25% chance)
-      winningBoard = Math.random() <= 0.25;
-      generateBoard();
+    function selectPackage(price, tokensToWin) {
+      playerPackage = price;
+      requiredTokens = tokensToWin;
+      currentTokens = 0;
+      document.getElementById("status").innerText = "Game Started! Find " + requiredTokens + " tokens to double your money.";
+      createBoard();
     }
 
-    function generateBoard() {
-      const grid = document.getElementById("grid");
+    function createBoard() {
+      const grid = document.getElementById("gameGrid");
       grid.innerHTML = "";
-      board = Array(20).fill("empty");
 
-      // Place bombs
-      let bombCount = 6;
-      for (let i = 0; i < bombCount; i++) {
-        placeRandom("bomb");
+      let cells = new Array(20).fill("empty");
+      let tokenCount = 0;
+      let bombCount = 0;
+
+      // 25% win chance: ~5 cells should have tokens
+      while (tokenCount < requiredTokens) {
+        let idx = Math.floor(Math.random() * 20);
+        if (cells[idx] === "empty") {
+          cells[idx] = "token";
+          tokenCount++;
+        }
       }
 
-      // Place tokens depending on win condition
-      let tokenCount = winningBoard ? 3 : 5;
-      for (let i = 0; i < tokenCount; i++) {
-        placeRandom("token");
+      while (bombCount < 3) {
+        let idx = Math.floor(Math.random() * 20);
+        if (cells[idx] === "empty") {
+          cells[idx] = "bomb";
+          bombCount++;
+        }
       }
 
-      board.forEach((value, index) => {
+      cells.forEach((type, idx) => {
         const cell = document.createElement("div");
-        cell.className = "cell";
-        cell.onclick = () => reveal(index, cell);
+        cell.classList.add("cell");
+        cell.onclick = () => reveal(cell, type);
         grid.appendChild(cell);
       });
     }
 
-    function placeRandom(type) {
-      let idx;
-      do {
-        idx = Math.floor(Math.random() * 20);
-      } while (board[idx] !== "empty");
-      board[idx] = type;
-    }
+    function reveal(cell, type) {
+      if (cell.classList.contains("revealed")) return;
+      cell.classList.add("revealed");
 
-    function reveal(index, cell) {
-      if (cell.classList.contains("clicked") || picksLeft <= 0) return;
-      picksLeft--;
-      cell.classList.add("clicked");
-      const type = board[index];
       if (type === "token") {
-        cell.textContent = "🪙";
-        tokens++;
-        if (tokens >= 2) {
-          const winAmount = payoutByPackage[currentPackage];
-          balance += winAmount;
-          updateDisplay("You won! $" + winAmount.toFixed(2));
-          disableBoard();
-        } else if (picksLeft === 0) {
-          updateDisplay("Game over. Not enough tokens.");
+        cell.innerText = "💰";
+        currentTokens++;
+        if (currentTokens >= requiredTokens) {
+          document.getElementById("status").innerText = `You found ${currentTokens} tokens! You doubled your money to $${(playerPackage * 2).toFixed(2)}!`;
         }
       } else if (type === "bomb") {
-        cell.textContent = "💥";
-        tokens = 0;
-        updateDisplay("Boom! You hit a bomb. Balance lost.");
-        disableBoard();
+        cell.innerText = "💣";
+        currentTokens = 0;
+        document.getElementById("status").innerText = "Boom! You hit a bomb. Game over.";
       } else {
-        cell.textContent = "☠️";
-        if (picksLeft === 0 && tokens < 2) {
-          updateDisplay("Game over. Not enough tokens.");
-        }
+        cell.innerText = "☠️";
       }
     }
 
-    function disableBoard() {
-      document.querySelectorAll(".cell").forEach(cell => cell.classList.add("clicked"));
-    }
-
-    function updateDisplay(msg = "") {
-      document.getElementById("tokens").textContent = `Tokens: ${tokens}`;
-      document.getElementById("balance").textContent = `Balance: $${balance.toFixed(2)}`;
-      document.getElementById("message").textContent = msg;
-    }
-
-    function showModal(type) {
+    function openModal(type) {
       const modal = document.getElementById("modal");
+      const title = document.getElementById("modalTitle");
       const content = document.getElementById("modalContent");
-      let html = "";
 
-      if (type === "terms") {
-        html = `<h2>Terms of Service</h2><p>This game is for entertainment purposes only. No gambling or chance-based financial risk is involved. Players voluntarily purchase token packages for a skill-based challenge.</p>`;
-      } else if (type === "privacy") {
-        html = `<h2>Privacy Policy</h2><p>We do not collect personal data. Game data is stored locally in your browser.</p>`;
-      } else if (type === "cashout") {
-        html = `<h2>Cashout Policy</h2><p>Players who double their package value by finding 2 tokens may request a payout. All payouts are reviewed and subject to terms.</p>`;
+      if (type === 'terms') {
+        title.innerText = "Terms of Service";
+        content.innerHTML = `<p>Players must be 18 or older. This game offers entertainment with the chance to earn rewards. All winnings are subject to verification. No guarantees of profit. Use at your own risk.</p>`;
+      } else if (type === 'privacy') {
+        title.innerText = "Privacy Policy";
+        content.innerHTML = `<p>We respect your privacy. We do not sell or share your data. Cookies may be used to store session state locally. No personal information is collected without your consent.</p>`;
+      } else if (type === 'cashout') {
+        title.innerText = "Cashout Policy";
+        content.innerHTML = `<p>Players who find at least 2 tokens in a round will double their purchase amount. Payouts are subject to verification and can be requested through the Cashout form (to be implemented).</p>`;
       }
 
-      content.innerHTML = html;
       modal.style.display = "block";
     }
 
