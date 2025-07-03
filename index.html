@@ -7,216 +7,209 @@
   <style>
     body {
       margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-image: url('https://cdn.pixabay.com/photo/2015/11/07/11/01/jungle-1030871_1280.jpg');
+      font-family: Arial, sans-serif;
+      background-image: url('https://images.unsplash.com/photo-1524607504900-6f3f14b5797f');
       background-size: cover;
       background-position: center;
       color: #fff;
     }
+    .overlay {
+      background-color: rgba(0, 0, 0, 0.6);
+      padding: 20px;
+    }
     .container {
-      max-width: 800px;
+      max-width: 900px;
       margin: auto;
       padding: 20px;
-      background: rgba(0, 0, 0, 0.7);
-      border-radius: 10px;
+      background-color: rgba(0, 0, 0, 0.8);
+      border-radius: 12px;
+    }
+    h1, h2 {
+      text-align: center;
+    }
+    .packages {
+      display: flex;
+      justify-content: space-around;
+      margin-bottom: 20px;
+    }
+    .package {
+      background-color: #2a2a2a;
+      padding: 15px;
+      border-radius: 8px;
+      cursor: pointer;
+      text-align: center;
+      transition: transform 0.3s ease;
+    }
+    .package:hover {
+      transform: scale(1.05);
     }
     .grid {
       display: grid;
-      grid-template-columns: repeat(5, 60px);
-      grid-gap: 10px;
-      justify-content: center;
-      margin-top: 20px;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
     }
     .square {
-      width: 60px;
-      height: 60px;
-      background: #444;
-      border-radius: 8px;
+      background-color: #444;
+      height: 80px;
       display: flex;
       align-items: center;
       justify-content: center;
-      cursor: pointer;
       font-size: 24px;
+      border-radius: 8px;
+      cursor: pointer;
     }
-    .info {
+    .square.revealed {
+      background-color: #666;
+    }
+    .footer {
+      margin-top: 30px;
       text-align: center;
-      margin-top: 10px;
     }
     .modal {
       display: none;
       position: fixed;
-      top: 0;
+      z-index: 1;
       left: 0;
+      top: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0, 0, 0, 0.8);
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.8);
     }
     .modal-content {
-      background: #222;
+      background-color: #111;
+      margin: 15% auto;
       padding: 20px;
-      border-radius: 8px;
-      max-width: 500px;
-      color: #fff;
+      border: 1px solid #888;
+      width: 80%;
+      max-width: 600px;
+      border-radius: 12px;
     }
-    .modal-content h2 {
-      margin-top: 0;
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
     }
-    .modal.show {
-      display: flex;
-    }
-    button {
-      padding: 8px 16px;
-      border: none;
-      background: #28a745;
-      color: #fff;
-      border-radius: 4px;
+    .close:hover,
+    .close:focus {
+      color: white;
+      text-decoration: none;
       cursor: pointer;
-    }
-    .packages {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      margin-top: 10px;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1 style="text-align:center;">💰 Tens Mine 💣</h1>
-    <div class="info">
-      <p><strong>Balance:</strong> $<span id="balance">0.00</span></p>
-      <p><strong>Tries left:</strong> <span id="tries">4</span></p>
-    </div>
-    <div class="packages">
-      <button onclick="selectPackage('silver')">Silver - $0.50</button>
-      <button onclick="selectPackage('gold')">Gold - $1.00</button>
-      <button onclick="selectPackage('platinum')">Platinum - $2.00</button>
-    </div>
-    <div class="grid" id="gameGrid"></div>
-    <div style="text-align:center; margin-top:20px;">
-      <a href="#" onclick="openModal('tosModal')">Terms of Service</a> |
-      <a href="#" onclick="openModal('privacyModal')">Privacy Policy</a> |
-      <a href="#" onclick="openModal('cashoutModal')">Cashout Policy</a>
+  <div class="overlay">
+    <div class="container">
+      <h1>Tens Mine</h1>
+      <h2>Select a Package</h2>
+      <div class="packages">
+        <div class="package" onclick="startGame('silver')">Silver<br>$0.50</div>
+        <div class="package" onclick="startGame('gold')">Gold<br>$1.00</div>
+        <div class="package" onclick="startGame('platinum')">Platinum<br>$2.00</div>
+      </div>
+
+      <div id="gameGrid" class="grid"></div>
+
+      <div class="footer">
+        <p><a href="#" onclick="openModal('termsModal')">Terms of Service</a> | <a href="#" onclick="openModal('privacyModal')">Privacy Policy</a> | <a href="#" onclick="openModal('cashoutModal')">Cashout Policy</a></p>
+      </div>
     </div>
   </div>
 
-  <div id="tosModal" class="modal">
+  <!-- Modals -->
+  <div id="termsModal" class="modal">
     <div class="modal-content">
+      <span class="close" onclick="closeModal('termsModal')">&times;</span>
       <h2>Terms of Service</h2>
-      <p>This game is for entertainment purposes only. No gambling is involved. You can win tokens that can be redeemed per our rules.</p>
-      <button onclick="closeModal('tosModal')">Close</button>
+      <p>Players agree to the rules and mechanics of Tens Mine. All transactions are final.</p>
     </div>
   </div>
+
   <div id="privacyModal" class="modal">
     <div class="modal-content">
+      <span class="close" onclick="closeModal('privacyModal')">&times;</span>
       <h2>Privacy Policy</h2>
-      <p>We do not collect personal data. Your gameplay data is stored anonymously for performance and fairness tracking.</p>
-      <button onclick="closeModal('privacyModal')">Close</button>
+      <p>We do not share your data. All gameplay information is stored securely and used to improve the experience.</p>
     </div>
   </div>
+
   <div id="cashoutModal" class="modal">
     <div class="modal-content">
+      <span class="close" onclick="closeModal('cashoutModal')">&times;</span>
       <h2>Cashout Policy</h2>
-      <p>You may cash out once you've doubled your money by finding 2 tokens per game package. Contact support for redemption instructions.</p>
-      <button onclick="closeModal('cashoutModal')">Close</button>
+      <p>You may cash out your winnings after completing a successful round. Winnings are based on token results.</p>
     </div>
   </div>
 
   <script>
-    let balance = 0;
-    let tries = 4;
-    let tokenCount = 0;
+    const tokenRewards = {
+      silver: 0.5,
+      gold: 1.0,
+      platinum: 2.0
+    };
 
-    function updateDisplay() {
-      document.getElementById('balance').textContent = balance.toFixed(2);
-      document.getElementById('tries').textContent = tries;
-    }
-
-    function openModal(id) {
-      document.getElementById(id).classList.add('show');
-    }
-
-    function closeModal(id) {
-      document.getElementById(id).classList.remove('show');
-    }
-
-    function selectPackage(type) {
-      let cost = 0.5;
-      let reward = 1.0;
-      if (type === 'gold') {
-        cost = 1.0;
-        reward = 2.0;
-      } else if (type === 'platinum') {
-        cost = 2.0;
-        reward = 4.0;
-      }
-
-      if (balance < cost) {
-        alert("Not enough balance. Please add funds.");
-        return;
-      }
-
-      balance -= cost;
-      tries = 4;
-      tokenCount = 0;
-      generateGrid(reward);
-      updateDisplay();
-    }
-
-    function generateGrid(reward) {
+    function startGame(packageType) {
       const grid = document.getElementById('gameGrid');
       grid.innerHTML = '';
-      const squares = Array(20).fill('empty');
-      const tokenIndices = new Set();
-      const bombIndex = Math.floor(Math.random() * 20);
-      while (tokenIndices.size < 2) {
-        let index = Math.floor(Math.random() * 20);
-        if (index !== bombIndex) tokenIndices.add(index);
+      const bombCount = 3;
+      const tokenCount = 2; // Needs 2 tokens to win
+      const cells = Array(20).fill('empty');
+      let placed = 0;
+      while (placed < bombCount) {
+        const index = Math.floor(Math.random() * 20);
+        if (cells[index] === 'empty') {
+          cells[index] = 'bomb';
+          placed++;
+        }
+      }
+      placed = 0;
+      while (placed < tokenCount) {
+        const index = Math.floor(Math.random() * 20);
+        if (cells[index] === 'empty') {
+          cells[index] = 'token';
+          placed++;
+        }
       }
 
-      squares[bombIndex] = 'bomb';
-      tokenIndices.forEach(i => squares[i] = 'token');
-
-      squares.forEach((val, idx) => {
+      cells.forEach((val, idx) => {
         const div = document.createElement('div');
         div.className = 'square';
-        div.textContent = '?';
-        div.onclick = function () {
-          if (div.dataset.clicked) return;
-          div.dataset.clicked = 'true';
-
-          if (val === 'bomb') {
-            div.textContent = '💀';
-            balance = 0;
-            tries = 0;
-            alert('BOOM! You hit a bomb. Game over.');
-          } else if (val === 'token') {
-            div.textContent = '🎯';
-            tokenCount++;
-            if (tokenCount === 2) {
-              alert('You found 2 tokens! You win!');
-              balance += reward;
-              tries = 0;
-            }
-          } else {
-            div.textContent = '☠️';
-          }
-
-          tries--;
-          if (tries <= 0 && tokenCount < 2) {
-            alert('Out of tries!');
-          }
-
-          updateDisplay();
-        };
+        div.onclick = () => reveal(div, val, packageType);
         grid.appendChild(div);
       });
     }
 
-    updateDisplay();
+    let tokensFound = 0;
+
+    function reveal(el, type, pkg) {
+      if (el.classList.contains('revealed')) return;
+      el.classList.add('revealed');
+
+      if (type === 'bomb') {
+        el.innerHTML = '💣';
+        alert('Game Over!');
+        tokensFound = 0;
+      } else if (type === 'token') {
+        el.innerHTML = '🪙';
+        tokensFound++;
+        if (tokensFound >= 2) {
+          alert(`You win $${(tokenRewards[pkg] * 2).toFixed(2)}! You may cash out now.`);
+          tokensFound = 0;
+        }
+      } else {
+        el.innerHTML = '☠️';
+      }
+    }
+
+    function openModal(id) {
+      document.getElementById(id).style.display = 'block';
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).style.display = 'none';
+    }
   </script>
 </body>
 </html>
