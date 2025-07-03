@@ -1,215 +1,112 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tens Mine</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background-image: url('https://images.unsplash.com/photo-1524607504900-6f3f14b5797f');
-      background-size: cover;
-      background-position: center;
-      color: #fff;
-    }
-    .overlay {
-      background-color: rgba(0, 0, 0, 0.6);
-      padding: 20px;
-    }
-    .container {
-      max-width: 900px;
-      margin: auto;
-      padding: 20px;
-      background-color: rgba(0, 0, 0, 0.8);
-      border-radius: 12px;
-    }
-    h1, h2 {
-      text-align: center;
-    }
-    .packages {
-      display: flex;
-      justify-content: space-around;
-      margin-bottom: 20px;
-    }
-    .package {
-      background-color: #2a2a2a;
-      padding: 15px;
-      border-radius: 8px;
-      cursor: pointer;
-      text-align: center;
-      transition: transform 0.3s ease;
-    }
-    .package:hover {
-      transform: scale(1.05);
-    }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 10px;
-    }
-    .square {
-      background-color: #444;
-      height: 80px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 24px;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-    .square.revealed {
-      background-color: #666;
-    }
-    .footer {
-      margin-top: 30px;
-      text-align: center;
-    }
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 1;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      overflow: auto;
-      background-color: rgba(0, 0, 0, 0.8);
-    }
-    .modal-content {
-      background-color: #111;
-      margin: 15% auto;
-      padding: 20px;
-      border: 1px solid #888;
-      width: 80%;
-      max-width: 600px;
-      border-radius: 12px;
-    }
-    .close {
-      color: #aaa;
-      float: right;
-      font-size: 28px;
-      font-weight: bold;
-    }
-    .close:hover,
-    .close:focus {
-      color: white;
-      text-decoration: none;
-      cursor: pointer;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Tens Mine - A thrilling jungle adventure game that rewards players with tokens. Choose your package and start exploring!">
+    <title>Tens Mine - Jungle Adventure Game</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url('jungle-background.jpg');
+            background-size: cover;
+            color: #fff;
+        }
+        header {
+            text-align: center;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+        main {
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+            margin: 20px auto;
+            max-width: 800px;
+        }
+        section {
+            margin-bottom: 20px;
+        }
+        .package {
+            border: 2px solid #FFD700;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.1);
+            transition: transform 0.2s;
+        }
+        .package:hover {
+            transform: scale(1.05);
+        }
+        button {
+            background-color: #FFD700;
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #FFC107;
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+    </style>
 </head>
 <body>
-  <div class="overlay">
-    <div class="container">
-      <h1>Tens Mine</h1>
-      <h2>Select a Package</h2>
-      <div class="packages">
-        <div class="package" onclick="startGame('silver')">Silver<br>$0.50</div>
-        <div class="package" onclick="startGame('gold')">Gold<br>$1.00</div>
-        <div class="package" onclick="startGame('platinum')">Platinum<br>$2.00</div>
-      </div>
 
-      <div id="gameGrid" class="grid"></div>
+<header>
+    <h1>Welcome to Tens Mine!</h1>
+    <p>Embark on a thrilling adventure in the jungle and earn tokens!</p>
+</header>
 
-      <div class="footer">
-        <p><a href="#" onclick="openModal('termsModal')">Terms of Service</a> | <a href="#" onclick="openModal('privacyModal')">Privacy Policy</a> | <a href="#" onclick="openModal('cashoutModal')">Cashout Policy</a></p>
-      </div>
-    </div>
-  </div>
+<main>
+    <section>
+        <h2>Choose Your Package</h2>
+        <div class="package">
+            <h3>Silver Package</h3>
+            <p>Price: $10</p>
+            <p>Tokens: 100</p>
+            <button onclick="purchase('Silver Package', 10, 100)">Purchase</button>
+        </div>
+        <div class="package">
+            <h3>Gold Package</h3>
+            <p>Price: $20</p>
+            <p>Tokens: 250</p>
+            <button onclick="purchase('Gold Package', 20, 250)">Purchase</button>
+        </div>
+        <div class="package">
+            <h3>Platinum Package</h3>
+            <p>Price: $50</p>
+            <p>Tokens: 600</p>
+            <button onclick="purchase('Platinum Package', 50, 600)">Purchase</button>
+        </div>
+    </section>
 
-  <!-- Modals -->
-  <div id="termsModal" class="modal">
-    <div class="modal-content">
-      <span class="close" onclick="closeModal('termsModal')">&times;</span>
-      <h2>Terms of Service</h2>
-      <p>Players agree to the rules and mechanics of Tens Mine. All transactions are final.</p>
-    </div>
-  </div>
+    <section>
+        <h2>Your Adventure Awaits!</h2>
+        <p>Explore the jungle, collect treasures, and compete with friends!</p>
+        <p>Join now and start your journey!</p>
+    </section>
+</main>
 
-  <div id="privacyModal" class="modal">
-    <div class="modal-content">
-      <span class="close" onclick="closeModal('privacyModal')">&times;</span>
-      <h2>Privacy Policy</h2>
-      <p>We do not share your data. All gameplay information is stored securely and used to improve the experience.</p>
-    </div>
-  </div>
+<footer>
+    <p>Payments are securely processed through PayPal. All payments go to: <a href="mailto:akaeaves@yahoo.com">akaeaves@yahoo.com</a></p>
+</footer>
 
-  <div id="cashoutModal" class="modal">
-    <div class="modal-content">
-      <span class="close" onclick="closeModal('cashoutModal')">&times;</span>
-      <h2>Cashout Policy</h2>
-      <p>You may cash out your winnings after completing a successful round. Winnings are based on token results.</p>
-    </div>
-  </div>
-
-  <script>
-    const tokenRewards = {
-      silver: 0.5,
-      gold: 1.0,
-      platinum: 2.0
-    };
-
-    function startGame(packageType) {
-      const grid = document.getElementById('gameGrid');
-      grid.innerHTML = '';
-      const bombCount = 3;
-      const tokenCount = 2; // Needs 2 tokens to win
-      const cells = Array(20).fill('empty');
-      let placed = 0;
-      while (placed < bombCount) {
-        const index = Math.floor(Math.random() * 20);
-        if (cells[index] === 'empty') {
-          cells[index] = 'bomb';
-          placed++;
-        }
-      }
-      placed = 0;
-      while (placed < tokenCount) {
-        const index = Math.floor(Math.random() * 20);
-        if (cells[index] === 'empty') {
-          cells[index] = 'token';
-          placed++;
-        }
-      }
-
-      cells.forEach((val, idx) => {
-        const div = document.createElement('div');
-        div.className = 'square';
-        div.onclick = () => reveal(div, val, packageType);
-        grid.appendChild(div);
-      });
+<script>
+    function purchase(packageName, price, tokens) {
+        alert(`You have selected the ${packageName} for $${price}. You will receive ${tokens} tokens!`);
+        // Here you would typically integrate with PayPal API for payment processing
     }
+</script>
 
-    let tokensFound = 0;
-
-    function reveal(el, type, pkg) {
-      if (el.classList.contains('revealed')) return;
-      el.classList.add('revealed');
-
-      if (type === 'bomb') {
-        el.innerHTML = '💣';
-        alert('Game Over!');
-        tokensFound = 0;
-      } else if (type === 'token') {
-        el.innerHTML = '🪙';
-        tokensFound++;
-        if (tokensFound >= 2) {
-          alert(`You win $${(tokenRewards[pkg] * 2).toFixed(2)}! You may cash out now.`);
-          tokensFound = 0;
-        }
-      } else {
-        el.innerHTML = '☠️';
-      }
-    }
-
-    function openModal(id) {
-      document.getElementById(id).style.display = 'block';
-    }
-
-    function closeModal(id) {
-      document.getElementById(id).style.display = 'none';
-    }
-  </script>
 </body>
 </html>
