@@ -1,412 +1,192 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Tens Mine - Jungle Treasure</title>
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
-  body {
-    margin: 0;
-    font-family: 'Roboto', sans-serif;
-    background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1280&q=80') no-repeat center center fixed;
-    background-size: cover;
-    color: #fff;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    align-items: center;
-    justify-content: flex-start;
-    padding: 1rem;
-  }
-  h1 {
-    margin: 1rem 0 0.5rem 0;
-    text-shadow: 2px 2px 6px #000;
-  }
-  #packages {
-    display: flex;
-    gap: 1rem;
-    margin: 1rem 0 2rem 0;
-  }
-  .package {
-    background: rgba(0,0,0,0.6);
-    border: 2px solid #4CAF50;
-    border-radius: 8px;
-    padding: 1rem 1.5rem;
-    cursor: pointer;
-    user-select: none;
-    transition: background 0.3s, border-color 0.3s;
-    flex: 1;
-    text-align: center;
-  }
-  .package:hover {
-    background: rgba(76,175,80,0.8);
-    border-color: #81C784;
-  }
-  .package.selected {
-    background: #4CAF50;
-    border-color: #A5D6A7;
-    font-weight: 700;
-  }
-  #balance {
-    font-size: 1.2rem;
-    margin-bottom: 1rem;
-    text-shadow: 1px 1px 3px #000;
-  }
-  #grid {
-    display: grid;
-    grid-template-columns: repeat(5, 70px);
-    grid-template-rows: repeat(4, 70px);
-    gap: 10px;
-    margin-bottom: 1.5rem;
-  }
-  .square {
-    background: rgba(0,0,0,0.6);
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2rem;
-    cursor: pointer;
-    user-select: none;
-    color: #fff;
-    box-shadow: 0 0 5px #333;
-    transition: background 0.3s;
-  }
-  .square:hover:not(.revealed):not(.disabled) {
-    background: rgba(76,175,80,0.8);
-  }
-  .square.revealed {
-    cursor: default;
-    background: rgba(0,0,0,0.85);
-  }
-  #cashoutBtn {
-    background: #FF9800;
-    border: none;
-    border-radius: 6px;
-    color: #fff;
-    padding: 0.7rem 1.2rem;
-    font-size: 1.1rem;
-    cursor: pointer;
-    user-select: none;
-    transition: background 0.3s;
-    margin-bottom: 2rem;
-  }
-  #cashoutBtn:disabled {
-    background: #BDBDBD;
-    cursor: default;
-  }
-  #cashoutBtn:hover:enabled {
-    background: #F57C00;
-  }
-  footer {
-    font-size: 0.9rem;
-    color: #ccc;
-    margin-bottom: 1rem;
-    text-align: center;
-  }
-  footer a {
-    color: #90CAF9;
-    margin: 0 0.5rem;
-    cursor: pointer;
-    text-decoration: underline;
-  }
-  /* Modal styles */
-  .modal {
-    display: none;
-    position: fixed;
-    z-index: 9999;
-    left: 0; top: 0; right: 0; bottom: 0;
-    background: rgba(0,0,0,0.75);
-    align-items: center;
-    justify-content: center;
-    padding: 1rem;
-  }
-  .modal.active {
-    display: flex;
-  }
-  .modal-content {
-    background: #222;
-    color: #eee;
-    max-width: 400px;
-    padding: 1.5rem 2rem;
-    border-radius: 10px;
-    box-shadow: 0 0 15px #000;
-    overflow-y: auto;
-    max-height: 80vh;
-  }
-  .modal-content h2 {
-    margin-top: 0;
-    text-align: center;
-    color: #4CAF50;
-  }
-  .modal-content p {
-    line-height: 1.4;
-  }
-  .modal-close {
-    display: block;
-    margin: 1rem auto 0 auto;
-    background: #4CAF50;
-    color: #222;
-    border: none;
-    padding: 0.6rem 1.2rem;
-    font-weight: 700;
-    border-radius: 6px;
-    cursor: pointer;
-  }
-  /* Responsive */
-  @media (max-width: 400px) {
-    #grid {
-      grid-template-columns: repeat(4, 60px);
-      grid-template-rows: repeat(5, 60px);
-      gap: 8px;
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jungle Treasure Game</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: url('https://cdn.pixabay.com/photo/2016/10/23/01/12/jungle-1767236_1280.jpg') no-repeat center center fixed;
+      background-size: cover;
+      color: #fff;
+    }
+    .container {
+      text-align: center;
+      padding: 20px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(5, 60px);
+      grid-gap: 10px;
+      justify-content: center;
+      margin: 20px auto;
     }
     .square {
-      font-size: 1.5rem;
       width: 60px;
       height: 60px;
+      background: rgba(0, 0, 0, 0.6);
+      border: 2px solid #fff;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-    #packages {
-      flex-direction: column;
-      gap: 0.8rem;
-      width: 100%;
+    .info, .controls {
+      margin: 15px auto;
+      max-width: 400px;
     }
-  }
-</style>
+    .leaderboard, .progress {
+      background: rgba(0, 0, 0, 0.6);
+      padding: 10px;
+      margin-top: 15px;
+      border-radius: 8px;
+    }
+    button {
+      padding: 10px 20px;
+      margin: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    @media (max-width: 600px) {
+      .grid {
+        grid-template-columns: repeat(4, 50px);
+        grid-gap: 8px;
+      }
+      .square {
+        width: 50px;
+        height: 50px;
+        font-size: 18px;
+      }
+    }
+  </style>
 </head>
 <body>
-
-<h1>Tens Mine - Jungle Treasure</h1>
-
-<div id="packages">
-  <div class="package" data-package="silver" data-price="0.5" data-tokens="2" data-tries="4">
-    Silver<br />$0.50<br />Find 2 Tokens
+  <div class="container">
+    <h1>🌴 Jungle Treasure</h1>
+    <div class="info">
+      <p><strong>Balance:</strong> $<span id="balance">0.00</span></p>
+      <p><strong>Tokens:</strong> <span id="tokens">0</span></p>
+      <p><strong>Tries Left:</strong> <span id="tries">4</span></p>
+    </div>
+    <div class="controls">
+      <button onclick="buyPackage(0.5, 2)">Silver ($0.50)</button>
+      <button onclick="buyPackage(1.00, 3)">Gold ($1.00)</button>
+      <button onclick="buyPackage(2.00, 4)">Platinum ($2.00)</button>
+    </div>
+    <div class="grid" id="grid"></div>
+    <div class="progress">
+      <p><strong>Level:</strong> <span id="level">1</span></p>
+      <p><strong>Wins in a row:</strong> <span id="streak">0</span></p>
+    </div>
+    <div class="leaderboard">
+      <h3>🏆 Leaderboard</h3>
+      <ul id="leaderboard"></ul>
+    </div>
+    <div class="controls">
+      <button onclick="shareGame()">📣 Share</button>
+    </div>
   </div>
-  <div class="package" data-package="gold" data-price="1.0" data-tokens="2" data-tries="4">
-    Gold<br />$1.00<br />Find 2 Tokens
-  </div>
-  <div class="package" data-package="platinum" data-price="2.0" data-tokens="2" data-tries="4">
-    Platinum<br />$2.00<br />Find 2 Tokens
-  </div>
-</div>
 
-<div id="balance">Select a package to start playing</div>
+  <script>
+    let balance = 0;
+    let tokens = 0;
+    let currentPackage = null;
+    let streak = 0;
+    let level = 1;
+    let tries = 4;
+    const leaderboard = [];
 
-<div id="grid"></div>
-
-<button id="cashoutBtn" disabled>Cash Out</button>
-
-<footer>
-  <a id="disclaimerLink">Disclaimer</a> | 
-  <a id="termsLink">Terms of Service</a> | 
-  <a id="privacyLink">Privacy Policy</a> | 
-  <a id="cashoutPolicyLink">Cashout Policy</a>
-</footer>
-
-<!-- Modals -->
-<div id="modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-  <div class="modal-content">
-    <h2 id="modalTitle">Title</h2>
-    <div id="modalText"></div>
-    <button class="modal-close" aria-label="Close modal">Close</button>
-  </div>
-</div>
-
-<script>
-  const packages = document.querySelectorAll('.package');
-  const grid = document.getElementById('grid');
-  const balanceDisplay = document.getElementById('balance');
-  const cashoutBtn = document.getElementById('cashoutBtn');
-
-  // Modal elements
-  const modal = document.getElementById('modal');
-  const modalTitle = document.getElementById('modalTitle');
-  const modalText = document.getElementById('modalText');
-  const modalCloseBtn = modal.querySelector('.modal-close');
-
-  // Game state
-  let selectedPackage = null;
-  let triesLeft = 0;
-  let tokensFound = 0;
-  let squaresData = []; // 'token' or 'bomb'
-  let gameOver = false;
-
-  // Policy texts
-  const policies = {
-    disclaimer: `
-      <p>This game is intended for entertainment purposes only.</p>
-      <p>No real gambling or betting is involved. Players purchase token packages and attempt to find tokens within a grid.</p>
-      <p>Winning is based on luck, and no guarantees of profit are provided.</p>
-    `,
-    terms: `
-      <p><strong>Terms of Service:</strong></p>
-      <p>By playing Tens Mine, you agree to our rules and policies.</p>
-      <ul>
-        <li>Players must be of legal age in their jurisdiction.</li>
-        <li>Purchases of token packages are final and non-refundable.</li>
-        <li>Game results are determined randomly each round.</li>
-      </ul>
-    `,
-    privacy: `
-      <p><strong>Privacy Policy:</strong></p>
-      <p>We do not store personal data beyond game session info stored locally on your device.</p>
-      <p>We do not share your information with third parties.</p>
-    `,
-    cashoutPolicy: `
-      <p><strong>Cashout Policy:</strong></p>
-      <p>If you find the required number of tokens for your package, you may cash out double your package price.</p>
-      <p>Cashout is subject to verification and terms applied by the site owner.</p>
-    `
-  };
-
-  // Package selection event
-  packages.forEach(pkg => {
-    pkg.addEventListener('click', () => {
-      packages.forEach(p => p.classList.remove('selected'));
-      pkg.classList.add('selected');
-      selectedPackage = {
-        name: pkg.dataset.package,
-        price: parseFloat(pkg.dataset.price),
-        tokensRequired: parseInt(pkg.dataset.tokens),
-        triesAllowed: parseInt(pkg.dataset.tries)
-      };
-      resetGame();
-    });
-  });
-
-  // Reset & start game
-  function resetGame() {
-    tokensFound = 0;
-    triesLeft = selectedPackage.triesAllowed;
-    gameOver = false;
-    updateBalanceDisplay();
-    cashoutBtn.disabled = true;
-    generateGrid();
-  }
-
-  // Generate grid squares with tokens and bombs randomly
-  function generateGrid() {
-    grid.innerHTML = '';
-    squaresData = [];
-
-    // Random unique token positions
-    const tokenPositions = [];
-    while (tokenPositions.length < selectedPackage.tokensRequired) {
-      let pos = Math.floor(Math.random() * 20);
-      if (!tokenPositions.includes(pos)) tokenPositions.push(pos);
+    function updateDisplay() {
+      document.getElementById("balance").textContent = balance.toFixed(2);
+      document.getElementById("tokens").textContent = tokens;
+      document.getElementById("tries").textContent = tries;
+      document.getElementById("streak").textContent = streak;
+      document.getElementById("level").textContent = level;
+      updateLeaderboard();
     }
 
-    // Fill grid data with token or bomb
-    for (let i = 0; i < 20; i++) {
-      squaresData[i] = tokenPositions.includes(i) ? 'token' : 'bomb';
+    function buyPackage(cost, maxTokens) {
+      if (tries < 4) return alert("Finish your current round first.");
+      balance -= cost;
+      currentPackage = { cost, maxTokens };
+      tries = 4;
+      tokens = 0;
+      generateGrid();
+      updateDisplay();
     }
 
-    // Create squares
-    for (let i = 0; i < 20; i++) {
-      const sq = document.createElement('div');
-      sq.classList.add('square');
-      sq.dataset.index = i;
-      sq.addEventListener('click', () => clickSquare(i));
-      grid.appendChild(sq);
-    }
-  }
+    function generateGrid() {
+      const grid = document.getElementById("grid");
+      grid.innerHTML = "";
+      const cells = Array(20).fill("empty");
+      const tokenCount = currentPackage.maxTokens;
+      const bombIndex = Math.floor(Math.random() * 20);
 
-  // Update balance, tries, tokens found display
-  function updateBalanceDisplay() {
-    if (!selectedPackage) {
-      balanceDisplay.textContent = 'Select a package to start playing';
-      return;
-    }
-    const cashoutVal = tokensFound >= selectedPackage.tokensRequired ? (selectedPackage.price * 2).toFixed(2) : '0.00';
-    balanceDisplay.textContent = `Tokens Found: ${tokensFound} | Tries Left: ${triesLeft} | Cashout: $${cashoutVal}`;
-  }
-
-  // Click on a square
-  function clickSquare(i) {
-    if (!selectedPackage) {
-      alert('Please select a package first.');
-      return;
-    }
-    if (gameOver) return;
-
-    const sq = grid.children[i];
-    if (sq.classList.contains('revealed')) return;
-
-    sq.classList.add('revealed');
-    triesLeft--;
-    updateBalanceDisplay();
-
-    if (squaresData[i] === 'token') {
-      sq.textContent = '💰';
-      tokensFound++;
-      updateBalanceDisplay();
-
-      if (tokensFound >= selectedPackage.tokensRequired) {
-        cashoutBtn.disabled = false;
-        alert(`🎉 Congrats! You found all tokens and can cash out $${(selectedPackage.price * 2).toFixed(2)}!`);
-        gameOver = true;
-        disableGrid();
-        return;
+      for (let i = 0; i < tokenCount; i++) {
+        let idx;
+        do {
+          idx = Math.floor(Math.random() * 20);
+        } while (cells[idx] !== "empty" || idx === bombIndex);
+        cells[idx] = "token";
       }
-    } else {
-      sq.textContent = '💀';
-      alert('💥 Boom! You hit a bomb. Game over and balance reset.');
-      gameOver = true;
-      disableGrid();
-      resetGame();
-      return;
+      cells[bombIndex] = "bomb";
+
+      cells.forEach((type, idx) => {
+        const div = document.createElement("div");
+        div.className = "square";
+        div.addEventListener("click", () => handleClick(type, div));
+        grid.appendChild(div);
+      });
     }
 
-    if (triesLeft === 0 && !gameOver) {
-      alert('No tries left. You did not find all tokens. Game over.');
-      gameOver = true;
-      disableGrid();
-      resetGame();
-      return;
+    function handleClick(type, div) {
+      if (div.textContent) return;
+      if (type === "bomb") {
+        div.textContent = "💣";
+        streak = 0;
+        tries = 0;
+        tokens = 0;
+        alert("💥 Boom! You hit a bomb. Balance reset.");
+        updateDisplay();
+      } else if (type === "token") {
+        div.textContent = "💰";
+        tokens++;
+        tries--;
+        if (tokens >= 2) {
+          const reward = currentPackage.cost * 2;
+          balance += reward;
+          streak++;
+          if (streak % 3 === 0) level++;
+          leaderboard.push({ name: "Player", reward });
+          alert("🎉 You doubled your money!");
+          tries = 0;
+        }
+        updateDisplay();
+      } else {
+        div.textContent = "☠️";
+        tries--;
+        updateDisplay();
+      }
+      if (tries <= 0 && tokens < 2) {
+        alert("Out of tries! Try another package.");
+      }
     }
-  }
 
-  // Disable all squares by removing event listeners
-  function disableGrid() {
-    for (let sq of grid.children) {
-      sq.style.cursor = 'default';
-      const newNode = sq.cloneNode(true);
-      sq.parentNode.replaceChild(newNode, sq);
+    function updateLeaderboard() {
+      const list = document.getElementById("leaderboard");
+      list.innerHTML = leaderboard.slice(-5).reverse().map(p => `<li>${p.name} - $${p.reward.toFixed(2)}</li>`).join('');
     }
-  }
 
-  // Cashout button handler
-  cashoutBtn.addEventListener('click', () => {
-    if (!selectedPackage) return;
-    alert(`💰 Cashing out $${(selectedPackage.price * 2).toFixed(2)}! Thanks for playing!`);
-    resetGame();
-  });
+    function shareGame() {
+      alert("Share this game with your friends!");
+    }
 
-  // Modal open helper
-  function openModal(title, htmlContent) {
-    modalTitle.textContent = title;
-    modalText.innerHTML = htmlContent;
-    modal.classList.add('active');
-  }
-
-  // Modal close button
-  modalCloseBtn.addEventListener('click', () => {
-    modal.classList.remove('active');
-  });
-
-  // Footer links open modals
-  document.getElementById('disclaimerLink').addEventListener('click', () => {
-    openModal('Disclaimer', policies.disclaimer);
-  });
-  document.getElementById('termsLink').addEventListener('click', () => {
-    openModal('Terms of Service', policies.terms);
-  });
-  document.getElementById('privacyLink').addEventListener('click', () => {
-    openModal('Privacy Policy', policies.privacy);
-  });
-  document.getElementById('cashoutPolicyLink').addEventListener('click', () => {
-    openModal('Cashout Policy', policies.cashoutPolicy);
-  });
-</script>
+    updateDisplay();
+  </script>
 </body>
 </html>
