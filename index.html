@@ -8,9 +8,9 @@
     body {
       font-family: Arial, sans-serif;
       text-align: center;
-      background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1350&q=80') no-repeat center center fixed;
+      background: url('https://images.unsplash.com/photo-1502082553048-f009c37129b9?auto=format&fit=crop&w=1350&q=80') no-repeat center center fixed;
       background-size: cover;
-      color: #e0f7e9;
+      color: #d7f3d7;
       margin: 0;
       padding: 20px;
       min-height: 100vh;
@@ -18,10 +18,23 @@
       flex-direction: column;
       align-items: center;
       justify-content: flex-start;
+      /* subtle dark overlay for better contrast */
+      position: relative;
+      z-index: 0;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 50, 0, 0.6);
+      z-index: -1;
     }
     h1 {
-      text-shadow: 2px 2px 6px #0a3d0a;
+      text-shadow: 2px 2px 8px #013301;
       margin-bottom: 10px;
+      font-weight: 900;
+      font-size: 2.8rem;
+      letter-spacing: 2px;
     }
     .grid {
       display: grid;
@@ -33,9 +46,9 @@
     .square {
       width: 60px;
       height: 60px;
-      background: rgba(34, 77, 34, 0.85);
+      background: rgba(34, 77, 34, 0.9);
       border: 2px solid #0b3d0b;
-      font-size: 24px;
+      font-size: 28px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -43,52 +56,77 @@
       color: #c6f7c6;
       user-select: none;
       transition: background-color 0.3s ease;
+      border-radius: 8px;
+      box-shadow: 0 0 6px #0a3d0a inset;
     }
     .square:hover {
-      background: rgba(55, 110, 55, 0.95);
+      background: rgba(55, 110, 55, 1);
     }
     .dashboard {
       margin-top: 30px;
-      background: rgba(0, 50, 0, 0.8);
-      padding: 10px;
-      border-radius: 8px;
-      width: 300px;
+      background: rgba(0, 50, 0, 0.85);
+      padding: 15px;
+      border-radius: 10px;
+      width: 320px;
       margin-left: auto;
       margin-right: auto;
-      box-shadow: 0 0 10px #003300;
-    }
-    .hidden {
-      display: none;
+      box-shadow: 0 0 15px #004400;
+      font-weight: 600;
+      font-size: 1rem;
+      color: #d7f3d7;
     }
     .cashout {
-      margin-top: 10px;
+      margin-top: 15px;
       background: #2a8f2a;
       color: white;
-      padding: 8px 16px;
+      padding: 10px 20px;
       border: none;
       cursor: pointer;
-      border-radius: 4px;
+      border-radius: 6px;
       font-weight: bold;
-      box-shadow: 0 0 6px #1a5d1a;
+      box-shadow: 0 0 10px #1a5d1a;
       transition: background-color 0.3s ease;
+      font-size: 1rem;
     }
     .cashout:hover {
       background: #3cb33c;
     }
     select, button {
       font-size: 16px;
-      margin: 8px 5px;
-      padding: 6px 10px;
-      border-radius: 6px;
+      margin: 10px 8px;
+      padding: 8px 14px;
+      border-radius: 8px;
       border: 1px solid #2c7c2c;
       background: #2f8f2f;
-      color: #e0f7e9;
+      color: #d7f3d7;
       cursor: pointer;
-      box-shadow: 0 0 6px #1a5d1a;
+      box-shadow: 0 0 10px #1a5d1a;
       transition: background-color 0.3s ease;
+      font-weight: 600;
     }
     select:hover, button:hover {
       background: #3cb33c;
+    }
+    /* Footer for disclaimers and policies */
+    footer {
+      margin-top: auto;
+      background: rgba(0, 40, 0, 0.75);
+      padding: 20px 15px;
+      width: 100%;
+      color: #a9d1a9;
+      font-size: 0.9rem;
+      box-shadow: inset 0 1px 3px rgba(255,255,255,0.1);
+      user-select: none;
+      font-weight: 500;
+    }
+    footer a {
+      color: #85c185;
+      text-decoration: none;
+      margin: 0 10px;
+    }
+    footer a:hover {
+      text-decoration: underline;
+      color: #c2f0c2;
     }
   </style>
 </head>
@@ -105,15 +143,25 @@
     <button onclick="buyPackage()">Buy Package</button>
   </div>
 
-  <div id="balance">Balance: $0.00</div>
+  <div id="balance" style="margin-top:12px; font-weight:700; font-size:1.2rem;">Balance: $0.00</div>
   <div id="tokens">Tokens This Round: 0</div>
   <div id="grid" class="grid hidden"></div>
   <button onclick="cashout()" class="cashout">Cash Out</button>
 
-  <div class="dashboard">
+  <div class="dashboard" aria-live="polite" aria-atomic="true" role="region">
     <h3>Profit Dashboard</h3>
     <div id="stats"></div>
   </div>
+
+  <footer>
+    <p><strong>Disclaimer:</strong> Tens Mine is an entertainment game with real-money mechanics. Players have a chance to win, but losses are possible.</p>
+    <p>By playing, you agree to our
+      <a href="#" target="_blank" rel="noopener noreferrer">Terms of Service</a>,
+      <a href="#" target="_blank" rel="noopener noreferrer">Privacy Policy</a>, and
+      <a href="#" target="_blank" rel="noopener noreferrer">Cashout Policy</a>.
+    </p>
+    <p><em>Long-Term Payout Rates:</em> Chances to find tokens are carefully balanced to ensure fairness while maintaining profitability.</p>
+  </footer>
 
   <script>
     let player = {
@@ -136,7 +184,7 @@
       player.tokensFound = 0;
       tokenDiv.textContent = `Tokens This Round: 0`;
 
-      // Generate grid
+      // Generate grid: 5 tokens, 5 bombs
       const tokenCount = 5;
       const bombCount = 5;
       const tokenIndices = new Set();
