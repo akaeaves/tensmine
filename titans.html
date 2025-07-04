@@ -3,20 +3,19 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Play Titans of Time - a free 3D fantasy MMORPG directly in your browser." />
-  <title>Titans of Time - MMORPG</title>
+  <meta name="description" content="Play Titans of Time - a 3D fantasy MMORPG in your browser!" />
+  <title>Titans of Time - Browser MMORPG</title>
   <style>
     body {
       margin: 0;
       font-family: Arial, sans-serif;
       background-color: #f0f0f0;
-      color: #333;
       text-align: center;
     }
     header {
       background-color: #1f2833;
-      color: #fff;
-      padding: 1rem 0;
+      color: white;
+      padding: 1rem;
     }
     nav {
       background-color: #45a29e;
@@ -28,32 +27,34 @@
     nav a {
       color: #fff;
       text-decoration: none;
-      font-weight: bold;
-      font-size: 0.9rem;
       background-color: #1f2833;
       padding: 0.4rem 0.8rem;
       border-radius: 4px;
+      font-weight: bold;
+      font-size: 0.9rem;
     }
     nav a:hover {
       background-color: #66fcf1;
       color: #0b0c10;
     }
+    main {
+      padding: 2rem;
+    }
     iframe {
-      border: none;
       width: 100%;
       max-width: 960px;
       height: 600px;
-      margin-top: 1rem;
+      border: none;
     }
     .btn-play {
       display: inline-block;
+      margin-top: 1rem;
       padding: 1rem 2rem;
       background-color: #45a29e;
       color: white;
       font-weight: bold;
       border-radius: 8px;
       text-decoration: none;
-      margin-top: 1rem;
     }
     footer {
       background-color: #1f2833;
@@ -69,22 +70,31 @@
   </style>
 </head>
 <body>
+
   <header>
     <h1>Titans of Time</h1>
-    <p>Explore a full 3D MMORPG right in your browser!</p>
+    <p>Explore a full 3D MMORPG in your browser</p>
   </header>
+
   <nav>
     <a href="index.html">Home</a>
     <a href="https://miriele.com" target="_blank">Shop</a>
   </nav>
+
   <main>
-    <iframe src="https://titansoftime.com/play" title="Titans of Time"></iframe>
-    <a href="https://titansoftime.com" target="_blank" class="btn-play">▶ Play Now</a>
+    <!-- Fallback: iframe may not load if the site blocks embedding -->
+    <iframe src="https://www.titansoftime.com/play" title="Titans of Time Game">
+      <p>Your browser does not support iframes. Please visit the game directly:</p>
+      <a href="https://www.titansoftime.com" target="_blank" class="btn-play">▶ Play Now</a>
+    </iframe>
+    <a href="https://www.titansoftime.com" target="_blank" class="btn-play">▶ Play Now</a>
   </main>
+
   <footer>
     <div class="modals">
       <p>© 2025. All Rights Reserved. <a href="#">Terms</a>, <a href="#">Privacy</a> & <a href="#">Accessibility</a>.</p>
     </div>
   </footer>
+
 </body>
 </html>
