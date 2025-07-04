@@ -1,34 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Play GamePix Game</title>
   <style>
     html, body {
       margin: 0;
       padding: 0;
-      height: 100%;
-      overflow: hidden;
+      background-color: #000;
+      font-family: Arial, sans-serif;
     }
 
-    iframe {
-      position: fixed;
-      top: 0;
-      left: 0;
+    .game-container {
       width: 100vw;
       height: 100vh;
       border: none;
     }
+
+    .store-banner {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #111;
+      color: white;
+      padding: 15px;
+      text-align: center;
+      font-size: 1.1rem;
+      position: relative;
+      z-index: 10;
+    }
+
+    .store-banner a {
+      color: #ffcc00;
+      text-decoration: none;
+      font-weight: bold;
+      margin-left: 8px;
+    }
+
+    @media (max-width: 600px) {
+      .store-banner {
+        flex-direction: column;
+        font-size: 1rem;
+      }
+
+      .store-banner a {
+        margin-left: 0;
+        margin-top: 6px;
+      }
+    }
   </style>
 </head>
 <body>
+  <!-- Game Embed -->
   <iframe
+    class="game-container"
     src="https://play.gamepix.com/words/embed?sid=S1N6E"
     allowfullscreen
     scrolling="no"
     frameborder="0">
   </iframe>
+
+  <!-- Store Banner Below -->
+  <div class="store-banner">
+    🎁 Love indie creations? Support my work at
+    <a href="https://miriele.com" target="_blank">miriele.com</a>
+  </div>
 </body>
 </html>
