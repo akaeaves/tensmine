@@ -4,14 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- SEO Essentials -->
   <title>Miriele Arcade | Fun Games & Everyday Shopping</title>
   <meta name="description" content="Play free online games and discover everyday products at Miriele Arcade. A fun stop for entertainment and practical finds." />
   <meta name="keywords" content="free games, online games, casual games, shop online, Miriele, Miriele Arcade, fun games, play games, mobile games, everyday products" />
   <meta name="author" content="Miriele.com" />
   <link rel="canonical" href="https://miriele.com" />
 
-  <!-- Open Graph (for social sharing) -->
   <meta property="og:title" content="Miriele Arcade | Games + Everyday Shopping" />
   <meta property="og:description" content="Browse fun, casual games and shop practical everyday products all in one place." />
   <meta property="og:url" content="https://miriele.com" />
@@ -100,6 +98,43 @@
       color: #fff;
     }
 
+    /* Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.85);
+    }
+
+    .modal-content {
+      background-color: #222;
+      margin: 10% auto;
+      padding: 20px;
+      border: 1px solid #444;
+      width: 90%;
+      max-width: 600px;
+      color: #eee;
+      border-radius: 8px;
+      text-align: left;
+    }
+
+    .close {
+      color: #ff4081;
+      float: right;
+      font-size: 24px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .close:hover {
+      color: #fff;
+    }
+
     @media (max-width: 600px) {
       h1 {
         font-size: 1.7rem;
@@ -108,6 +143,10 @@
       .button {
         font-size: 1rem;
         padding: 10px 18px;
+      }
+
+      .modal-content {
+        margin: 20% auto;
       }
     }
   </style>
@@ -141,10 +180,53 @@
 
   <footer>
     © 2025. All Rights Reserved.
-    <a href="#">Terms</a>
-    <a href="#">Privacy</a>
-    <a href="#">Accessibility</a>
+    <a onclick="openModal('terms')">Terms</a>
+    <a onclick="openModal('privacy')">Privacy</a>
+    <a onclick="openModal('accessibility')">Accessibility</a>
   </footer>
+
+  <!-- Modals -->
+  <div id="terms" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('terms')">&times;</span>
+      <h2>Terms of Use</h2>
+      <p>This website is provided for entertainment and informational purposes. Use it responsibly. Content is subject to change.</p>
+    </div>
+  </div>
+
+  <div id="privacy" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('privacy')">&times;</span>
+      <h2>Privacy Policy</h2>
+      <p>We do not collect personally identifiable information. Third-party services may track anonymous traffic for analytics and advertising purposes.</p>
+    </div>
+  </div>
+
+  <div id="accessibility" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('accessibility')">&times;</span>
+      <h2>Accessibility</h2>
+      <p>We strive to make our content accessible to all users. If you encounter issues, please contact us via the shop contact page.</p>
+    </div>
+  </div>
+
+  <script>
+    function openModal(id) {
+      document.getElementById(id).style.display = "block";
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).style.display = "none";
+    }
+
+    // Close modals when clicking outside content
+    window.onclick = function(event) {
+      const modals = document.querySelectorAll(".modal");
+      modals.forEach(modal => {
+        if (event.target === modal) modal.style.display = "none";
+      });
+    };
+  </script>
 
 </body>
 </html>
