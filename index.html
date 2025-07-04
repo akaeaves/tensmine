@@ -111,6 +111,180 @@
   <p>Fun games & everyday products — all in one place!</p>
 
   <div class="buttons">
+    <a href="game.html">🎮 Play Games</a>
+    <a href="https://miriele.com" target="_blank">🛒 Visit Shop</a>
+  </div>
+
+  <div class="socials">
+    <a href="https://facebook.com/sharer/sharer.php?u=https://miriele.com" target="_blank" title="Share on Facebook">📘</a>
+    <a href="https://twitter.com/intent/tweet?url=https://miriele.com&text=Check%20out%20Miriele%20Arcade!" target="_blank" title="Share on Twitter">🐦</a>
+    <a href="mailto:?subject=Check out Miriele Arcade!&body=Play games and shop at https://miriele.com" title="Share by Email">📧</a>
+  </div>
+
+  <footer>
+    <p>© 2025. All Rights Reserved. 
+      <a href="#" onclick="openModal('terms')">Terms</a> | 
+      <a href="#" onclick="openModal('privacy')">Privacy</a> | 
+      <a href="#" onclick="openModal('accessibility')">Accessibility</a> | 
+      <a href="contact.html">Contact</a>
+    </p>
+  </footer>
+
+  <!-- Modals -->
+  <div id="terms" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('terms')">&times;</span>
+      <h2>Terms</h2>
+      <p>Use this site for fun and casual gaming. By continuing, you agree to enjoy responsibly.</p>
+    </div>
+  </div>
+
+  <div id="privacy" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('privacy')">&times;</span>
+      <h2>Privacy</h2>
+      <p>We do not collect personal data. Third-party services may handle analytics or ads.</p>
+    </div>
+  </div>
+
+  <div id="accessibility" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('accessibility')">&times;</span>
+      <h2>Accessibility</h2>
+      <p>This site is built to be accessible on mobile and desktop. Let us know how we can improve!</p>
+    </div>
+  </div>
+
+  <script>
+    function openModal(id) {
+      document.getElementById(id).style.display = "block";
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).style.display = "none";
+    }
+
+    window.onclick = function(event) {
+      ['terms', 'privacy', 'accessibility'].forEach(id => {
+        const modal = document.getElementById(id);
+        if (event.target === modal) {
+          modal.style.display = "none";
+        }
+      });
+    };
+  </script>
+
+</body>
+</html>
+"viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Miriele Arcade</title>
+  <meta name="description" content="Play casual games and shop for everyday essentials at Miriele.com. Fun, simple, and just a click away!" />
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #111;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    h1 {
+      margin-top: 2rem;
+      font-size: 2.5rem;
+      color: #ff4081;
+    }
+
+    .buttons {
+      margin: 2rem;
+    }
+
+    .buttons a {
+      display: inline-block;
+      margin: 1rem;
+      padding: 1rem 2rem;
+      background: #ff4081;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-size: 1.2rem;
+      transition: background 0.3s ease;
+    }
+
+    .buttons a:hover {
+      background: #e73370;
+    }
+
+    .socials {
+      margin-top: 1rem;
+    }
+
+    .socials a {
+      margin: 0 0.5rem;
+      color: #ff4081;
+      font-size: 1.5rem;
+      text-decoration: none;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: auto;
+      padding: 1rem;
+      background: #111;
+      color: #ccc;
+    }
+
+    footer a {
+      color: #ff4081;
+      margin: 0 8px;
+      text-decoration: none;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 999;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.8);
+      padding-top: 60px;
+    }
+
+    .modal-content {
+      background-color: #222;
+      margin: 5% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%;
+      color: white;
+      border-radius: 8px;
+    }
+
+    .close {
+      color: #ff4081;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .close:hover {
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Welcome to Miriele Arcade</h1>
+  <p>Fun games & everyday products — all in one place!</p>
+
+  <div class="buttons">
     <a href="games.html">🎮 Play Games</a>
     <a href="https://miriele.com" target="_blank">🛒 Visit Shop</a>
   </div>
