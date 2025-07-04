@@ -8,8 +8,10 @@
   <meta name="author" content="Your Name" />
   <title>Stick Legends</title>
   <style>
-    body {
+    html, body {
       margin: 0;
+      padding: 0;
+      height: 100%;
       background: #111;
       color: #fff;
       font-family: Arial, sans-serif;
@@ -17,16 +19,17 @@
     }
     canvas {
       display: block;
+      margin: 0 auto;
       background: #222;
-      margin: auto;
     }
     .controls {
-      position: absolute;
-      bottom: 10px;
+      position: fixed;
+      bottom: 20px;
       left: 50%;
       transform: translateX(-50%);
       display: flex;
       gap: 10px;
+      z-index: 10;
     }
     .btn {
       background: #444;
@@ -37,7 +40,7 @@
       border-radius: 5px;
     }
     .social {
-      position: absolute;
+      position: fixed;
       top: 10px;
       right: 10px;
     }
@@ -46,7 +49,7 @@
       margin-left: 10px;
     }
     .shop-ad {
-      position: absolute;
+      position: fixed;
       top: 10px;
       left: 10px;
       background: #333;
@@ -54,7 +57,7 @@
       border-radius: 5px;
     }
     footer {
-      position: absolute;
+      position: fixed;
       bottom: 0;
       width: 100%;
       text-align: center;
@@ -75,10 +78,10 @@
   </div>
   <canvas id="gameCanvas" width="800" height="400"></canvas>
   <div class="controls">
-    <button class="btn" onmousedown="keys['a']=true" onmouseup="keys['a']=false">◄</button>
-    <button class="btn" onmousedown="keys['w']=true" onmouseup="keys['w']=false">▲</button>
-    <button class="btn" onmousedown="keys['s']=true" onmouseup="keys['s']=false">▼</button>
-    <button class="btn" onmousedown="keys['d']=true" onmouseup="keys['d']=false">►</button>
+    <button class="btn" ontouchstart="keys['a']=true" ontouchend="keys['a']=false">◄</button>
+    <button class="btn" ontouchstart="keys['w']=true" ontouchend="keys['w']=false">▲</button>
+    <button class="btn" ontouchstart="keys['s']=true" ontouchend="keys['s']=false">▼</button>
+    <button class="btn" ontouchstart="keys['d']=true" ontouchend="keys['d']=false">►</button>
     <button class="btn" onclick="attackKeyPress()">⚔</button>
   </div>
   <footer>
@@ -103,7 +106,7 @@
       constructor() {
         this.x = 100;
         this.y = 300;
-        this.radius = 20;
+        this.radius = 10;
         this.speed = 4;
         this.attacking = false;
         this.attackRange = 50;
@@ -119,19 +122,19 @@
         ctx.strokeStyle = this.attacking ? 'yellow' : 'white';
         ctx.beginPath();
         ctx.moveTo(this.x, this.y + this.radius);
-        ctx.lineTo(this.x, this.y + 50);
+        ctx.lineTo(this.x, this.y + 40);
         ctx.stroke();
         // Arms
         ctx.beginPath();
-        ctx.moveTo(this.x - 15, this.y + 30);
-        ctx.lineTo(this.x + 15, this.y + 30);
+        ctx.moveTo(this.x - 12, this.y + 25);
+        ctx.lineTo(this.x + 12, this.y + 25);
         ctx.stroke();
         // Legs
         ctx.beginPath();
-        ctx.moveTo(this.x, this.y + 50);
-        ctx.lineTo(this.x - 10, this.y + 70);
-        ctx.moveTo(this.x, this.y + 50);
-        ctx.lineTo(this.x + 10, this.y + 70);
+        ctx.moveTo(this.x, this.y + 40);
+        ctx.lineTo(this.x - 10, this.y + 60);
+        ctx.moveTo(this.x, this.y + 40);
+        ctx.lineTo(this.x + 10, this.y + 60);
         ctx.stroke();
       }
       update() {
@@ -156,7 +159,7 @@
       constructor(x, y, speed, health) {
         this.x = x;
         this.y = y;
-        this.radius = 20;
+        this.radius = 15;
         this.speed = speed;
         this.health = health;
       }
@@ -168,7 +171,7 @@
         ctx.strokeStyle = 'white';
         ctx.beginPath();
         ctx.moveTo(this.x, this.y + this.radius);
-        ctx.lineTo(this.x, this.y + 50);
+        ctx.lineTo(this.x, this.y + 40);
         ctx.stroke();
       }
       update() {
@@ -215,7 +218,7 @@
       requestAnimationFrame(updateGame);
     }
 
-    setInterval(spawnEnemy, 2500);
+    setInterval(spawnEnemy, 3000);
     updateGame();
   </script>
 </body>
