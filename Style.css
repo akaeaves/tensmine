@@ -1,5 +1,6 @@
 /* style.css */
 
+/* General reset */
 * {
   margin: 0;
   padding: 0;
@@ -12,26 +13,36 @@ html, body {
   overflow: hidden;
   background-color: #111;
   font-family: Arial, sans-serif;
+  touch-action: none;
 }
 
+/* Responsive canvas */
 #gameCanvas {
   width: 100vw;
   height: 100vh;
+  max-height: 100dvh;
   display: block;
+  object-fit: contain;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
-/* On-screen controls */
+/* On-screen controls container */
 #controls {
   position: absolute;
-  bottom: 20px;
+  bottom: 5dvh;
+  left: 0;
   width: 100%;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-evenly;
   align-items: center;
-  pointer-events: auto;
   z-index: 10;
+  padding: 0 10px;
+  pointer-events: auto;
 }
 
+/* Buttons */
 #controls button {
   width: 60px;
   height: 60px;
@@ -43,6 +54,7 @@ html, body {
   backdrop-filter: blur(4px);
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
   transition: background 0.2s;
+  flex-shrink: 0;
 }
 
 #controls button:active {
