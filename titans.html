@@ -3,75 +3,88 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Play Titans of Time - a free 3D browser MMORPG with immersive fantasy gameplay." />
-  <title>Titans of Time - 3D MMORPG</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta name="description" content="Play Titans of Time - a free 3D fantasy MMORPG directly in your browser." />
+  <title>Titans of Time - MMORPG</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
       margin: 0;
-      background-color: #0b0c10;
-      color: #fff;
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      color: #333;
       text-align: center;
     }
     header {
       background-color: #1f2833;
-      padding: 1rem;
+      color: #fff;
+      padding: 1rem 0;
     }
     nav {
+      background-color: #45a29e;
+      padding: 0.5rem;
       display: flex;
       justify-content: center;
       gap: 1rem;
     }
     nav a {
+      color: #fff;
       text-decoration: none;
-      color: #66fcf1;
       font-weight: bold;
-      padding: 0.5rem 1rem;
-      border-radius: 5px;
-      background-color: #45a29e;
+      font-size: 0.9rem;
+      background-color: #1f2833;
+      padding: 0.4rem 0.8rem;
+      border-radius: 4px;
     }
     nav a:hover {
       background-color: #66fcf1;
       color: #0b0c10;
     }
-    .game-container {
-      padding: 2rem;
-    }
     iframe {
+      border: none;
       width: 100%;
       max-width: 960px;
-      height: 540px;
-      border: none;
-      border-radius: 10px;
+      height: 600px;
+      margin-top: 1rem;
+    }
+    .btn-play {
+      display: inline-block;
+      padding: 1rem 2rem;
+      background-color: #45a29e;
+      color: white;
+      font-weight: bold;
+      border-radius: 8px;
+      text-decoration: none;
+      margin-top: 1rem;
     }
     footer {
-      margin-top: 2rem;
-      padding: 1rem;
       background-color: #1f2833;
       color: #c5c6c7;
+      padding: 1rem;
+      margin-top: 2rem;
+    }
+    .modals a {
+      color: #66fcf1;
+      text-decoration: none;
+      margin: 0 0.5rem;
     }
   </style>
 </head>
 <body>
   <header>
-    <h1>Play Titans of Time</h1>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="miriele.com" target="_blank">Shop</a>
-    </nav>
+    <h1>Titans of Time</h1>
+    <p>Explore a full 3D MMORPG right in your browser!</p>
   </header>
-
-  <div class="game-container">
-    <p><strong>Explore a vast 3D fantasy world. No downloads. Free to play.</strong></p>
-    <a href="https://titansoftime.com" target="_blank">
-      <img src="https://titansoftime.com/images/play-now-button.png" alt="Play Now" />
-    </a>
-    <p>Visit <a href="https://titansoftime.com" target="_blank">titansoftime.com</a> to play instantly in your browser.</p>
-  </div>
-
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="https://miriele.com" target="_blank">Shop</a>
+  </nav>
+  <main>
+    <iframe src="https://titansoftime.com/play" title="Titans of Time"></iframe>
+    <a href="https://titansoftime.com" target="_blank" class="btn-play">▶ Play Now</a>
+  </main>
   <footer>
-    <p>© 2025. All Rights Reserved. Terms, Privacy & Accessibility.</p>
+    <div class="modals">
+      <p>© 2025. All Rights Reserved. <a href="#">Terms</a>, <a href="#">Privacy</a> & <a href="#">Accessibility</a>.</p>
+    </div>
   </footer>
 </body>
 </html>
