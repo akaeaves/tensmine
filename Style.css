@@ -1,48 +1,11 @@
-html, body {
-  width: 100%;
-  height: 100%;
-  background-color: #111;
-  font-family: Arial, sans-serif;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-}
-
 #gameCanvas {
-  width: 90vw;
-  height: 90vh;
-  max-width: 800px;
-  max-height: 600px;
+  width: 90vw;       /* 90% of viewport width */
+  max-width: 600px;  /* max width */
+  height: 70vh;      /* 70% of viewport height */
+  max-height: 400px; /* max height */
   border-radius: 12px;
   box-shadow: 0 0 20px #000;
-}
-
-/* On-screen controls */
-#controls {
-  position: absolute;
-  bottom: 5vh;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  z-index: 10;
-  pointer-events: auto;
-}
-
-#controls button {
-  width: 60px;
-  height: 60px;
-  font-size: 24px;
-  border-radius: 50%;
-  border: none;
-  background: rgba(255, 255, 255, 0.2);
-  color: white;
-  backdrop-filter: blur(4px);
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
-  transition: background 0.2s;
-}
-
-#controls button:active {
-  background: rgba(255, 255, 255, 0.5);
+  display: block;
+  margin: 20px auto; /* center horizontally with margin */
+  background-color: #111;
 }
