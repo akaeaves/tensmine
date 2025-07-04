@@ -34,7 +34,7 @@ html, body {
 
 /* Controls container aligned to canvas */
 #controls {
-  width: 600px;          /* match max canvas width */
+  width: 400px;          /* match max canvas width */
   display: flex;
   justify-content: space-evenly;
   gap: 15px;
