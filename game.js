@@ -3,7 +3,6 @@
 let scene, camera, renderer;
 let player, enemy;
 let playerVelocity = 0;
-let enemyVelocity = 0;
 let punchCooldown = 0;
 let kickCooldown = 0;
 
@@ -16,8 +15,7 @@ function init() {
   scene.background = new THREE.Color(0x222222);
 
   camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-  camera.position.set(0, 5, 10);
-  camera.lookAt(0, 0, 0);
+  camera.position.set(0, 6, 12); // Zoomed out a bit for smaller canvas
 
   // Renderer
   renderer = new THREE.WebGLRenderer({ canvas: document.getElementById("gameCanvas") });
@@ -53,18 +51,20 @@ function init() {
   window.addEventListener("resize", onWindowResize);
 
   // Controls
-  setupControls();document.getElementById("fullscreen").addEventListener("click", toggleFullscreen);
-
+  setupControls();
 }
 
 function setupControls() {
-  document.getElementById("left").addEventListener("touchstart", () => playerVelocity = -0.1);
-  document.getElementById("right").addEventListener("touchstart", () => playerVelocity = 0.1);
-  document.getElementById("left").addEventListener("touchend", () => playerVelocity = 0);
-  document.getElementById("right").addEventListener("touchend", () => playerVelocity = 0);
+  document.getElementById("left").addEventListener("touchstart", () => (playerVelocity = -0.1));
+  document.getElementById("right").addEventListener("touchstart", () => (playerVelocity = 0.1));
+  document.getElementById("left").addEventListener("touchend", () => (playerVelocity = 0));
+  document.getElementById("right").addEventListener("touchend", () => (playerVelocity = 0));
 
   document.getElementById("punch").addEventListener("touchstart", punch);
   document.getElementById("kick").addEventListener("touchstart", kick);
+
+  // Fullscreen toggle button listener
+  document.getElementById("fullscreen").addEventListener("click", toggleFullscreen);
 }
 
 function punch() {
@@ -102,4 +102,17 @@ function onWindowResize() {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
+}
+
+// Fullscreen toggle function
+function toggleFullscreen() {
+  const elem = document.documentElement;
+
+  if (!document.fullscreenElement) {
+    elem.requestFullscreen().catch((err) => {
+      alert(`Error attempting fullscreen: ${err.message}`);
+    });
+  } else {
+    document.exitFullscreen();
+  }
 }
