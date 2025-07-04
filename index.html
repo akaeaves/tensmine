@@ -30,7 +30,7 @@
   #gameContainer {
     width: 100%;
     max-width: 600px;
-    margin: 60px auto 20px; /* margin-top to avoid banner */
+    margin: 60px auto 20px;
     background: #222;
     border-radius: 8px;
     padding: 10px;
@@ -177,7 +177,6 @@
 </div>
 
 <script>
-// Game variables
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 let crystals = 0;
@@ -187,12 +186,7 @@ let health = 100;
 let maxHealth = 100;
 let enemiesDefeated = 0;
 
-// Update crystal display
-function updateCrystals() {
-  document.getElementById('crystals').textContent = `Crystals: ${crystals}`;
-}
-
-// Simple player object
+// Player and enemy dimensions for positioning
 const player = {
   x: 50,
   y: 230,
@@ -204,7 +198,6 @@ const player = {
   jumping: false
 };
 
-// Simple enemy
 function createEnemy() {
   return {
     x: 600,
@@ -217,49 +210,100 @@ function createEnemy() {
 }
 let enemy = createEnemy();
 
-// Draw function
+function updateCrystals() {
+  document.getElementById('crystals').textContent = `Crystals: ${crystals}`;
+}
+
+// Draw stick figure function
+function drawStickFigure(x, y, color, attacking = false) {
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 3;
+
+  // Head
+  ctx.beginPath();
+  ctx.arc(x, y - 50, 10, 0, Math.PI * 2);
+  ctx.stroke();
+
+  // Body
+  ctx.beginPath();
+  ctx.moveTo(x, y - 40);
+  ctx.lineTo(x, y - 10);
+  ctx.stroke();
+
+  // Arms
+  ctx.beginPath();
+  if (attacking) {
+    ctx.moveTo(x, y - 30);
+    ctx.lineTo(x + 20, y - 20);
+  } else {
+    ctx.moveTo(x - 15, y - 30);
+    ctx.lineTo(x + 15, y - 30);
+  }
+  ctx.stroke();
+
+  // Legs
+  ctx.beginPath();
+  ctx.moveTo(x, y - 10);
+  ctx.lineTo(x - 15, y + 10);
+  ctx.moveTo(x, y - 10);
+  ctx.lineTo(x + 15, y + 10);
+  ctx.stroke();
+}
+
+let playerAttacking = false;
+let attackCooldown = 0;
+
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  
-  // Draw player
-  ctx.fillStyle = player.color;
-  ctx.fillRect(player.x, player.y, player.width, player.height);
 
-  // Draw enemy
-  ctx.fillStyle = enemy.color;
-  ctx.fillRect(enemy.x, enemy.y, enemy.width, enemy.height);
+  drawStickFigure(player.x + player.width/2, player.y + player.height, 'white', playerAttacking);
+  drawStickFigure(enemy.x + enemy.width/2, enemy.y + enemy.height, 'red');
 
-  // Draw health bar
+  // Draw health bar (player)
   ctx.fillStyle = 'red';
   ctx.fillRect(20, 20, maxHealth, 10);
   ctx.fillStyle = 'green';
   ctx.fillRect(20, 20, health, 10);
 }
 
-// Game logic update
+const keys = {};
+window.addEventListener('keydown', e => {
+  keys[e.key] = true;
+  if (e.key === ' ' && !player.jumping) {
+    player.vy = -15;
+    player.jumping = true;
+  }
+});
+window.addEventListener('keyup', e => {
+  keys[e.key] = false;
+});
+
 function update() {
+  if (attackCooldown > 0) attackCooldown--;
+
   // Enemy moves left
   enemy.x -= enemy.speed;
+  if (enemy.x + enemy.width < 0) enemy = createEnemy();
 
-  // Reset enemy if offscreen
-  if (enemy.x + enemy.width < 0) {
-    enemy = createEnemy();
-  }
+  // Attack logic
+  if (keys['a'] && attackCooldown === 0) {
+    playerAttacking = true;
+    attackCooldown = 20;
 
-  // Simple collision detection (attack on spacebar)
-  if (keys[' ']) {
-    if (Math.abs(player.x - enemy.x) < 30) {
-      // Enemy defeated
+    // Check if enemy in range
+    if (Math.abs(player.x - enemy.x) < 40) {
       enemiesDefeated++;
       crystals += 5;
       updateCrystals();
       enemy = createEnemy();
     }
+  } else if (attackCooldown === 0) {
+    playerAttacking = false;
   }
 
-  // Player gravity & jump
+  // Gravity and jumping
   if (player.jumping) {
-    player.vy += 1; // gravity
+    player.vy += 1;
     player.y += player.vy;
     if (player.y >= 230) {
       player.y = 230;
@@ -268,7 +312,7 @@ function update() {
     }
   }
 
-  // Left/right movement
+  // Movement
   if (keys['ArrowLeft']) {
     player.x -= 5;
     if (player.x < 0) player.x = 0;
@@ -281,21 +325,6 @@ function update() {
   draw();
   requestAnimationFrame(update);
 }
-
-// Keyboard input handling
-const keys = {};
-window.addEventListener('keydown', e => {
-  keys[e.key] = true;
-
-  // Space to attack
-  if (e.key === ' ' && !player.jumping) {
-    player.vy = -15;
-    player.jumping = true;
-  }
-});
-window.addEventListener('keyup', e => {
-  keys[e.key] = false;
-});
 
 // Store purchase handling
 document.querySelectorAll('.buy-btn').forEach(btn => {
@@ -333,8 +362,8 @@ function applyUpgrade(item) {
 
 updateCrystals();
 update();
-  
-// Social share functions
+
+// Social share buttons
 function shareFacebook() {
   const url = encodeURIComponent(window.location.href);
   window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank');
@@ -349,5 +378,6 @@ function shareLinkedIn() {
   window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${url}`, '_blank');
 }
 </script>
+
 </body>
 </html>
