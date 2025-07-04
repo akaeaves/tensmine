@@ -1,10 +1,24 @@
-<!-- Existing buttons -->
-<div id="controls">
-  <button id="left">⬅️</button>
-  <button id="right">➡️</button>
-  <button id="punch">👊</button>
-  <button id="kick">🦵</button>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3D Fighting Game</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/three@0.158.0/build/three.min.js"></script>
+</head>
+<body>
+  <canvas id="gameCanvas"></canvas>
 
-  <!-- New Fullscreen Toggle -->
-  <button id="fullscreen">⛶</button>
-</div>
+  <!-- On-screen controls including fullscreen -->
+  <div id="controls">
+    <button id="left">⬅️</button>
+    <button id="right">➡️</button>
+    <button id="punch">👊</button>
+    <button id="kick">🦵</button>
+    <button id="fullscreen">⛶</button> <!-- Fullscreen Toggle -->
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>
