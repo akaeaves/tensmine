@@ -75,10 +75,10 @@
   </div>
   <canvas id="gameCanvas" width="800" height="400"></canvas>
   <div class="controls">
-    <button class="btn" onclick="keys['a']=true">◄</button>
-    <button class="btn" onclick="keys['w']=true">▲</button>
-    <button class="btn" onclick="keys['s']=true">▼</button>
-    <button class="btn" onclick="keys['d']=true">►</button>
+    <button class="btn" onmousedown="keys['a']=true" onmouseup="keys['a']=false">◄</button>
+    <button class="btn" onmousedown="keys['w']=true" onmouseup="keys['w']=false">▲</button>
+    <button class="btn" onmousedown="keys['s']=true" onmouseup="keys['s']=false">▼</button>
+    <button class="btn" onmousedown="keys['d']=true" onmouseup="keys['d']=false">►</button>
     <button class="btn" onclick="attackKeyPress()">⚔</button>
   </div>
   <footer>
@@ -103,17 +103,36 @@
       constructor() {
         this.x = 100;
         this.y = 300;
-        this.width = 40;
-        this.height = 60;
-        this.color = 'lime';
+        this.radius = 20;
         this.speed = 4;
         this.attacking = false;
         this.attackRange = 50;
         this.attackCooldown = 0;
       }
       draw() {
-        ctx.fillStyle = this.attacking ? 'yellow' : this.color;
-        ctx.fillRect(this.x, this.y, this.width, this.height);
+        // Head
+        ctx.fillStyle = 'lime';
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fill();
+        // Body
+        ctx.strokeStyle = this.attacking ? 'yellow' : 'white';
+        ctx.beginPath();
+        ctx.moveTo(this.x, this.y + this.radius);
+        ctx.lineTo(this.x, this.y + 50);
+        ctx.stroke();
+        // Arms
+        ctx.beginPath();
+        ctx.moveTo(this.x - 15, this.y + 30);
+        ctx.lineTo(this.x + 15, this.y + 30);
+        ctx.stroke();
+        // Legs
+        ctx.beginPath();
+        ctx.moveTo(this.x, this.y + 50);
+        ctx.lineTo(this.x - 10, this.y + 70);
+        ctx.moveTo(this.x, this.y + 50);
+        ctx.lineTo(this.x + 10, this.y + 70);
+        ctx.stroke();
       }
       update() {
         if (keys['a']) this.x -= this.speed;
@@ -134,24 +153,30 @@
     }
 
     class Enemy {
-      constructor(x, y, w, h, color, speed, health) {
+      constructor(x, y, speed, health) {
         this.x = x;
         this.y = y;
-        this.width = w;
-        this.height = h;
-        this.color = color;
+        this.radius = 20;
         this.speed = speed;
         this.health = health;
       }
       draw() {
-        ctx.fillStyle = this.color;
-        ctx.fillRect(this.x, this.y, this.width, this.height);
+        ctx.fillStyle = 'red';
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.strokeStyle = 'white';
+        ctx.beginPath();
+        ctx.moveTo(this.x, this.y + this.radius);
+        ctx.lineTo(this.x, this.y + 50);
+        ctx.stroke();
       }
       update() {
-        if (this.x > player.x) this.x -= this.speed;
-        if (this.x < player.x) this.x += this.speed;
-        if (this.y > player.y) this.y -= this.speed;
-        if (this.y < player.y) this.y += this.speed;
+        const dx = player.x - this.x;
+        const dy = player.y - this.y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        this.x += (dx / dist) * this.speed;
+        this.y += (dy / dist) * this.speed;
       }
     }
 
@@ -159,18 +184,18 @@
     const enemies = [];
 
     function spawnEnemy() {
-      const y = Math.random() * canvas.height;
-      const speed = 1 + Math.random() * 2;
+      const y = Math.random() * (canvas.height - 100) + 50;
+      const speed = 0.8 + Math.random() * 1.5;
       const health = 3;
-      enemies.push(new Enemy(canvas.width, y, 30, 50, 'white', speed, health));
+      enemies.push(new Enemy(canvas.width, y, speed, health));
     }
 
     function attackEnemies() {
       for (let i = enemies.length - 1; i >= 0; i--) {
-        const dx = (enemies[i].x + enemies[i].width / 2) - (player.x + player.width / 2);
-        const dy = (enemies[i].y + enemies[i].height / 2) - (player.y + player.height / 2);
+        const dx = enemies[i].x - player.x;
+        const dy = enemies[i].y - player.y;
         const distance = Math.sqrt(dx * dx + dy * dy);
-        if (distance < player.attackRange) {
+        if (distance < player.attackRange + enemies[i].radius) {
           enemies[i].health -= attack;
           if (enemies[i].health <= 0) {
             enemies.splice(i, 1);
@@ -190,7 +215,7 @@
       requestAnimationFrame(updateGame);
     }
 
-    setInterval(spawnEnemy, 2000);
+    setInterval(spawnEnemy, 2500);
     updateGame();
   </script>
 </body>
