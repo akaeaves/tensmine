@@ -11,10 +11,26 @@
     background: linear-gradient(135deg, #1e3c72, #2a5298);
     color: white;
   }
+  #promoBanner {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    background: #f39c12;
+    color: #111;
+    text-align: center;
+    padding: 10px 0;
+    font-weight: bold;
+    z-index: 1000;
+    font-size: 16px;
+  }
+  #promoBanner a {
+    color: #111;
+    text-decoration: underline;
+    margin-left: 8px;
+  }
   #gameContainer {
     width: 100%;
     max-width: 600px;
-    margin: 20px auto;
+    margin: 60px auto 20px; /* margin-top to avoid banner */
     background: #222;
     border-radius: 8px;
     padding: 10px;
@@ -62,6 +78,22 @@
     background: #999;
     cursor: not-allowed;
   }
+  #externalStoreBtn {
+    display: block;
+    width: 100%;
+    background: #2980b9;
+    color: white;
+    text-align: center;
+    padding: 12px 0;
+    font-weight: bold;
+    margin-top: 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    text-decoration: none;
+  }
+  #externalStoreBtn:hover {
+    background: #3498db;
+  }
   #modals {
     font-size: 12px;
     color: #ccc;
@@ -100,6 +132,11 @@
 </head>
 <body>
 
+<div id="promoBanner">
+  Check out our real-life product store at
+  <a href="https://miriele.com" target="_blank" rel="noopener noreferrer">miriele.com</a>!
+</div>
+
 <div id="gameContainer">
   <div id="crystals">Crystals: 0</div>
   <canvas id="gameCanvas" width="600" height="300"></canvas>
@@ -118,6 +155,11 @@
       <div>Health Potion (Restore 20 HP)</div>
       <button class="buy-btn" data-cost="8" data-item="potion">Buy 8 Crystals</button>
     </div>
+
+    <!-- External store button -->
+    <a id="externalStoreBtn" href="https://miriele.com" target="_blank" rel="noopener noreferrer">
+      Visit Miriele.com - Real Life Products Store
+    </a>
   </div>
 
   <div id="socialShare">
@@ -127,7 +169,10 @@
   </div>
 
   <div id="modals">
-    <a href="#">Terms of Service</a> | <a href="#">Privacy Policy</a>
+    <a href="#">Terms of Service</a> | <a href="#">Privacy Policy</a> |  
+    <a href="https://miriele.com" target="_blank" rel="noopener noreferrer" style="color:#f39c12;">
+      Visit Miriele.com Store
+    </a>
   </div>
 </div>
 
