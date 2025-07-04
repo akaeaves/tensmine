@@ -1,36 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Play Stick Legends, a fast-paced browser game. Defeat stick monsters and bosses while shopping real-world products at Miriele.com!" />
-  <meta name="keywords" content="Stick Legends, stickman game, web game, action game, Miriele, online shopping" />
-  <meta name="author" content="Your Name" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Play Stick Legends, a fast-paced browser game. Defeat stick monsters and bosses while shopping real-world products at Miriele.com!">
+  <meta name="keywords" content="Stick Legends, stickman game, web game, action game, Miriele, online shopping">
+  <meta name="author" content="Your Name">
   <title>Stick Legends</title>
   <style>
-    html, body {
+    body {
       margin: 0;
       padding: 0;
-      height: 100%;
-      background: #111;
+      background-color: #111;
       color: #fff;
       font-family: Arial, sans-serif;
-      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
-    canvas {
-      display: block;
-      margin: 0 auto;
+
+    #gameCanvas {
+      width: 800px;
+      height: 400px;
       background: #222;
+      display: block;
     }
+
     .controls {
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
+      margin-top: 10px;
       display: flex;
       gap: 10px;
-      z-index: 10;
     }
+
     .btn {
       background: #444;
       border: 1px solid #777;
@@ -39,44 +40,34 @@
       font-size: 18px;
       border-radius: 5px;
     }
-    .social {
-      position: fixed;
-      top: 10px;
-      right: 10px;
+
+    .shop-ad, .social {
+      margin: 10px;
     }
-    .social a {
-      color: white;
-      margin-left: 10px;
-    }
-    .shop-ad {
-      position: fixed;
-      top: 10px;
-      left: 10px;
-      background: #333;
-      padding: 10px;
-      border-radius: 5px;
-    }
+
     footer {
-      position: fixed;
-      bottom: 0;
-      width: 100%;
       text-align: center;
       background: #000;
       color: #aaa;
       font-size: 12px;
       padding: 5px 0;
+      width: 100%;
+      position: relative;
     }
   </style>
 </head>
 <body>
   <div class="shop-ad">
-    🛒 Check out our real-life store: <a href="https://miriele.com" style="color: #00f">miriele.com</a>
+    🛒 Visit our real-world store: <a href="https://miriele.com" style="color: #00f">miriele.com</a>
   </div>
+
   <div class="social">
-    <a href="https://twitter.com/intent/tweet?text=Play%20Stick%20Legends%20now!&url=https://yourdomain.com">Twitter</a>
-    <a href="https://www.facebook.com/sharer/sharer.php?u=https://yourdomain.com">Facebook</a>
+    <a href="https://twitter.com/intent/tweet?text=Play%20Stick%20Legends%20now!&url=https://yourdomain.com">Share on Twitter</a>
+    <a href="https://www.facebook.com/sharer/sharer.php?u=https://yourdomain.com">Share on Facebook</a>
   </div>
+
   <canvas id="gameCanvas" width="800" height="400"></canvas>
+
   <div class="controls">
     <button class="btn" ontouchstart="keys['a']=true" ontouchend="keys['a']=false">◄</button>
     <button class="btn" ontouchstart="keys['w']=true" ontouchend="keys['w']=false">▲</button>
@@ -84,15 +75,16 @@
     <button class="btn" ontouchstart="keys['d']=true" ontouchend="keys['d']=false">►</button>
     <button class="btn" onclick="attackKeyPress()">⚔</button>
   </div>
+
   <footer>
     <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a>
   </footer>
+
   <script>
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
 
     const keys = {};
-    let attack = 1;
 
     document.addEventListener('keydown', e => keys[e.key.toLowerCase()] = true);
     document.addEventListener('keyup', e => keys[e.key.toLowerCase()] = false);
@@ -113,23 +105,22 @@
         this.attackCooldown = 0;
       }
       draw() {
-        // Head
         ctx.fillStyle = 'lime';
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
         ctx.fill();
-        // Body
+
         ctx.strokeStyle = this.attacking ? 'yellow' : 'white';
         ctx.beginPath();
         ctx.moveTo(this.x, this.y + this.radius);
         ctx.lineTo(this.x, this.y + 40);
         ctx.stroke();
-        // Arms
+
         ctx.beginPath();
         ctx.moveTo(this.x - 12, this.y + 25);
         ctx.lineTo(this.x + 12, this.y + 25);
         ctx.stroke();
-        // Legs
+
         ctx.beginPath();
         ctx.moveTo(this.x, this.y + 40);
         ctx.lineTo(this.x - 10, this.y + 60);
@@ -168,6 +159,7 @@
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
         ctx.fill();
+
         ctx.strokeStyle = 'white';
         ctx.beginPath();
         ctx.moveTo(this.x, this.y + this.radius);
@@ -199,7 +191,7 @@
         const dy = enemies[i].y - player.y;
         const distance = Math.sqrt(dx * dx + dy * dy);
         if (distance < player.attackRange + enemies[i].radius) {
-          enemies[i].health -= attack;
+          enemies[i].health -= 1;
           if (enemies[i].health <= 0) {
             enemies.splice(i, 1);
           }
