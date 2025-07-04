@@ -4,12 +4,13 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="description" content="Stick Legends - addictive stickman adventure game with crystals and upgrades." />
-<title>Stick Legends - Adventure Game</title>
+<title>Stick Legends - Stickman Adventure Game</title>
 <style>
   body {
     margin: 0; font-family: Arial, sans-serif;
     background: linear-gradient(135deg, #1e3c72, #2a5298);
     color: white;
+    user-select: none;
   }
   #promoBanner {
     position: fixed;
@@ -36,6 +37,12 @@
     padding: 10px;
     box-shadow: 0 0 20px #000;
   }
+  #instructions {
+    font-size: 14px;
+    text-align: center;
+    margin-bottom: 8px;
+    user-select: none;
+  }
   #gameCanvas {
     background: #333;
     display: block;
@@ -44,8 +51,9 @@
   }
   #crystals {
     font-size: 18px;
-    margin-bottom: 10px;
+    margin-top: 8px;
     text-align: center;
+    user-select: none;
   }
   #store {
     background: #444;
@@ -99,6 +107,7 @@
     color: #ccc;
     margin-top: 30px;
     text-align: center;
+    user-select: none;
   }
   #modals a {
     color: #aad;
@@ -112,6 +121,7 @@
   #socialShare {
     margin-top: 15px;
     text-align: center;
+    user-select: none;
   }
   #socialShare button {
     background: #3b5998;
@@ -138,8 +148,11 @@
 </div>
 
 <div id="gameContainer">
+  <div id="instructions">
+    Controls: Move Left/Right - A/D or ←/→ | Jump - W or Space | Attack - K
+  </div>
+  <canvas id="gameCanvas" width="600" height="300" tabindex="0"></canvas>
   <div id="crystals">Crystals: 0</div>
-  <canvas id="gameCanvas" width="600" height="300"></canvas>
 
   <div id="store">
     <h2>Store</h2>
@@ -156,7 +169,6 @@
       <button class="buy-btn" data-cost="8" data-item="potion">Buy 8 Crystals</button>
     </div>
 
-    <!-- External store button -->
     <a id="externalStoreBtn" href="https://miriele.com" target="_blank" rel="noopener noreferrer">
       Visit Miriele.com - Real Life Products Store
     </a>
@@ -179,6 +191,8 @@
 <script>
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
+canvas.focus();
+
 let crystals = 0;
 let attack = 1;
 let defense = 1;
@@ -186,7 +200,6 @@ let health = 100;
 let maxHealth = 100;
 let enemiesDefeated = 0;
 
-// Player and enemy dimensions for positioning
 const player = {
   x: 50,
   y: 230,
@@ -195,71 +208,113 @@ const player = {
   color: 'white',
   vx: 0,
   vy: 0,
-  jumping: false
+  jumping: false,
+  attacking: false,
+  attackCooldown: 0,
+  attackRange: 40
 };
 
-function createEnemy() {
-  return {
-    x: 600,
-    y: 230,
-    width: 20,
-    height: 50,
-    color: 'red',
-    speed: 2 + enemiesDefeated * 0.1
-  };
-}
-let enemy = createEnemy();
+class Enemy {
+  constructor(x, y, width, height, color, speed, health, isBoss=false) {
+    this.x = x;
+    this.y = y;
+    this.width = width;
+    this.height = height;
+    this.color = color;
+    this.speed = speed;
+    this.health = health;
+    this.isBoss = isBoss;
+  }
+  draw() {
+    ctx.strokeStyle = this.color;
+    ctx.lineWidth = this.isBoss ? 5 : 3;
 
-function updateCrystals() {
-  document.getElementById('crystals').textContent = `Crystals: ${crystals}`;
+    // Head
+    ctx.beginPath();
+    ctx.arc(this.x + this.width/2, this.y + this.height - 50, this.isBoss ? 20 : 10, 0, Math.PI * 2);
+    ctx.stroke();
+
+    // Boss horns if boss
+    if (this.isBoss) {
+      ctx.beginPath();
+      ctx.moveTo(this.x + this.width/2 - 10, this.y + this.height - 70);
+      ctx.lineTo(this.x + this.width/2 - 20, this.y + this.height - 90);
+      ctx.moveTo(this.x + this.width/2 + 10, this.y + this.height - 70);
+      ctx.lineTo(this.x + this.width/2 + 20, this.y + this.height - 90);
+      ctx.stroke();
+    }
+
+    // Body
+    ctx.beginPath();
+    ctx.moveTo(this.x + this.width/2, this.y + this.height - 40);
+    ctx.lineTo(this.x + this.width/2, this.y + this.height - 10);
+    ctx.stroke();
+
+    // Arms
+    ctx.beginPath();
+    ctx.moveTo(this.x + this.width/2 - 15, this.y + this.height - 30);
+    ctx.lineTo(this.x + this.width/2 + 15, this.y + this.height - 30);
+    ctx.stroke();
+
+    // Legs
+    ctx.beginPath();
+    ctx.moveTo(this.x + this.width/2, this.y + this.height - 10);
+    ctx.lineTo(this.x + this.width/2 - 15, this.y + this.height + 10);
+    ctx.moveTo(this.x + this.width/2, this.y + this.height - 10);
+    ctx.lineTo(this.x + this.width/2 + 15, this.y + this.height + 10);
+    ctx.stroke();
+
+    // Health bar
+    ctx.fillStyle = 'red';
+    ctx.fillRect(this.x, this.y + this.height + 5, this.width, 5);
+    ctx.fillStyle = 'limegreen';
+    ctx.fillRect(this.x, this.y + this.height + 5, this.width * (this.health / (this.isBoss ? 50 : 10)), 5);
+  }
+  update() {
+    this.x -= this.speed;
+  }
 }
 
-// Draw stick figure function
-function drawStickFigure(x, y, color, attacking = false) {
-  ctx.strokeStyle = color;
+let enemies = [];
+let boss = null;
+let bossActive = false;
+
+// Player draw function
+function drawPlayer() {
+  ctx.strokeStyle = player.color;
   ctx.lineWidth = 3;
 
   // Head
   ctx.beginPath();
-  ctx.arc(x, y - 50, 10, 0, Math.PI * 2);
+  ctx.arc(player.x + player.width/2, player.y + player.height - 50, 10, 0, Math.PI * 2);
   ctx.stroke();
 
   // Body
   ctx.beginPath();
-  ctx.moveTo(x, y - 40);
-  ctx.lineTo(x, y - 10);
+  ctx.moveTo(player.x + player.width/2, player.y + player.height - 40);
+  ctx.lineTo(player.x + player.width/2, player.y + player.height - 10);
   ctx.stroke();
 
   // Arms
   ctx.beginPath();
-  if (attacking) {
-    ctx.moveTo(x, y - 30);
-    ctx.lineTo(x + 20, y - 20);
+  if (player.attacking) {
+    ctx.moveTo(player.x + player.width/2, player.y + player.height - 30);
+    ctx.lineTo(player.x + player.width/2 + 20, player.y + player.height - 20);
   } else {
-    ctx.moveTo(x - 15, y - 30);
-    ctx.lineTo(x + 15, y - 30);
+    ctx.moveTo(player.x + player.width/2 - 15, player.y + player.height - 30);
+    ctx.lineTo(player.x + player.width/2 + 15, player.y + player.height - 30);
   }
   ctx.stroke();
 
   // Legs
   ctx.beginPath();
-  ctx.moveTo(x, y - 10);
-  ctx.lineTo(x - 15, y + 10);
-  ctx.moveTo(x, y - 10);
-  ctx.lineTo(x + 15, y + 10);
+  ctx.moveTo(player.x + player.width/2, player.y + player.height - 10);
+  ctx.lineTo(player.x + player.width/2 - 15, player.y + player.height + 10);
+  ctx.moveTo(player.x + player.width/2, player.y + player.height - 10);
+  ctx.lineTo(player.x + player.width/2 + 15, player.y + player.height + 10);
   ctx.stroke();
-}
 
-let playerAttacking = false;
-let attackCooldown = 0;
-
-function draw() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-  drawStickFigure(player.x + player.width/2, player.y + player.height, 'white', playerAttacking);
-  drawStickFigure(enemy.x + enemy.width/2, enemy.y + enemy.height, 'red');
-
-  // Draw health bar (player)
+  // Player health bar
   ctx.fillStyle = 'red';
   ctx.fillRect(20, 20, maxHealth, 10);
   ctx.fillStyle = 'green';
@@ -267,101 +322,203 @@ function draw() {
 }
 
 const keys = {};
+
 window.addEventListener('keydown', e => {
-  keys[e.key] = true;
-  if (e.key === ' ' && !player.jumping) {
-    player.vy = -15;
-    player.jumping = true;
+  if (['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','a','d','w','s','k',' '].includes(e.key.toLowerCase())) {
+    e.preventDefault();
   }
+  keys[e.key.toLowerCase()] = true;
 });
 window.addEventListener('keyup', e => {
-  keys[e.key] = false;
+  keys[e.key.toLowerCase()] = false;
 });
 
-function update() {
-  if (attackCooldown > 0) attackCooldown--;
-
-  // Enemy moves left
-  enemy.x -= enemy.speed;
-  if (enemy.x + enemy.width < 0) enemy = createEnemy();
-
-  // Attack logic
-  if (keys['a'] && attackCooldown === 0) {
-    playerAttacking = true;
-    attackCooldown = 20;
-
-    // Check if enemy in range
-    if (Math.abs(player.x - enemy.x) < 40) {
-      enemiesDefeated++;
-      crystals += 5;
-      updateCrystals();
-      enemy = createEnemy();
-    }
-  } else if (attackCooldown === 0) {
-    playerAttacking = false;
-  }
-
-  // Gravity and jumping
-  if (player.jumping) {
-    player.vy += 1;
-    player.y += player.vy;
-    if (player.y >= 230) {
-      player.y = 230;
-      player.vy = 0;
-      player.jumping = false;
-    }
-  }
-
-  // Movement
-  if (keys['ArrowLeft']) {
-    player.x -= 5;
-    if (player.x < 0) player.x = 0;
-  }
-  if (keys['ArrowRight']) {
-    player.x += 5;
-    if (player.x + player.width > canvas.width) player.x = canvas.width - player.width;
-  }
-
-  draw();
-  requestAnimationFrame(update);
+function spawnEnemy() {
+  let speed = 2 + enemiesDefeated * 0.1;
+  enemies.push(new Enemy(600, 230, 20, 50, 'red', speed, 10));
 }
 
-// Store purchase handling
-document.querySelectorAll('.buy-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const cost = parseInt(btn.getAttribute('data-cost'));
-    const item = btn.getAttribute('data-item');
+function spawnBoss() {
+  boss = new Enemy(600, 220, 60, 90, 'purple', 1, 50, true);
+  bossActive = true;
+}
 
+let spawnTimer = 0;
+
+function updateGame() {
+  // Spawn enemies periodically if no boss active
+  if (!bossActive) {
+    spawnTimer++;
+    if (spawnTimer > 120) { // every ~2 seconds at 60fps
+      spawnEnemy();
+      spawnTimer = 0;
+    }
+  }
+
+  // Move player
+  player.vx = 0;
+  if (keys['a'] || keys['arrowleft']) player.vx = -5;
+  if (keys['d'] || keys['arrowright']) player.vx = 5;
+
+  // Jumping
+  if ((keys['w'] || keys[' '] || keys['arrowup']) && !player.jumping) {
+    player.vy = -12;
+    player.jumping = true;
+  }
+
+  player.x += player.vx;
+
+  // Clamp player within canvas
+  if (player.x < 0) player.x = 0;
+  if (player.x + player.width > canvas.width) player.x = canvas.width - player.width;
+
+  // Gravity and vertical movement
+  player.vy += 0.7; // gravity
+  player.y += player.vy;
+  if (player.y > 230) {
+    player.y = 230;
+    player.vy = 0;
+    player.jumping = false;
+  }
+
+  // Attack handling
+  if (player.attackCooldown > 0) player.attackCooldown--;
+  if ((keys['k'] || keys['j']) && player.attackCooldown === 0) {
+    player.attacking = true;
+    player.attackCooldown = 20; // cooldown frames ~1/3 second
+    attackEnemies();
+  } else {
+    player.attacking = false;
+  }
+
+  // Update enemies
+  for (let i = enemies.length -1; i >= 0; i--) {
+    enemies[i].update();
+    // Remove enemies off screen
+    if (enemies[i].x + enemies[i].width < 0) {
+      enemies.splice(i, 1);
+      continue;
+    }
+    // Check collision with player (basic)
+    if (checkCollision(player, enemies[i])) {
+      health -= 0.3 * (enemies[i].isBoss ? 3 : 1) / defense;
+      if (health < 0) health = 0;
+    }
+  }
+
+  // Update boss
+  if (bossActive && boss) {
+    boss.update();
+    if (boss.x + boss.width < 0) {
+      // Boss left screen, reset boss fight
+      bossActive = false;
+      boss = null;
+      enemiesDefeated = 0;
+    }
+    if (checkCollision(player, boss)) {
+      health -= 0.5 / defense;
+      if (health < 0) health = 0;
+    }
+  }
+
+  // Check player health
+  if (health <= 0) {
+    resetGame();
+  }
+}
+
+function attackEnemies() {
+  // Attack enemies in range
+  for (let i = enemies.length -1; i >= 0; i--) {
+    if (Math.abs((enemies[i].x + enemies[i].width/2) - (player.x + player.width/2)) < player.attackRange) {
+      enemies[i].health -= attack;
+      if (enemies[i].health <= 0) {
+        crystals += 1;
+        enemiesDefeated++;
+        enemies.splice(i, 1);
+        if (enemiesDefeated >= 10 && !bossActive) {
+          spawnBoss();
+        }
+      }
+    }
+  }
+  if (bossActive && boss) {
+    if (Math.abs((boss.x + boss.width/2) - (player.x + player.width/2)) < player.attackRange) {
+      boss.health -= attack;
+      if (boss.health <= 0) {
+        crystals += 10;
+        bossActive = false;
+        boss = null;
+        enemiesDefeated = 0;
+      }
+    }
+  }
+}
+
+function checkCollision(rect1, rect2) {
+  return !(rect2.x > rect1.x + rect1.width ||
+           rect2.x + rect2.width < rect1.x ||
+           rect2.y > rect1.y + rect1.height ||
+           rect2.y + rect2.height < rect1.y);
+}
+
+function resetGame() {
+  health = maxHealth;
+  crystals = 0;
+  enemies = [];
+  bossActive = false;
+  boss = null;
+  enemiesDefeated = 0;
+  alert('Game Over! Try again.');
+}
+
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // Draw player
+  drawPlayer();
+
+  // Draw enemies
+  enemies.forEach(enemy => enemy.draw());
+
+  // Draw boss
+  if (bossActive && boss) boss.draw();
+
+  // Draw crystals count
+  document.getElementById('crystals').textContent = 'Crystals: ' + crystals;
+}
+
+function gameLoop() {
+  updateGame();
+  draw();
+  requestAnimationFrame(gameLoop);
+}
+
+gameLoop();
+
+// Store purchase handling
+document.querySelectorAll('.buy-btn').forEach(button => {
+  button.addEventListener('click', () => {
+    const cost = parseInt(button.getAttribute('data-cost'));
+    const item = button.getAttribute('data-item');
     if (crystals >= cost) {
       crystals -= cost;
-      updateCrystals();
-      applyUpgrade(item);
+      if (item === 'sword') {
+        attack++;
+        alert('Sword upgraded! Attack increased by 1.');
+      } else if (item === 'shield') {
+        defense++;
+        alert('Shield upgraded! Defense increased by 1.');
+      } else if (item === 'potion') {
+        health += 20;
+        if (health > maxHealth) health = maxHealth;
+        alert('Health restored by 20.');
+      }
     } else {
       alert('Not enough crystals!');
     }
   });
 });
-
-function applyUpgrade(item) {
-  switch(item) {
-    case 'sword':
-      attack++;
-      alert('Sword upgraded! Attack is now ' + attack);
-      break;
-    case 'shield':
-      defense++;
-      alert('Shield upgraded! Defense is now ' + defense);
-      break;
-    case 'potion':
-      health += 20;
-      if (health > maxHealth) health = maxHealth;
-      alert('Health restored by 20! Current health: ' + health);
-      break;
-  }
-}
-
-updateCrystals();
-update();
 
 // Social share buttons
 function shareFacebook() {
@@ -370,7 +527,7 @@ function shareFacebook() {
 }
 function shareTwitter() {
   const url = encodeURIComponent(window.location.href);
-  const text = encodeURIComponent("Playing Stick Legends - a fun stickman adventure game!");
+  const text = encodeURIComponent('Check out Stick Legends - an addictive stickman adventure game!');
   window.open(`https://twitter.com/intent/tweet?url=${url}&text=${text}`, '_blank');
 }
 function shareLinkedIn() {
