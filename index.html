@@ -2,176 +2,161 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Miriele Arcade</title>
-  <meta name="description" content="Play casual games and shop for everyday essentials at Miriele.com. Fun, simple, and just a click away!" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Welcome to Tensmine</title>
   <style>
     body {
       margin: 0;
       padding: 0;
-      background: #111;
-      color: #fff;
       font-family: Arial, sans-serif;
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      color: white;
       text-align: center;
       display: flex;
       flex-direction: column;
       min-height: 100vh;
     }
 
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 2rem;
+    }
+
     h1 {
-      margin-top: 2rem;
       font-size: 2.5rem;
-      color: #007bff;
+      margin-bottom: 1rem;
     }
 
-    .buttons {
-      margin: 2rem;
-    }
-
-    .buttons a {
-      display: inline-block;
-      margin: 1rem;
-      padding: 1rem 2rem;
-      background: #007bff;
-      color: white;
-      text-decoration: none;
-      border-radius: 8px;
+    p {
       font-size: 1.2rem;
-      transition: background 0.3s ease;
+      margin-bottom: 2rem;
     }
 
-    .buttons a:hover {
-      background: #0069d9;
-    }
-
-    .socials {
-      margin-top: 1rem;
-    }
-
-    .socials a {
-      margin: 0 0.5rem;
-      color: #007bff;
-      font-size: 1.5rem;
+    .btn {
+      display: inline-block;
+      margin: 0.5rem;
+      padding: 1rem 2rem;
+      font-size: 1rem;
+      color: white;
+      background-color: #007BFF;
+      border: none;
+      border-radius: 6px;
       text-decoration: none;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      background-color: #0056b3;
     }
 
     footer {
+      background-color: #f1f1f1;
+      color: #333;
+      padding: 1.5rem;
       text-align: center;
-      margin-top: auto;
-      padding: 1rem;
-      background: #111;
-      color: #ccc;
+      font-size: 0.9rem;
     }
 
     footer a {
-      color: #007bff;
-      margin: 0 8px;
+      color: #007BFF;
+      margin: 0 10px;
       text-decoration: none;
+      cursor: pointer;
     }
 
+    /* Modals */
     .modal {
       display: none;
       position: fixed;
-      z-index: 999;
+      z-index: 100;
       left: 0;
       top: 0;
       width: 100%;
       height: 100%;
       overflow: auto;
-      background-color: rgba(0,0,0,0.8);
-      padding-top: 60px;
+      background-color: rgba(0,0,0,0.6);
     }
 
     .modal-content {
-      background-color: #222;
-      margin: 5% auto;
+      background-color: #fff;
+      color: #000;
+      margin: 10% auto;
       padding: 20px;
-      border: 1px solid #888;
-      width: 80%;
-      color: white;
       border-radius: 8px;
+      width: 90%;
+      max-width: 600px;
     }
 
     .close {
-      color: #007bff;
       float: right;
-      font-size: 28px;
+      font-size: 24px;
       font-weight: bold;
+      color: #333;
       cursor: pointer;
-    }
-
-    .close:hover {
-      color: #fff;
     }
   </style>
 </head>
 <body>
 
-  <h1>Welcome to Miriele Arcade</h1>
-  <p>Fun games & everyday products — all in one place!</p>
-
-  <div class="buttons">
-    <a href="game.html">🎮 Play Games</a>
-    <a href="https://miriele.com" target="_blank">🛒 Visit Shop</a>
-  </div>
-
-  <div class="socials">
-    <a href="https://facebook.com/sharer/sharer.php?u=https://miriele.com" target="_blank" title="Share on Facebook">📘</a>
-    <a href="https://twitter.com/intent/tweet?url=https://miriele.com&text=Check%20out%20Miriele%20Arcade!" target="_blank" title="Share on Twitter">🐦</a>
-    <a href="mailto:?subject=Check out Miriele Arcade!&body=Play games and shop at https://miriele.com" title="Share by Email">📧</a>
+  <div class="main">
+    <h1>Welcome to Tensmine</h1>
+    <p>Explore daily products & exciting fantasy games</p>
+    <a class="btn" href="dungeon.html">Play Game</a>
+    <a class="btn" href="https://miriele.com" target="_blank">Shop Now</a>
   </div>
 
   <footer>
-    <p>© 2025. All Rights Reserved. 
-      <a href="#" onclick="openModal('terms')">Terms</a> | 
-      <a href="#" onclick="openModal('privacy')">Privacy</a> | 
-      <a href="#" onclick="openModal('accessibility')">Accessibility</a> | 
-      <a href="contact.html">Contact</a>
-    </p>
+    © 2025. All Rights Reserved.
+    <a onclick="openModal('termsModal')">Terms</a> |
+    <a onclick="openModal('privacyModal')">Privacy</a> |
+    <a onclick="openModal('accessModal')">Accessibility</a>
   </footer>
 
   <!-- Modals -->
-  <div id="terms" class="modal">
+  <div id="termsModal" class="modal">
     <div class="modal-content">
-      <span class="close" onclick="closeModal('terms')">&times;</span>
-      <h2>Terms</h2>
-      <p>Use this site for fun and casual gaming. By continuing, you agree to enjoy responsibly.</p>
+      <span class="close" onclick="closeModal('termsModal')">&times;</span>
+      <h2>Terms of Service</h2>
+      <p>By using this site, you agree to use the content for personal entertainment and informational purposes only. All content is provided "as is".</p>
     </div>
   </div>
 
-  <div id="privacy" class="modal">
+  <div id="privacyModal" class="modal">
     <div class="modal-content">
-      <span class="close" onclick="closeModal('privacy')">&times;</span>
-      <h2>Privacy</h2>
-      <p>We do not collect personal data. Third-party services may handle analytics or ads.</p>
+      <span class="close" onclick="closeModal('privacyModal')">&times;</span>
+      <h2>Privacy Policy</h2>
+      <p>This site does not collect personal data directly. Messages sent through the contact form go directly to the site owner and are not stored elsewhere.</p>
     </div>
   </div>
 
-  <div id="accessibility" class="modal">
+  <div id="accessModal" class="modal">
     <div class="modal-content">
-      <span class="close" onclick="closeModal('accessibility')">&times;</span>
+      <span class="close" onclick="closeModal('accessModal')">&times;</span>
       <h2>Accessibility</h2>
-      <p>This site is built to be accessible on mobile and desktop. Let us know how we can improve!</p>
+      <p>We strive to make this website accessible to all users. Please contact us if you encounter any issues navigating or interacting with the site.</p>
     </div>
   </div>
 
   <script>
     function openModal(id) {
-      document.getElementById(id).style.display = "block";
+      document.getElementById(id).style.display = 'block';
     }
 
     function closeModal(id) {
-      document.getElementById(id).style.display = "none";
+      document.getElementById(id).style.display = 'none';
     }
 
     window.onclick = function(event) {
-      ['terms', 'privacy', 'accessibility'].forEach(id => {
-        const modal = document.getElementById(id);
+      const modals = document.querySelectorAll('.modal');
+      modals.forEach(modal => {
         if (event.target === modal) {
           modal.style.display = "none";
         }
       });
-    };
+    }
   </script>
 
 </body>
