@@ -10,11 +10,12 @@
       padding: 0;
       background-color: #000;
       font-family: Arial, sans-serif;
+      overflow-x: hidden;
     }
 
     .game-container {
       width: 100vw;
-      height: 100vh;
+      height: 85vh; /* Reduced from 100vh to show banner */
       border: none;
     }
 
@@ -24,11 +25,10 @@
       align-items: center;
       background-color: #111;
       color: white;
-      padding: 15px;
+      padding: 14px 10px;
       text-align: center;
-      font-size: 1.1rem;
-      position: relative;
-      z-index: 10;
+      font-size: 1rem;
+      line-height: 1.4;
     }
 
     .store-banner a {
@@ -41,7 +41,8 @@
     @media (max-width: 600px) {
       .store-banner {
         flex-direction: column;
-        font-size: 1rem;
+        font-size: 0.95rem;
+        padding: 12px;
       }
 
       .store-banner a {
@@ -63,7 +64,7 @@
 
   <!-- Store Banner Below -->
   <div class="store-banner">
-    🎁 Love indie creations? Support my work at
+    🛍️ Need everyday essentials with a twist? Discover practical, unique products at
     <a href="https://miriele.com" target="_blank">miriele.com</a>
   </div>
 </body>
