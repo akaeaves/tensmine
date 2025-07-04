@@ -22,9 +22,9 @@ html, body {
 /* Responsive smaller canvas */
 #gameCanvas {
   width: 90vw;        /* 90% of viewport width */
-  max-width: 600px;   /* max width */
+  max-width: 400px;   /* max width */
   height: 70vh;       /* 70% of viewport height */
-  max-height: 400px;  /* max height */
+  max-height: 200px;  /* max height */
   border-radius: 12px;
   box-shadow: 0 0 20px #000;
   display: block;
@@ -46,8 +46,8 @@ html, body {
 
 /* Buttons */
 #controls button {
-  width: 60px;
-  height: 60px;
+  width: 80px;
+  height: 80px;
   font-size: 24px;
   border-radius: 50%;
   border: none;
