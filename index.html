@@ -8,6 +8,9 @@
   <meta name="keywords" content="shop trending products, free browser games, daily deals, online shopping, miriele store, tensmine">
   <meta name="robots" content="index, follow">
 
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
   <!-- Schema Markup -->
   <script type="application/ld+json">
   {
@@ -37,64 +40,131 @@
   </script>
 
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Roboto', sans-serif;
       margin: 0;
-      text-align: center;
-      background-color: #f9f9f9;
+      background-color: #f7f9fc;
+      color: #333;
     }
 
     header {
       background-color: #0055cc;
       color: white;
       padding: 1rem 0;
+      text-align: center;
     }
 
     nav a {
       color: white;
-      margin: 0 10px;
+      margin: 0 15px;
       text-decoration: none;
       font-weight: bold;
+      transition: color 0.3s;
+    }
+
+    nav a:hover {
+      color: #ffd700;
     }
 
     .hero {
-      padding: 2rem;
-      background-color: #ffffff;
+      background: url('https://images.unsplash.com/photo-1603791440384-56cd371ee9a7') center/cover no-repeat;
+      color: white;
+      padding: 4rem 2rem;
+      text-align: center;
     }
 
-    .hero img {
-      max-width: 100%;
-      height: auto;
+    .hero h1 {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
     }
 
-    .seo-text {
-      max-width: 800px;
-      margin: auto;
+    .hero p {
+      font-size: 1.2rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero .btn {
+      background-color: #ffd700;
+      color: #000;
+      padding: 0.75rem 1.5rem;
+      border: none;
+      font-size: 1rem;
+      border-radius: 5px;
+      text-decoration: none;
+    }
+
+    .content {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
       padding: 2rem;
+      gap: 2rem;
+    }
+
+    .card {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      width: 300px;
       text-align: left;
     }
 
+    .card h3 {
+      margin-top: 0;
+      color: #0055cc;
+    }
+
+    .card a {
+      color: #0055cc;
+      text-decoration: underline;
+    }
+
     .social-share {
-      padding: 1rem;
+      text-align: center;
+      padding: 2rem 1rem;
+      background-color: #eef2f7;
+    }
+
+    .social-share a {
+      margin: 0 10px;
+      text-decoration: none;
+      color: #0055cc;
+      font-weight: bold;
     }
 
     footer {
       background-color: #222;
       color: #ccc;
-      padding: 2rem 1rem;
+      padding: 1.5rem 1rem;
       font-size: 0.9rem;
+      text-align: center;
     }
 
     footer a {
       color: #ccc;
       text-decoration: underline;
     }
+
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 2rem;
+      }
+
+      .content {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
   </style>
 </head>
 <body>
 
   <header>
-    <h1>Welcome to Tensmine</h1>
     <nav>
       <a href="index.html">Home</a>
       <a href="game.html">Play Games</a>
@@ -104,24 +174,30 @@
   </header>
 
   <section class="hero">
-    <img src="banner.jpg" alt="Shop trending products and play free games at Tensmine" />
-    <h2>Discover Trending Products & Free Games</h2>
-    <p>Shop smart. Play hard.</p>
+    <h1>Welcome to Tensmine</h1>
+    <p>Shop trending daily products & play free browser games – all in one place.</p>
+    <a href="game.html" class="btn">Play Now</a>
   </section>
 
-  <section class="seo-text">
-    <h2>Shop Trending Daily Products & Play Free Games</h2>
-    <p>Welcome to Tensmine! Discover popular daily deals on useful products at <a href="https://miriele.com" target="_blank">Miriele.com</a>. Our mission is to bring you great finds in fashion, gadgets, wellness, and more. While you're here, unwind with free, easy-to-play browser games – no downloads required!</p>
-
-    <p>We believe shopping and fun should go hand-in-hand. Whether you're looking for daily-use items, gift ideas, or new time-killers, you'll find something here worth your time.</p>
+  <section class="content">
+    <div class="card">
+      <h3>Top Daily Products</h3>
+      <p>Find the latest trending products including fashion, gadgets, wellness, and more at unbeatable prices.</p>
+      <p><a href="https://miriele.com" target="_blank">Visit Miriele.com →</a></p>
+    </div>
+    <div class="card">
+      <h3>Free Online Games</h3>
+      <p>No downloads. Just instant fun. Our free browser games are perfect for quick entertainment breaks.</p>
+      <p><a href="game.html">Try a Game →</a></p>
+    </div>
   </section>
 
-  <div class="social-share">
-    <p><strong>Share this site with your friends:</strong></p>
-    <a href="https://www.facebook.com/sharer/sharer.php?u=https://tensmine.com" target="_blank">Facebook</a> |
-    <a href="https://twitter.com/intent/tweet?url=https://tensmine.com&text=Check%20this%20out!" target="_blank">Twitter</a> |
+  <section class="social-share">
+    <p><strong>Share Tensmine with your friends:</strong></p>
+    <a href="https://www.facebook.com/sharer/sharer.php?u=https://tensmine.com" target="_blank">Facebook</a>
+    <a href="https://twitter.com/intent/tweet?url=https://tensmine.com&text=Check%20this%20out!" target="_blank">Twitter</a>
     <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://tensmine.com" target="_blank">LinkedIn</a>
-  </div>
+  </section>
 
   <footer>
     <p>© 2025. All Rights Reserved. <a href="#">Terms</a>, <a href="#">Privacy</a> & <a href="#">Accessibility</a>.</p>
