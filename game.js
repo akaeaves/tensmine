@@ -53,7 +53,8 @@ function init() {
   window.addEventListener("resize", onWindowResize);
 
   // Controls
-  setupControls();
+  setupControls();document.getElementById("fullscreen").addEventListener("click", toggleFullscreen);
+
 }
 
 function setupControls() {
