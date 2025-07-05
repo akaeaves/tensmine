@@ -1,153 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Explore Miriele's Space: Games, everyday products, and fantasy experiences in one spot!" />
-  <meta name="keywords" content="Miriele, web games, online store, fantasy games, everyday products, shop" />
-  <meta name="author" content="Miriele" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Miriele's Space - Games, shopping, and fun in one place!">
+  <meta name="keywords" content="Miriele, online games, word game, Titans of Time, shop, chatroom">
+  <meta name="author" content="Miriele">
   <title>Miriele's Space</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
       margin: 0;
-      padding: 0;
-      background: #f7f9fc;
-      color: #333;
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
     }
-
-    header {
-      background: #1d3557;
-      color: white;
+    header nav {
+      background: #111;
       padding: 1rem;
-      text-align: center;
-    }
-
-    nav {
-      background: #457b9d;
       display: flex;
-      justify-content: center;
-      gap: 1rem;
-      padding: 0.5rem;
+      justify-content: space-between;
+      align-items: center;
     }
-
-    nav a {
+    header nav a, header nav button {
       color: white;
+      margin-right: 1rem;
       text-decoration: none;
+    }
+    header nav button {
+      background-color: #2196F3;
       padding: 0.5rem 1rem;
-      background: #1d3557;
-      border-radius: 5px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
     }
-
-    nav a:hover {
-      background: #a8dadc;
-      color: #1d3557;
-    }
-
-    .container {
-      padding: 2rem;
-      max-width: 1000px;
-      margin: auto;
-    }
-
-    footer {
-      background: #1d3557;
-      color: white;
-      padding: 1rem;
-      text-align: center;
-      margin-top: 2rem;
-    }
-
-    .modals {
-      font-size: 0.9rem;
-      margin-top: 1rem;
-    }
-
-    .modals a {
-      color: #f1faee;
-      text-decoration: underline;
-    }
-
-    .dropdown {
-      position: relative;
-      display: inline-block;
-    }
-
-    .dropdown-content {
+    header nav div div {
       display: none;
       position: absolute;
-      background-color: #457b9d;
+      background-color: #222;
       min-width: 160px;
       z-index: 1;
+      border-radius: 4px;
     }
-
-    .dropdown-content a {
+    header nav div div a {
+      display: block;
+      padding: 0.5rem 1rem;
       color: white;
-      padding: 12px 16px;
-      text-decoration: none;
-      display: block;
     }
-
-    .dropdown:hover .dropdown-content {
-      display: block;
+    main {
+      padding: 2rem;
+      text-align: center;
     }
-
-    .share-buttons {
-      margin-top: 1rem;
-    }
-
-    .share-buttons a {
-      margin: 0 0.5rem;
-      text-decoration: none;
-      font-size: 1.2rem;
-      color: #1d3557;
+    footer {
+      text-align: center;
+      padding: 1rem;
+      background-color: #222;
+      color: white;
+      font-size: 0.9rem;
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Miriele's Space</h1>
-    <p>Your portal to games and great products</p>
-  </header>
 
+<header>
   <nav>
-    <div class="dropdown">
-      <a href="#">Games</a>
-      <div class="dropdown-content">
-        <a href="game.html">Word Game</a>
-        <a href="titans.html">Titans of Time</a>
+    <div style="font-size: 1.5rem; color: white;">Miriele's Space</div>
+    <div>
+      <a href="index.html">Home</a>
+      <div style="display: inline-block; position: relative;">
+        <button>Games ▾</button>
+        <div>
+          <a href="game.html">Word Game</a>
+          <a href="titans.html">Titans of Time</a>
+        </div>
       </div>
+      <a href="chat.html">Chatroom</a>
     </div>
-    <a href="https://miriele.com" target="_blank">Shop</a>
-    <a href="contact.html">Contact</a>
   </nav>
+  <script>
+    const dropdown = document.querySelector("header nav div button");
+    const menu = dropdown.nextElementSibling;
+    dropdown.addEventListener("mouseover", () => menu.style.display = "block");
+    dropdown.addEventListener("mouseout", () => menu.style.display = "none");
+    menu.addEventListener("mouseover", () => menu.style.display = "block");
+    menu.addEventListener("mouseout", () => menu.style.display = "none");
+  </script>
+</header>
 
-  <div class="container">
-    <h2>Welcome to Miriele's Space</h2>
-    <p>Discover our fantasy games and explore a wide selection of everyday products at our online store. Miriele.com offers fun, convenience, and creativity all in one destination.</p>
+<main>
+  <h1>Welcome to Miriele's Space</h1>
+  <p>Explore a universe of engaging games and everyday essentials at your fingertips.</p>
+  <img src="https://via.placeholder.com/800x300?text=Welcome+to+Miriele" alt="Welcome Banner" style="max-width:100%; border-radius: 12px;">
+</main>
 
-    <h3>Why Visit Us?</h3>
-    <ul>
-      <li>Play free online games right from your browser</li>
-      <li>Shop a variety of daily-use items and unique finds</li>
-      <li>Enjoy a smooth and engaging web experience</li>
-    </ul>
+<footer>
+  <p>© 2025. All Rights Reserved. <a href="#">Terms</a>, <a href="#">Privacy</a> & <a href="#">Accessibility</a>.</p>
+</footer>
 
-    <div class="share-buttons">
-      <p>Share our site:</p>
-      <a href="https://www.facebook.com/sharer/sharer.php?u=https://tensmine.com" target="_blank">Facebook</a>
-      <a href="https://twitter.com/intent/tweet?url=https://tensmine.com&text=Check%20out%20this%20awesome%20site!" target="_blank">Twitter</a>
-      <a href="mailto:?subject=Check%20out%20Miriele's%20Space&body=Visit%20https://tensmine.com%20for%20games%20and%20great%20products!" target="_blank">Email</a>
-    </div>
-  </div>
-
-  <footer>
-    <div class="modals">
-      <a href="#">Terms</a> |
-      <a href="#">Privacy</a> |
-      <a href="#">Accessibility</a>
-    </div>
-    <p>© 2025. All Rights Reserved. Miriele.com</p>
-  </footer>
 </body>
 </html>
