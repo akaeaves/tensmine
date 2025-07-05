@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Play Titans of Time - Tensmine</title>
+  <title>Titans of Time</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -25,20 +25,27 @@
       color: #00aaff;
       margin: 0 10px;
       text-decoration: none;
-      font-size: 1rem;
+      font-size: 0.9rem;
+      padding: 8px 14px;
+      border-radius: 5px;
+      background-color: #000;
+      border: 1px solid #00aaff;
     }
     nav a:hover {
-      text-decoration: underline;
+      background-color: #00aaff;
+      color: #000;
     }
     main {
       text-align: center;
-      padding: 20px;
+      padding: 30px 20px;
     }
-    iframe {
-      width: 90%;
-      height: 720px;
-      max-width: 1200px;
-      border: none;
+    .external-link {
+      margin-top: 30px;
+      font-size: 1.1rem;
+    }
+    .external-link a {
+      color: #00aaff;
+      text-decoration: underline;
     }
     footer {
       background-color: #1f1f1f;
@@ -51,8 +58,8 @@
 </head>
 <body>
   <header>
-    <h1>Play Titans of Time</h1>
-    <p>Free 3D Fantasy MMORPG – Play Instantly Below</p>
+    <h1>Titans of Time</h1>
+    <p>Explore a free 3D fantasy MMORPG – character creation, job classes, and more.</p>
   </header>
 
   <nav>
@@ -61,13 +68,10 @@
   </nav>
 
   <main>
-    <!-- Embed Titans of Time -->
-    <iframe src="https://titansoftime.com/game">
-      Your browser does not support iframes.
-    </iframe>
-
-    <!-- Fallback message -->
-    <p>If the game doesn’t load, <a href="https://titansoftime.com/game" target="_blank">click here to play it in a new tab</a>.</p>
+    <p class="external-link">
+      <strong>Play Now:</strong> <a href="https://titansoftime.com/game" target="_blank">Click here to launch Titans of Time</a>
+    </p>
+    <p>(Note: This game opens in a new tab. Embedding is not supported by the game’s server.)</p>
   </main>
 
   <footer>
