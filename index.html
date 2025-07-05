@@ -1,99 +1,229 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Miriele's Space - Games, shopping, and fun in one place!">
-  <meta name="keywords" content="Miriele, online games, word game, Titans of Time, shop, chatroom">
-  <meta name="author" content="Miriele">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Miriele's Space</title>
+  
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Miriele's Space – Shop everyday products, discover web games, and connect in chat.">
+  <meta name="keywords" content="Miriele, online store, fantasy games, web games, shopping, chatroom">
+  <meta name="author" content="Miriele.com">
+
+  <!-- Open Graph Meta Tags (Social Sharing) -->
+  <meta property="og:title" content="Miriele's Space" />
+  <meta property="og:description" content="Shop daily products and play games – all in one space." />
+  <meta property="og:image" content="https://yourdomain.com/images/preview.jpg" />
+  <meta property="og:url" content="https://yourdomain.com/" />
+  <meta name="twitter:card" content="summary_large_image" />
+
   <style>
     body {
+      font-family: 'Segoe UI', sans-serif;
       margin: 0;
-      font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
+      padding: 0;
+      background: #f7f7f7;
+      color: #333;
     }
-    header nav {
-      background: #111;
-      padding: 1rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    header nav a, header nav button {
+
+    header {
+      background-color: #111c44;
+      padding: 15px;
       color: white;
-      margin-right: 1rem;
+      text-align: center;
+    }
+
+    nav {
+      background-color: #1a275c;
+      display: flex;
+      justify-content: center;
+      padding: 10px 0;
+    }
+
+    nav a {
+      color: white;
+      padding: 10px 20px;
       text-decoration: none;
+      margin: 0 5px;
+      background-color: #3b5fc6;
+      border-radius: 5px;
     }
-    header nav button {
-      background-color: #2196F3;
-      padding: 0.5rem 1rem;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
+
+    nav a:hover {
+      background-color: #557ff8;
     }
-    header nav div div {
+
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .dropdown-content {
       display: none;
       position: absolute;
-      background-color: #222;
+      background-color: #1a275c;
       min-width: 160px;
       z-index: 1;
-      border-radius: 4px;
     }
-    header nav div div a {
+
+    .dropdown-content a {
       display: block;
-      padding: 0.5rem 1rem;
-      color: white;
+      padding: 10px;
     }
-    main {
-      padding: 2rem;
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    .hero {
       text-align: center;
+      padding: 60px 20px;
+      background: linear-gradient(to right, #cce2ff, #d6e6ff);
     }
+
+    .hero h1 {
+      font-size: 2.5em;
+      margin-bottom: 10px;
+    }
+
+    .hero p {
+      font-size: 1.2em;
+      color: #555;
+    }
+
     footer {
-      text-align: center;
-      padding: 1rem;
       background-color: #222;
       color: white;
-      font-size: 0.9rem;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .footer-links {
+      margin-top: 10px;
+    }
+
+    .footer-links a {
+      color: #ccc;
+      margin: 0 10px;
+      text-decoration: none;
+    }
+
+    .footer-links a:hover {
+      color: #fff;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 99;
+      padding-top: 60px;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.8);
+    }
+
+    .modal-content {
+      background-color: #fff;
+      margin: auto;
+      padding: 20px;
+      width: 80%;
+      max-width: 600px;
+      border-radius: 10px;
+    }
+
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .close:hover {
+      color: black;
     }
   </style>
 </head>
 <body>
 
 <header>
-  <nav>
-    <div style="font-size: 1.5rem; color: white;">Miriele's Space</div>
-    <div>
-      <a href="index.html">Home</a>
-      <div style="display: inline-block; position: relative;">
-        <button>Games ▾</button>
-        <div>
-          <a href="game.html">Word Game</a>
-          <a href="titans.html">Titans of Time</a>
-        </div>
-      </div>
-      <a href="chat.html">Chatroom</a>
-    </div>
-  </nav>
-  <script>
-    const dropdown = document.querySelector("header nav div button");
-    const menu = dropdown.nextElementSibling;
-    dropdown.addEventListener("mouseover", () => menu.style.display = "block");
-    dropdown.addEventListener("mouseout", () => menu.style.display = "none");
-    menu.addEventListener("mouseover", () => menu.style.display = "block");
-    menu.addEventListener("mouseout", () => menu.style.display = "none");
-  </script>
+  <h1>Miriele's Space</h1>
+  <p>Your portal to products, play, and people</p>
 </header>
 
-<main>
+<nav>
+  <div class="dropdown">
+    <a href="#">Games</a>
+    <div class="dropdown-content">
+      <a href="game.html">Word Game</a>
+      <a href="titans.html">Titans of Time</a>
+    </div>
+  </div>
+  <a href="https://miriele.com" target="_blank">Shop</a>
+  <a href="chat.html">Chatroom</a>
+</nav>
+
+<section class="hero">
   <h1>Welcome to Miriele's Space</h1>
-  <p>Explore a universe of engaging games and everyday essentials at your fingertips.</p>
-  <img src="https://via.placeholder.com/800x300?text=Welcome+to+Miriele" alt="Welcome Banner" style="max-width:100%; border-radius: 12px;">
-</main>
+  <p>Explore our web games, shop everyday essentials, and hang out in our chatroom. All in one destination.</p>
+</section>
 
 <footer>
-  <p>© 2025. All Rights Reserved. <a href="#">Terms</a>, <a href="#">Privacy</a> & <a href="#">Accessibility</a>.</p>
+  <p>© 2025. All Rights Reserved.</p>
+  <div class="footer-links">
+    <a href="#" onclick="showModal('termsModal')">Terms</a> |
+    <a href="#" onclick="showModal('privacyModal')">Privacy</a> |
+    <a href="#" onclick="showModal('accessibilityModal')">Accessibility</a>
+  </div>
 </footer>
+
+<!-- Modals -->
+<div id="termsModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="hideModal('termsModal')">&times;</span>
+    <h2>Terms of Service</h2>
+    <p>By using this site, you agree to all posted terms including our acceptable use policy and general site rules.</p>
+  </div>
+</div>
+
+<div id="privacyModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="hideModal('privacyModal')">&times;</span>
+    <h2>Privacy Policy</h2>
+    <p>We do not sell or share your personal data. Any data collected is for service improvement only.</p>
+  </div>
+</div>
+
+<div id="accessibilityModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="hideModal('accessibilityModal')">&times;</span>
+    <h2>Accessibility</h2>
+    <p>We strive to ensure this site is accessible to all users. Contact us for suggestions or issues.</p>
+  </div>
+</div>
+
+<script>
+  function showModal(id) {
+    document.getElementById(id).style.display = "block";
+  }
+
+  function hideModal(id) {
+    document.getElementById(id).style.display = "none";
+  }
+
+  // Optional: Close modals on outside click
+  window.onclick = function(event) {
+    const modals = document.querySelectorAll('.modal');
+    modals.forEach(modal => {
+      if (event.target === modal) {
+        modal.style.display = "none";
+      }
+    });
+  }
+</script>
 
 </body>
 </html>
