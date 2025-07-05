@@ -2,166 +2,117 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Tensmine – Play Games & Shop Everyday Products</title>
-
-  <!-- SEO Meta -->
-  <meta name="description" content="Tensmine brings you casual online games and access to everyday products from Miriele. Play & shop in one place!" />
-  <meta name="keywords" content="casual games, online games, word games, Titans of Time, shop, everyday products, miriele.com" />
-  <meta name="author" content="Tensmine" />
-
-  <!-- Open Graph -->
-  <meta property="og:title" content="Tensmine – Play Games & Shop Everyday Products" />
-  <meta property="og:description" content="Discover free games and practical products on Tensmine. Powered by miriele.com." />
-  <meta property="og:image" content="https://tensmine.com/assets/preview.jpg" />
-  <meta property="og:url" content="https://tensmine.com" />
-  <meta property="og:type" content="website" />
-
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Tensmine – Play Games & Shop Everyday Products" />
-  <meta name="twitter:description" content="Explore fun online games and a variety of useful products at Tensmine." />
-  <meta name="twitter:image" content="https://tensmine.com/assets/preview.jpg" />
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Explore Miriele's Space: Games, everyday products, and fantasy experiences in one spot!" />
+  <meta name="keywords" content="Miriele, web games, online store, fantasy games, everyday products, shop" />
+  <meta name="author" content="Miriele" />
+  <title>Miriele's Space</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       margin: 0;
-      background-color: #f8f9fa;
+      padding: 0;
+      background: #f7f9fc;
+      color: #333;
     }
+
     header {
-      background-color: #003366;
-      padding: 10px;
+      background: #1d3557;
+      color: white;
+      padding: 1rem;
       text-align: center;
     }
-    header h1 {
-      color: white;
-      margin: 0;
-    }
+
     nav {
-      background-color: #0055a5;
-      overflow: hidden;
+      background: #457b9d;
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      padding: 0.5rem;
     }
+
     nav a {
-      float: left;
-      display: block;
       color: white;
-      text-align: center;
-      padding: 14px 20px;
       text-decoration: none;
-      font-size: 16px;
+      padding: 0.5rem 1rem;
+      background: #1d3557;
+      border-radius: 5px;
     }
-    nav .dropdown {
-      float: left;
-      overflow: hidden;
+
+    nav a:hover {
+      background: #a8dadc;
+      color: #1d3557;
     }
-    nav .dropbtn {
-      font-size: 16px;
-      border: none;
-      outline: none;
+
+    .container {
+      padding: 2rem;
+      max-width: 1000px;
+      margin: auto;
+    }
+
+    footer {
+      background: #1d3557;
       color: white;
-      padding: 14px 20px;
-      background-color: inherit;
-      font-family: inherit;
-      margin: 0;
+      padding: 1rem;
+      text-align: center;
+      margin-top: 2rem;
     }
-    nav .dropdown-content {
+
+    .modals {
+      font-size: 0.9rem;
+      margin-top: 1rem;
+    }
+
+    .modals a {
+      color: #f1faee;
+      text-decoration: underline;
+    }
+
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .dropdown-content {
       display: none;
       position: absolute;
-      background-color: #f1f1f1;
+      background-color: #457b9d;
       min-width: 160px;
       z-index: 1;
     }
-    nav .dropdown-content a {
-      float: none;
-      color: black;
+
+    .dropdown-content a {
+      color: white;
       padding: 12px 16px;
       text-decoration: none;
       display: block;
-      text-align: left;
     }
-    nav .dropdown:hover .dropdown-content {
+
+    .dropdown:hover .dropdown-content {
       display: block;
     }
-    .main {
-      padding: 20px;
-      text-align: center;
+
+    .share-buttons {
+      margin-top: 1rem;
     }
-    .hero {
-      background: url('https://images.unsplash.com/photo-1526406915894-6e4c1d38ae8d') center center/cover no-repeat;
-      color: white;
-      padding: 80px 20px;
-      margin-bottom: 30px;
-    }
-    .hero h2 {
-      font-size: 36px;
-      margin: 0 0 20px 0;
-    }
-    .hero p {
-      font-size: 20px;
-    }
-    footer {
-      background-color: #003366;
-      color: white;
-      text-align: center;
-      padding: 20px 10px;
-      margin-top: 40px;
-    }
-    footer a {
-      color: #ccc;
+
+    .share-buttons a {
+      margin: 0 0.5rem;
       text-decoration: none;
-      margin: 0 10px;
-    }
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 10;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      overflow: auto;
-      background-color: rgba(0,0,0,0.6);
-    }
-    .modal-content {
-      background-color: #fff;
-      margin: 15% auto;
-      padding: 20px;
-      width: 90%;
-      max-width: 600px;
-      border-radius: 8px;
-    }
-    .close {
-      color: #aaa;
-      float: right;
-      font-size: 24px;
-      font-weight: bold;
-    }
-    .close:hover,
-    .close:focus {
-      color: black;
-      text-decoration: none;
-      cursor: pointer;
-    }
-    .social-buttons {
-      margin-top: 15px;
-    }
-    .social-buttons a {
-      margin: 0 5px;
-      display: inline-block;
-      text-decoration: none;
+      font-size: 1.2rem;
+      color: #1d3557;
     }
   </style>
 </head>
 <body>
-
   <header>
-    <h1>Welcome to Tensmine</h1>
+    <h1>Miriele's Space</h1>
+    <p>Your portal to games and great products</p>
   </header>
 
   <nav>
     <div class="dropdown">
-      <button class="dropbtn">Games</button>
+      <a href="#">Games</a>
       <div class="dropdown-content">
         <a href="game.html">Word Game</a>
         <a href="titans.html">Titans of Time</a>
@@ -171,70 +122,32 @@
     <a href="contact.html">Contact</a>
   </nav>
 
-  <div class="hero">
-    <h2>Play Free Games and Discover Everyday Products</h2>
-    <p>Enjoy casual fun and shop smart – all from one site.</p>
-    <div class="social-buttons">
-      <a href="https://www.facebook.com/sharer/sharer.php?u=https://tensmine.com" target="_blank">Share on Facebook</a>
-      <a href="https://twitter.com/intent/tweet?url=https://tensmine.com&text=Check%20out%20Tensmine!" target="_blank">Share on Twitter</a>
-    </div>
-  </div>
+  <div class="container">
+    <h2>Welcome to Miriele's Space</h2>
+    <p>Discover our fantasy games and explore a wide selection of everyday products at our online store. Miriele.com offers fun, convenience, and creativity all in one destination.</p>
 
-  <div class="main">
-    <p>Welcome to Tensmine, your one-stop hub for light gaming fun and practical shopping! Choose from a growing collection of browser-based games or head over to our store and browse useful products through Miriele.com.</p>
-    <p>Whether you're passing time or shopping for essentials, we've got something for you. Discover unique finds, play casual games, and share the experience with friends!</p>
+    <h3>Why Visit Us?</h3>
+    <ul>
+      <li>Play free online games right from your browser</li>
+      <li>Shop a variety of daily-use items and unique finds</li>
+      <li>Enjoy a smooth and engaging web experience</li>
+    </ul>
+
+    <div class="share-buttons">
+      <p>Share our site:</p>
+      <a href="https://www.facebook.com/sharer/sharer.php?u=https://tensmine.com" target="_blank">Facebook</a>
+      <a href="https://twitter.com/intent/tweet?url=https://tensmine.com&text=Check%20out%20this%20awesome%20site!" target="_blank">Twitter</a>
+      <a href="mailto:?subject=Check%20out%20Miriele's%20Space&body=Visit%20https://tensmine.com%20for%20games%20and%20great%20products!" target="_blank">Email</a>
+    </div>
   </div>
 
   <footer>
-    <p>&copy; 2025. All Rights Reserved. 
-      <a href="#" onclick="showModal('terms')">Terms</a>, 
-      <a href="#" onclick="showModal('privacy')">Privacy</a>, 
-      <a href="#" onclick="showModal('accessibility')">Accessibility</a>.
-    </p>
+    <div class="modals">
+      <a href="#">Terms</a> |
+      <a href="#">Privacy</a> |
+      <a href="#">Accessibility</a>
+    </div>
+    <p>© 2025. All Rights Reserved. Miriele.com</p>
   </footer>
-
-  <!-- Modals -->
-  <div id="terms" class="modal">
-    <div class="modal-content">
-      <span class="close" onclick="closeModal('terms')">&times;</span>
-      <h2>Terms of Service</h2>
-      <p>By accessing Tensmine, you agree to use this site responsibly. Game content and shopping links are subject to change at any time.</p>
-    </div>
-  </div>
-
-  <div id="privacy" class="modal">
-    <div class="modal-content">
-      <span class="close" onclick="closeModal('privacy')">&times;</span>
-      <h2>Privacy Policy</h2>
-      <p>We respect your privacy. We do not collect personal information unless voluntarily provided via the contact form or store.</p>
-    </div>
-  </div>
-
-  <div id="accessibility" class="modal">
-    <div class="modal-content">
-      <span class="close" onclick="closeModal('accessibility')">&times;</span>
-      <h2>Accessibility</h2>
-      <p>Tensmine strives to be accessible to all users. If you experience issues, please contact us via the contact page.</p>
-    </div>
-  </div>
-
-  <script>
-    function showModal(id) {
-      document.getElementById(id).style.display = 'block';
-    }
-    function closeModal(id) {
-      document.getElementById(id).style.display = 'none';
-    }
-    window.onclick = function(event) {
-      const modals = ['terms', 'privacy', 'accessibility'];
-      modals.forEach(function(id) {
-        const modal = document.getElementById(id);
-        if (event.target === modal) {
-          modal.style.display = "none";
-        }
-      });
-    }
-  </script>
-
 </body>
 </html>
