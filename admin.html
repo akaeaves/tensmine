@@ -2,89 +2,53 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Admin Chat Console</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Chat Panel</title>
+  <link rel="manifest" href="/manifest.json">
   <style>
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #111;
-      color: white;
+      font-family: Arial, sans-serif;
+      background: #1d1d2e;
+      color: #fff;
       margin: 0;
-      padding: 0;
+      padding: 20px;
     }
-
-    header {
-      background: #222;
-      padding: 1rem;
-      text-align: center;
+    .chat {
+      max-width: 600px;
+      margin: auto;
     }
-
-    #admin-section {
-      padding: 1rem;
-    }
-
     .message {
-      border-bottom: 1px solid #444;
-      padding: 1rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .message-content {
-      flex: 1;
-    }
-
-    .delete-btn {
-      background-color: #e74c3c;
-      border: none;
-      color: white;
-      padding: 0.5rem 1rem;
-      margin-left: 1rem;
+      background: #333;
+      padding: 10px;
+      margin: 5px 0;
       border-radius: 5px;
-      cursor: pointer;
     }
-
-    .delete-btn:hover {
-      background-color: #c0392b;
+    .controls {
+      margin-top: 20px;
     }
-
-    @media screen and (max-width: 600px) {
-      .message {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .delete-btn {
-        margin-top: 0.5rem;
-      }
+    input, button {
+      padding: 10px;
+      margin: 5px;
     }
   </style>
 </head>
 <body>
-
-  <header>
-    <h2>Admin Chat Console</h2>
-  </header>
-
-  <div id="admin-section">
-    <p id="status">Authenticating...</p>
+  <div class="chat">
+    <h1>Admin Panel</h1>
     <div id="messages"></div>
+    <div class="controls">
+      <input type="text" id="broadcast" placeholder="Broadcast message" />
+      <button onclick="sendBroadcast()">Send</button><br />
+      <input type="text" id="banEmail" placeholder="Ban user by email" />
+      <button onclick="banUser()">Ban</button>
+    </div>
+    <button id="installBtn" style="display:none; margin-top:20px;">Install App</button>
   </div>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
-    import {
-      getAuth,
-      signInWithEmailAndPassword,
-      onAuthStateChanged
-    } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
-    import {
-      getDatabase,
-      ref,
-      onChildAdded,
-      remove
-    } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
+    import { getDatabase, ref, push, set, onChildAdded } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyB4w6elulTE2FJbJVAXNUYs74_YC1Ti6yQ",
@@ -93,51 +57,57 @@
       storageBucket: "mirielechat.appspot.com",
       messagingSenderId: "1031331000258",
       appId: "1:1031331000258:web:7cae47f29cb3493fb1f05b",
-      databaseURL: "https://mirielechat-default-rtdb.firebaseio.com"
+      databaseURL: "https://mirielechat-default-rtdb.firebaseio.com/"
     };
 
     const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
     const db = getDatabase(app);
-    const messagesRef = ref(db, "messages");
+    const auth = getAuth();
 
-    const adminEmail = "monday1379@gmail.com"; // 🔐 Replace with your admin email
-    const adminPassword = "soupkitchen"; // 🔐 Replace with your secure password
+    let currentUserEmail = null;
 
-    function renderMessage(id, msg) {
-      const msgDiv = document.createElement("div");
-      msgDiv.className = "message";
+    onAuthStateChanged(auth, user => {
+      if (user && user.email === "monday1379@gmail.com") {
+        currentUserEmail = user.email;
+      } else {
+        alert("Unauthorized. Admins only.");
+        window.location.href = "/index.html";
+      }
+    });
 
-      const content = document.createElement("div");
-      content.className = "message-content";
-      content.innerHTML = `<strong>${msg.user}</strong>: ${msg.text} <br><small>${new Date(msg.time).toLocaleString()}</small>`;
-
-      const delBtn = document.createElement("button");
-      delBtn.textContent = "🗑️ Delete";
-      delBtn.className = "delete-btn";
-      delBtn.onclick = () => {
-        if (confirm("Delete this message?")) {
-          remove(ref(db, `messages/${id}`));
-          msgDiv.remove();
-        }
-      };
-
-      msgDiv.appendChild(content);
-      msgDiv.appendChild(delBtn);
-      document.getElementById("messages").appendChild(msgDiv);
+    function sendBroadcast() {
+      const text = document.getElementById('broadcast').value;
+      if (!text) return;
+      push(ref(db, 'broadcasts'), {
+        message: text,
+        sender: currentUserEmail,
+        timestamp: Date.now()
+      });
+      document.getElementById('broadcast').value = '';
     }
 
-    signInWithEmailAndPassword(auth, adminEmail, adminPassword)
-      .then(() => {
-        document.getElementById("status").textContent = "Logged in as admin.";
-        onChildAdded(messagesRef, snapshot => {
-          renderMessage(snapshot.key, snapshot.val());
-        });
-      })
-      .catch(error => {
-        document.getElementById("status").textContent = "Authentication failed: " + error.message;
-      });
-  </script>
+    function banUser() {
+      const email = document.getElementById('banEmail').value;
+      if (!email) return;
+      set(ref(db, 'banned/' + btoa(email)), true);
+      alert(email + " has been banned.");
+      document.getElementById('banEmail').value = '';
+    }
 
+    // PWA install prompt
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      document.getElementById('installBtn').style.display = 'block';
+    });
+
+    document.getElementById('installBtn').addEventListener('click', () => {
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then(() => {
+        deferredPrompt = null;
+      });
+    });
+  </script>
 </body>
 </html>
