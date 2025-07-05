@@ -18,20 +18,21 @@
     header {
       background-color: #1e1e2f;
       padding: 1rem;
-      text-align: center;
-    }
-
-    .nav {
       display: flex;
       justify-content: space-between;
-      padding: 0.5rem 1rem;
+      align-items: center;
     }
 
-    .nav button {
+    header h2 {
+      margin: 0;
+    }
+
+    header .nav-buttons button {
       background-color: #3498db;
       border: none;
       color: white;
       padding: 0.5rem 1rem;
+      margin-left: 0.5rem;
       border-radius: 5px;
       cursor: pointer;
     }
@@ -90,11 +91,10 @@
 <body>
 
   <header>
-    <div class="nav">
-      <h2>Miriele's Chatroom</h2>
-      <div>
-        <button onclick="window.location.href='index.html'">Home</button>
-      </div>
+    <h2>Miriele's Chatroom</h2>
+    <div class="nav-buttons">
+      <button onclick="window.location.href='index.html'">Home</button>
+      <button id="logoutBtn" onclick="logout()" style="display: none;">Logout</button>
     </div>
   </header>
 
@@ -117,8 +117,20 @@
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
-    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
-    import { getDatabase, ref, push, onChildAdded } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
+    import {
+      getAuth,
+      createUserWithEmailAndPassword,
+      signInWithEmailAndPassword,
+      signInAnonymously,
+      signOut,
+      onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+    import {
+      getDatabase,
+      ref,
+      push,
+      onChildAdded
+    } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyB4w6elulTE2FJbJVAXNUYs74_YC1Ti6yQ",
@@ -135,7 +147,10 @@
     const db = getDatabase(app);
     const messagesRef = ref(db, "messages");
 
-    const bannedWords = ["ugly", "badword", "curse"]; // Add more words as needed
+    const bannedWords = ["ugly", "badword", "curse"]; // Extend this list as needed
+    let currentUserDisplay = "Guest";
+    let isAnonymous = false;
+    let lastPostTime = 0;
 
     function sanitize(message) {
       let clean = message;
@@ -146,26 +161,38 @@
       return clean;
     }
 
+    function formatTime(timestamp) {
+      const date = new Date(timestamp);
+      return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    }
+
     document.getElementById("message-form").addEventListener("submit", e => {
       e.preventDefault();
       const input = document.getElementById("message-input");
+      const now = Date.now();
+
+      // Rate limit for anonymous users
+      if (isAnonymous && now - lastPostTime < 10000) {
+        alert("Please wait before sending another message.");
+        return;
+      }
+
       const msg = sanitize(input.value);
       if (msg.trim() !== "") {
         push(messagesRef, {
           text: msg,
-          time: Date.now(),
+          time: now,
           user: currentUserDisplay
         });
         input.value = "";
+        lastPostTime = now;
       }
     });
-
-    let currentUserDisplay = "Guest";
 
     onChildAdded(messagesRef, snapshot => {
       const msg = snapshot.val();
       const div = document.createElement("div");
-      div.textContent = `${msg.user}: ${msg.text}`;
+      div.textContent = `[${formatTime(msg.time)}] ${msg.user}: ${msg.text}`;
       document.getElementById("chat-box").appendChild(div);
       document.getElementById("chat-box").scrollTop = document.getElementById("chat-box").scrollHeight;
     });
@@ -189,14 +216,27 @@
         .catch(err => alert(err.message));
     }
 
+    function logout() {
+      signOut(auth);
+    }
+
     onAuthStateChanged(auth, user => {
       if (user) {
+        isAnonymous = user.isAnonymous;
         currentUserDisplay = user.email ? user.email.split("@")[0] : "Guest";
         document.getElementById("auth-section").style.display = "none";
         document.getElementById("chat-box").style.display = "block";
         document.getElementById("message-form").style.display = "flex";
         document.getElementById("welcome").style.display = "block";
-        document.getElementById("welcome").textContent = `Welcome, ${currentUserDisplay}! Enjoy your chat.`;
+        document.getElementById("welcome").textContent = `Welcome, ${currentUserDisplay}!`;
+        document.getElementById("logoutBtn").style.display = "inline-block";
+      } else {
+        // Reset view when user logs out
+        document.getElementById("auth-section").style.display = "block";
+        document.getElementById("chat-box").style.display = "none";
+        document.getElementById("message-form").style.display = "none";
+        document.getElementById("welcome").style.display = "none";
+        document.getElementById("logoutBtn").style.display = "none";
       }
     });
   </script>
