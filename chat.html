@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Miriele Chatroom</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom right, #1a1a2e, #16213e);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+
+    header {
+      background-color: #0f3460;
+      padding: 10px 20px;
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #fff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header button {
+      background-color: #0f3460;
+      color: #fff;
+      border: 1px solid #fff;
+      padding: 5px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    #chat-box {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+      background: rgba(0,0,0,0.2);
+      border-top: 2px solid #fff;
+      border-bottom: 2px solid #fff;
+    }
+
+    .message {
+      margin-bottom: 10px;
+      padding: 8px;
+      border-radius: 6px;
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .message strong {
+      color: #00d4ff;
+    }
+
+    form {
+      display: flex;
+      padding: 10px;
+      background-color: #0f3460;
+    }
+
+    input, button {
+      padding: 10px;
+      font-size: 1rem;
+    }
+
+    input {
+      flex: 1;
+      border: none;
+      border-radius: 6px 0 0 6px;
+    }
+
+    button {
+      background-color: #00d4ff;
+      color: #000;
+      border: none;
+      border-radius: 0 6px 6px 0;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    Miriele Chatroom
+    <button onclick="window.location.href='index.html'">Home</button>
+  </header>
+
+  <div id="chat-box"></div>
+
+  <form id="chat-form">
+    <input type="text" id="username" placeholder="Your name" required />
+    <input type="text" id="message" placeholder="Type your message..." required />
+    <button type="submit">Send</button>
+  </form>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+    import { getDatabase, ref, push, onChildAdded } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyB4w6elulTE2FJbJVAXNUYs74_YC1Ti6yQ",
+      authDomain: "mirielechat.firebaseapp.com",
+      projectId: "mirielechat",
+      storageBucket: "mirielechat.firebasestorage.app",
+      messagingSenderId: "1031331000258",
+      appId: "1:1031331000258:web:7cae47f29cb3493fb1f05b"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    const chatRef = ref(db, "messages");
+
+    const chatBox = document.getElementById("chat-box");
+    const chatForm = document.getElementById("chat-form");
+    const usernameInput = document.getElementById("username");
+    const messageInput = document.getElementById("message");
+
+    const bannedWords = ["ugly", "stupid", "hate", "dumb", "idiot", "ass", "damn", "fuck", "shit"];
+    const censor = (text) => {
+      let filtered = text;
+      bannedWords.forEach(word => {
+        const pattern = new RegExp(`\\b${word}\\b`, 'gi');
+        filtered = filtered.replace(pattern, "***");
+      });
+      return filtered;
+    };
+
+    chatForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const name = usernameInput.value.trim();
+      const message = censor(messageInput.value.trim());
+
+      if (name && message) {
+        push(chatRef, {
+          name,
+          message,
+          timestamp: Date.now()
+        });
+        messageInput.value = "";
+      }
+    });
+
+    onChildAdded(chatRef, (snapshot) => {
+      const data = snapshot.val();
+      const div = document.createElement("div");
+      div.classList.add("message");
+      div.innerHTML = `<strong>${data.name}:</strong> ${data.message}`;
+      chatBox.appendChild(div);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    });
+  </script>
+</body>
+</html>
