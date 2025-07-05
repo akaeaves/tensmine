@@ -3,103 +3,116 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Explore fun games and shop everyday products at Miriele.com – all in one place!" />
-  <meta name="keywords" content="online games, fantasy mmorpg, shop, everyday products, miriele" />
-  <meta name="author" content="Tensmine.com" />
-  <title>Welcome to Tensmine</title>
+  <meta name="description" content="Tensmine - Play free browser games and discover trending everyday products at Miriele.com. Shop smart and play hard, all in one place!" />
+  <title>Tensmine - Games & Everyday Products</title>
   <style>
     body {
-      margin: 0;
       font-family: Arial, sans-serif;
-      background: #f5f7fa;
-      color: #333;
+      margin: 0;
+      padding: 0;
+      background: #f4f4f4;
     }
     header {
-      background-color: #1f2833;
+      background-color: #1a1a1a;
       color: #fff;
-      padding: 1.5rem 1rem;
+      padding: 20px;
       text-align: center;
     }
     nav {
-      background-color: #45a29e;
-      padding: 0.5rem 1rem;
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
+      background-color: #333;
+      overflow: hidden;
     }
-    nav a, .dropdown button {
-      background-color: #1f2833;
-      color: #fff;
+    nav a {
+      float: left;
+      display: block;
+      color: white;
+      text-align: center;
+      padding: 14px 20px;
       text-decoration: none;
-      padding: 0.4rem 0.8rem;
-      border-radius: 4px;
-      font-weight: bold;
-      font-size: 0.9rem;
-      border: none;
+    }
+    nav a:hover, nav .dropdown:hover .dropbtn {
+      background-color: #555;
+    }
+    nav .dropdown {
+      float: left;
+      overflow: hidden;
+    }
+    nav .dropdown .dropbtn {
       cursor: pointer;
+      border: none;
+      outline: none;
+      color: white;
+      padding: 14px 20px;
+      background-color: inherit;
+      font-family: inherit;
+      margin: 0;
     }
-    nav a:hover, .dropdown-content a:hover {
-      background-color: #66fcf1;
-      color: #0b0c10;
-    }
-    .dropdown {
-      position: relative;
-      display: inline-block;
-    }
-    .dropdown-content {
+    nav .dropdown-content {
       display: none;
       position: absolute;
-      background-color: #1f2833;
+      background-color: #444;
       min-width: 160px;
       z-index: 1;
-      top: 100%;
     }
-    .dropdown-content a {
+    nav .dropdown-content a {
+      float: none;
       color: white;
-      padding: 0.5rem 1rem;
-      display: block;
+      padding: 12px 16px;
       text-decoration: none;
+      display: block;
+      text-align: left;
     }
-    .dropdown:hover .dropdown-content {
+    nav .dropdown-content a:hover {
+      background-color: #555;
+    }
+    nav .dropdown:hover .dropdown-content {
       display: block;
     }
     main {
-      padding: 2rem;
-      text-align: center;
+      padding: 20px;
+      background: #fff;
     }
     footer {
-      background-color: #1f2833;
-      color: #c5c6c7;
       text-align: center;
-      padding: 1rem;
+      padding: 20px;
+      font-size: 0.9em;
+      background-color: #1a1a1a;
+      color: #ccc;
     }
-    footer a {
-      color: #66fcf1;
+    .modal-links a {
+      color: #ccc;
+      margin: 0 10px;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+    .buttons {
+      margin-top: 30px;
+      text-align: center;
+    }
+    .buttons a {
+      background-color: #007BFF;
+      color: white;
+      padding: 12px 25px;
+      margin: 10px;
       text-decoration: none;
-      margin: 0 0.5rem;
+      display: inline-block;
+      border-radius: 5px;
     }
-    .social-buttons {
-      margin-top: 1rem;
-    }
-    .social-buttons a {
-      margin: 0 0.3rem;
-      text-decoration: none;
-      font-size: 1.2rem;
-      color: #45a29e;
+    .buttons a:hover {
+      background-color: #0056b3;
     }
   </style>
 </head>
 <body>
-
   <header>
     <h1>Welcome to Tensmine</h1>
-    <p>Discover Games & Shop Everyday Products</p>
+    <p>Play Games. Shop Smart. All in One Place.</p>
   </header>
 
   <nav>
     <a href="index.html">Home</a>
     <div class="dropdown">
-      <button>Games</button>
+      <button class="dropbtn">Games</button>
       <div class="dropdown-content">
         <a href="game.html">Word Game</a>
         <a href="titans.html">Titans of Time</a>
@@ -110,19 +123,43 @@
   </nav>
 
   <main>
-    <h2>Play Free Online Games</h2>
-    <p>Jump into adventure or challenge your brain – all from your browser!</p>
-    <p>Then check out our online store for unbeatable daily deals on everyday items.</p>
+    <!-- New SEO-rich Section -->
+    <section>
+      <h2>Welcome to Tensmine – Your Portal for Fun & Everyday Finds</h2>
+      <p>
+        Whether you're looking to unwind with free browser games or discover amazing deals on everyday essentials, 
+        <strong>Tensmine</strong> brings it all together in one easy-to-explore website.
+      </p>
+
+      <p>
+        Our curated game selection lets you jump into quick puzzles or immersive fantasy adventures — no downloads needed. 
+        Every title is handpicked for smooth performance and instant play.
+      </p>
+
+      <p>
+        When you're ready to switch gears, visit our online shop at <a href="https://miriele.com" target="_blank">Miriele.com</a> 
+        for trending products, smart daily buys, and budget-friendly favorites. We update often and ship fast.
+      </p>
+
+      <p>
+        Tensmine is built for visitors who want <em>more than just a single reason to stay</em>. Explore, play, shop — and share!
+      </p>
+    </section>
+
+    <!-- Call-to-action Buttons -->
+    <div class="buttons">
+      <a href="game.html">Play Word Game</a>
+      <a href="titans.html">Play Titans of Time</a>
+    </div>
   </main>
 
   <footer>
-    <p>© 2025. All Rights Reserved. <a href="#">Terms</a>, <a href="#">Privacy</a> &amp; <a href="#">Accessibility</a>.</p>
-    <div class="social-buttons">
-      <a href="https://facebook.com" target="_blank">Facebook</a> |
-      <a href="https://twitter.com" target="_blank">Twitter</a> |
-      <a href="https://pinterest.com" target="_blank">Pinterest</a>
+    <p>© 2025. All Rights Reserved.</p>
+    <div class="modal-links">
+      <a href="#">Terms</a>
+      <a href="#">Privacy</a>
+      <a href="#">Accessibility</a>
     </div>
   </footer>
-
 </body>
 </html>
