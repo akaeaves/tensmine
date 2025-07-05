@@ -3,38 +3,42 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Welcome to Tensmine – Play free games and shop everyday products at miriele.com" />
-  <title>Tensmine - Home</title>
+  <meta name="description" content="Explore fun games and shop everyday products at Miriele.com – all in one place!" />
+  <meta name="keywords" content="online games, fantasy mmorpg, shop, everyday products, miriele" />
+  <meta name="author" content="Tensmine.com" />
+  <title>Welcome to Tensmine</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
       margin: 0;
-      background-color: #f4f4f4;
+      font-family: Arial, sans-serif;
+      background: #f5f7fa;
       color: #333;
     }
     header {
       background-color: #1f2833;
       color: #fff;
-      padding: 1rem 0;
+      padding: 1.5rem 1rem;
       text-align: center;
     }
     nav {
       background-color: #45a29e;
+      padding: 0.5rem 1rem;
       display: flex;
       justify-content: center;
       gap: 1rem;
-      padding: 0.5rem 0;
-      position: relative;
     }
-    nav a {
+    nav a, .dropdown button {
+      background-color: #1f2833;
       color: #fff;
       text-decoration: none;
+      padding: 0.4rem 0.8rem;
+      border-radius: 4px;
       font-weight: bold;
-      padding: 0.5rem 1rem;
-      border-radius: 5px;
-      background-color: #1f2833;
+      font-size: 0.9rem;
+      border: none;
+      cursor: pointer;
     }
-    nav a:hover {
+    nav a:hover, .dropdown-content a:hover {
       background-color: #66fcf1;
       color: #0b0c10;
     }
@@ -48,89 +52,77 @@
       background-color: #1f2833;
       min-width: 160px;
       z-index: 1;
+      top: 100%;
     }
     .dropdown-content a {
-      color: #fff;
+      color: white;
       padding: 0.5rem 1rem;
-      text-decoration: none;
       display: block;
-      text-align: left;
-    }
-    .dropdown-content a:hover {
-      background-color: #66fcf1;
-      color: #0b0c10;
+      text-decoration: none;
     }
     .dropdown:hover .dropdown-content {
       display: block;
     }
     main {
-      text-align: center;
       padding: 2rem;
-    }
-    .btn {
-      display: inline-block;
-      padding: 1rem 2rem;
-      margin: 1rem;
-      background-color: #1f2833;
-      color: #fff;
-      text-decoration: none;
-      font-size: 1.2rem;
-      border-radius: 8px;
-    }
-    .btn:hover {
-      background-color: #66fcf1;
-      color: #0b0c10;
+      text-align: center;
     }
     footer {
       background-color: #1f2833;
       color: #c5c6c7;
-      padding: 1rem;
       text-align: center;
+      padding: 1rem;
     }
-    .social {
+    footer a {
+      color: #66fcf1;
+      text-decoration: none;
+      margin: 0 0.5rem;
+    }
+    .social-buttons {
       margin-top: 1rem;
     }
-    .social a {
-      margin: 0 0.5rem;
-      color: #66fcf1;
-      font-size: 1.2rem;
+    .social-buttons a {
+      margin: 0 0.3rem;
       text-decoration: none;
-    }
-    .modals {
-      margin-top: 2rem;
+      font-size: 1.2rem;
+      color: #45a29e;
     }
   </style>
 </head>
 <body>
+
   <header>
     <h1>Welcome to Tensmine</h1>
+    <p>Discover Games & Shop Everyday Products</p>
   </header>
+
   <nav>
+    <a href="index.html">Home</a>
     <div class="dropdown">
-      <a href="#">Games</a>
+      <button>Games</button>
       <div class="dropdown-content">
-        <a href="game.html">Words Game</a>
+        <a href="game.html">Word Game</a>
         <a href="titans.html">Titans of Time</a>
       </div>
     </div>
     <a href="https://miriele.com" target="_blank">Shop</a>
     <a href="contact.html">Contact</a>
   </nav>
+
   <main>
-    <p>Choose your adventure or find the best daily products!</p>
-    <a href="game.html" class="btn">Play Words Game</a>
-    <a href="titans.html" class="btn">Play Titans of Time</a>
-    <a href="https://miriele.com" class="btn" target="_blank">Visit Shop</a>
+    <h2>Play Free Online Games</h2>
+    <p>Jump into adventure or challenge your brain – all from your browser!</p>
+    <p>Then check out our online store for unbeatable daily deals on everyday items.</p>
   </main>
+
   <footer>
-    <div class="modals">
-      <p>© 2025. All Rights Reserved. Terms, Privacy & Accessibility.</p>
-      <div class="social">
-        <a href="#">Facebook</a>
-        <a href="#">Twitter</a>
-        <a href="#">Instagram</a>
-      </div>
+    <p>© 2025. All Rights Reserved. <a href="#">Terms</a>, <a href="#">Privacy</a> &amp; <a href="#">Accessibility</a>.</p>
+    <div class="social-buttons">
+      <a href="https://facebook.com" target="_blank">Facebook</a> |
+      <a href="https://twitter.com" target="_blank">Twitter</a> |
+      <a href="https://pinterest.com" target="_blank">Pinterest</a>
     </div>
   </footer>
+
 </body>
 </html>
