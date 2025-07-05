@@ -2,99 +2,129 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Tensmine - Play free browser games and discover trending everyday products at Miriele.com. Shop smart and play hard, all in one place!" />
-  <title>Tensmine - Games & Everyday Products</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Welcome to Tensmine</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       margin: 0;
-      padding: 0;
-      background: #f4f4f4;
-    }
-    header {
-      background-color: #1a1a1a;
+      background-color: #111;
       color: #fff;
+    }
+
+    header {
+      background-color: #1f1f1f;
       padding: 20px;
       text-align: center;
     }
+
     nav {
-      background-color: #333;
-      overflow: hidden;
-    }
-    nav a {
-      float: left;
-      display: block;
-      color: white;
+      background-color: #222;
       text-align: center;
-      padding: 14px 20px;
+      padding: 10px;
+    }
+
+    nav a,
+    .dropbtn {
+      color: #00aaff;
+      margin: 0 10px;
       text-decoration: none;
-    }
-    nav a:hover, nav .dropdown:hover .dropbtn {
-      background-color: #555;
-    }
-    nav .dropdown {
-      float: left;
-      overflow: hidden;
-    }
-    nav .dropdown .dropbtn {
+      font-size: 0.9rem;
+      padding: 8px 14px;
+      border-radius: 5px;
+      background-color: #000;
+      border: 1px solid #00aaff;
       cursor: pointer;
-      border: none;
-      outline: none;
-      color: white;
-      padding: 14px 20px;
-      background-color: inherit;
-      font-family: inherit;
-      margin: 0;
     }
-    nav .dropdown-content {
+
+    nav a:hover,
+    .dropbtn:hover {
+      background-color: #00aaff;
+      color: #000;
+    }
+
+    .dropdown {
+      display: inline-block;
+      position: relative;
+    }
+
+    .dropdown-content {
       display: none;
       position: absolute;
-      background-color: #444;
+      background-color: #222;
       min-width: 160px;
       z-index: 1;
+      border: 1px solid #00aaff;
+      border-radius: 5px;
     }
-    nav .dropdown-content a {
-      float: none;
-      color: white;
-      padding: 12px 16px;
-      text-decoration: none;
+
+    .dropdown-content a {
       display: block;
-      text-align: left;
+      padding: 10px;
     }
-    nav .dropdown-content a:hover {
-      background-color: #555;
-    }
-    nav .dropdown:hover .dropdown-content {
+
+    .dropdown:hover .dropdown-content {
       display: block;
     }
+
     main {
-      padding: 20px;
-      background: #fff;
-    }
-    footer {
+      padding: 40px 20px;
       text-align: center;
-      padding: 20px;
-      font-size: 0.9em;
-      background-color: #1a1a1a;
-      color: #ccc;
     }
-    .modal-links a {
+
+    main h2 {
+      color: #00aaff;
+    }
+
+    main p {
+      max-width: 800px;
+      margin: 0 auto 20px;
+      line-height: 1.6;
+    }
+
+    footer {
+      background-color: #1f1f1f;
       color: #ccc;
+      padding: 15px;
+      text-align: center;
+      font-size: 0.9rem;
+    }
+
+    .social-buttons {
+      margin: 20px 0;
+    }
+
+    .social-buttons a {
+      display: inline-block;
+      margin: 0 8px;
+      padding: 10px 14px;
+      background-color: #00aaff;
+      color: #000;
+      text-decoration: none;
+      border-radius: 5px;
+      font-weight: bold;
+    }
+
+    .modal-links {
+      margin-top: 40px;
+      font-size: 0.9rem;
+    }
+
+    .modal-links a {
+      color: #00aaff;
       margin: 0 10px;
-      text-decoration: underline;
-      cursor: pointer;
+      text-decoration: none;
     }
   </style>
 </head>
 <body>
   <header>
     <h1>Welcome to Tensmine</h1>
-    <p>Play Games. Shop Smart. All in One Place.</p>
+    <p>Discover games and everyday products all in one place.</p>
   </header>
 
   <nav>
-    <a href="index.html">Home</a>
+    <a href="https://miriele.com" target="_blank">Shop</a>
     <div class="dropdown">
       <button class="dropbtn">Games</button>
       <div class="dropdown-content">
@@ -102,42 +132,28 @@
         <a href="titans.html">Titans of Time</a>
       </div>
     </div>
-    <a href="https://miriele.com" target="_blank">Shop</a>
-    <a href="contact.html">Contact</a>
   </nav>
 
   <main>
-    <!-- SEO-rich Intro Section -->
-    <section>
-      <h2>Welcome to Tensmine – Your Portal for Fun & Everyday Finds</h2>
-      <p>
-        Whether you're looking to unwind with free browser games or discover amazing deals on everyday essentials, 
-        <strong>Tensmine</strong> brings it all together in one easy-to-explore website.
-      </p>
+    <h2>Your Hub for Casual Gaming & Practical Products</h2>
+    <p>
+      Welcome to Tensmine — where entertainment meets everyday convenience. Dive into engaging online games or explore great deals on household goods, tools, tech accessories, and more over at our <a href="https://miriele.com" target="_blank">webstore</a>.
+    </p>
 
-      <p>
-        Our curated game selection lets you jump into quick puzzles or immersive fantasy adventures — no downloads needed. 
-        Every title is handpicked for smooth performance and instant play.
-      </p>
+    <div class="social-buttons">
+      <a href="https://www.facebook.com/sharer/sharer.php?u=https://tensmine.com" target="_blank">Share on Facebook</a>
+      <a href="https://twitter.com/intent/tweet?url=https://tensmine.com&text=Check%20out%20this%20cool%20game%20and%20shop%20site!" target="_blank">Share on Twitter</a>
+    </div>
 
-      <p>
-        When you're ready to switch gears, visit our online shop at <a href="https://miriele.com" target="_blank">Miriele.com</a> 
-        for trending products, smart daily buys, and budget-friendly favorites. We update often and ship fast.
-      </p>
-
-      <p>
-        Tensmine is built for visitors who want <em>more than just a single reason to stay</em>. Explore, play, shop — and share!
-      </p>
-    </section>
-  </main>
-
-  <footer>
-    <p>© 2025. All Rights Reserved.</p>
     <div class="modal-links">
       <a href="#">Terms</a>
       <a href="#">Privacy</a>
       <a href="#">Accessibility</a>
     </div>
+  </main>
+
+  <footer>
+    <p>© 2025. All Rights Reserved. Terms, Privacy & Accessibility.</p>
   </footer>
 </body>
 </html>
