@@ -46,8 +46,34 @@
       border-bottom: 1px solid #333;
     }
 
-    #chat-box div {
-      margin-bottom: 0.75rem;
+    .message {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 1rem;
+    }
+
+    .avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: #3498db;
+      color: white;
+      font-weight: bold;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-right: 0.75rem;
+      flex-shrink: 0;
+    }
+
+    .message-content {
+      max-width: 80%;
+    }
+
+    .message-content span {
+      display: block;
+      font-size: 0.8rem;
+      color: #aaa;
     }
 
     #message-form {
@@ -111,7 +137,7 @@
   <div id="chat-box" style="display: none;"></div>
 
   <form id="message-form" style="display: none;">
-    <input id="message-input" placeholder="Type a message..." autocomplete="off" />
+    <input id="message-input" placeholder="Type a message... 😊🎮🔥" autocomplete="off" />
     <button type="submit">Send</button>
   </form>
 
@@ -147,7 +173,7 @@
     const db = getDatabase(app);
     const messagesRef = ref(db, "messages");
 
-    const bannedWords = ["ugly", "badword", "curse"]; // Extend this list as needed
+    const bannedWords = ["ugly", "badword", "curse"]; // Add more words here
     let currentUserDisplay = "Guest";
     let isAnonymous = false;
     let lastPostTime = 0;
@@ -166,12 +192,15 @@
       return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     }
 
+    function getAvatarInitials(name) {
+      return name.charAt(0).toUpperCase();
+    }
+
     document.getElementById("message-form").addEventListener("submit", e => {
       e.preventDefault();
       const input = document.getElementById("message-input");
       const now = Date.now();
 
-      // Rate limit for anonymous users
       if (isAnonymous && now - lastPostTime < 10000) {
         alert("Please wait before sending another message.");
         return;
@@ -191,9 +220,21 @@
 
     onChildAdded(messagesRef, snapshot => {
       const msg = snapshot.val();
-      const div = document.createElement("div");
-      div.textContent = `[${formatTime(msg.time)}] ${msg.user}: ${msg.text}`;
-      document.getElementById("chat-box").appendChild(div);
+      const messageDiv = document.createElement("div");
+      messageDiv.classList.add("message");
+
+      const avatarDiv = document.createElement("div");
+      avatarDiv.classList.add("avatar");
+      avatarDiv.textContent = getAvatarInitials(msg.user);
+
+      const contentDiv = document.createElement("div");
+      contentDiv.classList.add("message-content");
+      contentDiv.innerHTML = `<strong>${msg.user}</strong>: ${msg.text}<span>${formatTime(msg.time)}</span>`;
+
+      messageDiv.appendChild(avatarDiv);
+      messageDiv.appendChild(contentDiv);
+
+      document.getElementById("chat-box").appendChild(messageDiv);
       document.getElementById("chat-box").scrollTop = document.getElementById("chat-box").scrollHeight;
     });
 
@@ -231,7 +272,6 @@
         document.getElementById("welcome").textContent = `Welcome, ${currentUserDisplay}!`;
         document.getElementById("logoutBtn").style.display = "inline-block";
       } else {
-        // Reset view when user logs out
         document.getElementById("auth-section").style.display = "block";
         document.getElementById("chat-box").style.display = "none";
         document.getElementById("message-form").style.display = "none";
