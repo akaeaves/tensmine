@@ -2,66 +2,38 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#1e293b" />
-  <link rel="manifest" href="manifest.json" />
-  <title>Admin Panel</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Panel - Miriele Chat</title>
   <style>
     body {
-      background-color: #0f172a;
-      color: #f8fafc;
-      font-family: Arial, sans-serif;
-      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
       padding: 20px;
+      background: #1a1a2e;
+      color: #fff;
     }
-    h1, h2 {
-      color: #38bdf8;
+    h1 {
+      text-align: center;
+      color: #66ccff;
     }
-    input, button, textarea {
+    .message {
+      background: #333;
+      margin: 10px 0;
       padding: 10px;
-      margin: 5px 0;
-      width: 100%;
-      max-width: 400px;
-      font-size: 1rem;
+      border-radius: 8px;
     }
-    button {
-      background-color: #3b82f6;
-      color: white;
-      border: none;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #2563eb;
-    }
-    #bannedUsersList, #messagesList {
-      margin-top: 20px;
-    }
-    .messageItem {
-      border-bottom: 1px solid #334155;
-      padding: 10px;
+    .message button {
+      margin-right: 8px;
     }
   </style>
 </head>
 <body>
-  <h1>Admin Panel</h1>
-  <h2>Send a Broadcast Message</h2>
-  <textarea id="broadcastMessage" placeholder="Type your message..."></textarea>
-  <button onclick="sendBroadcast()">Send Broadcast</button>
-
-  <h2>Ban a User</h2>
-  <input type="email" id="banEmail" placeholder="Enter email to ban" />
-  <button onclick="banUser()">Ban User</button>
-
-  <h2>Banned Users</h2>
-  <ul id="bannedUsersList"></ul>
-
-  <h2>Delete Messages</h2>
-  <ul id="messagesList"></ul>
+  <h1>🔐 Admin Panel</h1>
+  <div id="messages"></div>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
-    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
-    import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, setDoc } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+    import { getDatabase, ref, onChildAdded, remove, set, push } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
+    import { getAuth, onAuthStateChanged, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyB4w6elulTE2FJbJVAXNUYs74_YC1Ti6yQ",
@@ -69,70 +41,77 @@
       projectId: "mirielechat",
       storageBucket: "mirielechat.appspot.com",
       messagingSenderId: "1031331000258",
-      appId: "1:1031331000258:web:7cae47f29cb3493fb1f05b"
+      appId: "1:1031331000258:web:7cae47f29cb3493fb1f05b",
+      databaseURL: "https://mirielechat-default-rtdb.firebaseio.com"
     };
 
     const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    const auth = getAuth(app);
+    const db = getDatabase(app);
+    const auth = getAuth();
+
+    // AUTO-LOGIN AS ADMIN
+    signInWithEmailAndPassword(auth, "monday1379@gmail.com", "your-password-here")
+      .catch(error => alert("Admin login failed: " + error.message));
 
     onAuthStateChanged(auth, user => {
       if (!user || user.email !== "monday1379@gmail.com") {
         alert("Access denied.");
-        window.location.href = "/index.html";
-      } else {
-        loadBannedUsers();
-        loadMessages();
+        location.href = "index.html";
+        return;
       }
+      loadMessages();
     });
 
-    async function sendBroadcast() {
-      const message = document.getElementById("broadcastMessage").value;
-      if (message.trim() === "") return;
-      await addDoc(collection(db, "broadcasts"), {
-        message,
-        timestamp: new Date(),
-        sender: "Admin"
-      });
-      alert("Broadcast sent!");
-    }
-
-    async function banUser() {
-      const email = document.getElementById("banEmail").value;
-      if (!email) return;
-      await setDoc(doc(db, "banned", email), { email });
-      alert("User banned!");
-      loadBannedUsers();
-    }
-
-    async function loadBannedUsers() {
-      const bannedList = document.getElementById("bannedUsersList");
-      bannedList.innerHTML = "";
-      const bannedSnap = await getDocs(collection(db, "banned"));
-      bannedSnap.forEach(docSnap => {
-        const li = document.createElement("li");
-        li.textContent = docSnap.id;
-        bannedList.appendChild(li);
+    function loadMessages() {
+      const messagesRef = ref(db, "messages");
+      const container = document.getElementById("messages");
+      onChildAdded(messagesRef, (snapshot) => {
+        const msg = snapshot.val();
+        const key = snapshot.key;
+        const div = document.createElement("div");
+        div.className = "message";
+        div.innerHTML = `
+          <strong>${msg.name || "Anon"}:</strong> ${msg.text} <br/>
+          <small>UID: ${msg.uid || "N/A"}</small><br/>
+          <button onclick="deleteMsg('${key}')">🗑 Delete</button>
+          <button onclick="banUser('${msg.uid}')">🚫 Ban</button>
+          <button onclick="warnUser('${msg.uid}')">⚠️ Warn</button>
+          <button onclick="clearUserMsgs('${msg.uid}')">❌ Clear User Msgs</button>
+        `;
+        container.prepend(div);
       });
     }
 
-    async function loadMessages() {
-      const list = document.getElementById("messagesList");
-      list.innerHTML = "";
-      const querySnap = await getDocs(collection(db, "messages"));
-      querySnap.forEach(docSnap => {
-        const item = document.createElement("li");
-        item.classList.add("messageItem");
-        item.textContent = `${docSnap.data().name || 'Anon'}: ${docSnap.data().text}`;
-        const del = document.createElement("button");
-        del.textContent = "Delete";
-        del.onclick = async () => {
-          await deleteDoc(doc(db, "messages", docSnap.id));
-          loadMessages();
-        };
-        item.appendChild(del);
-        list.appendChild(item);
+    window.deleteMsg = function(key) {
+      remove(ref(db, `messages/${key}`));
+    }
+
+    window.banUser = function(uid) {
+      if (!uid) return;
+      set(ref(db, `bannedUsers/${uid}`), true);
+      alert("User banned.");
+    }
+
+    window.warnUser = function(uid) {
+      if (!uid) return;
+      const warning = {
+        text: "⚠️ You’ve been warned by an admin. Watch your behavior.",
+        uid,
+        name: "Admin",
+        timestamp: Date.now()
+      };
+      push(ref(db, "messages"), warning);
+    }
+
+    window.clearUserMsgs = function(uid) {
+      const messagesRef = ref(db, "messages");
+      onChildAdded(messagesRef, (snapshot) => {
+        const msg = snapshot.val();
+        if (msg.uid === uid) {
+          remove(ref(db, `messages/${snapshot.key}`));
+        }
       });
+      alert("Cleared messages from user.");
     }
   </script>
 </body>
