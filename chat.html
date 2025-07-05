@@ -3,153 +3,198 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Miriele Chatroom</title>
+  <title>Miriele's Game Chatroom</title>
   <style>
     body {
+      background: url('https://images.unsplash.com/photo-1508779018996-033b3f3b6f3e?auto=format&fit=crop&w=1500&q=80') no-repeat center center fixed;
+      background-size: cover;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: #fff;
       margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(to bottom right, #1a1a2e, #16213e);
-      color: #fff;
-      display: flex;
-      flex-direction: column;
-      height: 100vh;
+      padding: 0;
     }
-
     header {
-      background-color: #0f3460;
-      padding: 10px 20px;
-      text-align: center;
-      font-size: 1.5rem;
-      font-weight: bold;
-      color: #fff;
+      background: rgba(0,0,0,0.6);
+      padding: 1rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
-
-    header button {
-      background-color: #0f3460;
+    header h1 {
+      margin: 0;
+      font-size: 1.5rem;
+    }
+    header nav button {
+      margin-left: 1rem;
+      padding: 0.5rem 1rem;
+      background: #2196F3;
+      border: none;
+      border-radius: 4px;
       color: #fff;
-      border: 1px solid #fff;
-      padding: 5px 10px;
-      border-radius: 6px;
       cursor: pointer;
     }
-
     #chat-box {
-      flex: 1;
-      padding: 20px;
+      max-width: 800px;
+      margin: 2rem auto;
+      background: rgba(0,0,0,0.5);
+      padding: 1rem;
+      border-radius: 10px;
+      overflow: auto;
+      height: 400px;
+    }
+    #messages {
+      list-style: none;
+      padding: 0;
+      max-height: 320px;
       overflow-y: auto;
-      background: rgba(0,0,0,0.2);
-      border-top: 2px solid #fff;
-      border-bottom: 2px solid #fff;
     }
-
-    .message {
-      margin-bottom: 10px;
-      padding: 8px;
-      border-radius: 6px;
-      background-color: rgba(255, 255, 255, 0.1);
+    #messages li {
+      margin-bottom: 0.5rem;
+      border-bottom: 1px solid #444;
+      padding-bottom: 0.5rem;
     }
-
-    .message strong {
-      color: #00d4ff;
-    }
-
-    form {
+    #input-area {
       display: flex;
-      padding: 10px;
-      background-color: #0f3460;
+      margin-top: 1rem;
     }
-
-    input, button {
-      padding: 10px;
-      font-size: 1rem;
-    }
-
-    input {
+    #message-input {
       flex: 1;
+      padding: 0.5rem;
+      border-radius: 4px 0 0 4px;
       border: none;
-      border-radius: 6px 0 0 6px;
     }
-
-    button {
-      background-color: #00d4ff;
-      color: #000;
+    #send-button {
+      padding: 0.5rem 1rem;
+      background: #4CAF50;
       border: none;
-      border-radius: 0 6px 6px 0;
+      color: white;
+      border-radius: 0 4px 4px 0;
       cursor: pointer;
+    }
+    footer {
+      text-align: center;
+      margin: 2rem 0;
+      font-size: 0.9rem;
+      color: #ccc;
     }
   </style>
 </head>
 <body>
   <header>
-    Miriele Chatroom
-    <button onclick="window.location.href='index.html'">Home</button>
+    <h1>Miriele's Space - Chatroom</h1>
+    <nav>
+      <button onclick="location.href='index.html'">Home</button>
+      <button id="signup">Sign Up</button>
+      <button id="login">Log In</button>
+      <button id="logout">Log Out</button>
+    </nav>
   </header>
 
-  <div id="chat-box"></div>
+  <main id="chat-box">
+    <div id="status">Checking auth status...</div>
+    <ul id="messages"></ul>
+    <div id="input-area">
+      <input type="text" id="message-input" placeholder="Type your message..." />
+      <button id="send-button">Send</button>
+    </div>
+  </main>
 
-  <form id="chat-form">
-    <input type="text" id="username" placeholder="Your name" required />
-    <input type="text" id="message" placeholder="Type your message..." required />
-    <button type="submit">Send</button>
-  </form>
+  <footer>
+    © 2025 Miriele. All Rights Reserved. Terms, Privacy & Accessibility.
+  </footer>
 
   <script type="module">
+    // Firebase SDKs
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
     import { getDatabase, ref, push, onChildAdded } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
 
+    // Firebase Config (Replace if needed)
     const firebaseConfig = {
       apiKey: "AIzaSyB4w6elulTE2FJbJVAXNUYs74_YC1Ti6yQ",
       authDomain: "mirielechat.firebaseapp.com",
       projectId: "mirielechat",
-      storageBucket: "mirielechat.firebasestorage.app",
+      storageBucket: "mirielechat.appspot.com",
       messagingSenderId: "1031331000258",
-      appId: "1:1031331000258:web:7cae47f29cb3493fb1f05b"
+      appId: "1:1031331000258:web:7cae47f29cb3493fb1f05b",
+      databaseURL: "https://mirielechat-default-rtdb.firebaseio.com/"
     };
 
     const app = initializeApp(firebaseConfig);
-    const db = getDatabase(app);
-    const chatRef = ref(db, "messages");
+    const database = getDatabase(app);
+    const auth = getAuth();
 
-    const chatBox = document.getElementById("chat-box");
-    const chatForm = document.getElementById("chat-form");
-    const usernameInput = document.getElementById("username");
-    const messageInput = document.getElementById("message");
+    const messagesRef = ref(database, "messages");
 
-    const bannedWords = ["ugly", "stupid", "hate", "dumb", "idiot", "ass", "damn", "fuck", "shit"];
-    const censor = (text) => {
-      let filtered = text;
+    // Bad word filter (basic)
+    const bannedWords = ["ugly", "stupid", "dumb", "idiot", "hate"];
+    function sanitize(message) {
+      let clean = message;
       bannedWords.forEach(word => {
-        const pattern = new RegExp(`\\b${word}\\b`, 'gi');
-        filtered = filtered.replace(pattern, "***");
+        const regex = new RegExp(word, 'gi');
+        clean = clean.replace(regex, "****");
       });
-      return filtered;
-    };
+      return clean;
+    }
 
-    chatForm.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const name = usernameInput.value.trim();
-      const message = censor(messageInput.value.trim());
+    // Auth state
+    let currentUser = null;
+    onAuthStateChanged(auth, user => {
+      currentUser = user;
+      document.getElementById("status").innerText = user
+        ? `Logged in as ${user.email}`
+        : "Not logged in";
+    });
 
-      if (name && message) {
-        push(chatRef, {
-          name,
-          message,
-          timestamp: Date.now()
-        });
-        messageInput.value = "";
+    // Auth handlers
+    document.getElementById("signup").addEventListener("click", () => {
+      const email = prompt("Enter your email:");
+      const password = prompt("Create a password:");
+      if (email && password) {
+        createUserWithEmailAndPassword(auth, email, password)
+          .then(() => alert("Signed up!"))
+          .catch(err => alert(err.message));
       }
     });
 
-    onChildAdded(chatRef, (snapshot) => {
-      const data = snapshot.val();
-      const div = document.createElement("div");
-      div.classList.add("message");
-      div.innerHTML = `<strong>${data.name}:</strong> ${data.message}`;
-      chatBox.appendChild(div);
-      chatBox.scrollTop = chatBox.scrollHeight;
+    document.getElementById("login").addEventListener("click", () => {
+      const email = prompt("Email:");
+      const password = prompt("Password:");
+      if (email && password) {
+        signInWithEmailAndPassword(auth, email, password)
+          .then(() => alert("Logged in!"))
+          .catch(err => alert(err.message));
+      }
+    });
+
+    document.getElementById("logout").addEventListener("click", () => {
+      signOut(auth).then(() => alert("Logged out!"));
+    });
+
+    // Send message
+    document.getElementById("send-button").addEventListener("click", () => {
+      if (!currentUser) {
+        alert("Please log in first.");
+        return;
+      }
+      const input = document.getElementById("message-input");
+      const text = sanitize(input.value.trim());
+      if (text) {
+        push(messagesRef, {
+          user: currentUser.email,
+          text,
+          time: Date.now()
+        });
+        input.value = "";
+      }
+    });
+
+    // Display messages
+    onChildAdded(messagesRef, data => {
+      const msg = data.val();
+      const li = document.createElement("li");
+      li.textContent = `${msg.user}: ${msg.text}`;
+      document.getElementById("messages").appendChild(li);
     });
   </script>
 </body>
