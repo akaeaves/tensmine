@@ -3,52 +3,65 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin Chat Panel</title>
-  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#1e293b" />
+  <link rel="manifest" href="manifest.json" />
+  <title>Admin Panel</title>
   <style>
     body {
+      background-color: #0f172a;
+      color: #f8fafc;
       font-family: Arial, sans-serif;
-      background: #1d1d2e;
-      color: #fff;
       margin: 0;
       padding: 20px;
     }
-    .chat {
-      max-width: 600px;
-      margin: auto;
+    h1, h2 {
+      color: #38bdf8;
     }
-    .message {
-      background: #333;
+    input, button, textarea {
       padding: 10px;
       margin: 5px 0;
-      border-radius: 5px;
+      width: 100%;
+      max-width: 400px;
+      font-size: 1rem;
     }
-    .controls {
+    button {
+      background-color: #3b82f6;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #2563eb;
+    }
+    #bannedUsersList, #messagesList {
       margin-top: 20px;
     }
-    input, button {
+    .messageItem {
+      border-bottom: 1px solid #334155;
       padding: 10px;
-      margin: 5px;
     }
   </style>
 </head>
 <body>
-  <div class="chat">
-    <h1>Admin Panel</h1>
-    <div id="messages"></div>
-    <div class="controls">
-      <input type="text" id="broadcast" placeholder="Broadcast message" />
-      <button onclick="sendBroadcast()">Send</button><br />
-      <input type="text" id="banEmail" placeholder="Ban user by email" />
-      <button onclick="banUser()">Ban</button>
-    </div>
-    <button id="installBtn" style="display:none; margin-top:20px;">Install App</button>
-  </div>
+  <h1>Admin Panel</h1>
+  <h2>Send a Broadcast Message</h2>
+  <textarea id="broadcastMessage" placeholder="Type your message..."></textarea>
+  <button onclick="sendBroadcast()">Send Broadcast</button>
+
+  <h2>Ban a User</h2>
+  <input type="email" id="banEmail" placeholder="Enter email to ban" />
+  <button onclick="banUser()">Ban User</button>
+
+  <h2>Banned Users</h2>
+  <ul id="bannedUsersList"></ul>
+
+  <h2>Delete Messages</h2>
+  <ul id="messagesList"></ul>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
-    import { getDatabase, ref, push, set, onChildAdded } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
     import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+    import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, setDoc } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyB4w6elulTE2FJbJVAXNUYs74_YC1Ti6yQ",
@@ -56,58 +69,71 @@
       projectId: "mirielechat",
       storageBucket: "mirielechat.appspot.com",
       messagingSenderId: "1031331000258",
-      appId: "1:1031331000258:web:7cae47f29cb3493fb1f05b",
-      databaseURL: "https://mirielechat-default-rtdb.firebaseio.com/"
+      appId: "1:1031331000258:web:7cae47f29cb3493fb1f05b"
     };
 
     const app = initializeApp(firebaseConfig);
-    const db = getDatabase(app);
-    const auth = getAuth();
-
-    let currentUserEmail = null;
+    const db = getFirestore(app);
+    const auth = getAuth(app);
 
     onAuthStateChanged(auth, user => {
-      if (user && user.email === "monday1379@gmail.com") {
-        currentUserEmail = user.email;
-      } else {
-        alert("Unauthorized. Admins only.");
+      if (!user || user.email !== "monday1379@gmail.com") {
+        alert("Access denied.");
         window.location.href = "/index.html";
+      } else {
+        loadBannedUsers();
+        loadMessages();
       }
     });
 
-    function sendBroadcast() {
-      const text = document.getElementById('broadcast').value;
-      if (!text) return;
-      push(ref(db, 'broadcasts'), {
-        message: text,
-        sender: currentUserEmail,
-        timestamp: Date.now()
+    async function sendBroadcast() {
+      const message = document.getElementById("broadcastMessage").value;
+      if (message.trim() === "") return;
+      await addDoc(collection(db, "broadcasts"), {
+        message,
+        timestamp: new Date(),
+        sender: "Admin"
       });
-      document.getElementById('broadcast').value = '';
+      alert("Broadcast sent!");
     }
 
-    function banUser() {
-      const email = document.getElementById('banEmail').value;
+    async function banUser() {
+      const email = document.getElementById("banEmail").value;
       if (!email) return;
-      set(ref(db, 'banned/' + btoa(email)), true);
-      alert(email + " has been banned.");
-      document.getElementById('banEmail').value = '';
+      await setDoc(doc(db, "banned", email), { email });
+      alert("User banned!");
+      loadBannedUsers();
     }
 
-    // PWA install prompt
-    let deferredPrompt;
-    window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault();
-      deferredPrompt = e;
-      document.getElementById('installBtn').style.display = 'block';
-    });
-
-    document.getElementById('installBtn').addEventListener('click', () => {
-      deferredPrompt.prompt();
-      deferredPrompt.userChoice.then(() => {
-        deferredPrompt = null;
+    async function loadBannedUsers() {
+      const bannedList = document.getElementById("bannedUsersList");
+      bannedList.innerHTML = "";
+      const bannedSnap = await getDocs(collection(db, "banned"));
+      bannedSnap.forEach(docSnap => {
+        const li = document.createElement("li");
+        li.textContent = docSnap.id;
+        bannedList.appendChild(li);
       });
-    });
+    }
+
+    async function loadMessages() {
+      const list = document.getElementById("messagesList");
+      list.innerHTML = "";
+      const querySnap = await getDocs(collection(db, "messages"));
+      querySnap.forEach(docSnap => {
+        const item = document.createElement("li");
+        item.classList.add("messageItem");
+        item.textContent = `${docSnap.data().name || 'Anon'}: ${docSnap.data().text}`;
+        const del = document.createElement("button");
+        del.textContent = "Delete";
+        del.onclick = async () => {
+          await deleteDoc(doc(db, "messages", docSnap.id));
+          loadMessages();
+        };
+        item.appendChild(del);
+        list.appendChild(item);
+      });
+    }
   </script>
 </body>
 </html>
