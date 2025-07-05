@@ -2,160 +2,114 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Miriele's Chatroom</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Miriele's Space Community Chat - Connect, share, and discuss in real-time!" />
+  <title>Miriele Chatroom</title>
   <style>
     body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(#111, #222);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #151515, #222);
       color: #fff;
-      display: flex;
-      flex-direction: column;
-      height: 100vh;
+      margin: 0;
+      padding: 0;
     }
-
     header {
-      background-color: #1e1e2f;
+      background: #1a1a1a;
       padding: 1rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.5);
     }
-
-    header h2 {
-      margin: 0;
-    }
-
-    header .nav-buttons button {
-      background-color: #3498db;
-      border: none;
-      color: white;
-      padding: 0.5rem 1rem;
-      margin-left: 0.5rem;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-
-    #chat-box {
-      flex: 1;
-      overflow-y: auto;
+    header h1 { margin: 0; font-size: 1.4rem; }
+    .chat-container {
+      max-width: 800px;
+      margin: 2rem auto;
+      background: #2a2a2a;
       padding: 1rem;
-      background: #111;
-      border-top: 1px solid #333;
-      border-bottom: 1px solid #333;
+      border-radius: 10px;
     }
-
     .message {
-      display: flex;
-      align-items: flex-start;
-      margin-bottom: 1rem;
-    }
-
-    .avatar {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background-color: #3498db;
-      color: white;
-      font-weight: bold;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin-right: 0.75rem;
-      flex-shrink: 0;
-    }
-
-    .message-content {
-      max-width: 80%;
-    }
-
-    .message-content span {
-      display: block;
-      font-size: 0.8rem;
-      color: #aaa;
-    }
-
-    #message-form {
-      display: flex;
-      padding: 1rem;
-      background-color: #1e1e2f;
-    }
-
-    #message-input {
-      flex: 1;
       padding: 0.5rem;
-      font-size: 1rem;
+      border-bottom: 1px solid #444;
+    }
+    .message.admin { color: #66ff99; }
+    .message .meta { font-size: 0.8rem; color: #aaa; }
+    .message .text { margin: 0.2rem 0; }
+    .controls, .admin-tools {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+    input, button {
+      padding: 0.5rem;
       border-radius: 5px;
       border: none;
-      margin-right: 0.5rem;
+      font-size: 1rem;
     }
-
+    input[type="text"] { flex: 1; }
     button {
-      padding: 0.5rem 1rem;
-      font-size: 1rem;
-      border-radius: 5px;
-      border: none;
-      cursor: pointer;
-      background-color: #3498db;
+      background-color: #007bff;
       color: white;
+      cursor: pointer;
     }
-
-    #auth-section {
-      padding: 2rem;
-      text-align: center;
+    .admin-tools {
+      margin-top: 2rem;
+      background: #1a1a1a;
+      padding: 1rem;
+      border-radius: 10px;
     }
-
-    #welcome {
+    footer {
       text-align: center;
-      margin: 1rem;
-      font-size: 1.1rem;
-      color: #ccc;
+      font-size: 0.9rem;
+      padding: 1rem;
+      color: #777;
     }
   </style>
 </head>
 <body>
-
   <header>
-    <h2>Miriele's Chatroom</h2>
-    <div class="nav-buttons">
-      <button onclick="window.location.href='index.html'">Home</button>
-      <button id="logoutBtn" onclick="logout()" style="display: none;">Logout</button>
-    </div>
+    <h1>Miriele Chatroom</h1>
+    <nav>
+      <a href="index.html" style="color: #007bff; text-decoration: none;">Home</a>
+    </nav>
   </header>
 
-  <div id="auth-section">
-    <input type="email" id="email" placeholder="Email" />
-    <input type="password" id="password" placeholder="Password" />
-    <br><br>
-    <button onclick="signUp()">Sign Up</button>
-    <button onclick="signIn()">Login</button>
-    <button onclick="signInAnonymously()">Continue as Guest</button>
+  <div class="chat-container">
+    <div id="messages"></div>
+
+    <div class="controls">
+      <input type="text" id="messageInput" placeholder="Type a message..." />
+      <button onclick="sendMessage()">Send</button>
+      <button onclick="logout()">Logout</button>
+    </div>
+
+    <div class="admin-tools" id="adminPanel" style="display: none;">
+      <h3>Admin Tools</h3>
+      <input type="text" id="banEmail" placeholder="User email or UID" />
+      <button onclick="banUser()">Ban</button>
+      <input type="text" id="deleteByUser" placeholder="Delete messages by UID" />
+      <button onclick="deleteMessagesByUser()">Delete User's Messages</button>
+    </div>
   </div>
 
-  <div id="welcome" style="display: none;"></div>
-  <div id="chat-box" style="display: none;"></div>
-
-  <form id="message-form" style="display: none;">
-    <input id="message-input" placeholder="Type a message... 😊🎮🔥" autocomplete="off" />
-    <button type="submit">Send</button>
-  </form>
+  <footer>
+    &copy; 2025 Miriele. All Rights Reserved. Terms | Privacy | Accessibility
+  </footer>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
-    import {
-      getAuth,
-      createUserWithEmailAndPassword,
-      signInWithEmailAndPassword,
-      signInAnonymously,
-      signOut,
-      onAuthStateChanged
-    } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+    import { getAuth, onAuthStateChanged, signInAnonymously, signOut } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
     import {
       getDatabase,
       ref,
       push,
-      onChildAdded
+      onChildAdded,
+      remove,
+      set,
+      get,
+      child,
+      update
     } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
 
     const firebaseConfig = {
@@ -169,116 +123,81 @@
     };
 
     const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
     const db = getDatabase(app);
-    const messagesRef = ref(db, "messages");
+    const auth = getAuth();
 
-    const bannedWords = ["ugly", "badword", "curse"]; // Add more words here
-    let currentUserDisplay = "Guest";
-    let isAnonymous = false;
-    let lastPostTime = 0;
+    const messagesRef = ref(db, 'messages');
+    const bannedRef = ref(db, 'banned');
+    const adminEmail = 'monday1379@gmail.com';
 
-    function sanitize(message) {
-      let clean = message;
-      bannedWords.forEach(word => {
-        const regex = new RegExp(word, 'gi');
-        clean = clean.replace(regex, '****');
+    let currentUser = null;
+    let cooldown = false;
+
+    onAuthStateChanged(auth, user => {
+      if (user) {
+        currentUser = user;
+        loadMessages();
+        checkAdmin(user);
+      } else {
+        signInAnonymously(auth);
+      }
+    });
+
+    async function checkAdmin(user) {
+      if (user.email === adminEmail || user.isAnonymous === false) {
+        document.getElementById('adminPanel').style.display = 'block';
+      }
+    }
+
+    function sendMessage() {
+      const text = document.getElementById('messageInput').value.trim();
+      if (!text || cooldown) return;
+
+      const msg = {
+        uid: currentUser.uid,
+        text,
+        timestamp: Date.now(),
+        displayName: currentUser.isAnonymous ? "Anon" : currentUser.email
+      };
+      push(messagesRef, msg);
+      document.getElementById('messageInput').value = '';
+
+      cooldown = true;
+      setTimeout(() => cooldown = false, 10000); // 10s cooldown
+    }
+
+    function loadMessages() {
+      onChildAdded(messagesRef, snap => {
+        const data = snap.val();
+        const msgDiv = document.createElement('div');
+        msgDiv.classList.add('message');
+        msgDiv.innerHTML = `<div class="meta">${data.displayName} - ${new Date(data.timestamp).toLocaleTimeString()}</div><div class="text">${data.text}</div>`;
+        document.getElementById('messages').appendChild(msgDiv);
       });
-      return clean;
-    }
-
-    function formatTime(timestamp) {
-      const date = new Date(timestamp);
-      return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    }
-
-    function getAvatarInitials(name) {
-      return name.charAt(0).toUpperCase();
-    }
-
-    document.getElementById("message-form").addEventListener("submit", e => {
-      e.preventDefault();
-      const input = document.getElementById("message-input");
-      const now = Date.now();
-
-      if (isAnonymous && now - lastPostTime < 10000) {
-        alert("Please wait before sending another message.");
-        return;
-      }
-
-      const msg = sanitize(input.value);
-      if (msg.trim() !== "") {
-        push(messagesRef, {
-          text: msg,
-          time: now,
-          user: currentUserDisplay
-        });
-        input.value = "";
-        lastPostTime = now;
-      }
-    });
-
-    onChildAdded(messagesRef, snapshot => {
-      const msg = snapshot.val();
-      const messageDiv = document.createElement("div");
-      messageDiv.classList.add("message");
-
-      const avatarDiv = document.createElement("div");
-      avatarDiv.classList.add("avatar");
-      avatarDiv.textContent = getAvatarInitials(msg.user);
-
-      const contentDiv = document.createElement("div");
-      contentDiv.classList.add("message-content");
-      contentDiv.innerHTML = `<strong>${msg.user}</strong>: ${msg.text}<span>${formatTime(msg.time)}</span>`;
-
-      messageDiv.appendChild(avatarDiv);
-      messageDiv.appendChild(contentDiv);
-
-      document.getElementById("chat-box").appendChild(messageDiv);
-      document.getElementById("chat-box").scrollTop = document.getElementById("chat-box").scrollHeight;
-    });
-
-    function signUp() {
-      const email = document.getElementById("email").value;
-      const pass = document.getElementById("password").value;
-      createUserWithEmailAndPassword(auth, email, pass)
-        .catch(err => alert(err.message));
-    }
-
-    function signIn() {
-      const email = document.getElementById("email").value;
-      const pass = document.getElementById("password").value;
-      signInWithEmailAndPassword(auth, email, pass)
-        .catch(err => alert(err.message));
-    }
-
-    function signInAnonymously() {
-      signInAnonymously(auth)
-        .catch(err => alert(err.message));
     }
 
     function logout() {
       signOut(auth);
     }
 
-    onAuthStateChanged(auth, user => {
-      if (user) {
-        isAnonymous = user.isAnonymous;
-        currentUserDisplay = user.email ? user.email.split("@")[0] : "Guest";
-        document.getElementById("auth-section").style.display = "none";
-        document.getElementById("chat-box").style.display = "block";
-        document.getElementById("message-form").style.display = "flex";
-        document.getElementById("welcome").style.display = "block";
-        document.getElementById("welcome").textContent = `Welcome, ${currentUserDisplay}!`;
-        document.getElementById("logoutBtn").style.display = "inline-block";
-      } else {
-        document.getElementById("auth-section").style.display = "block";
-        document.getElementById("chat-box").style.display = "none";
-        document.getElementById("message-form").style.display = "none";
-        document.getElementById("welcome").style.display = "none";
-        document.getElementById("logoutBtn").style.display = "none";
-      }
-    });
+    async function banUser() {
+      const email = document.getElementById('banEmail').value.trim();
+      if (!email) return;
+      await set(child(ref(db), `banned/${email}`), true);
+      alert(`${email} banned.`);
+    }
+
+    async function deleteMessagesByUser() {
+      const uid = document.getElementById('deleteByUser').value.trim();
+      if (!uid) return;
+
+      const snap = await get(messagesRef);
+      snap.forEach(childSnap => {
+        if (childSnap.val().uid === uid) {
+          remove(child(child(messagesRef, childSnap.key)));
+        }
+      });
+    }
   </script>
 </body>
 </html>
