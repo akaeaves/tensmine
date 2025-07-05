@@ -50,7 +50,7 @@
     const auth = getAuth();
 
     // AUTO-LOGIN AS ADMIN
-    signInWithEmailAndPassword(auth, "monday1379@gmail.com", "your-password-here")
+    signInWithEmailAndPassword(auth, "monday1379@gmail.com", "soupkitchen")
       .catch(error => alert("Admin login failed: " + error.message));
 
     onAuthStateChanged(auth, user => {
