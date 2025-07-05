@@ -1,203 +1,335 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Miriele's Space Community Chat - Connect, share, and discuss in real-time!" />
-  <title>Miriele Chatroom</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(to right, #151515, #222);
-      color: #fff;
-      margin: 0;
-      padding: 0;
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="Miriele's Space Chatroom - game-themed chat with moderation and user auth." />
+<meta name="keywords" content="chat, gaming, moderation, firebase, miriele" />
+<meta name="author" content="Miriele" />
+<title>Miriele's Space Chatroom</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #121212;
+    color: #eee;
+    margin: 0; padding: 0;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+  }
+  header {
+    background: #0a4da1;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  header button {
+    background: #005bbb;
+    border: none;
+    color: white;
+    padding: 8px 14px;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 4px;
+  }
+  header button:hover {
+    background: #004494;
+  }
+  #chat-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    overflow: hidden;
+  }
+  #messages {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 10px;
+    border: 1px solid #004494;
+    border-radius: 6px;
+    background: #222;
+  }
+  .message {
+    margin-bottom: 12px;
+    padding: 8px;
+    border-radius: 5px;
+    background: #1b1b1b;
+    position: relative;
+  }
+  .message .meta {
+    font-size: 0.75em;
+    color: #888;
+    margin-bottom: 3px;
+  }
+  .message .text {
+    font-size: 1em;
+    word-wrap: break-word;
+  }
+  .message.own {
+    background: #003e99;
+  }
+  #input-container {
+    margin-top: 10px;
+    display: flex;
+  }
+  #message-input {
+    flex: 1;
+    padding: 10px;
+    border-radius: 5px 0 0 5px;
+    border: none;
+    font-size: 1em;
+  }
+  #send-btn {
+    background: #005bbb;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-weight: bold;
+    border-radius: 0 5px 5px 0;
+  }
+  #send-btn:disabled {
+    background: #003366;
+    cursor: not-allowed;
+  }
+  #status {
+    margin-top: 8px;
+    font-size: 0.85em;
+    color: #bbb;
+  }
+  @media(max-width:600px){
+    #chat-container {
+      padding: 8px;
     }
     header {
-      background: #1a1a1a;
-      padding: 1rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+      flex-direction: column;
+      align-items: flex-start;
     }
-    header h1 { margin: 0; font-size: 1.4rem; }
-    .chat-container {
-      max-width: 800px;
-      margin: 2rem auto;
-      background: #2a2a2a;
-      padding: 1rem;
-      border-radius: 10px;
+    header button {
+      margin-top: 6px;
+      width: 100%;
     }
-    .message {
-      padding: 0.5rem;
-      border-bottom: 1px solid #444;
-    }
-    .message.admin { color: #66ff99; }
-    .message .meta { font-size: 0.8rem; color: #aaa; }
-    .message .text { margin: 0.2rem 0; }
-    .controls, .admin-tools {
-      display: flex;
-      gap: 0.5rem;
-      margin-top: 1rem;
-    }
-    input, button {
-      padding: 0.5rem;
-      border-radius: 5px;
-      border: none;
-      font-size: 1rem;
-    }
-    input[type="text"] { flex: 1; }
-    button {
-      background-color: #007bff;
-      color: white;
-      cursor: pointer;
-    }
-    .admin-tools {
-      margin-top: 2rem;
-      background: #1a1a1a;
-      padding: 1rem;
-      border-radius: 10px;
-    }
-    footer {
-      text-align: center;
-      font-size: 0.9rem;
-      padding: 1rem;
-      color: #777;
-    }
-  </style>
+  }
+</style>
 </head>
 <body>
-  <header>
-    <h1>Miriele Chatroom</h1>
-    <nav>
-      <a href="index.html" style="color: #007bff; text-decoration: none;">Home</a>
-    </nav>
-  </header>
 
-  <div class="chat-container">
-    <div id="messages"></div>
-
-    <div class="controls">
-      <input type="text" id="messageInput" placeholder="Type a message..." />
-      <button onclick="sendMessage()">Send</button>
-      <button onclick="logout()">Logout</button>
-    </div>
-
-    <div class="admin-tools" id="adminPanel" style="display: none;">
-      <h3>Admin Tools</h3>
-      <input type="text" id="banEmail" placeholder="User email or UID" />
-      <button onclick="banUser()">Ban</button>
-      <input type="text" id="deleteByUser" placeholder="Delete messages by UID" />
-      <button onclick="deleteMessagesByUser()">Delete User's Messages</button>
-    </div>
+<header>
+  <h1>Miriele's Space Chatroom</h1>
+  <div>
+    <button id="home-btn">Home</button>
+    <button id="logout-btn" style="display:none;">Logout</button>
   </div>
+</header>
 
-  <footer>
-    &copy; 2025 Miriele. All Rights Reserved. Terms | Privacy | Accessibility
-  </footer>
+<div id="chat-container">
+  <div id="messages"></div>
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
-    import { getAuth, onAuthStateChanged, signInAnonymously, signOut } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
-    import {
-      getDatabase,
-      ref,
-      push,
-      onChildAdded,
-      remove,
-      set,
-      get,
-      child,
-      update
-    } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
+  <div id="input-container">
+    <input id="message-input" type="text" placeholder="Type your message..." autocomplete="off" />
+    <button id="send-btn" disabled>Send</button>
+  </div>
+  <div id="status"></div>
+</div>
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyB4w6elulTE2FJbJVAXNUYs74_YC1Ti6yQ",
-      authDomain: "mirielechat.firebaseapp.com",
-      projectId: "mirielechat",
-      storageBucket: "mirielechat.appspot.com",
-      messagingSenderId: "1031331000258",
-      appId: "1:1031331000258:web:7cae47f29cb3493fb1f05b",
-      databaseURL: "https://mirielechat-default-rtdb.firebaseio.com"
-    };
+<!-- Firebase SDK -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+import {
+  getAuth, signInAnonymously, signOut, onAuthStateChanged,
+  createUserWithEmailAndPassword, signInWithEmailAndPassword
+} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+import {
+  getDatabase, ref, push, onChildAdded, onChildRemoved,
+  onValue, serverTimestamp, remove
+} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
 
-    const app = initializeApp(firebaseConfig);
-    const db = getDatabase(app);
-    const auth = getAuth();
+// Your Firebase config
+const firebaseConfig = {
+  apiKey: "AIzaSyB4w6elulTE2FJbJVAXNUYs74_YC1Ti6yQ",
+  authDomain: "mirielechat.firebaseapp.com",
+  projectId: "mirielechat",
+  storageBucket: "mirielechat.firebasestorage.app",
+  messagingSenderId: "1031331000258",
+  appId: "1:1031331000258:web:7cae47f29cb3493fb1f05b"
+};
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getDatabase(app);
 
-    const messagesRef = ref(db, 'messages');
-    const bannedRef = ref(db, 'banned');
-    const adminEmail = 'monday1379@gmail.com';
+// DOM Elements
+const messagesEl = document.getElementById("messages");
+const messageInput = document.getElementById("message-input");
+const sendBtn = document.getElementById("send-btn");
+const statusEl = document.getElementById("status");
+const logoutBtn = document.getElementById("logout-btn");
+const homeBtn = document.getElementById("home-btn");
 
-    let currentUser = null;
-    let cooldown = false;
+// Moderation config
+const profanityList = ["badword1","badword2","badword3"]; // Add your own bad words here
+const minPostIntervalMs = 5000; // 5 seconds cooldown
 
-    onAuthStateChanged(auth, user => {
-      if (user) {
-        currentUser = user;
-        loadMessages();
-        checkAdmin(user);
-      } else {
-        signInAnonymously(auth);
-      }
-    });
+// State
+let currentUser = null;
+let lastPostTime = 0;
+let bannedUsers = new Set();
 
-    async function checkAdmin(user) {
-      if (user.email === adminEmail || user.isAnonymous === false) {
-        document.getElementById('adminPanel').style.display = 'block';
-      }
+// Util: Simple profanity filter
+function containsProfanity(text) {
+  const lc = text.toLowerCase();
+  return profanityList.some(badWord => lc.includes(badWord));
+}
+
+// Util: Format timestamp nicely
+function formatTimestamp(ts) {
+  const d = new Date(ts);
+  return d.toLocaleString();
+}
+
+// Check if user banned by uid or email
+function isBanned(user) {
+  if (!user) return true; // no user = banned
+  if (bannedUsers.has(user.uid)) return true;
+  if (user.email && bannedUsers.has(user.email.toLowerCase())) return true;
+  return false;
+}
+
+// Add message to chat UI
+function addMessage(id, data) {
+  const div = document.createElement("div");
+  div.classList.add("message");
+  if(currentUser && data.uid === currentUser.uid) div.classList.add("own");
+
+  div.id = "msg-" + id;
+
+  div.innerHTML = `
+    <div class="meta"><strong>${data.name || "Anonymous"}</strong> <span>${formatTimestamp(data.timestamp)}</span></div>
+    <div class="text">${escapeHtml(data.text)}</div>
+  `;
+
+  messagesEl.appendChild(div);
+  messagesEl.scrollTop = messagesEl.scrollHeight;
+}
+
+// Remove message from chat UI
+function removeMessage(id) {
+  const el = document.getElementById("msg-" + id);
+  if(el) el.remove();
+}
+
+// Escape html to prevent injection
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.innerText = text;
+  return div.innerHTML;
+}
+
+// Listen to banned users list in realtime
+const bannedRef = ref(db, "bannedUsers");
+onValue(bannedRef, (snapshot) => {
+  bannedUsers.clear();
+  snapshot.forEach(child => {
+    bannedUsers.add(child.key.toLowerCase());
+  });
+  // Disable input if banned
+  if(isBanned(currentUser)) {
+    sendBtn.disabled = true;
+    statusEl.textContent = "You are banned from posting in this chat.";
+  } else {
+    statusEl.textContent = "";
+    sendBtn.disabled = !messageInput.value.trim();
+  }
+});
+
+// Listen for new messages
+const messagesRef = ref(db, "messages");
+onChildAdded(messagesRef, (data) => {
+  addMessage(data.key, data.val());
+});
+onChildRemoved(messagesRef, (data) => {
+  removeMessage(data.key);
+});
+
+// Auth state change handling
+onAuthStateChanged(auth, (user) => {
+  currentUser = user;
+  if (user) {
+    // Allow posting if not banned
+    if(isBanned(user)) {
+      sendBtn.disabled = true;
+      statusEl.textContent = "You are banned from posting in this chat.";
+    } else {
+      sendBtn.disabled = !messageInput.value.trim();
+      statusEl.textContent = "";
     }
+    logoutBtn.style.display = "inline-block";
+  } else {
+    // Try anonymous sign in if no user
+    sendBtn.disabled = true;
+    logoutBtn.style.display = "none";
+    signInAnonymously(auth).catch(console.error);
+  }
+});
 
-    function sendMessage() {
-      const text = document.getElementById('messageInput').value.trim();
-      if (!text || cooldown) return;
+// Send message function
+async function sendMessage() {
+  const text = messageInput.value.trim();
+  if(!text) return;
 
-      const msg = {
-        uid: currentUser.uid,
-        text,
-        timestamp: Date.now(),
-        displayName: currentUser.isAnonymous ? "Anon" : currentUser.email
-      };
-      push(messagesRef, msg);
-      document.getElementById('messageInput').value = '';
+  if(containsProfanity(text)) {
+    alert("Please avoid using inappropriate language.");
+    return;
+  }
 
-      cooldown = true;
-      setTimeout(() => cooldown = false, 10000); // 10s cooldown
-    }
+  if(Date.now() - lastPostTime < minPostIntervalMs) {
+    alert("Please wait a few seconds before sending another message.");
+    return;
+  }
 
-    function loadMessages() {
-      onChildAdded(messagesRef, snap => {
-        const data = snap.val();
-        const msgDiv = document.createElement('div');
-        msgDiv.classList.add('message');
-        msgDiv.innerHTML = `<div class="meta">${data.displayName} - ${new Date(data.timestamp).toLocaleTimeString()}</div><div class="text">${data.text}</div>`;
-        document.getElementById('messages').appendChild(msgDiv);
-      });
-    }
+  if(isBanned(currentUser)) {
+    alert("You are banned from posting.");
+    return;
+  }
 
-    function logout() {
-      signOut(auth);
-    }
+  lastPostTime = Date.now();
 
-    async function banUser() {
-      const email = document.getElementById('banEmail').value.trim();
-      if (!email) return;
-      await set(child(ref(db), `banned/${email}`), true);
-      alert(`${email} banned.`);
-    }
+  const msg = {
+    uid: currentUser.uid,
+    name: currentUser.email ? currentUser.email.split("@")[0] : "Anonymous",
+    text: text,
+    timestamp: serverTimestamp()
+  };
 
-    async function deleteMessagesByUser() {
-      const uid = document.getElementById('deleteByUser').value.trim();
-      if (!uid) return;
+  await push(messagesRef, msg);
+  messageInput.value = "";
+  sendBtn.disabled = true;
+}
 
-      const snap = await get(messagesRef);
-      snap.forEach(childSnap => {
-        if (childSnap.val().uid === uid) {
-          remove(child(child(messagesRef, childSnap.key)));
-        }
-      });
-    }
-  </script>
+// Event listeners
+sendBtn.addEventListener("click", sendMessage);
+messageInput.addEventListener("input", () => {
+  if(isBanned(currentUser)) {
+    sendBtn.disabled = true;
+  } else {
+    sendBtn.disabled = !messageInput.value.trim();
+  }
+});
+messageInput.addEventListener("keypress", (e) => {
+  if(e.key === "Enter" && !sendBtn.disabled) {
+    sendMessage();
+  }
+});
+
+logoutBtn.addEventListener("click", () => {
+  signOut(auth);
+});
+
+homeBtn.addEventListener("click", () => {
+  window.location.href = "index.html";
+});
+</script>
+
 </body>
 </html>
