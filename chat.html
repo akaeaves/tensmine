@@ -1,335 +1,184 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta name="description" content="Miriele's Space Chatroom - game-themed chat with moderation and user auth." />
-<meta name="keywords" content="chat, gaming, moderation, firebase, miriele" />
-<meta name="author" content="Miriele" />
-<title>Miriele's Space Chatroom</title>
-<style>
-  body {
-    font-family: Arial, sans-serif;
-    background: #121212;
-    color: #eee;
-    margin: 0; padding: 0;
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-  }
-  header {
-    background: #0a4da1;
-    padding: 10px 20px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  header button {
-    background: #005bbb;
-    border: none;
-    color: white;
-    padding: 8px 14px;
-    cursor: pointer;
-    font-weight: bold;
-    border-radius: 4px;
-  }
-  header button:hover {
-    background: #004494;
-  }
-  #chat-container {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    padding: 15px;
-    overflow: hidden;
-  }
-  #messages {
-    flex: 1;
-    overflow-y: auto;
-    padding-right: 10px;
-    border: 1px solid #004494;
-    border-radius: 6px;
-    background: #222;
-  }
-  .message {
-    margin-bottom: 12px;
-    padding: 8px;
-    border-radius: 5px;
-    background: #1b1b1b;
-    position: relative;
-  }
-  .message .meta {
-    font-size: 0.75em;
-    color: #888;
-    margin-bottom: 3px;
-  }
-  .message .text {
-    font-size: 1em;
-    word-wrap: break-word;
-  }
-  .message.own {
-    background: #003e99;
-  }
-  #input-container {
-    margin-top: 10px;
-    display: flex;
-  }
-  #message-input {
-    flex: 1;
-    padding: 10px;
-    border-radius: 5px 0 0 5px;
-    border: none;
-    font-size: 1em;
-  }
-  #send-btn {
-    background: #005bbb;
-    border: none;
-    color: white;
-    padding: 10px 20px;
-    cursor: pointer;
-    font-weight: bold;
-    border-radius: 0 5px 5px 0;
-  }
-  #send-btn:disabled {
-    background: #003366;
-    cursor: not-allowed;
-  }
-  #status {
-    margin-top: 8px;
-    font-size: 0.85em;
-    color: #bbb;
-  }
-  @media(max-width:600px){
-    #chat-container {
-      padding: 8px;
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Miriele Chatroom</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #222, #444);
+      color: #fff;
+      margin: 0;
+      padding: 0;
     }
     header {
-      flex-direction: column;
-      align-items: flex-start;
+      background-color: #111;
+      padding: 10px;
+      text-align: center;
     }
-    header button {
-      margin-top: 6px;
-      width: 100%;
+    header h1 {
+      margin: 0;
+      font-size: 1.8em;
     }
-  }
-</style>
+    #messages {
+      max-height: 70vh;
+      overflow-y: auto;
+      padding: 10px;
+      border-top: 1px solid #333;
+      border-bottom: 1px solid #333;
+    }
+    .message {
+      padding: 6px;
+      margin-bottom: 5px;
+      border-radius: 6px;
+      background-color: #333;
+    }
+    .message span.time {
+      font-size: 0.8em;
+      color: #aaa;
+      margin-left: 8px;
+    }
+    .message.admin {
+      background-color: #660000;
+    }
+    #inputForm {
+      display: flex;
+      padding: 10px;
+    }
+    #msgInput {
+      flex: 1;
+      padding: 8px;
+      border-radius: 4px;
+      border: none;
+    }
+    #sendBtn {
+      background-color: #007bff;
+      border: none;
+      color: white;
+      padding: 10px;
+      margin-left: 10px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    #logoutBtn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: #444;
+      color: white;
+      padding: 6px 12px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      display: none;
+    }
+    #homeBtn {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: #444;
+      color: white;
+      padding: 6px 12px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
+  <header>
+    <h1>Miriele's Chatroom</h1>
+  </header>
 
-<header>
-  <h1>Miriele's Space Chatroom</h1>
-  <div>
-    <button id="home-btn">Home</button>
-    <button id="logout-btn" style="display:none;">Logout</button>
-  </div>
-</header>
+  <button id="homeBtn" onclick="location.href='index.html'">Home</button>
+  <button id="logoutBtn">Logout</button>
 
-<div id="chat-container">
-  <div id="messages"></div>
+  <main id="messages"></main>
 
-  <div id="input-container">
-    <input id="message-input" type="text" placeholder="Type your message..." autocomplete="off" />
-    <button id="send-btn" disabled>Send</button>
-  </div>
-  <div id="status"></div>
-</div>
+  <form id="inputForm">
+    <input type="text" id="msgInput" placeholder="Type a message..." />
+    <button id="sendBtn" type="submit">Send</button>
+  </form>
 
-<!-- Firebase SDK -->
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
-import {
-  getAuth, signInAnonymously, signOut, onAuthStateChanged,
-  createUserWithEmailAndPassword, signInWithEmailAndPassword
-} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
-import {
-  getDatabase, ref, push, onChildAdded, onChildRemoved,
-  onValue, serverTimestamp, remove
-} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+    import {
+      getAuth,
+      onAuthStateChanged,
+      signInAnonymously,
+      signOut
+    } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+    import {
+      getDatabase,
+      ref,
+      push,
+      onChildAdded,
+      serverTimestamp,
+      query,
+      orderByChild
+    } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
 
-// Your Firebase config
-const firebaseConfig = {
-  apiKey: "AIzaSyB4w6elulTE2FJbJVAXNUYs74_YC1Ti6yQ",
-  authDomain: "mirielechat.firebaseapp.com",
-  projectId: "mirielechat",
-  storageBucket: "mirielechat.firebasestorage.app",
-  messagingSenderId: "1031331000258",
-  appId: "1:1031331000258:web:7cae47f29cb3493fb1f05b"
-};
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getDatabase(app);
+    const firebaseConfig = {
+      apiKey: "AIzaSyB4w6elulTE2FJbJVAXNUYs74_YC1Ti6yQ",
+      authDomain: "mirielechat.firebaseapp.com",
+      projectId: "mirielechat",
+      storageBucket: "mirielechat.appspot.com",
+      messagingSenderId: "1031331000258",
+      appId: "1:1031331000258:web:7cae47f29cb3493fb1f05b",
+      databaseURL: "https://mirielechat-default-rtdb.firebaseio.com"
+    };
 
-// DOM Elements
-const messagesEl = document.getElementById("messages");
-const messageInput = document.getElementById("message-input");
-const sendBtn = document.getElementById("send-btn");
-const statusEl = document.getElementById("status");
-const logoutBtn = document.getElementById("logout-btn");
-const homeBtn = document.getElementById("home-btn");
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth();
+    const db = getDatabase();
 
-// Moderation config
-const profanityList = ["badword1","badword2","badword3"]; // Add your own bad words here
-const minPostIntervalMs = 5000; // 5 seconds cooldown
+    const messagesRef = ref(db, "messages");
+    const msgInput = document.getElementById("msgInput");
+    const messagesContainer = document.getElementById("messages");
+    const logoutBtn = document.getElementById("logoutBtn");
+    const form = document.getElementById("inputForm");
 
-// State
-let currentUser = null;
-let lastPostTime = 0;
-let bannedUsers = new Set();
+    function displayMessage(data) {
+      const { uid, text, timestamp } = data.val();
+      const msgDiv = document.createElement("div");
+      msgDiv.className = "message";
 
-// Util: Simple profanity filter
-function containsProfanity(text) {
-  const lc = text.toLowerCase();
-  return profanityList.some(badWord => lc.includes(badWord));
-}
+      const time = new Date(timestamp || Date.now()).toLocaleTimeString();
+      msgDiv.innerHTML = `<strong>${uid.slice(0, 5)}</strong>: ${text} <span class="time">${time}</span>`;
 
-// Util: Format timestamp nicely
-function formatTimestamp(ts) {
-  const d = new Date(ts);
-  return d.toLocaleString();
-}
-
-// Check if user banned by uid or email
-function isBanned(user) {
-  if (!user) return true; // no user = banned
-  if (bannedUsers.has(user.uid)) return true;
-  if (user.email && bannedUsers.has(user.email.toLowerCase())) return true;
-  return false;
-}
-
-// Add message to chat UI
-function addMessage(id, data) {
-  const div = document.createElement("div");
-  div.classList.add("message");
-  if(currentUser && data.uid === currentUser.uid) div.classList.add("own");
-
-  div.id = "msg-" + id;
-
-  div.innerHTML = `
-    <div class="meta"><strong>${data.name || "Anonymous"}</strong> <span>${formatTimestamp(data.timestamp)}</span></div>
-    <div class="text">${escapeHtml(data.text)}</div>
-  `;
-
-  messagesEl.appendChild(div);
-  messagesEl.scrollTop = messagesEl.scrollHeight;
-}
-
-// Remove message from chat UI
-function removeMessage(id) {
-  const el = document.getElementById("msg-" + id);
-  if(el) el.remove();
-}
-
-// Escape html to prevent injection
-function escapeHtml(text) {
-  const div = document.createElement('div');
-  div.innerText = text;
-  return div.innerHTML;
-}
-
-// Listen to banned users list in realtime
-const bannedRef = ref(db, "bannedUsers");
-onValue(bannedRef, (snapshot) => {
-  bannedUsers.clear();
-  snapshot.forEach(child => {
-    bannedUsers.add(child.key.toLowerCase());
-  });
-  // Disable input if banned
-  if(isBanned(currentUser)) {
-    sendBtn.disabled = true;
-    statusEl.textContent = "You are banned from posting in this chat.";
-  } else {
-    statusEl.textContent = "";
-    sendBtn.disabled = !messageInput.value.trim();
-  }
-});
-
-// Listen for new messages
-const messagesRef = ref(db, "messages");
-onChildAdded(messagesRef, (data) => {
-  addMessage(data.key, data.val());
-});
-onChildRemoved(messagesRef, (data) => {
-  removeMessage(data.key);
-});
-
-// Auth state change handling
-onAuthStateChanged(auth, (user) => {
-  currentUser = user;
-  if (user) {
-    // Allow posting if not banned
-    if(isBanned(user)) {
-      sendBtn.disabled = true;
-      statusEl.textContent = "You are banned from posting in this chat.";
-    } else {
-      sendBtn.disabled = !messageInput.value.trim();
-      statusEl.textContent = "";
+      messagesContainer.appendChild(msgDiv);
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
     }
-    logoutBtn.style.display = "inline-block";
-  } else {
-    // Try anonymous sign in if no user
-    sendBtn.disabled = true;
-    logoutBtn.style.display = "none";
-    signInAnonymously(auth).catch(console.error);
-  }
-});
 
-// Send message function
-async function sendMessage() {
-  const text = messageInput.value.trim();
-  if(!text) return;
+    onAuthStateChanged(auth, user => {
+      if (user) {
+        logoutBtn.style.display = "block";
+        onChildAdded(query(messagesRef, orderByChild("timestamp")), displayMessage);
+      } else {
+        signInAnonymously(auth).catch(console.error);
+      }
+    });
 
-  if(containsProfanity(text)) {
-    alert("Please avoid using inappropriate language.");
-    return;
-  }
+    form.addEventListener("submit", e => {
+      e.preventDefault();
+      if (!msgInput.value.trim()) return;
+      const user = auth.currentUser;
+      if (!user) return;
+      push(messagesRef, {
+        uid: user.uid,
+        text: msgInput.value,
+        timestamp: Date.now()
+      });
+      msgInput.value = "";
+    });
 
-  if(Date.now() - lastPostTime < minPostIntervalMs) {
-    alert("Please wait a few seconds before sending another message.");
-    return;
-  }
-
-  if(isBanned(currentUser)) {
-    alert("You are banned from posting.");
-    return;
-  }
-
-  lastPostTime = Date.now();
-
-  const msg = {
-    uid: currentUser.uid,
-    name: currentUser.email ? currentUser.email.split("@")[0] : "Anonymous",
-    text: text,
-    timestamp: serverTimestamp()
-  };
-
-  await push(messagesRef, msg);
-  messageInput.value = "";
-  sendBtn.disabled = true;
-}
-
-// Event listeners
-sendBtn.addEventListener("click", sendMessage);
-messageInput.addEventListener("input", () => {
-  if(isBanned(currentUser)) {
-    sendBtn.disabled = true;
-  } else {
-    sendBtn.disabled = !messageInput.value.trim();
-  }
-});
-messageInput.addEventListener("keypress", (e) => {
-  if(e.key === "Enter" && !sendBtn.disabled) {
-    sendMessage();
-  }
-});
-
-logoutBtn.addEventListener("click", () => {
-  signOut(auth);
-});
-
-homeBtn.addEventListener("click", () => {
-  window.location.href = "index.html";
-});
-</script>
-
+    logoutBtn.addEventListener("click", () => {
+      signOut(auth).then(() => {
+        alert("Logged out.");
+        location.reload();
+      }).catch(console.error);
+    });
+  </script>
 </body>
 </html>
