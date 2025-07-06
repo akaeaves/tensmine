@@ -2,117 +2,116 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Miriele Chatroom</title>
   <style>
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background: #0d0d0d;
+      font-family: Arial, sans-serif;
+      background: #1e1e2f;
       color: #fff;
       margin: 0;
       padding: 0;
-      display: flex;
-      flex-direction: column;
-      height: 100vh;
     }
+
     header {
-      background-color: #1a1a1a;
-      padding: 10px;
+      background: #29294d;
+      padding: 1rem;
+      text-align: center;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
+
     header h1 {
       margin: 0;
-      font-size: 1.5rem;
+      font-size: 1.2rem;
     }
-    header button {
-      background-color: #007bff;
-      color: #fff;
+
+    .btn {
+      background: #007bff;
+      color: white;
       border: none;
-      padding: 6px 12px;
-      cursor: pointer;
+      padding: 8px 12px;
       border-radius: 4px;
+      cursor: pointer;
+      margin-left: 10px;
     }
-    #chat-box {
-      flex-grow: 1;
-      padding: 10px;
+
+    .chat-container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 1rem;
+    }
+
+    #messages {
+      background: #2f2f4f;
+      padding: 1rem;
+      height: 400px;
       overflow-y: auto;
-      background-color: #111;
+      border-radius: 6px;
+      margin-bottom: 1rem;
     }
-    #chat-box div {
-      margin-bottom: 8px;
+
+    .message {
+      margin-bottom: 0.5rem;
       padding: 6px;
-      background: #222;
-      border-radius: 5px;
-    }
-    #message-form {
-      display: flex;
-      padding: 10px;
-      background-color: #1a1a1a;
-    }
-    #message-input {
-      flex: 1;
-      padding: 10px;
-      border-radius: 4px;
-      border: none;
-      margin-right: 10px;
-    }
-    #send-button {
-      background-color: #28a745;
-      color: #fff;
-      border: none;
-      padding: 10px 20px;
-      cursor: pointer;
+      background: #3b3b5e;
       border-radius: 4px;
     }
-    #login-screen {
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      background-color: #000;
+
+    .timestamp {
+      font-size: 0.7rem;
+      color: #aaa;
     }
-    #login-screen input, #login-screen button {
-      margin: 8px;
-      padding: 10px;
+
+    #messageInput {
       width: 80%;
+      padding: 8px;
+      border-radius: 4px;
+      border: none;
+    }
+
+    #sendBtn {
+      padding: 8px 12px;
+      background: #28a745;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      margin-left: 6px;
+    }
+
+    footer {
+      margin-top: 2rem;
+      text-align: center;
+      font-size: 0.8rem;
+      color: #bbb;
     }
   </style>
 </head>
 <body>
   <header>
-    <h1>Miriele Chatroom</h1>
-    <div>
-      <button onclick="window.location.href='index.html'">Home</button>
-      <button id="logout-button">Logout</button>
-    </div>
+    <a href="index.html" class="btn">Home</a>
+    <div id="authControls"></div>
   </header>
 
-  <div id="login-screen">
-    <input type="email" id="email" placeholder="Email" />
-    <input type="password" id="password" placeholder="Password" />
-    <button onclick="signIn()">Sign In</button>
-    <button onclick="signUp()">Sign Up</button>
+  <div class="chat-container">
+    <div id="messages"></div>
+    <input type="text" id="messageInput" placeholder="Type your message..." />
+    <button id="sendBtn">Send</button>
   </div>
 
-  <div id="chat-container" style="display: none;">
-    <div id="chat-box"></div>
-    <form id="message-form" onsubmit="sendMessage(event)">
-      <input id="message-input" placeholder="Type your message..." required />
-      <button type="submit" id="send-button">Send</button>
-    </form>
-  </div>
+  <footer>
+    © 2025 Miriele. All Rights Reserved.
+  </footer>
 
+  <!-- Firebase SDK -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
     import {
       getAuth,
+      signInAnonymously,
       onAuthStateChanged,
-      signOut,
-      signInWithEmailAndPassword,
-      createUserWithEmailAndPassword
+      signOut
     } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
     import {
       getDatabase,
@@ -136,65 +135,61 @@
     const auth = getAuth(app);
     const db = getDatabase(app);
 
-    const loginScreen = document.getElementById('login-screen');
-    const chatContainer = document.getElementById('chat-container');
-    const logoutButton = document.getElementById('logout-button');
+    const authControls = document.getElementById("authControls");
+    const messagesDiv = document.getElementById("messages");
+    const sendBtn = document.getElementById("sendBtn");
+    const messageInput = document.getElementById("messageInput");
 
-    onAuthStateChanged(auth, user => {
+    let currentUser = null;
+
+    function showAuthControls(user) {
+      authControls.innerHTML = `
+        <span style="margin-right: 10px;">Logged in as ${user.isAnonymous ? "Guest" : user.email}</span>
+        <button class="btn" id="logoutBtn">Logout</button>
+      `;
+      document.getElementById("logoutBtn").addEventListener("click", () => {
+        signOut(auth).catch(console.error);
+      });
+    }
+
+    onAuthStateChanged(auth, (user) => {
       if (user) {
-        loginScreen.style.display = 'none';
-        chatContainer.style.display = 'flex';
-        loadChat();
+        currentUser = user;
+        showAuthControls(user);
+        setupChat();
       } else {
-        loginScreen.style.display = 'flex';
-        chatContainer.style.display = 'none';
+        // If not logged in, sign in anonymously
+        signInAnonymously(auth).catch(console.error);
       }
     });
 
-    function signIn() {
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
-      signInWithEmailAndPassword(auth, email, password).catch(alert);
-    }
+    function setupChat() {
+      const messagesRef = ref(db, "messages");
 
-    function signUp() {
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
-      createUserWithEmailAndPassword(auth, email, password).catch(alert);
-    }
+      sendBtn.onclick = () => {
+        const text = messageInput.value.trim();
+        if (text.length === 0) return;
 
-    logoutButton.addEventListener('click', () => {
-      signOut(auth).catch(alert);
-    });
+        push(messagesRef, {
+          uid: currentUser.uid,
+          text,
+          timestamp: Date.now()
+        });
+        messageInput.value = "";
+      };
 
-    function loadChat() {
-      const chatBox = document.getElementById('chat-box');
-      const chatRef = ref(db, 'messages');
-
-      onChildAdded(chatRef, snapshot => {
-        const message = snapshot.val();
-        const div = document.createElement('div');
-        const time = new Date(message.timestamp || Date.now()).toLocaleTimeString();
-        div.textContent = `[${time}] ${message.user || 'Anonymous'}: ${message.text}`;
-        chatBox.appendChild(div);
-        chatBox.scrollTop = chatBox.scrollHeight;
+      onChildAdded(messagesRef, (snapshot) => {
+        const msg = snapshot.val();
+        const time = new Date(msg.timestamp).toLocaleTimeString();
+        const el = document.createElement("div");
+        el.classList.add("message");
+        el.innerHTML = `
+          <div>${msg.text}</div>
+          <div class="timestamp">${time}</div>
+        `;
+        messagesDiv.appendChild(el);
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
       });
-    }
-
-    function sendMessage(e) {
-      e.preventDefault();
-      const messageInput = document.getElementById('message-input');
-      const text = messageInput.value.trim();
-      if (!text) return;
-
-      const chatRef = ref(db, 'messages');
-      push(chatRef, {
-        text,
-        user: auth.currentUser.email,
-        timestamp: Date.now()
-      });
-
-      messageInput.value = '';
     }
   </script>
 </body>
