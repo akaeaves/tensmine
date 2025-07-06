@@ -7,88 +7,74 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #1e1e2f;
+      background-color: #1a1a2e;
       color: #fff;
       margin: 0;
-      padding: 0;
     }
 
     header {
       background: #29294d;
       padding: 1rem;
-      text-align: center;
       display: flex;
       justify-content: space-between;
       align-items: center;
-    }
-
-    header h1 {
-      margin: 0;
-      font-size: 1.2rem;
     }
 
     .btn {
       background: #007bff;
       color: white;
       border: none;
-      padding: 8px 12px;
+      padding: 0.5rem 1rem;
       border-radius: 4px;
       cursor: pointer;
-      margin-left: 10px;
     }
 
     .chat-container {
       max-width: 800px;
-      margin: 0 auto;
+      margin: 20px auto;
       padding: 1rem;
     }
 
     #messages {
-      background: #2f2f4f;
+      background-color: #2f2f4f;
       padding: 1rem;
+      border-radius: 8px;
       height: 400px;
       overflow-y: auto;
-      border-radius: 6px;
       margin-bottom: 1rem;
     }
 
     .message {
-      margin-bottom: 0.5rem;
-      padding: 6px;
       background: #3b3b5e;
+      padding: 0.5rem;
       border-radius: 4px;
+      margin-bottom: 8px;
     }
 
     .timestamp {
       font-size: 0.7rem;
-      color: #aaa;
+      color: #ccc;
     }
 
     #messageInput {
-      width: 80%;
-      padding: 8px;
+      width: 75%;
+      padding: 0.5rem;
       border-radius: 4px;
       border: none;
     }
 
     #sendBtn {
-      padding: 8px 12px;
-      background: #28a745;
-      color: white;
+      padding: 0.5rem 1rem;
+      margin-left: 10px;
       border: none;
+      background-color: #28a745;
+      color: white;
       border-radius: 4px;
-      margin-left: 6px;
-    }
-
-    footer {
-      margin-top: 2rem;
-      text-align: center;
-      font-size: 0.8rem;
-      color: #bbb;
     }
   </style>
 </head>
 <body>
+
   <header>
     <a href="index.html" class="btn">Home</a>
     <div id="authControls"></div>
@@ -96,39 +82,34 @@
 
   <div class="chat-container">
     <div id="messages"></div>
-    <input type="text" id="messageInput" placeholder="Type your message..." />
+    <input type="text" id="messageInput" placeholder="Type a message..." />
     <button id="sendBtn">Send</button>
   </div>
 
-  <footer>
-    © 2025 Miriele. All Rights Reserved.
-  </footer>
-
-  <!-- Firebase SDK -->
+  <!-- Firebase Integration -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
     import {
       getAuth,
       signInAnonymously,
-      onAuthStateChanged,
-      signOut
+      signOut,
+      onAuthStateChanged
     } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
     import {
       getDatabase,
       ref,
       push,
-      onChildAdded,
-      serverTimestamp
+      onChildAdded
     } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyB4w6elulTE2FJbJVAXNUYs74_YC1Ti6yQ",
       authDomain: "mirielechat.firebaseapp.com",
+      databaseURL: "https://mirielechat-default-rtdb.firebaseio.com",
       projectId: "mirielechat",
       storageBucket: "mirielechat.appspot.com",
       messagingSenderId: "1031331000258",
-      appId: "1:1031331000258:web:7cae47f29cb3493fb1f05b",
-      databaseURL: "https://mirielechat-default-rtdb.firebaseio.com"
+      appId: "1:1031331000258:web:7cae47f29cb3493fb1f05b"
     };
 
     const app = initializeApp(firebaseConfig);
@@ -137,57 +118,59 @@
 
     const authControls = document.getElementById("authControls");
     const messagesDiv = document.getElementById("messages");
-    const sendBtn = document.getElementById("sendBtn");
     const messageInput = document.getElementById("messageInput");
+    const sendBtn = document.getElementById("sendBtn");
 
     let currentUser = null;
-
-    function showAuthControls(user) {
-      authControls.innerHTML = `
-        <span style="margin-right: 10px;">Logged in as ${user.isAnonymous ? "Guest" : user.email}</span>
-        <button class="btn" id="logoutBtn">Logout</button>
-      `;
-      document.getElementById("logoutBtn").addEventListener("click", () => {
-        signOut(auth).catch(console.error);
-      });
-    }
 
     onAuthStateChanged(auth, (user) => {
       if (user) {
         currentUser = user;
-        showAuthControls(user);
-        setupChat();
+        renderLogout();
+        loadMessages();
       } else {
-        // If not logged in, sign in anonymously
-        signInAnonymously(auth).catch(console.error);
+        signInAnonymously(auth).catch((error) => {
+          console.error("Anonymous sign-in failed", error);
+        });
       }
     });
 
-    function setupChat() {
+    function renderLogout() {
+      authControls.innerHTML = `
+        <span>Logged in</span>
+        <button id="logoutBtn" class="btn">Logout</button>
+      `;
+      document.getElementById("logoutBtn").addEventListener("click", () => {
+        signOut(auth).then(() => {
+          location.reload();
+        });
+      });
+    }
+
+    function loadMessages() {
       const messagesRef = ref(db, "messages");
 
-      sendBtn.onclick = () => {
+      sendBtn.addEventListener("click", () => {
         const text = messageInput.value.trim();
-        if (text.length === 0) return;
-
-        push(messagesRef, {
-          uid: currentUser.uid,
-          text,
-          timestamp: Date.now()
-        });
-        messageInput.value = "";
-      };
+        if (text) {
+          push(messagesRef, {
+            uid: currentUser.uid,
+            text,
+            timestamp: Date.now()
+          });
+          messageInput.value = "";
+        }
+      });
 
       onChildAdded(messagesRef, (snapshot) => {
-        const msg = snapshot.val();
-        const time = new Date(msg.timestamp).toLocaleTimeString();
-        const el = document.createElement("div");
-        el.classList.add("message");
-        el.innerHTML = `
-          <div>${msg.text}</div>
-          <div class="timestamp">${time}</div>
+        const data = snapshot.val();
+        const msg = document.createElement("div");
+        msg.className = "message";
+        msg.innerHTML = `
+          <div>${data.text}</div>
+          <div class="timestamp">${new Date(data.timestamp).toLocaleTimeString()}</div>
         `;
-        messagesDiv.appendChild(el);
+        messagesDiv.appendChild(msg);
         messagesDiv.scrollTop = messagesDiv.scrollHeight;
       });
     }
