@@ -26,9 +26,22 @@
   <div id="messages"></div>
 
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
-    import { getAuth, onAuthStateChanged, signOut, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
-    import { getDatabase, ref, onChildAdded, remove, update } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-database.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+    import {
+      getAuth,
+      onAuthStateChanged,
+      signOut,
+      GoogleAuthProvider,
+      signInWithPopup
+    } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+    import {
+      getDatabase,
+      ref,
+      onChildAdded,
+      onChildRemoved,
+      remove,
+      update
+    } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyB4w6elulTE2FJbJVAXNUYs74_YC1Ti6yQ",
@@ -41,29 +54,40 @@
     };
 
     const app = initializeApp(firebaseConfig);
-    const auth = getAuth();
+    const auth = getAuth(app);
     const db = getDatabase(app);
     const messagesRef = ref(db, 'messages');
 
     const logoutBtn = document.getElementById("logout");
     logoutBtn.onclick = () => signOut(auth);
 
+    const allowedAdmins = ["monday1379@gmail.com"];
+
+    function isAdmin(email) {
+      return allowedAdmins.includes(email);
+    }
+
     function renderMessage(id, msg) {
+      if (document.getElementById(`msg-${id}`)) return; // Avoid duplicates
+
       const container = document.createElement("div");
       container.className = "message";
+      container.id = `msg-${id}`;
       container.innerHTML = `
-        <strong>${msg.name || "Anonymous"}</strong>: ${msg.text} <span>${new Date(msg.timestamp).toLocaleString()}</span>
+        <strong>${msg.name || "Anonymous"}</strong>: ${msg.text}
+        <span>${new Date(msg.timestamp).toLocaleString()}</span>
         <div class="admin-actions">
           <button onclick="deleteMessage('${id}')">🗑 Delete</button>
           <button onclick="banUser('${msg.uid}')">🚫 Ban</button>
         </div>
       `;
-      document.getElementById("messages").appendChild(container);
+      document.getElementById("messages").prepend(container);
     }
 
     window.deleteMessage = async (id) => {
-      await remove(ref(db, 'messages/' + id));
-      alert('Message deleted');
+      await remove(ref(db, `messages/${id}`));
+      const el = document.getElementById(`msg-${id}`);
+      if (el) el.remove();
     };
 
     window.banUser = async (uid) => {
@@ -71,17 +95,19 @@
       alert('User banned');
     };
 
-    function isAdmin(email) {
-      const allowedAdmins = ["monday1379@gmail.com"];
-      return allowedAdmins.includes(email);
-    }
-
     onAuthStateChanged(auth, user => {
       if (user && isAdmin(user.email)) {
+        // Load and listen to messages
         onChildAdded(messagesRef, snapshot => {
           const msg = snapshot.val();
           renderMessage(snapshot.key, msg);
         });
+
+        onChildRemoved(messagesRef, snapshot => {
+          const el = document.getElementById(`msg-${snapshot.key}`);
+          if (el) el.remove();
+        });
+
       } else {
         alert("Unauthorized. Redirecting to homepage.");
         window.location.href = "index.html";
