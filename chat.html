@@ -117,7 +117,6 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
 
   <script>
-    // Firebase config
     const firebaseConfig = {
       apiKey: "AIzaSyB4w6elulTE2FJbJVAXNUYs74_YC1Ti6yQ",
       authDomain: "mirielechat.firebaseapp.com",
@@ -138,23 +137,25 @@
     const messageInput = document.getElementById("messageInput");
 
     let currentUser = null;
+    let isLoggingOut = false;
 
-    // Auth State Listener
+    // Auth state logic
     auth.onAuthStateChanged(user => {
       if (user) {
         currentUser = user;
         listenForMessages();
-      } else {
+      } else if (!isLoggingOut) {
         auth.signInAnonymously().catch(console.error);
       }
     });
 
-    // Logout handler
+    // Logout button
     logoutBtn.addEventListener("click", () => {
+      isLoggingOut = true;
       auth.signOut().then(() => {
         alert("Logged out.");
         window.location.href = "index.html";
-      });
+      }).catch(console.error);
     });
 
     // Send message
@@ -172,7 +173,7 @@
       messageInput.value = "";
     });
 
-    // Load messages
+    // Show chat messages
     function listenForMessages() {
       db.ref("messages").limitToLast(50).on("child_added", snapshot => {
         const msg = snapshot.val();
