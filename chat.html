@@ -2,136 +2,221 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Miriele Chatroom</title>
-  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Miriele Chat Room</title>
   <style>
     body {
+      font-family: Arial, sans-serif;
+      background: #121212;
+      color: #eee;
       margin: 0;
-      font-family: 'Press Start 2P', cursive;
-      background-color: #0d0d0d;
-      color: #fff;
-    }
-    header {
-      background: #1e1e2f;
-      padding: 1rem;
-      text-align: center;
-    }
-    header a {
-      color: #0ff;
-      text-decoration: none;
-      font-size: 14px;
-    }
-    .chat-container {
       display: flex;
       flex-direction: column;
-      height: 90vh;
-      padding: 1rem;
+      height: 100vh;
     }
-    #messages {
-      flex-grow: 1;
-      overflow-y: auto;
-      background: #1a1a2e;
+    header {
+      background-color: #0d47a1;
       padding: 1rem;
-      border-radius: 10px;
-    }
-    #message-input {
       display: flex;
-      margin-top: 1rem;
+      justify-content: space-between;
+      align-items: center;
+      color: white;
     }
-    input[type="text"] {
-      flex: 1;
-      padding: 0.5rem;
+    header a, header button {
+      color: white;
+      background: #1565c0;
       border: none;
-      border-radius: 5px;
-    }
-    button {
       padding: 0.5rem 1rem;
-      border: none;
-      background: #0ff;
-      color: #000;
-      font-weight: bold;
       margin-left: 0.5rem;
+      border-radius: 4px;
       cursor: pointer;
-      border-radius: 5px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    #chatWindow {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1rem;
+      background: #1e1e1e;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
     }
     .message {
-      margin-bottom: 0.5rem;
+      background: #2a2a2a;
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      max-width: 70%;
+      word-wrap: break-word;
+      font-size: 14px;
+      line-height: 1.4;
+      position: relative;
     }
-    .timestamp {
+    .message .timestamp {
       font-size: 10px;
-      color: #aaa;
+      color: #999;
+      position: absolute;
+      bottom: 2px;
+      right: 8px;
+    }
+    .message.self {
+      align-self: flex-end;
+      background: #1565c0;
+    }
+    #inputArea {
+      display: flex;
+      padding: 1rem;
+      background: #222;
+      gap: 0.5rem;
+    }
+    #messageInput {
+      flex: 1;
+      padding: 0.5rem 1rem;
+      font-size: 16px;
+      border-radius: 4px;
+      border: none;
+      outline: none;
+    }
+    #sendBtn {
+      background: #1565c0;
+      border: none;
+      color: white;
+      padding: 0 1rem;
+      border-radius: 4px;
+      font-size: 16px;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
   <header>
-    <a href="index.html">🏠 Home</a>
-  </header>
-  <div class="chat-container">
-    <div id="messages"></div>
-    <div id="message-input">
-      <input type="text" id="message" placeholder="Type your message..." />
-      <button onclick="sendMessage()">Send</button>
+    <div>
+      <a href="index.html">Home</a>
     </div>
+    <div>
+      <button id="loginBtn">Sign In with Google</button>
+      <button id="logoutBtn" style="display:none;">Logout</button>
+    </div>
+  </header>
+
+  <div id="chatWindow"></div>
+
+  <div id="inputArea" style="display:none;">
+    <input id="messageInput" type="text" placeholder="Type your message..." autocomplete="off" />
+    <button id="sendBtn">Send</button>
   </div>
 
-  <!-- Firebase SDKs -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
-    import { getDatabase, ref, push, onChildAdded, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
-    import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+    import {
+      getAuth,
+      signInWithPopup,
+      GoogleAuthProvider,
+      signOut,
+      onAuthStateChanged,
+    } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+    import {
+      getDatabase,
+      ref,
+      push,
+      onChildAdded,
+      serverTimestamp,
+    } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyB4w6elulTE2FJbJVAXNUYs74_YC1Ti6yQ",
       authDomain: "mirielechat.firebaseapp.com",
       projectId: "mirielechat",
-      storageBucket: "mirielechat.appspot.com",
+      storageBucket: "mirielechat.firebasestorage.app",
       messagingSenderId: "1031331000258",
-      appId: "1:1031331000258:web:7cae47f29cb3493fb1f05b",
-      databaseURL: "https://mirielechat-default-rtdb.firebaseio.com"
+      appId: "1:1031331000258:web:7cae47f29cb3493fb1f05b"
     };
 
     const app = initializeApp(firebaseConfig);
-    const db = getDatabase(app);
-    const auth = getAuth();
+    const auth = getAuth(app);
+    const database = getDatabase(app);
+    const messagesRef = ref(database, 'messages');
+
+    const loginBtn = document.getElementById('loginBtn');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const chatWindow = document.getElementById('chatWindow');
+    const inputArea = document.getElementById('inputArea');
+    const messageInput = document.getElementById('messageInput');
+    const sendBtn = document.getElementById('sendBtn');
 
     let currentUser = null;
 
-    signInAnonymously(auth)
-      .then(() => console.log("Signed in anonymously"))
-      .catch((error) => console.error(error));
-
-    onAuthStateChanged(auth, (user) => {
-      if (user) currentUser = user;
+    loginBtn.addEventListener('click', () => {
+      const provider = new GoogleAuthProvider();
+      signInWithPopup(auth, provider).catch(console.error);
     });
 
-    const messagesRef = ref(db, "messages");
+    logoutBtn.addEventListener('click', () => {
+      signOut(auth).catch(console.error);
+    });
+
+    onAuthStateChanged(auth, user => {
+      currentUser = user;
+      if (user) {
+        loginBtn.style.display = 'none';
+        logoutBtn.style.display = 'inline-block';
+        inputArea.style.display = 'flex';
+      } else {
+        loginBtn.style.display = 'inline-block';
+        logoutBtn.style.display = 'none';
+        inputArea.style.display = 'none';
+      }
+    });
 
     function sendMessage() {
-      const input = document.getElementById("message");
-      const text = input.value.trim();
-      if (text && currentUser) {
-        push(messagesRef, {
-          uid: currentUser.uid,
-          text,
-          timestamp: Date.now()
-        });
-        input.value = "";
-      }
+      const text = messageInput.value.trim();
+      if (!text || !currentUser) return;
+      push(messagesRef, {
+        uid: currentUser.uid,
+        displayName: currentUser.displayName || "Anonymous",
+        text: text,
+        timestamp: serverTimestamp()
+      });
+      messageInput.value = '';
     }
 
-    document.getElementById("message")?.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") sendMessage();
+    sendBtn.addEventListener('click', sendMessage);
+
+    // ✅ ENTER key sends message
+    messageInput.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        sendMessage();
+      }
     });
 
+    // Show messages
     onChildAdded(messagesRef, (data) => {
       const msg = data.val();
-      const msgEl = document.createElement("div");
-      msgEl.classList.add("message");
-      msgEl.innerHTML = `<span>${msg.text}</span><div class="timestamp">${new Date(msg.timestamp).toLocaleTimeString()}</div>`;
-      document.getElementById("messages").appendChild(msgEl);
+      const msgEl = document.createElement('div');
+      msgEl.classList.add('message');
+      if (currentUser && msg.uid === currentUser.uid) {
+        msgEl.classList.add('self');
+      }
+      const time = msg.timestamp ? new Date(msg.timestamp) : new Date();
+      const timeStr = time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      msgEl.innerHTML = `<strong>${msg.displayName}</strong>: ${escapeHtml(msg.text)}<div class="timestamp">${timeStr}</div>`;
+      chatWindow.appendChild(msgEl);
+      chatWindow.scrollTop = chatWindow.scrollHeight;
     });
+
+    function escapeHtml(text) {
+      return text.replace(/[&<>"']/g, (m) => {
+        switch (m) {
+          case '&': return "&amp;";
+          case '<': return "&lt;";
+          case '>': return "&gt;";
+          case '"': return "&quot;";
+          case "'": return "&#039;";
+          default: return m;
+        }
+      });
+    }
   </script>
 </body>
 </html>
