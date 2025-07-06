@@ -3,90 +3,84 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Miriele Chat</title>
-  <link rel="stylesheet" href="styles.css" />
+  <title>Miriele Chatroom</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
   <style>
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background-color: #1a1a2e;
+      font-family: 'Press Start 2P', cursive;
+      background-color: #0d0d0d;
       color: #fff;
     }
     header {
-      background-color: #0f3460;
-      padding: 1em;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      background: #1e1e2f;
+      padding: 1rem;
+      text-align: center;
     }
-    header h1 {
-      margin: 0;
+    header a {
+      color: #0ff;
+      text-decoration: none;
+      font-size: 14px;
     }
-    header button {
-      padding: 0.5em 1em;
-      cursor: pointer;
-    }
-    #chat-container {
+    .chat-container {
       display: flex;
       flex-direction: column;
       height: 90vh;
-      max-width: 800px;
-      margin: auto;
-      background-color: #16213e;
-      border-radius: 10px;
-      overflow: hidden;
+      padding: 1rem;
     }
     #messages {
-      flex: 1;
-      overflow-y: scroll;
-      padding: 1em;
+      flex-grow: 1;
+      overflow-y: auto;
+      background: #1a1a2e;
+      padding: 1rem;
+      border-radius: 10px;
     }
     #message-input {
       display: flex;
-      padding: 1em;
-      background-color: #0f3460;
+      margin-top: 1rem;
     }
-    #message-input input {
+    input[type="text"] {
       flex: 1;
-      padding: 0.5em;
+      padding: 0.5rem;
       border: none;
       border-radius: 5px;
     }
-    #message-input button {
-      margin-left: 1em;
-      padding: 0.5em 1em;
+    button {
+      padding: 0.5rem 1rem;
+      border: none;
+      background: #0ff;
+      color: #000;
+      font-weight: bold;
+      margin-left: 0.5rem;
+      cursor: pointer;
+      border-radius: 5px;
     }
     .message {
-      margin: 0.5em 0;
+      margin-bottom: 0.5rem;
     }
     .timestamp {
-      font-size: 0.8em;
+      font-size: 10px;
       color: #aaa;
     }
   </style>
 </head>
 <body>
   <header>
-    <h1>Miriele Chat</h1>
-    <div>
-      <span id="userDisplayName"></span>
-      <button onclick="window.location.href='index.html'">Home</button>
-      <button id="logoutBtn">Logout</button>
-    </div>
+    <a href="index.html">🏠 Home</a>
   </header>
-  <div id="chat-container">
+  <div class="chat-container">
     <div id="messages"></div>
     <div id="message-input">
-      <input id="messageText" type="text" placeholder="Type a message..." />
+      <input type="text" id="message" placeholder="Type your message..." />
       <button onclick="sendMessage()">Send</button>
     </div>
   </div>
 
-  <!-- Firebase SDK -->
+  <!-- Firebase SDKs -->
   <script type="module">
-    import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js';
-    import { getAuth, onAuthStateChanged, signInWithPopup, GoogleAuthProvider, signOut } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js';
-    import { getDatabase, ref, push, onChildAdded, serverTimestamp } from 'https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js';
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+    import { getDatabase, ref, push, onChildAdded, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
+    import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyB4w6elulTE2FJbJVAXNUYs74_YC1Ti6yQ",
@@ -99,64 +93,44 @@
     };
 
     const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
     const db = getDatabase(app);
+    const auth = getAuth();
+
     let currentUser = null;
 
+    signInAnonymously(auth)
+      .then(() => console.log("Signed in anonymously"))
+      .catch((error) => console.error(error));
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) currentUser = user;
+    });
+
+    const messagesRef = ref(db, "messages");
+
     function sendMessage() {
-      const messageText = document.getElementById("messageText").value.trim();
-      if (!messageText) return;
-
-      push(ref(db, 'messages'), {
-        name: currentUser.displayName || "Guest",
-        uid: currentUser.uid,
-        text: messageText,
-        timestamp: Date.now()
-      });
-      document.getElementById("messageText").value = "";
+      const input = document.getElementById("message");
+      const text = input.value.trim();
+      if (text && currentUser) {
+        push(messagesRef, {
+          uid: currentUser.uid,
+          text,
+          timestamp: Date.now()
+        });
+        input.value = "";
+      }
     }
 
-    function displayMessage(data) {
+    document.getElementById("message")?.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") sendMessage();
+    });
+
+    onChildAdded(messagesRef, (data) => {
       const msg = data.val();
-      const msgElem = document.createElement("div");
-      msgElem.className = "message";
-      const time = new Date(msg.timestamp).toLocaleTimeString();
-      msgElem.innerHTML = `<strong>${msg.name}:</strong> ${msg.text} <span class='timestamp'>${time}</span>`;
-      document.getElementById("messages").appendChild(msgElem);
-      msgElem.scrollIntoView();
-    }
-
-    function setupChat() {
-      onChildAdded(ref(db, 'messages'), displayMessage);
-    }
-
-    onAuthStateChanged(auth, async (user) => {
-      if (user) {
-        await user.reload();
-        currentUser = auth.currentUser;
-        document.getElementById("userDisplayName").innerText = currentUser.displayName || "Guest";
-        setupChat();
-      } else {
-        const provider = new GoogleAuthProvider();
-        try {
-          await signInWithPopup(auth, provider);
-        } catch (error) {
-          console.error("Sign-in failed:", error);
-        }
-      }
-    });
-
-    document.getElementById("logoutBtn").addEventListener("click", () => {
-      signOut(auth).then(() => {
-        location.reload();
-      });
-    });
-
-    document.getElementById("messageText").addEventListener("keypress", function (e) {
-      if (e.key === "Enter") {
-        e.preventDefault();
-        sendMessage();
-      }
+      const msgEl = document.createElement("div");
+      msgEl.classList.add("message");
+      msgEl.innerHTML = `<span>${msg.text}</span><div class="timestamp">${new Date(msg.timestamp).toLocaleTimeString()}</div>`;
+      document.getElementById("messages").appendChild(msgEl);
     });
   </script>
 </body>
