@@ -2,120 +2,91 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Miriele Chat</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Miriele Chatroom</title>
   <style>
-    * {
-      box-sizing: border-box;
-    }
     body {
       margin: 0;
-      font-family: 'Inter', sans-serif;
-      background-color: #f9fafb;
-      color: #111827;
+      font-family: 'Segoe UI', sans-serif;
+      background: #0f172a;
+      color: white;
       display: flex;
       flex-direction: column;
       height: 100vh;
     }
     header {
-      background-color: #4f46e5;
-      color: white;
-      padding: 1rem 2rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      background: #1e293b;
+      padding: 10px 20px;
+    }
+    header h1 {
+      font-size: 1.2rem;
     }
     .btn {
-      background-color: white;
-      color: #4f46e5;
-      padding: 0.5rem 1rem;
+      background: #3b82f6;
+      color: white;
+      padding: 6px 12px;
       border: none;
-      border-radius: 6px;
+      border-radius: 4px;
       cursor: pointer;
-      font-weight: 600;
+      margin-left: 8px;
     }
     #chat-container {
+      flex: 1;
       display: flex;
       flex-direction: column;
-      flex-grow: 1;
-      padding: 1rem 2rem;
-      overflow: hidden;
-    }
-    #messages {
-      flex-grow: 1;
+      padding: 10px;
       overflow-y: auto;
-      background-color: #e5e7eb;
-      padding: 1rem;
-      border-radius: 8px;
-      display: flex;
-      flex-direction: column-reverse;
     }
     .message {
-      background-color: white;
-      padding: 0.75rem 1rem;
-      margin-bottom: 0.5rem;
-      border-radius: 8px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      margin-bottom: 12px;
+      background: #1e293b;
+      padding: 10px;
+      border-radius: 6px;
     }
-    .message .meta {
-      font-size: 0.8rem;
-      color: #6b7280;
-      margin-bottom: 0.25rem;
+    .message small {
+      display: block;
+      color: #94a3b8;
+      font-size: 0.75em;
     }
     #input-area {
       display: flex;
-      gap: 0.5rem;
-      margin-top: 1rem;
+      background: #1e293b;
+      padding: 10px;
+      border-top: 1px solid #334155;
     }
     #messageInput {
-      flex-grow: 1;
-      padding: 0.75rem;
-      border-radius: 6px;
-      border: 1px solid #d1d5db;
-      font-size: 1rem;
-    }
-    #sendBtn {
-      background-color: #4f46e5;
-      color: white;
+      flex: 1;
+      padding: 10px;
       border: none;
-      border-radius: 6px;
-      padding: 0.75rem 1rem;
-      cursor: pointer;
-      font-weight: 600;
+      border-radius: 4px;
+      margin-right: 10px;
     }
   </style>
 </head>
 <body>
   <header>
-    <h1>Miriele Chat</h1>
-    <button id="logout" class="btn">Logout</button>
+    <h1>💬 Miriele's Chat</h1>
+    <div>
+      <a href="index.html" class="btn">Home</a>
+      <button id="login" class="btn">Login with Google</button>
+      <button id="logout" class="btn" style="display: none;">Logout</button>
+    </div>
   </header>
 
-  <div id="chat-container">
-    <div id="messages"></div>
-    <div id="input-area">
-      <input type="text" id="messageInput" placeholder="Type your message..." />
-      <button id="sendBtn">Send</button>
-    </div>
+  <div id="chat-container"></div>
+
+  <div id="input-area" style="display: none;">
+    <input type="text" id="messageInput" placeholder="Type a message..." />
+    <button class="btn" id="sendBtn">Send</button>
   </div>
 
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
-    import {
-      getAuth,
-      onAuthStateChanged,
-      signOut,
-      GoogleAuthProvider,
-      signInWithPopup
-    } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
-    import {
-      getDatabase,
-      ref,
-      push,
-      onChildAdded,
-      serverTimestamp
-    } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+    import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+    import { getDatabase, ref, push, onChildAdded, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-database.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyB4w6elulTE2FJbJVAXNUYs74_YC1Ti6yQ",
@@ -130,50 +101,67 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth();
     const db = getDatabase(app);
-    const messagesRef = ref(db, 'messages');
 
-    const messagesContainer = document.getElementById('messages');
-    const messageInput = document.getElementById('messageInput');
-    const sendBtn = document.getElementById('sendBtn');
-    const logoutBtn = document.getElementById('logout');
+    const loginBtn = document.getElementById("login");
+    const logoutBtn = document.getElementById("logout");
+    const sendBtn = document.getElementById("sendBtn");
+    const input = document.getElementById("messageInput");
+    const chat = document.getElementById("chat-container");
+    const inputArea = document.getElementById("input-area");
+
+    let currentUser = null;
+
+    loginBtn.onclick = async () => {
+      const provider = new GoogleAuthProvider();
+      await signInWithPopup(auth, provider);
+    };
+
+    logoutBtn.onclick = () => {
+      signOut(auth);
+    };
 
     onAuthStateChanged(auth, user => {
-      if (!user) {
-        const provider = new GoogleAuthProvider();
-        signInWithPopup(auth, provider).catch(console.error);
+      if (user) {
+        currentUser = user;
+        loginBtn.style.display = "none";
+        logoutBtn.style.display = "inline-block";
+        inputArea.style.display = "flex";
+      } else {
+        currentUser = null;
+        loginBtn.style.display = "inline-block";
+        logoutBtn.style.display = "none";
+        inputArea.style.display = "none";
       }
     });
 
-    logoutBtn.onclick = () => signOut(auth).then(() => location.reload());
-
     sendBtn.onclick = sendMessage;
-    messageInput.addEventListener("keydown", e => {
+    input.addEventListener("keydown", e => {
       if (e.key === "Enter") sendMessage();
     });
 
     function sendMessage() {
-      const user = auth.currentUser;
-      const text = messageInput.value.trim();
-      if (!user || !text) return;
+      const text = input.value.trim();
+      if (!text || !currentUser) return;
 
-      push(messagesRef, {
-        text,
-        uid: user.uid,
-        name: user.displayName || "Anonymous",
+      push(ref(db, "messages"), {
+        uid: currentUser.uid,
+        name: currentUser.displayName || "Anonymous",
+        text: text,
         timestamp: Date.now()
       });
-      messageInput.value = "";
+      input.value = "";
     }
 
-    onChildAdded(messagesRef, snapshot => {
+    onChildAdded(ref(db, "messages"), snapshot => {
       const msg = snapshot.val();
       const div = document.createElement("div");
       div.className = "message";
       div.innerHTML = `
-        <div class="meta">${msg.name} • ${new Date(msg.timestamp).toLocaleTimeString()}</div>
-        <div>${msg.text}</div>
+        <strong>${msg.name}</strong>: ${msg.text}
+        <small>${new Date(msg.timestamp).toLocaleString()}</small>
       `;
-      messagesContainer.prepend(div);
+      chat.appendChild(div);
+      chat.scrollTop = chat.scrollHeight;
     });
   </script>
 </body>
