@@ -2,188 +2,199 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Miriele Chat</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Miriele Chatroom</title>
   <style>
     body {
-      margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #111;
+      font-family: 'Segoe UI', sans-serif;
+      background: #0d0d0d;
       color: #fff;
+      margin: 0;
+      padding: 0;
       display: flex;
       flex-direction: column;
       height: 100vh;
     }
-
     header {
-      background: #222;
-      padding: 15px 20px;
+      background-color: #1a1a1a;
+      padding: 10px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      box-shadow: 0 2px 5px #000;
     }
-
     header h1 {
       margin: 0;
-      font-size: 1.5em;
+      font-size: 1.5rem;
     }
-
-    nav a, button {
-      background: #e94560;
+    header button {
+      background-color: #007bff;
+      color: #fff;
       border: none;
-      color: white;
-      padding: 8px 14px;
-      margin-left: 10px;
-      border-radius: 5px;
-      text-decoration: none;
-      font-weight: bold;
+      padding: 6px 12px;
       cursor: pointer;
+      border-radius: 4px;
     }
-
-    #chat-container {
-      flex: 1;
-      overflow-y: auto;
-      padding: 20px;
-    }
-
-    .message {
-      background: #333;
-      margin-bottom: 10px;
+    #chat-box {
+      flex-grow: 1;
       padding: 10px;
-      border-radius: 6px;
+      overflow-y: auto;
+      background-color: #111;
     }
-
-    .message .timestamp {
-      font-size: 0.75em;
-      color: #bbb;
+    #chat-box div {
+      margin-bottom: 8px;
+      padding: 6px;
+      background: #222;
+      border-radius: 5px;
     }
-
-    form {
+    #message-form {
       display: flex;
       padding: 10px;
-      background: #222;
-      border-top: 1px solid #444;
+      background-color: #1a1a1a;
     }
-
-    form input {
+    #message-input {
       flex: 1;
       padding: 10px;
+      border-radius: 4px;
       border: none;
-      border-radius: 5px 0 0 5px;
+      margin-right: 10px;
     }
-
-    form button {
+    #send-button {
+      background-color: #28a745;
+      color: #fff;
+      border: none;
       padding: 10px 20px;
-      border-radius: 0 5px 5px 0;
-      background: #e94560;
-      color: white;
-      border: none;
       cursor: pointer;
+      border-radius: 4px;
     }
-
-    @media (max-width: 600px) {
-      header h1 {
-        font-size: 1.2em;
-      }
-
-      nav a, button {
-        padding: 6px 10px;
-        font-size: 0.9em;
-      }
+    #login-screen {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      background-color: #000;
+    }
+    #login-screen input, #login-screen button {
+      margin: 8px;
+      padding: 10px;
+      width: 80%;
     }
   </style>
 </head>
 <body>
-
   <header>
-    <h1>Miriele Chat</h1>
-    <nav>
-      <a href="index.html">Home</a>
-      <button id="logoutBtn">Logout</button>
-    </nav>
+    <h1>Miriele Chatroom</h1>
+    <div>
+      <button onclick="window.location.href='index.html'">Home</button>
+      <button id="logout-button">Logout</button>
+    </div>
   </header>
 
-  <div id="chat-container"></div>
+  <div id="login-screen">
+    <input type="email" id="email" placeholder="Email" />
+    <input type="password" id="password" placeholder="Password" />
+    <button onclick="signIn()">Sign In</button>
+    <button onclick="signUp()">Sign Up</button>
+  </div>
 
-  <form id="chat-form">
-    <input id="messageInput" type="text" placeholder="Type a message..." />
-    <button type="submit">Send</button>
-  </form>
+  <div id="chat-container" style="display: none;">
+    <div id="chat-box"></div>
+    <form id="message-form" onsubmit="sendMessage(event)">
+      <input id="message-input" placeholder="Type your message..." required />
+      <button type="submit" id="send-button">Send</button>
+    </form>
+  </div>
 
-  <!-- Firebase SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+    import {
+      getAuth,
+      onAuthStateChanged,
+      signOut,
+      signInWithEmailAndPassword,
+      createUserWithEmailAndPassword
+    } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
+    import {
+      getDatabase,
+      ref,
+      push,
+      onChildAdded,
+      serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
 
-  <script>
     const firebaseConfig = {
       apiKey: "AIzaSyB4w6elulTE2FJbJVAXNUYs74_YC1Ti6yQ",
       authDomain: "mirielechat.firebaseapp.com",
-      databaseURL: "https://mirielechat-default-rtdb.firebaseio.com",
       projectId: "mirielechat",
       storageBucket: "mirielechat.appspot.com",
       messagingSenderId: "1031331000258",
-      appId: "1:1031331000258:web:7cae47f29cb3493fb1f05b"
+      appId: "1:1031331000258:web:7cae47f29cb3493fb1f05b",
+      databaseURL: "https://mirielechat-default-rtdb.firebaseio.com"
     };
 
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-    const db = firebase.database();
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getDatabase(app);
 
-    const logoutBtn = document.getElementById("logoutBtn");
-    const chatContainer = document.getElementById("chat-container");
-    const chatForm = document.getElementById("chat-form");
-    const messageInput = document.getElementById("messageInput");
+    const loginScreen = document.getElementById('login-screen');
+    const chatContainer = document.getElementById('chat-container');
+    const logoutButton = document.getElementById('logout-button');
 
-    let currentUser = null;
-    let isLoggingOut = false;
-
-    // Auth state logic
-    auth.onAuthStateChanged(user => {
+    onAuthStateChanged(auth, user => {
       if (user) {
-        currentUser = user;
-        listenForMessages();
-      } else if (!isLoggingOut) {
-        auth.signInAnonymously().catch(console.error);
+        loginScreen.style.display = 'none';
+        chatContainer.style.display = 'flex';
+        loadChat();
+      } else {
+        loginScreen.style.display = 'flex';
+        chatContainer.style.display = 'none';
       }
     });
 
-    // Logout button
-    logoutBtn.addEventListener("click", () => {
-      isLoggingOut = true;
-      auth.signOut().then(() => {
-        alert("Logged out.");
-        window.location.href = "index.html";
-      }).catch(console.error);
+    function signIn() {
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      signInWithEmailAndPassword(auth, email, password).catch(alert);
+    }
+
+    function signUp() {
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      createUserWithEmailAndPassword(auth, email, password).catch(alert);
+    }
+
+    logoutButton.addEventListener('click', () => {
+      signOut(auth).catch(alert);
     });
 
-    // Send message
-    chatForm.addEventListener("submit", e => {
-      e.preventDefault();
-      const text = messageInput.value.trim();
-      if (!text || !currentUser) return;
+    function loadChat() {
+      const chatBox = document.getElementById('chat-box');
+      const chatRef = ref(db, 'messages');
 
-      db.ref("messages").push({
-        uid: currentUser.uid,
+      onChildAdded(chatRef, snapshot => {
+        const message = snapshot.val();
+        const div = document.createElement('div');
+        const time = new Date(message.timestamp || Date.now()).toLocaleTimeString();
+        div.textContent = `[${time}] ${message.user || 'Anonymous'}: ${message.text}`;
+        chatBox.appendChild(div);
+        chatBox.scrollTop = chatBox.scrollHeight;
+      });
+    }
+
+    function sendMessage(e) {
+      e.preventDefault();
+      const messageInput = document.getElementById('message-input');
+      const text = messageInput.value.trim();
+      if (!text) return;
+
+      const chatRef = ref(db, 'messages');
+      push(chatRef, {
         text,
+        user: auth.currentUser.email,
         timestamp: Date.now()
       });
 
-      messageInput.value = "";
-    });
-
-    // Show chat messages
-    function listenForMessages() {
-      db.ref("messages").limitToLast(50).on("child_added", snapshot => {
-        const msg = snapshot.val();
-        const div = document.createElement("div");
-        div.className = "message";
-        const time = new Date(msg.timestamp).toLocaleTimeString();
-        div.innerHTML = `<strong>${msg.uid.slice(0,6)}</strong>: ${msg.text} <div class="timestamp">${time}</div>`;
-        chatContainer.appendChild(div);
-        chatContainer.scrollTop = chatContainer.scrollHeight;
-      });
+      messageInput.value = '';
     }
   </script>
 </body>
