@@ -3,142 +3,90 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin Panel - Miriele Chat</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <title>Miriele Admin Panel</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #0f172a;
-      color: #e2e8f0;
-      margin: 0;
-      padding: 0;
-    }
-    header {
-      background: #1e293b;
-      padding: 10px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    header h1 {
-      margin: 0;
-      font-size: 20px;
-    }
-    button {
-      background-color: #3b82f6;
-      color: white;
-      border: none;
-      padding: 8px 12px;
-      margin-left: 10px;
-      cursor: pointer;
-      border-radius: 5px;
-    }
-    #admin-tools {
-      padding: 20px;
-    }
-    .message {
-      background: #1e293b;
-      border: 1px solid #334155;
-      padding: 10px;
-      margin-bottom: 10px;
-      border-radius: 5px;
-    }
-    .message-controls {
-      margin-top: 5px;
-    }
+    body { font-family: sans-serif; background: #111827; color: white; margin: 0; padding: 20px; }
+    header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .btn { padding: 8px 16px; background: #4f46e5; color: white; border: none; border-radius: 5px; cursor: pointer; }
+    #messages { max-height: 600px; overflow-y: auto; background: #1f2937; padding: 10px; border-radius: 5px; }
+    .message { padding: 8px; border-bottom: 1px solid #374151; }
+    .message span { font-size: 0.85em; color: #9ca3af; }
+    .admin-actions button { margin-left: 10px; font-size: 0.8em; }
   </style>
 </head>
 <body>
   <header>
     <h1>Admin Panel</h1>
     <div>
-      <button onclick="location.href='index.html'">Home</button>
-      <button id="logoutBtn">Logout</button>
+      <a href="index.html" class="btn">Home</a>
+      <button id="logout" class="btn">Logout</button>
     </div>
   </header>
 
-  <div id="admin-tools">
-    <h2>Messages</h2>
-    <div id="messageList"></div>
-  </div>
+  <div id="messages"></div>
 
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
-    import {
-      getAuth,
-      onAuthStateChanged,
-      signOut,
-      GoogleAuthProvider,
-      signInWithPopup,
-    } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js";
-    import {
-      getDatabase,
-      ref,
-      onChildAdded,
-      remove,
-      get,
-      set,
-      child
-    } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+    import { getDatabase, ref, onChildAdded, remove, update } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-database.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyB4w6elulTE2FJbJVAXNUYs74_YC1Ti6yQ",
       authDomain: "mirielechat.firebaseapp.com",
-      databaseURL: "https://mirielechat-default-rtdb.firebaseio.com",
       projectId: "mirielechat",
       storageBucket: "mirielechat.appspot.com",
       messagingSenderId: "1031331000258",
-      appId: "1:1031331000258:web:7cae47f29cb3493fb1f05b"
+      appId: "1:1031331000258:web:7cae47f29cb3493fb1f05b",
+      databaseURL: "https://mirielechat-default-rtdb.firebaseio.com"
     };
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth();
     const db = getDatabase(app);
+    const messagesRef = ref(db, 'messages');
 
-    const provider = new GoogleAuthProvider();
-    const logoutBtn = document.getElementById("logoutBtn");
+    const logoutBtn = document.getElementById("logout");
+    logoutBtn.onclick = () => signOut(auth);
 
-    logoutBtn.onclick = () => {
-      signOut(auth);
-    };
-
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        loadMessages();
-      } else {
-        signInWithPopup(auth, provider).catch(console.error);
-      }
-    });
-
-    function loadMessages() {
-      const messagesRef = ref(db, "messages");
-      onChildAdded(messagesRef, (snapshot) => {
-        const msg = snapshot.val();
-        const id = snapshot.key;
-
-        const div = document.createElement("div");
-        div.className = "message";
-        div.innerHTML = `
-          <strong>${msg.displayName || "Anon"}</strong>: ${msg.text} <br />
-          <small>${new Date(msg.timestamp).toLocaleString()}</small>
-          <div class="message-controls">
-            <button onclick="deleteMessage('${id}')">Delete</button>
-            <button onclick="banUser('${msg.uid}')">Ban</button>
-          </div>
-        `;
-        document.getElementById("messageList").appendChild(div);
-      });
+    function renderMessage(id, msg) {
+      const container = document.createElement("div");
+      container.className = "message";
+      container.innerHTML = `
+        <strong>${msg.name || "Anonymous"}</strong>: ${msg.text} <span>${new Date(msg.timestamp).toLocaleString()}</span>
+        <div class="admin-actions">
+          <button onclick="deleteMessage('${id}')">🗑 Delete</button>
+          <button onclick="banUser('${msg.uid}')">🚫 Ban</button>
+        </div>
+      `;
+      document.getElementById("messages").appendChild(container);
     }
 
     window.deleteMessage = async (id) => {
-      await remove(ref(db, `messages/${id}`));
-      location.reload();
+      await remove(ref(db, 'messages/' + id));
+      alert('Message deleted');
     };
 
     window.banUser = async (uid) => {
-      await set(ref(db, `banned/${uid}`), true);
-      alert("User has been banned.");
+      await update(ref(db, 'banned/' + uid), { banned: true });
+      alert('User banned');
     };
+
+    function isAdmin(email) {
+      const allowedAdmins = ["monday1379@gmail.com"];
+      return allowedAdmins.includes(email);
+    }
+
+    onAuthStateChanged(auth, user => {
+      if (user && isAdmin(user.email)) {
+        onChildAdded(messagesRef, snapshot => {
+          const msg = snapshot.val();
+          renderMessage(snapshot.key, msg);
+        });
+      } else {
+        alert("Unauthorized. Redirecting to homepage.");
+        window.location.href = "index.html";
+      }
+    });
   </script>
 </body>
 </html>
