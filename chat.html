@@ -7,75 +7,111 @@
   <style>
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background: #121212;
-      color: white;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #111;
+      color: #fff;
       display: flex;
       flex-direction: column;
       height: 100vh;
     }
+
     header {
-      background: #1e1e2f;
-      padding: 10px 20px;
+      background: #222;
+      padding: 15px 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      box-shadow: 0 2px 5px #000;
     }
-    button {
+
+    header h1 {
+      margin: 0;
+      font-size: 1.5em;
+    }
+
+    nav a, button {
       background: #e94560;
       border: none;
-      padding: 8px 16px;
       color: white;
+      padding: 8px 14px;
+      margin-left: 10px;
       border-radius: 5px;
+      text-decoration: none;
+      font-weight: bold;
       cursor: pointer;
     }
+
     #chat-container {
       flex: 1;
-      padding: 15px;
       overflow-y: auto;
+      padding: 20px;
     }
+
     .message {
-      margin: 10px 0;
-      background: #2e2e3f;
+      background: #333;
+      margin-bottom: 10px;
       padding: 10px;
-      border-radius: 5px;
+      border-radius: 6px;
     }
-    .timestamp {
+
+    .message .timestamp {
       font-size: 0.75em;
-      color: #ccc;
+      color: #bbb;
     }
+
     form {
       display: flex;
-      background: #1e1e2f;
       padding: 10px;
+      background: #222;
+      border-top: 1px solid #444;
     }
+
     form input {
       flex: 1;
       padding: 10px;
       border: none;
       border-radius: 5px 0 0 5px;
     }
+
     form button {
-      padding: 10px;
+      padding: 10px 20px;
       border-radius: 0 5px 5px 0;
+      background: #e94560;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    @media (max-width: 600px) {
+      header h1 {
+        font-size: 1.2em;
+      }
+
+      nav a, button {
+        padding: 6px 10px;
+        font-size: 0.9em;
+      }
     }
   </style>
 </head>
 <body>
 
   <header>
-    <h2>Miriele's Chat</h2>
-    <button id="logoutBtn">Logout</button>
+    <h1>Miriele Chat</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <button id="logoutBtn">Logout</button>
+    </nav>
   </header>
 
   <div id="chat-container"></div>
 
   <form id="chat-form">
-    <input id="messageInput" type="text" placeholder="Type your message..." />
+    <input id="messageInput" type="text" placeholder="Type a message..." />
     <button type="submit">Send</button>
   </form>
 
-  <!-- Firebase -->
+  <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
@@ -92,39 +128,34 @@
       appId: "1:1031331000258:web:7cae47f29cb3493fb1f05b"
     };
 
-    // Initialize
     firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
     const auth = firebase.auth();
-    let currentUser = null;
+    const db = firebase.database();
 
+    const logoutBtn = document.getElementById("logoutBtn");
     const chatContainer = document.getElementById("chat-container");
     const chatForm = document.getElementById("chat-form");
     const messageInput = document.getElementById("messageInput");
-    const logoutBtn = document.getElementById("logoutBtn");
 
-    // Sign in anonymously
+    let currentUser = null;
+
+    // Auth State Listener
     auth.onAuthStateChanged(user => {
       if (user) {
         currentUser = user;
-        loadMessages();
+        listenForMessages();
       } else {
         auth.signInAnonymously().catch(console.error);
       }
     });
 
-    // Load messages
-    function loadMessages() {
-      db.ref("messages").on("child_added", snapshot => {
-        const msg = snapshot.val();
-        const msgDiv = document.createElement("div");
-        msgDiv.className = "message";
-        const time = new Date(msg.timestamp).toLocaleTimeString();
-        msgDiv.innerHTML = `<strong>${msg.uid.slice(0, 5)}</strong>: ${msg.text}<div class="timestamp">${time}</div>`;
-        chatContainer.appendChild(msgDiv);
-        chatContainer.scrollTop = chatContainer.scrollHeight;
+    // Logout handler
+    logoutBtn.addEventListener("click", () => {
+      auth.signOut().then(() => {
+        alert("Logged out.");
+        window.location.href = "index.html";
       });
-    }
+    });
 
     // Send message
     chatForm.addEventListener("submit", e => {
@@ -133,24 +164,26 @@
       if (!text || !currentUser) return;
 
       db.ref("messages").push({
-        text,
         uid: currentUser.uid,
+        text,
         timestamp: Date.now()
       });
 
       messageInput.value = "";
     });
 
-    // Logout
-    logoutBtn.addEventListener("click", () => {
-      auth.signOut().then(() => {
-        alert("Logged out. Reloading...");
-        location.reload();
-      }).catch(err => {
-        console.error(err);
-        alert("Logout failed.");
+    // Load messages
+    function listenForMessages() {
+      db.ref("messages").limitToLast(50).on("child_added", snapshot => {
+        const msg = snapshot.val();
+        const div = document.createElement("div");
+        div.className = "message";
+        const time = new Date(msg.timestamp).toLocaleTimeString();
+        div.innerHTML = `<strong>${msg.uid.slice(0,6)}</strong>: ${msg.text} <div class="timestamp">${time}</div>`;
+        chatContainer.appendChild(div);
+        chatContainer.scrollTop = chatContainer.scrollHeight;
       });
-    });
+    }
   </script>
 </body>
 </html>
