@@ -2,83 +2,83 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Miriele Chatroom</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Miriele Chat Box</title>
   <style>
     body {
       margin: 0;
-      background-color: #0f172a;
-      color: #f9fafb;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
+      font-family: Arial, sans-serif;
+      background-color: #111827;
+      color: #fff;
     }
+
     header {
-      background: #1e293b;
-      padding: 1rem;
+      background-color: #1f2937;
+      padding: 10px 20px;
       display: flex;
-      align-items: center;
       justify-content: space-between;
+      align-items: center;
     }
-    header a {
-      color: #facc15;
-      text-decoration: none;
+
+    header h1 {
+      margin: 0;
+      font-size: 1.5rem;
+      color: #99CC33;
+    }
+
+    .nav-button {
+      background-color: #99CC33;
+      color: #000;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 5px;
       font-weight: bold;
-      font-size: 1.1rem;
+      cursor: pointer;
+      text-decoration: none;
     }
-    header span {
-      font-size: 1.2rem;
-    }
+
     .chat-container {
-      flex: 1;
       display: flex;
       justify-content: center;
-      align-items: center;
-      padding: 1rem;
+      padding: 20px;
     }
-    .chat-box {
-      width: 100%;
-      max-width: 1000px;
-      height: 600px;
+
+    #chat-script {
+      border: none;
     }
   </style>
 </head>
 <body>
   <header>
-    <a href="index.html">🏠 Home</a>
-    <span>💬 Miriele Live Chat</span>
+    <h1>Miriele Chat</h1>
+    <a href="index.html" class="nav-button">Home</a>
   </header>
 
   <div class="chat-container">
-    <div class="chat-box">
-      <!-- Chatango Embed Script -->
-      <script 
-        id="cid0020000412837999596" 
-        data-cfasync="false" 
-        async 
-        src="//st.chatango.com/js/gz/emb.js" 
-        style="width: 100%; height: 100%;">
-        {
-          "handle":"mirielechat",
-          "arch":"js",
-          "styles":{
-            "a":"99CC33",
-            "b":100,
-            "c":"000000",
-            "d":"000000",
-            "k":"99CC33",
-            "l":"99CC33",
-            "m":"99CC33",
-            "p":"10",
-            "q":"99CC33",
-            "r":100,
-            "cnrs":"0.35",
-            "fwtickm":1
-          }
+    <script id="cid0020000412837999596"
+            data-cfasync="false"
+            async
+            src="//st.chatango.com/js/gz/emb.js"
+            style="width: 800px;height: 560px;">
+      {
+        "handle": "mirielechat",
+        "arch": "js",
+        "styles": {
+          "a": "99CC33",
+          "b": 100,
+          "c": "000000",
+          "d": "000000",
+          "k": "99CC33",
+          "l": "99CC33",
+          "m": "99CC33",
+          "p": 10,
+          "q": "99CC33",
+          "r": 100,
+          "cnrs": "0.35",
+          "fwtickm": 1
         }
-      </script>
-    </div>
+      }
+    </script>
   </div>
 </body>
 </html>
