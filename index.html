@@ -2,150 +2,212 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Miriele – Chat, Games & Shopping in One Place</title>
-
-  <!-- SEO Meta Tags -->
-  <meta name="description" content="Miriele is your all-in-one destination for chatting, playing fun games, and shopping everyday essentials." />
-  <meta name="keywords" content="chat, games, shop, fun, online games, miriele, live chat, browser games, shopping" />
-  <meta name="author" content="Miriele" />
-  <meta name="robots" content="index, follow" />
-  <meta name="language" content="en" />
-
-  <!-- Open Graph (Facebook, LinkedIn, etc) -->
-  <meta property="og:title" content="Miriele – Chat, Games & Shopping" />
-  <meta property="og:description" content="Join Miriele to chat, play fun games, and shop essentials—all in one browser hub." />
-  <meta property="og:image" content="https://yourdomain.com/preview-image.jpg" />
-  <meta property="og:url" content="https://yourdomain.com" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Miriele - Home</title>
+  <meta name="description" content="Miriele is your destination for games, community, and everyday essentials. Discover, play, and shop all in one place.">
+  <meta name="keywords" content="Miriele, games, chat, shopping, community, entertainment">
+  <meta name="author" content="Miriele">
+  <meta property="og:title" content="Miriele - Play, Chat, and Shop" />
+  <meta property="og:description" content="Explore fun games, connect with others in our chat, and shop everyday essentials." />
   <meta property="og:type" content="website" />
-
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="Miriele – Chat, Games & Shopping" />
-  <meta name="twitter:description" content="Discover Miriele's interactive world with games, chatrooms, and shopping." />
-  <meta name="twitter:image" content="https://yourdomain.com/preview-image.jpg" />
+  <meta property="og:url" content="https://your-domain.com" />
+  <meta property="og:image" content="https://your-domain.com/og-image.jpg" />
 
   <style>
     body {
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
-      text-align: center;
-      background: linear-gradient(to right, #1e3c72, #2a5298);
+      background: linear-gradient(to bottom right, #1e3c72, #2a5298);
       color: white;
+      text-align: center;
     }
 
     header {
+      padding: 1.5rem;
       background-color: rgba(0, 0, 0, 0.6);
-      padding: 1rem;
+      font-size: 2rem;
     }
 
     nav {
-      margin-top: 10px;
+      margin: 1.5rem 0;
     }
 
-    .nav-button, .dropdown-button {
+    .btn {
       display: inline-block;
-      background-color: #6366f1;
+      margin: 0.5rem;
+      padding: 10px 20px;
+      background-color: #4CAF50;
       color: white;
-      padding: 10px 16px;
-      margin: 8px;
-      font-size: 1rem;
-      text-decoration: none;
+      border: none;
       border-radius: 6px;
-      transition: background-color 0.3s ease;
-      cursor: pointer;
+      text-decoration: none;
+      font-size: 1rem;
+      transition: background-color 0.3s;
     }
 
-    .nav-button:hover, .dropdown-button:hover {
-      background-color: #4338ca;
+    .btn:hover {
+      background-color: #45a049;
     }
 
-    /* Dropdown Styles */
     .dropdown {
-      display: inline-block;
       position: relative;
+      display: inline-block;
     }
 
     .dropdown-content {
       display: none;
       position: absolute;
-      background-color: #6366f1;
+      background-color: #333;
       min-width: 160px;
       z-index: 1;
       border-radius: 6px;
-      overflow: hidden;
-      top: 50px;
-      left: 0;
     }
 
     .dropdown-content a {
-      display: block;
       color: white;
-      padding: 10px;
+      padding: 12px 16px;
       text-decoration: none;
+      display: block;
+      text-align: left;
     }
 
     .dropdown-content a:hover {
-      background-color: #4338ca;
+      background-color: #575757;
     }
 
     .dropdown:hover .dropdown-content {
       display: block;
     }
 
-    main {
-      padding: 2rem;
-    }
-
     footer {
-      background-color: rgba(0, 0, 0, 0.3);
-      padding: 1.5rem;
-      margin-top: 40px;
+      background-color: rgba(0, 0, 0, 0.6);
+      padding: 2rem 1rem;
+      margin-top: 4rem;
       font-size: 0.9rem;
-      color: #f3f4f6;
+      color: #ddd;
     }
 
     footer a {
-      color: #ffd700;
-      margin: 0 10px;
+      color: #7dd3fc;
+      margin: 0 8px;
       text-decoration: none;
+      cursor: pointer;
     }
 
     footer a:hover {
       text-decoration: underline;
+    }
+
+    /* Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 10;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.7);
+    }
+
+    .modal-content {
+      background-color: #fff;
+      color: #000;
+      margin: 10% auto;
+      padding: 20px;
+      border-radius: 8px;
+      width: 90%;
+      max-width: 600px;
+      text-align: left;
+      position: relative;
+    }
+
+    .close {
+      position: absolute;
+      top: 10px;
+      right: 16px;
+      font-size: 24px;
+      font-weight: bold;
+      color: #333;
+      cursor: pointer;
+    }
+
+    .close:hover {
+      color: red;
     }
   </style>
 </head>
 <body>
 
   <header>
-    <h1>Welcome to Miriele</h1>
-    <nav>
-      <a href="index.html" class="nav-button">Home</a>
-      <a href="chatbox.html" class="nav-button">Chat Box</a>
-
-      <div class="dropdown">
-        <span class="dropdown-button">Games ▾</span>
-        <div class="dropdown-content">
-          <a href="game.html">Words Game</a>
-          <a href="titans.html">Titans Game</a>
-        </div>
-      </div>
-    </nav>
+    Welcome to Miriele!
   </header>
 
+  <nav>
+    <a class="btn" href="index.html">Home</a>
+    <a class="btn" href="chatbox.html">Chat Box</a>
+    <div class="dropdown">
+      <a class="btn" href="#">Games</a>
+      <div class="dropdown-content">
+        <a href="game.html">Word Game</a>
+        <a href="titans.html">Titans Game</a>
+      </div>
+    </div>
+    <a class="btn" href="https://miriele.com" target="_blank">Shop</a>
+  </nav>
+
   <main>
-    <h2>Explore, Shop, Chat & Play</h2>
-    <p>Miriele is your go-to hub for entertainment, conversation, and discovering new favorites. Connect with others, play fun games, and browse our shop—all from your browser.</p>
+    <h2>Explore. Play. Connect.</h2>
+    <p>Discover exciting games, chat with others, and browse our online store — all in one place.</p>
   </main>
 
   <footer>
-    &copy; 2025 Miriele. All rights reserved. |
-    <a href="#">Terms</a> |
-    <a href="#">Privacy</a> |
-    <a href="#">Contact</a>
+    <p>&copy; <span id="year"></span> Miriele. All Rights Reserved.</p>
+    <p>
+      <a onclick="openModal('termsModal')">Terms of Service</a> |
+      <a onclick="openModal('privacyModal')">Privacy Policy</a>
+    </p>
   </footer>
+
+  <!-- Terms Modal -->
+  <div id="termsModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('termsModal')">&times;</span>
+      <h2>Terms of Service</h2>
+      <p>By using this website, you agree to use its features for personal and non-commercial purposes only. You may not modify, reproduce, or redistribute any content without permission.</p>
+      <p>We reserve the right to update or discontinue services without prior notice. Continued use of the site after changes implies acceptance of the new terms.</p>
+    </div>
+  </div>
+
+  <!-- Privacy Modal -->
+  <div id="privacyModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('privacyModal')">&times;</span>
+      <h2>Privacy Policy</h2>
+      <p>We value your privacy. This site does not collect personal information. Any data collected through third-party services (such as embedded games or chat platforms) is subject to their privacy policies.</p>
+      <p>By using our site, you understand that external content may utilize cookies or analytics tools outside of our control.</p>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    function openModal(id) {
+      document.getElementById(id).style.display = "block";
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).style.display = "none";
+    }
+
+    window.onclick = function(event) {
+      if (event.target.classList.contains('modal')) {
+        closeModal(event.target.id);
+      }
+    };
+  </script>
 
 </body>
 </html>
