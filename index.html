@@ -2,239 +2,180 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Miriele - Home</title>
-  <meta name="description" content="Miriele.com - Your ultimate online store for everyday essentials and unique finds. Quality products, secure shopping, fast shipping." />
-  <meta name="keywords" content="Miriele, online store, everyday essentials, unique finds, quality products, shopping, fast shipping" />
-  <meta name="author" content="Miriele" />
-  <meta property="og:title" content="Miriele - Your Online Store for Essentials & More" />
-  <meta property="og:description" content="Discover high-quality products and unique finds at Miriele.com. Shop now with fast, secure delivery." />
-  <meta property="og:url" content="https://miriele.com" />
-  <meta property="og:type" content="website" />
+  <meta name="description" content="Explore Miriele.com for everyday essentials, entertainment, and social features including chat and games – all in one place.">
+  <meta name="keywords" content="Miriele, online store, free games, chatbox, social, essentials, jungle theme, community">
+  <meta name="author" content="Miriele Team">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
   <style>
-    /* Jungle Background */
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1920&q=80') no-repeat center center fixed;
+      background: url('https://images.unsplash.com/photo-1600845740734-b3979d90755e?auto=format&fit=crop&w=1950&q=80') no-repeat center center fixed;
       background-size: cover;
-      color: #fff;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
+      color: white;
     }
     header {
-      background: rgba(0, 64, 32, 0.85);
+      background-color: rgba(0, 0, 0, 0.7);
       padding: 1rem 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.7);
+      text-align: center;
     }
     header h1 {
       margin: 0;
-      font-weight: 700;
-      font-size: 1.8rem;
-      color: #a7f432;
-      cursor: default;
+      font-size: 2.5rem;
     }
     nav {
-      display: flex;
-      align-items: center;
+      background-color: rgba(0, 0, 0, 0.8);
+      padding: 1rem;
+      text-align: center;
     }
-    nav a, nav .dropdown-btn {
-      color: #a7f432;
+    nav a, .dropdown-btn {
+      color: white;
+      margin: 0 15px;
       text-decoration: none;
-      margin-left: 1.5rem;
-      font-weight: 600;
+      font-weight: bold;
       cursor: pointer;
       position: relative;
-      user-select: none;
-      transition: color 0.3s ease;
     }
-    nav a:hover, nav .dropdown-btn:hover {
-      color: #fff;
+    .dropdown {
+      display: inline-block;
+      position: relative;
     }
-    /* Dropdown */
     .dropdown-content {
       display: none;
       position: absolute;
-      background: rgba(0, 64, 32, 0.95);
-      min-width: 160px;
-      box-shadow: 0 8px 16px rgba(0,0,0,0.4);
-      border-radius: 6px;
-      z-index: 1000;
-      top: 2rem;
-      left: 0;
+      background-color: rgba(0, 0, 0, 0.9);
+      min-width: 150px;
+      z-index: 1;
     }
     .dropdown-content a {
-      color: #a7f432;
-      padding: 12px 16px;
-      text-decoration: none;
       display: block;
-      font-weight: normal;
-      border-bottom: 1px solid rgba(167, 244, 50, 0.3);
-    }
-    .dropdown-content a:last-child {
-      border-bottom: none;
+      padding: 10px;
+      color: white;
+      text-decoration: none;
+      text-align: left;
     }
     .dropdown-content a:hover {
-      background: #a7f432;
-      color: #004020;
+      background-color: #444;
     }
     .dropdown:hover .dropdown-content {
       display: block;
     }
 
-    main {
-      flex-grow: 1;
-      padding: 3rem 2rem 2rem;
+    .section {
       max-width: 900px;
-      margin: 0 auto;
-      background: rgba(255,255,255,0.9);
-      border-radius: 12px;
-      color: #111;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      margin: 2rem auto;
+      background-color: rgba(0, 0, 0, 0.6);
+      padding: 2rem;
+      border-radius: 10px;
     }
 
-    #seo-intro h2 {
-      color: #276749;
-      font-weight: 700;
+    .section h2 {
       margin-top: 0;
-    }
-    #seo-intro a {
-      color: #276749;
-      font-weight: 700;
-      text-decoration: none;
-    }
-    #seo-intro a:hover {
-      text-decoration: underline;
     }
 
     footer {
-      background: rgba(0, 64, 32, 0.9);
-      color: #a7f432;
-      padding: 1rem 2rem;
+      background-color: rgba(0, 0, 0, 0.9);
+      color: #ccc;
       text-align: center;
+      padding: 1.5rem;
       font-size: 0.9rem;
-      user-select: none;
-      box-shadow: inset 0 1px 0 rgba(255,255,255,0.3);
     }
     footer a {
-      color: #d4f58a;
-      margin: 0 8px;
-      cursor: pointer;
+      color: #66ccff;
+      margin: 0 10px;
       text-decoration: none;
-      font-weight: 600;
-    }
-    footer a:hover {
-      text-decoration: underline;
+      cursor: pointer;
     }
 
-    /* Modals */
     .modal {
       display: none;
       position: fixed;
-      z-index: 2000;
+      z-index: 10;
       left: 0;
       top: 0;
-      width: 100vw;
-      height: 100vh;
-      overflow-y: auto;
+      width: 100%;
+      height: 100%;
       background-color: rgba(0,0,0,0.7);
-      padding: 2rem;
-      box-sizing: border-box;
     }
+
     .modal-content {
-      background: #f9f9f9;
-      color: #222;
+      background-color: #fff;
+      margin: 10% auto;
+      padding: 20px;
+      color: black;
+      border-radius: 8px;
+      width: 90%;
       max-width: 600px;
-      margin: 5% auto;
-      padding: 2rem;
-      border-radius: 10px;
-      box-shadow: 0 0 12px rgba(0,0,0,0.3);
-      position: relative;
-      font-size: 1rem;
-      line-height: 1.5;
+      text-align: left;
     }
+
     .close {
-      position: absolute;
-      right: 1rem;
-      top: 1rem;
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: #444;
+      float: right;
+      font-size: 24px;
+      font-weight: bold;
+      color: #333;
       cursor: pointer;
-      user-select: none;
     }
   </style>
 </head>
 <body>
+
   <header>
-    <h1>Miriele</h1>
-    <nav>
-      <a href="index.html">Home</a>
-      <div class="dropdown">
-        <span class="dropdown-btn">Games ▼</span>
-        <div class="dropdown-content">
-          <a href="game.html">Featured Game</a>
-          <a href="titans.html">Titans</a>
-        </div>
-      </div>
-      <a href="chatbox.html">Chat Box</a>
-      <a href="https://miriele.com" target="_blank" rel="noopener noreferrer">Store</a>
-    </nav>
+    <h1>Welcome to Miriele</h1>
+    <p>Your gateway to shopping, games, and chatting with friends.</p>
   </header>
 
-  <main>
-    <section id="seo-intro">
-      <h2>Welcome to Miriele</h2>
-      <p>
-        Welcome to Miriele, your ultimate online destination for everyday essentials and unique finds. At
-        <a href="https://miriele.com" target="_blank" rel="noopener noreferrer">Miriele.com</a>,
-        we offer a carefully curated selection of high-quality products designed to enrich your lifestyle. Whether you're shopping for home goods, accessories, or special gifts, Miriele ensures a seamless and secure shopping experience with fast shipping and exceptional customer service. Discover why thousands trust Miriele.com for quality, value, and style—all in one place.
-      </p>
-    </section>
-  </main>
+  <nav>
+    <a href="index.html">Home</a>
+    <div class="dropdown">
+      <span class="dropdown-btn">Games ▼</span>
+      <div class="dropdown-content">
+        <a href="game.html">Featured Game</a>
+        <a href="titans.html">Titans</a>
+      </div>
+    </div>
+    <a href="chatbox.html">Chat Box</a>
+    <a href="https://miriele.com" target="_blank" rel="noopener noreferrer">Store</a>
+  </nav>
+
+  <div class="section">
+    <h2>Explore Miriele.com</h2>
+    <p>
+      At <strong><a href="https://miriele.com" style="color: #99ff99;">Miriele.com</a></strong>, we bring you a carefully curated collection of everyday essentials — from home goods and wellness products to accessories that fit your lifestyle. Our platform is more than just a store — it's a community. Jump into exciting browser games, join real-time chat with fellow visitors, or unwind while exploring new finds. Whether you’re shopping, playing, or connecting, Miriele.com has something for everyone.
+    </p>
+  </div>
+
+  <div class="section">
+    <h2>Join the Community</h2>
+    <p>Hop into the <a href="chatbox.html" style="color: #ffcc66;">Chat Box</a> and say hi, or unwind with one of our fun, free-to-play games. This is your space to relax and enjoy!</p>
+  </div>
 
   <footer>
-    © 2025 Miriele. All rights reserved.
-    <a onclick="openModal('termsModal')">Terms of Service</a> |
-    <a onclick="openModal('privacyModal')">Privacy Policy</a> |
-    <a onclick="openModal('accessModal')">Accessibility</a>
+    <div>© 2025 Miriele. All Rights Reserved.</div>
+    <a onclick="openModal('termsModal')">Terms</a> |
+    <a onclick="openModal('privacyModal')">Privacy</a>
   </footer>
 
-  <!-- Modals -->
-
-  <!-- Terms of Service Modal -->
+  <!-- Terms Modal -->
   <div id="termsModal" class="modal">
     <div class="modal-content">
       <span class="close" onclick="closeModal('termsModal')">&times;</span>
       <h2>Terms of Service</h2>
       <p>
-        By accessing and using Miriele.com, you agree to our terms and conditions. Use our content and services for lawful purposes only. Unauthorized use of the site’s content, including reproduction or redistribution, is prohibited without explicit permission. We reserve the right to modify or discontinue services without notice.
+        By accessing this website, you agree to use our content for personal, non-commercial use only. We reserve the right to restrict access to anyone who abuses the site, its features, or the community. Game content is provided by third-party providers and subject to their terms.
       </p>
     </div>
   </div>
 
-  <!-- Privacy Policy Modal -->
+  <!-- Privacy Modal -->
   <div id="privacyModal" class="modal">
     <div class="modal-content">
       <span class="close" onclick="closeModal('privacyModal')">&times;</span>
       <h2>Privacy Policy</h2>
       <p>
-        Miriele respects your privacy and does not collect personal data unless voluntarily provided for orders or inquiries. We use cookies to improve site functionality and user experience. Third-party services, such as payment processors and analytics providers, may collect data governed by their own policies.
-      </p>
-    </div>
-  </div>
-
-  <!-- Accessibility Modal -->
-  <div id="accessModal" class="modal">
-    <div class="modal-content">
-      <span class="close" onclick="closeModal('accessModal')">&times;</span>
-      <h2>Accessibility</h2>
-      <p>
-        We strive to make Miriele accessible to all users. If you encounter any difficulties accessing our content or have suggestions for improvement, please contact us. Some third-party embedded content may not fully comply with accessibility standards.
+        We respect your privacy. Miriele does not store personal information without your consent. Our embedded features, such as games and chat, may collect usage data through third-party providers. We advise reviewing their policies for more details. No tracking cookies are set by us.
       </p>
     </div>
   </div>
@@ -242,21 +183,18 @@
   <script>
     function openModal(id) {
       document.getElementById(id).style.display = 'block';
-      document.body.style.overflow = 'hidden'; // prevent background scroll
     }
     function closeModal(id) {
       document.getElementById(id).style.display = 'none';
-      document.body.style.overflow = 'auto';
     }
     window.onclick = function(event) {
-      const modals = document.querySelectorAll('.modal');
-      modals.forEach(modal => {
+      document.querySelectorAll('.modal').forEach(modal => {
         if (event.target === modal) {
-          modal.style.display = 'none';
-          document.body.style.overflow = 'auto';
+          modal.style.display = "none";
         }
       });
     }
   </script>
+
 </body>
 </html>
