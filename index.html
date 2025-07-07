@@ -2,17 +2,17 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Miriele - Home</title>
-  <meta name="description" content="Miriele – Explore our store, games, and community chat in a dark jungle setting.">
-  <meta name="keywords" content="Miriele, online store, chat, games, jungle, community">
-  <meta name="author" content="Miriele">
+  <meta name="description" content="Miriele – your destination for everyday essentials, games, and community chat in a dark jungle setting." />
+  <meta name="keywords" content="Miriele, online store, jungle theme, chat, games, community" />
+  <meta name="author" content="Miriele" />
   <style>
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      color: #e0e0e0;
-      background: url('https://live.staticflickr.com/65535/11783232853_265e2d1234_z.jpg') no-repeat center center fixed;
+      color: #eee;
+      background: url('https://www.wallpapergap.com/cdn/24/77/dark-green-jungle-wallpaper-3840x2160.jpg') no-repeat center center fixed;
       background-size: cover;
     }
     header {
@@ -23,6 +23,7 @@
     header h1 {
       margin: 0;
       font-size: 2.5rem;
+      color: #a7f432;
     }
     nav {
       display: flex;
@@ -101,6 +102,7 @@
       padding: 1.5rem;
       border-radius: 8px;
       max-width: 600px;
+      width: 90%;
       position: relative;
     }
     .modal-content button {
@@ -130,14 +132,14 @@
         <a href="titans.html">Titans Game</a>
       </div>
     </div>
-    <a class="btn" href="https://miriele.com" target="_blank">Shop</a>
+    <a class="btn" href="https://miriele.com" target="_blank" rel="noopener">Shop</a>
   </nav>
 
   <div class="content">
     <h2>Explore. Connect. Play.</h2>
     <p>
       Miriele is your digital hub for entertainment and discovery. Visit our 
-      <a href="https://miriele.com" target="_blank" style="color:#90ee90;">online store</a> for unique everyday products, 
+      <a href="https://miriele.com" target="_blank" style="color:#90ee90;">online store</a> for unique everyday products,
       or hang out in the chat box and play community games. Everything you love, all in one place.
     </p>
   </div>
@@ -169,8 +171,7 @@
     function openModal(id) { document.getElementById(id).style.display = 'flex'; }
     function closeModal(id) { document.getElementById(id).style.display = 'none'; }
     window.onclick = e => ['terms','privacy'].forEach(id => {
-      const m = document.getElementById(id);
-      if (e.target === m) closeModal(id);
+      if (e.target === document.getElementById(id)) closeModal(id);
     });
   </script>
 
