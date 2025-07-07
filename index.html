@@ -2,108 +2,137 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Miriele - Home</title>
-  <meta name="description" content="Miriele is your destination for games, community, and everyday essentials. Discover, play, and shop all in one place.">
-  <meta name="keywords" content="Miriele, games, chat, shopping, community, entertainment">
-  <meta name="author" content="Miriele">
-  <meta property="og:title" content="Miriele - Play, Chat, and Shop" />
-  <meta property="og:description" content="Explore fun games, connect with others in our chat, and shop everyday essentials." />
+  <meta name="description" content="Welcome to Miriele, your source for games, chat, and more. Explore fun and entertainment on our website." />
+  <meta name="keywords" content="games, chat, miriele, online games, social chat, fun, entertainment" />
+  <meta name="author" content="Miriele Team" />
+  <meta name="robots" content="index, follow" />
+  <meta property="og:title" content="Miriele - Home" />
+  <meta property="og:description" content="Explore games, chat, and entertainment at Miriele." />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://your-domain.com" />
-  <meta property="og:image" content="https://your-domain.com/og-image.jpg" />
-
+  <meta property="og:url" content="https://yourdomain.github.io" />
+  <meta property="og:image" content="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80" />
+  <link rel="canonical" href="https://yourdomain.github.io" />
   <style>
+    /* Jungle background and overlay */
     body {
-      font-family: Arial, sans-serif;
+      background-image: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1920&q=80');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      color: #e0f2f1;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       margin: 0;
       padding: 0;
-      background: linear-gradient(to bottom right, #1e3c72, #2a5298);
-      color: white;
-      text-align: center;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
-
+    .overlay {
+      background-color: rgba(0, 51, 0, 0.55);
+      flex: 1;
+      padding: 20px 40px;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
     header {
-      padding: 1.5rem;
-      background-color: rgba(0, 0, 0, 0.6);
-      font-size: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
     }
-
+    header h1 {
+      margin: 0;
+      font-weight: 700;
+      letter-spacing: 2px;
+      font-size: 2.2rem;
+      color: #c1e1c1;
+    }
     nav {
-      margin: 1.5rem 0;
+      display: flex;
+      gap: 15px;
     }
-
-    .btn {
-      display: inline-block;
-      margin: 0.5rem;
-      padding: 10px 20px;
-      background-color: #4CAF50;
-      color: white;
+    nav a, nav button {
+      color: #c1e1c1;
+      background: transparent;
       border: none;
-      border-radius: 6px;
-      text-decoration: none;
       font-size: 1rem;
-      transition: background-color 0.3s;
+      cursor: pointer;
+      text-decoration: none;
+      padding: 8px 14px;
+      border-radius: 6px;
+      transition: background-color 0.3s ease;
+      font-weight: 600;
     }
-
-    .btn:hover {
-      background-color: #45a049;
+    nav a:hover, nav button:hover {
+      background-color: rgba(193, 225, 193, 0.4);
+      color: #f0fff0;
     }
-
+    /* Dropdown styles */
     .dropdown {
       position: relative;
       display: inline-block;
     }
-
     .dropdown-content {
       display: none;
       position: absolute;
-      background-color: #333;
-      min-width: 160px;
-      z-index: 1;
+      background-color: rgba(0, 51, 0, 0.9);
+      min-width: 140px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.4);
+      z-index: 10;
       border-radius: 6px;
     }
-
     .dropdown-content a {
-      color: white;
-      padding: 12px 16px;
+      color: #c1e1c1;
+      padding: 10px 14px;
       text-decoration: none;
       display: block;
-      text-align: left;
+      font-weight: 500;
     }
-
     .dropdown-content a:hover {
-      background-color: #575757;
+      background-color: rgba(193, 225, 193, 0.4);
+      color: #f0fff0;
     }
-
     .dropdown:hover .dropdown-content {
       display: block;
     }
-
+    main {
+      flex: 1;
+      font-size: 1.15rem;
+      line-height: 1.6;
+      max-width: 900px;
+      margin: 0 auto 40px auto;
+      color: #d0e8d0;
+      text-shadow: 0 0 5px #003300;
+    }
     footer {
-      background-color: rgba(0, 0, 0, 0.6);
-      padding: 2rem 1rem;
-      margin-top: 4rem;
+      text-align: center;
+      padding: 20px 10px;
+      background-color: rgba(0, 51, 0, 0.7);
+      color: #a7c7a7;
       font-size: 0.9rem;
-      color: #ddd;
+      user-select: none;
+      position: relative;
+      z-index: 5;
     }
-
     footer a {
-      color: #7dd3fc;
+      color: #8fbc8f;
       margin: 0 8px;
-      text-decoration: none;
       cursor: pointer;
+      text-decoration: none;
+      font-weight: 600;
     }
-
     footer a:hover {
       text-decoration: underline;
+      color: #d0f0c0;
     }
-
     /* Modal Styles */
     .modal {
       display: none;
       position: fixed;
-      z-index: 10;
+      z-index: 20;
       left: 0;
       top: 0;
       width: 100%;
@@ -111,103 +140,116 @@
       overflow: auto;
       background-color: rgba(0,0,0,0.7);
     }
-
     .modal-content {
-      background-color: #fff;
-      color: #000;
+      background-color: #143214;
       margin: 10% auto;
-      padding: 20px;
-      border-radius: 8px;
+      padding: 25px;
+      border-radius: 12px;
       width: 90%;
       max-width: 600px;
-      text-align: left;
-      position: relative;
+      color: #c1e1c1;
+      box-shadow: 0 0 15px #2e8b57;
+      font-size: 1rem;
+      line-height: 1.4;
     }
-
     .close {
-      position: absolute;
-      top: 10px;
-      right: 16px;
-      font-size: 24px;
-      font-weight: bold;
-      color: #333;
+      float: right;
+      font-size: 26px;
+      font-weight: 700;
+      color: #a7c7a7;
       cursor: pointer;
+      transition: color 0.3s ease;
     }
-
     .close:hover {
-      color: red;
+      color: #d0f0c0;
     }
   </style>
 </head>
 <body>
+  <div class="overlay">
+    <header>
+      <h1>Miriele</h1>
+      <nav>
+        <a href="index.html">Home</a>
+        <div class="dropdown">
+          <button aria-haspopup="true" aria-expanded="false">Games ▼</button>
+          <div class="dropdown-content" role="menu" aria-label="Games submenu">
+            <a href="game.html">Featured Game</a>
+            <a href="titans.html">Titans Game</a>
+          </div>
+        </div>
+        <a href="chatbox.html">Chat Box</a>
+        <a href="https://miriele.com" target="_blank" rel="noopener noreferrer">Shop</a>
+      </nav>
+    </header>
 
-  <header>
-    Welcome to Miriele!
-  </header>
+    <main>
+      <h2>Welcome to Miriele!</h2>
+      <p>Discover fun games, chat with others, and explore our online shop. Dive into entertainment with Miriele today.</p>
+    </main>
 
-  <nav>
-    <a class="btn" href="index.html">Home</a>
-    <a class="btn" href="chatbox.html">Chat Box</a>
-    <div class="dropdown">
-      <a class="btn" href="#">Games</a>
-      <div class="dropdown-content">
-        <a href="game.html">Word Game</a>
-        <a href="titans.html">Titans Game</a>
-      </div>
-    </div>
-    <a class="btn" href="https://miriele.com" target="_blank">Shop</a>
-  </nav>
-
-  <main>
-    <h2>Explore. Play. Connect.</h2>
-    <p>Discover exciting games, chat with others, and browse our online store — all in one place.</p>
-  </main>
-
-  <footer>
-    <p>&copy; <span id="year"></span> Miriele. All Rights Reserved.</p>
-    <p>
-      <a onclick="openModal('termsModal')">Terms of Service</a> |
-      <a onclick="openModal('privacyModal')">Privacy Policy</a>
-    </p>
-  </footer>
+    <footer>
+      © 2025 Miriele. All rights reserved.
+      <a onclick="openModal('termsModal')" role="button" tabindex="0">Terms of Service</a> |
+      <a onclick="openModal('privacyModal')" role="button" tabindex="0">Privacy Policy</a> |
+      <a onclick="openModal('accessModal')" role="button" tabindex="0">Accessibility</a>
+    </footer>
+  </div>
 
   <!-- Terms Modal -->
-  <div id="termsModal" class="modal">
+  <div id="termsModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="termsTitle" tabindex="-1">
     <div class="modal-content">
-      <span class="close" onclick="closeModal('termsModal')">&times;</span>
-      <h2>Terms of Service</h2>
-      <p>By using this website, you agree to use its features for personal and non-commercial purposes only. You may not modify, reproduce, or redistribute any content without permission.</p>
-      <p>We reserve the right to update or discontinue services without prior notice. Continued use of the site after changes implies acceptance of the new terms.</p>
+      <span class="close" onclick="closeModal('termsModal')" role="button" tabindex="0" aria-label="Close Terms">&times;</span>
+      <h2 id="termsTitle">Terms of Service</h2>
+      <p>By using Miriele, you agree to use our website for personal entertainment purposes only. Redistribution or modification of our content without permission is prohibited. We reserve the right to modify services and content at any time.</p>
     </div>
   </div>
 
   <!-- Privacy Modal -->
-  <div id="privacyModal" class="modal">
+  <div id="privacyModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="privacyTitle" tabindex="-1">
     <div class="modal-content">
-      <span class="close" onclick="closeModal('privacyModal')">&times;</span>
-      <h2>Privacy Policy</h2>
-      <p>We value your privacy. This site does not collect personal information. Any data collected through third-party services (such as embedded games or chat platforms) is subject to their privacy policies.</p>
-      <p>By using our site, you understand that external content may utilize cookies or analytics tools outside of our control.</p>
+      <span class="close" onclick="closeModal('privacyModal')" role="button" tabindex="0" aria-label="Close Privacy">&times;</span>
+      <h2 id="privacyTitle">Privacy Policy</h2>
+      <p>Miriele does not collect personal data directly. Any data shared is governed by third-party providers' policies, such as embedded games or external services. We recommend reviewing their privacy policies for more information.</p>
+    </div>
+  </div>
+
+  <!-- Accessibility Modal -->
+  <div id="accessModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="accessTitle" tabindex="-1">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal('accessModal')" role="button" tabindex="0" aria-label="Close Accessibility">&times;</span>
+      <h2 id="accessTitle">Accessibility</h2>
+      <p>We strive to make Miriele accessible to all users. If you encounter any difficulties or need assistance navigating the site, please contact us. Some third-party content may not meet all accessibility standards.</p>
     </div>
   </div>
 
   <script>
-    document.getElementById("year").textContent = new Date().getFullYear();
-
     function openModal(id) {
-      document.getElementById(id).style.display = "block";
+      const modal = document.getElementById(id);
+      modal.style.display = 'block';
+      modal.focus();
     }
-
     function closeModal(id) {
-      document.getElementById(id).style.display = "none";
+      const modal = document.getElementById(id);
+      modal.style.display = 'none';
     }
-
     window.onclick = function(event) {
-      if (event.target.classList.contains('modal')) {
-        closeModal(event.target.id);
-      }
-    };
+      const modals = document.querySelectorAll('.modal');
+      modals.forEach(modal => {
+        if (event.target === modal) {
+          modal.style.display = 'none';
+        }
+      });
+    }
+    // Keyboard accessibility for modal close buttons
+    document.querySelectorAll('.close').forEach(btn => {
+      btn.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          btn.click();
+        }
+      });
+    });
   </script>
-
 </body>
 </html>
