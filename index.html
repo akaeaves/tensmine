@@ -2,111 +2,109 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Miriele - Home</title>
-  <meta name="description" content="Explore Miriele.com for everyday essentials, entertainment, and social features including chat and games – all in one place.">
-  <meta name="keywords" content="Miriele, online store, free games, chatbox, social, essentials, jungle theme, community">
-  <meta name="author" content="Miriele Team">
-  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <meta name="description" content="Shop premium everyday essentials, explore exciting games, and join the community chat at Miriele.com. Fast shipping and friendly service." />
+  <meta name="keywords" content="Miriele, online store, essential products, games, chat, free games, shop everyday products, Miriele.com" />
+  <meta name="author" content="Miriele" />
   <style>
-    /* Dark jungle theme background */
     body {
-      margin: 0;
-      display: flex;
-      flex-direction: column;
       font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
       color: #f0f0f0;
-      background: url('https://images.unsplash.com/photo-1605460375648-278bcbd579a6?auto=format&fit=crop&w=1950&q=80') no-repeat center center fixed;
+      background: url('https://images.wallpapergap.com/dark-jungle-wallpaper.jpg') no-repeat center center fixed;
       background-size: cover;
     }
-    header, nav, .section, footer {
-      background: rgba(0, 0, 0, 0.7);
-      margin: 1rem;
-      border-radius: 8px;
-    }
     header {
-      padding: 1.5rem;
+      background-color: rgba(0, 123, 255, 0.85);
+      color: white;
+      padding: 1rem;
       text-align: center;
-    }
-    header h1 {
-      margin: 0;
-      font-size: 2.5rem;
-      color: #a7f432;
     }
     nav {
-      display: flex;
-      justify-content: center;
-      padding: 1rem;
+      background-color: rgba(0, 0, 0, 0.7);
+      padding: 10px;
+      text-align: center;
     }
-    nav a, .dropdown-btn {
-      color: #a7f432;
-      margin: 0 1rem;
+    nav .btn {
+      display: inline-block;
+      background-color: #007BFF;
+      color: white;
+      padding: 10px 18px;
+      margin: 5px;
+      border-radius: 6px;
       text-decoration: none;
-      font-weight: bold;
-      cursor: pointer;
-      position: relative;
+      transition: background-color 0.3s ease;
+    }
+    nav .btn:hover {
+      background-color: #0056b3;
     }
     .dropdown {
+      display: inline-block;
       position: relative;
     }
-    .dropdown-menu {
+    .dropdown-content {
       display: none;
       position: absolute;
-      top: 2rem;
-      left: 0;
-      background: rgba(0,0,0,0.9);
-      border-radius: 6px;
-      text-align: left;
+      background-color: #333;
+      min-width: 160px;
+      z-index: 1;
     }
-    .dropdown-menu a {
-      display: block;
+    .dropdown-content a {
+      color: white;
       padding: 10px;
-      color: #a7f432;
+      display: block;
       text-decoration: none;
     }
-    .dropdown-menu a:hover {
-      background: #444;
-    }
-    .dropdown:hover .dropdown-menu {
+    .dropdown:hover .dropdown-content {
       display: block;
     }
-    .section {
-      max-width: 900px;
-      margin: 2rem auto;
+    main {
       padding: 2rem;
+      max-width: 800px;
+      margin: auto;
+      background-color: rgba(0, 0, 0, 0.6);
+      border-radius: 10px;
     }
     footer {
+      background-color: rgba(0, 0, 0, 0.8);
+      color: white;
       text-align: center;
-      padding: 1rem;
+      padding: 2rem 1rem;
       font-size: 0.9rem;
     }
     footer a {
-      color: #66ccff;
-      text-decoration: none;
-      margin: 0 0.5rem;
+      color: #FFD700;
+      margin: 0 10px;
       cursor: pointer;
+      text-decoration: underline;
     }
     .modal {
       display: none;
       position: fixed;
-      top:0; left:0;
-      width:100%; height:100%;
-      background: rgba(0,0,0,0.8);
-      align-items: center;
-      justify-content: center;
+      z-index: 10;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.6);
     }
     .modal-content {
-      background: #fff;
-      padding: 2rem;
+      background-color: #fff;
+      color: #000;
+      margin: 10% auto;
+      padding: 20px;
       border-radius: 8px;
+      width: 90%;
       max-width: 600px;
-      color: #222;
-      position: relative;
     }
     .close {
-      position: absolute;
-      top: 10px; right: 10px;
-      font-size: 1.2rem;
+      float: right;
+      font-size: 24px;
+      font-weight: bold;
+      color: #333;
       cursor: pointer;
     }
   </style>
@@ -115,66 +113,65 @@
 
   <header>
     <h1>Welcome to Miriele</h1>
-    <p>Your gateway to shopping, games, and chatting in a deep jungle vibe.</p>
   </header>
 
   <nav>
-    <a href="index.html">Home</a>
+    <a class="btn" href="index.html">Home</a>
+    <a class="btn" href="chatbox.html">Chat Box</a>
     <div class="dropdown">
-      <span class="dropdown-btn">Games ▼</span>
-      <div class="dropdown-menu">
-        <a href="game.html">Featured Game</a>
+      <a class="btn">Games ▼</a>
+      <div class="dropdown-content">
+        <a href="game.html">Words Game</a>
         <a href="titans.html">Titans</a>
       </div>
     </div>
-    <a href="chatbox.html">Chat Box</a>
-    <a href="https://miriele.com" target="_blank" rel="noopener noreferrer">Store</a>
+    <a class="btn" href="https://miriele.com" target="_blank">Shop</a>
   </nav>
 
-  <div class="section">
-    <h2>Explore Miriele.com</h2>
-    <p>
-      At <a href="https://miriele.com" style="color: #99ff99;">Miriele.com</a>, find a curated collection of everyday essentials — from home goods and wellness products to unique gifts. Plus, enjoy community features like browser games and a live chat room. Shop, play, and connect — all in one place.
-    </p>
-  </div>
-
-  <div class="section">
-    <h2>Join the Community</h2>
-    <p>Hop into the <a href="chatbox.html" style="color: #ffcc66;">Chat Box</a>, dive into one of our free-to-play games, and connect with fellow visitors in the jungle-themed Miriele experience.</p>
-  </div>
+  <main>
+    <h2>Discover the Best of Miriele</h2>
+    <p>Explore a jungle of delights with Miriele.com – your destination for premium everyday essentials. From home goods to lifestyle products, we offer quality selections that blend style, function, and affordability. Our intuitive shopping experience, fast shipping, and passionate support ensure satisfaction from click to doorstep. Whether you're browsing or buying, Miriele.com makes daily life more delightful.</p>
+  </main>
 
   <footer>
-    <div>© 2025 Miriele. All Rights Reserved.</div>
-    <a onclick="openModal('termsModal')">Terms</a> |
-    <a onclick="openModal('privacyModal')">Privacy</a>
+    <p>&copy; 2025 Miriele. All Rights Reserved.</p>
+    <a onclick="openModal('termsModal')">Terms of Service</a> |
+    <a onclick="openModal('privacyModal')">Privacy Policy</a>
   </footer>
 
   <!-- Terms Modal -->
-  <div id="termsModal" class="modal" onclick="closeModal('termsModal')">
-    <div class="modal-content" onclick="event.stopPropagation()">
+  <div id="termsModal" class="modal">
+    <div class="modal-content">
       <span class="close" onclick="closeModal('termsModal')">&times;</span>
       <h2>Terms of Service</h2>
-      <p>By accessing this website, you agree to use our content for personal, non-commercial purposes only. Misuse of the site or abuse of community features may result in banned access. Game content is provided by third-party providers and governed by their own terms.</p>
+      <p>By using Miriele.com, you agree to abide by our policies. Products are for personal use only. Unauthorized resale or distribution is prohibited. We reserve the right to modify offerings and pricing at any time.</p>
     </div>
   </div>
 
   <!-- Privacy Modal -->
-  <div id="privacyModal" class="modal" onclick="closeModal('privacyModal')">
-    <div class="modal-content" onclick="event.stopPropagation()">
+  <div id="privacyModal" class="modal">
+    <div class="modal-content">
       <span class="close" onclick="closeModal('privacyModal')">&times;</span>
       <h2>Privacy Policy</h2>
-      <p>We respect your privacy. Miriele does not collect personal data without your consent. Embedded content, such as games and chat, may use cookies or collect data governed by their own policies.</p>
+      <p>Miriele.com values your privacy. We do not sell or share your personal data. Information is used solely to improve your experience and fulfill orders. Third-party services may use cookies or analytics tools per their policies.</p>
     </div>
   </div>
 
   <script>
     function openModal(id) {
-      document.getElementById(id).style.display = 'flex';
+      document.getElementById(id).style.display = 'block';
     }
     function closeModal(id) {
       document.getElementById(id).style.display = 'none';
     }
+    window.onclick = function(event) {
+      const modals = document.querySelectorAll('.modal');
+      modals.forEach(modal => {
+        if (event.target === modal) {
+          modal.style.display = "none";
+        }
+      });
+    }
   </script>
-
 </body>
 </html>
