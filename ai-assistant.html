@@ -1,27 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>AI Assistant Embed</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AI Assistant</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       background-color: #f4f4f4;
       padding: 40px;
       text-align: center;
+      margin: 0;
     }
 
-    h1 {
-      color: #333;
+    .home-button {
+      padding: 10px;
+      background-color: #007BFF;
+      margin-bottom: 20px;
+      border-radius: 6px;
+      display: inline-block;
+    }
+
+    .home-button a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 18px;
+      padding: 8px 16px;
+      display: inline-block;
+    }
+
+    .home-button a:hover {
+      background-color: #0056b3;
+      border-radius: 6px;
     }
 
     .iframe-container {
-      margin: 20px auto;
+      margin: 0 auto;
       width: 900px;
       height: 600px;
       box-shadow: 0 0 10px rgba(0,0,0,0.2);
       border-radius: 8px;
       overflow: hidden;
+      background-color: white;
     }
 
     iframe {
@@ -29,12 +50,24 @@
       height: 100%;
       border: none;
     }
+
+    @media (max-width: 950px) {
+      .iframe-container {
+        width: 90%;
+        height: 60vh;
+      }
+    }
   </style>
 </head>
 <body>
-  <h1>AI Assistant</h1>
+
+  <div class="home-button">
+    <a href="index.html">← Home</a>
+  </div>
+
   <div class="iframe-container">
     <iframe src="https://teachai-xfo1.onrender.com/" title="AI Assistant Web App"></iframe>
   </div>
+
 </body>
 </html>
