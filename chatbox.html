@@ -2,83 +2,67 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Miriele Chat Box</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chat Box - Miriele</title>
   <style>
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background-color: #111827;
-      color: #fff;
+      background-image: url('https://www.wallpapergap.com/cdn/24/77/dark-green-jungle-wallpaper-3840x2160.jpg');
+      background-size: cover;
+      background-position: center;
+      color: white;
     }
-
     header {
-      background-color: #1f2937;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 1rem;
+      text-align: center;
+    }
+    .btn {
+      margin: 10px;
       padding: 10px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    header h1 {
-      margin: 0;
-      font-size: 1.5rem;
-      color: #99CC33;
-    }
-
-    .nav-button {
-      background-color: #99CC33;
-      color: #000;
-      padding: 8px 16px;
+      background: #28a745;
+      color: white;
       border: none;
       border-radius: 5px;
-      font-weight: bold;
-      cursor: pointer;
       text-decoration: none;
+      font-size: 1rem;
     }
-
     .chat-container {
       display: flex;
       justify-content: center;
       padding: 20px;
     }
-
-    #chat-script {
-      border: none;
+    .ads {
+      width: 120px;
+      background-color: rgba(0,0,0,0.6);
+      margin: 0 10px;
+    }
+    footer {
+      text-align: center;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 1rem;
+      color: #ccc;
+      font-size: 0.9rem;
     }
   </style>
 </head>
 <body>
   <header>
-    <h1>Miriele Chat</h1>
-    <a href="index.html" class="nav-button">Home</a>
+    <h1>Welcome to the Chat Box</h1>
+    <a href="index.html" class="btn">Home</a>
   </header>
 
   <div class="chat-container">
-    <script id="cid0020000412837999596"
-            data-cfasync="false"
-            async
-            src="//st.chatango.com/js/gz/emb.js"
-            style="width: 800px;height: 560px;">
-      {
-        "handle": "mirielechat",
-        "arch": "js",
-        "styles": {
-          "a": "99CC33",
-          "b": 100,
-          "c": "000000",
-          "d": "000000",
-          "k": "99CC33",
-          "l": "99CC33",
-          "m": "99CC33",
-          "p": 10,
-          "q": "99CC33",
-          "r": 100,
-          "cnrs": "0.35",
-          "fwtickm": 1
-        }
-      }
+    <div class="ads"><!-- Left Skyscraper Banner --></div>
+
+    <script id="cid0020000412837999596" data-cfasync="false" async src="//st.chatango.com/js/gz/emb.js" style="width: 800px;height: 560px;">
+      {"handle":"mirielechat","arch":"js","styles":{"a":"99CC33","b":100,"c":"000000","d":"000000","k":"99CC33","l":"99CC33","m":"99CC33","p":"10","q":"99CC33","r":100,"cnrs":"0.35","fwtickm":1}}
     </script>
+
+    <div class="ads"><!-- Right Skyscraper Banner --></div>
   </div>
+
+  <footer>© 2025 Miriele. All Rights Reserved.</footer>
 </body>
 </html>
