@@ -2,80 +2,75 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Titans - Miriele</title>
   <style>
     body {
       margin: 0;
+      padding: 0;
       height: 100vh;
       background: url('https://www.wallpapergap.com/cdn/24/77/dark-green-jungle-wallpaper-3840x2160.jpg') no-repeat center center fixed;
       background-size: cover;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      color: white;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 20px;
-      box-sizing: border-box;
+      color: white;
+      text-align: center;
     }
-    .btn-home-top {
+
+    .home-btn {
       position: absolute;
       top: 20px;
       left: 20px;
-      background-color: rgba(0,0,0,0.5);
+      background-color: rgba(0, 123, 255, 0.9);
       color: white;
-      padding: 10px 18px;
+      padding: 10px 16px;
       text-decoration: none;
       border-radius: 8px;
-      font-weight: 600;
+      font-weight: bold;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
       transition: background-color 0.3s ease;
-      user-select: none;
     }
-    .btn-home-top:hover, .btn-home-top:focus {
-      background-color: rgba(0,0,0,0.8);
-      outline: none;
+
+    .home-btn:hover {
+      background-color: rgba(0, 86, 179, 0.9);
     }
-    .btn-play {
-      background: linear-gradient(135deg, #007BFF 0%, #0056b3 100%);
+
+    .play-btn {
+      background: linear-gradient(to right, #007BFF, #0056b3);
       color: white;
+      padding: 18px 40px;
+      font-size: 1.5rem;
+      font-weight: bold;
       border: none;
-      padding: 22px 48px;
-      font-size: 1.8rem;
-      font-weight: 700;
-      border-radius: 12px;
+      border-radius: 10px;
       cursor: pointer;
       box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
-      transition: background 0.3s ease, transform 0.2s ease;
       text-decoration: none;
-      user-select: none;
-      margin-bottom: 12px;
-      display: inline-block;
+      transition: transform 0.2s ease;
     }
-    .btn-play:hover, .btn-play:focus {
-      background: linear-gradient(135deg, #0056b3 0%, #007BFF 100%);
+
+    .play-btn:hover {
       transform: scale(1.05);
-      outline: none;
     }
+
     .note {
+      margin-top: 15px;
       font-size: 1rem;
-      opacity: 0.8;
-      user-select: none;
-      text-align: center;
-      max-width: 300px;
+      color: #ddd;
     }
   </style>
 </head>
 <body>
 
-  <a href="index.html" class="btn-home-top" aria-label="Go to Home Page">Home</a>
+  <!-- Home Button -->
+  <a class="home-btn" href="index.html">Home</a>
 
-  <main style="text-align: center; margin-top: 80px;">
-    <a href="https://www.titansoftime.com/" class="btn-play" target="_blank" rel="noopener noreferrer">
-      Play Titans
-    </a>
-    <div class="note">This will open in a new browser tab.</div>
-  </main>
+  <!-- Main Content -->
+  <a class="play-btn" href="https://www.titansoftime.com/" target="_blank" rel="noopener noreferrer">Play Titans</a>
+  <p class="note">This will open in a new browser tab.</p>
 
 </body>
 </html>
