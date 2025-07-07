@@ -3,19 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <meta name="description" content="Miriele - Explore our shop and entertainment, from chat to games and more.">
-  <meta name="keywords" content="Miriele, online store, chat, games, jungle, social, community">
-  <meta name="author" content="Miriele">
   <title>Miriele - Home</title>
+  <meta name="description" content="Miriele – Explore our store, games, and community chat in a dark jungle setting.">
+  <meta name="keywords" content="Miriele, online store, chat, games, jungle, community">
+  <meta name="author" content="Miriele">
   <style>
     body {
       margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      color: white;
-      background-image: url('https://images.unsplash.com/photo-1604357209793-cd9a2b1238e4?auto=format&fit=crop&w=1950&q=80');
+      font-family: Arial, sans-serif;
+      color: #e0e0e0;
+      background: url('https://live.staticflickr.com/65535/11783232853_265e2d1234_z.jpg') no-repeat center center fixed;
       background-size: cover;
-      background-position: center;
-      background-attachment: fixed;
     }
     header {
       background: rgba(0, 0, 0, 0.7);
@@ -45,32 +43,27 @@
     .btn:hover {
       background-color: #218838;
     }
-
     .dropdown {
       position: relative;
       display: inline-block;
     }
-
     .dropdown-content {
       display: none;
       position: absolute;
       background-color: #222;
       min-width: 160px;
-      z-index: 1;
       border-radius: 4px;
+      z-index: 1;
     }
-
     .dropdown-content a {
       color: white;
       padding: 10px 14px;
       text-decoration: none;
       display: block;
     }
-
     .dropdown:hover .dropdown-content {
       display: block;
     }
-
     .content {
       text-align: center;
       padding: 2rem;
@@ -78,7 +71,6 @@
       margin: 2rem;
       border-radius: 10px;
     }
-
     footer {
       text-align: center;
       background-color: rgba(0, 0, 0, 0.8);
@@ -86,15 +78,39 @@
       padding: 1rem;
       font-size: 0.9rem;
     }
-
     footer a {
       color: #a2d2ff;
       text-decoration: none;
       margin: 0 8px;
     }
-
     footer a:hover {
       text-decoration: underline;
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      top:0; left:0;
+      width:100%; height:100%;
+      background: rgba(0,0,0,0.8);
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-content {
+      background: #fff;
+      color: #222;
+      padding: 1.5rem;
+      border-radius: 8px;
+      max-width: 600px;
+      position: relative;
+    }
+    .modal-content button {
+      margin-top: 1rem;
+      padding: 0.5rem 1rem;
+      background: #28a745;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
     }
   </style>
 </head>
@@ -105,10 +121,10 @@
   </header>
 
   <nav>
-    <a class="btn" href="/">Home</a>
+    <a class="btn" href="index.html">Home</a>
     <a class="btn" href="chatbox.html">Chat Box</a>
     <div class="dropdown">
-      <a class="btn" href="#">Games</a>
+      <a class="btn" href="#">Games ▼</a>
       <div class="dropdown-content">
         <a href="game.html">Word Game</a>
         <a href="titans.html">Titans Game</a>
@@ -119,7 +135,11 @@
 
   <div class="content">
     <h2>Explore. Connect. Play.</h2>
-    <p>Miriele is your digital hub for entertainment and discovery. Visit our <a href="https://miriele.com" target="_blank" style="color:#90ee90;">online store</a> for unique everyday products, or hang out in the chat box and play community games. Everything you love, all in one place.</p>
+    <p>
+      Miriele is your digital hub for entertainment and discovery. Visit our 
+      <a href="https://miriele.com" target="_blank" style="color:#90ee90;">online store</a> for unique everyday products, 
+      or hang out in the chat box and play community games. Everything you love, all in one place.
+    </p>
   </div>
 
   <footer>
@@ -129,35 +149,29 @@
   </footer>
 
   <!-- Modals -->
-  <div id="terms" class="modal" style="display:none;">
-    <div style="background:white; color:black; padding:1rem; max-width:600px; margin:5% auto; border-radius:8px;">
+  <div id="terms" class="modal">
+    <div class="modal-content">
       <h2>Terms of Service</h2>
-      <p>By using Miriele, you agree to use the site responsibly and refrain from abusive behavior in our community areas. Games and third-party content are subject to their respective licenses and terms.</p>
+      <p>By using Miriele, you agree to use the site responsibly. Abuse of community features may result in restricted access. Third-party content is subject to its own license.</p>
       <button onclick="closeModal('terms')">Close</button>
     </div>
   </div>
 
-  <div id="privacy" class="modal" style="display:none;">
-    <div style="background:white; color:black; padding:1rem; max-width:600px; margin:5% auto; border-radius:8px;">
+  <div id="privacy" class="modal">
+    <div class="modal-content">
       <h2>Privacy Policy</h2>
-      <p>Miriele does not collect personal data. Anonymous data may be gathered through chat or games for analytics purposes. Purchases made through our store are handled securely by trusted partners.</p>
+      <p>Miriele does not collect personal data. Game and chat usage data may be collected anonymously for analytics. Store purchases are handled securely via trusted providers.</p>
       <button onclick="closeModal('privacy')">Close</button>
     </div>
   </div>
 
   <script>
-    function openModal(id) {
-      document.getElementById(id).style.display = 'block';
-    }
-    function closeModal(id) {
-      document.getElementById(id).style.display = 'none';
-    }
-    window.onclick = function(event) {
-      ['terms', 'privacy'].forEach(id => {
-        const modal = document.getElementById(id);
-        if (event.target === modal) modal.style.display = "none";
-      });
-    };
+    function openModal(id) { document.getElementById(id).style.display = 'flex'; }
+    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+    window.onclick = e => ['terms','privacy'].forEach(id => {
+      const m = document.getElementById(id);
+      if (e.target === m) closeModal(id);
+    });
   </script>
 
 </body>
