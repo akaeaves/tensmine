@@ -18,13 +18,14 @@
       background-color: #4f46e5;
       color: white;
       padding: 1rem;
+      position: relative;
     }
 
     nav {
       margin-top: 10px;
     }
 
-    .nav-button {
+    .nav-button, .dropdown-button {
       display: inline-block;
       background-color: #6366f1;
       color: white;
@@ -34,10 +35,44 @@
       text-decoration: none;
       border-radius: 6px;
       transition: background-color 0.3s ease;
+      cursor: pointer;
     }
 
-    .nav-button:hover {
+    .nav-button:hover, .dropdown-button:hover {
       background-color: #4338ca;
+    }
+
+    /* Dropdown Styles */
+    .dropdown {
+      display: inline-block;
+      position: relative;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #6366f1;
+      min-width: 160px;
+      z-index: 1;
+      border-radius: 6px;
+      overflow: hidden;
+      top: 50px;
+      left: 0;
+    }
+
+    .dropdown-content a {
+      display: block;
+      color: white;
+      padding: 10px;
+      text-decoration: none;
+    }
+
+    .dropdown-content a:hover {
+      background-color: #4338ca;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
     }
 
     main {
@@ -70,7 +105,14 @@
     <nav>
       <a href="index.html" class="nav-button">Home</a>
       <a href="chatbox.html" class="nav-button">Chat Box</a>
-      <a href="game.html" class="nav-button">Games</a>
+
+      <div class="dropdown">
+        <span class="dropdown-button">Games ▾</span>
+        <div class="dropdown-content">
+          <a href="game.html">Words Game</a>
+          <a href="titans.html">Titans Game</a>
+        </div>
+      </div>
     </nav>
   </header>
 
