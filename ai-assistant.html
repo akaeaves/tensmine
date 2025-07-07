@@ -9,19 +9,22 @@
       margin: 0;
       font-family: Arial, sans-serif;
       background:
-        linear-gradient(rgba(255,255,255,0.8), rgba(255,255,255,0.8)),
-        url('beach-bg.jpg') no-repeat center center fixed;
+        linear-gradient(rgba(255,255,255,0.85), rgba(255,255,255,0.85)),
+        url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80')
+        no-repeat center center fixed;
       background-size: cover;
       color: black;
       text-align: center;
       padding: 40px 20px;
     }
+
     .home-button {
       background-color: rgba(0, 123, 255, 0.85);
       margin-bottom: 30px;
       display: inline-block;
       border-radius: 6px;
     }
+
     .home-button a {
       color: white;
       text-decoration: none;
@@ -30,24 +33,29 @@
       padding: 10px 20px;
       display: inline-block;
     }
+
     .home-button a:hover {
       background-color: rgba(0, 86, 179, 0.95);
       border-radius: 6px;
     }
+
     .iframe-container {
       margin: 0 auto;
       width: 900px;
       height: 600px;
-      background-color: rgba(255, 255, 255, 0.9);
       border-radius: 12px;
       overflow: hidden;
       box-shadow: 0 0 15px rgba(0,0,0,0.5);
+      background-color: transparent;
     }
+
     iframe {
       width: 100%;
       height: 100%;
       border: none;
+      background: transparent;
     }
+
     @media (max-width: 950px) {
       .iframe-container {
         width: 100%;
@@ -63,7 +71,11 @@
   </div>
 
   <div class="iframe-container">
-    <iframe src="https://teachai-xfo1.onrender.com/" title="AI Assistant Web App"></iframe>
+    <iframe
+      src="https://teachai-xfo1.onrender.com/"
+      title="AI Assistant Web App"
+      allowtransparency="true"
+      style="background: transparent;"></iframe>
   </div>
 
 </body>
