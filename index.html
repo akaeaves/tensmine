@@ -2,151 +2,77 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Miriele's Space - Fantasy & Fun Games</title>
-  <meta name="description" content="Explore Miriele's Space, your gateway to immersive fantasy games and exciting adventures. Play, discover, and join our growing community!" />
-  <meta name="keywords" content="Fantasy games, MMORPG, Miriele's Space, online games, adventure, play games" />
-  <meta name="author" content="Miriele" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Miriele</title>
   <style>
     body {
       margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: 'Segoe UI', sans-serif;
       background: #0f172a;
-      color: #e0e7ff;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
+      color: white;
     }
     header {
       background-color: #1e293b;
-      padding: 15px 30px;
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+      align-items: center;
+      padding: 15px 30px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
     }
-    header h1 {
-      margin: 0;
-      font-size: 1.8rem;
-      color: #6366f1;
-    }
-    nav ul {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      gap: 20px;
-    }
-    nav ul li {
-      position: relative;
-    }
-    nav a {
-      color: #cbd5e1;
+    .nav-buttons a {
+      margin-left: 15px;
       text-decoration: none;
-      font-weight: 600;
-      padding: 8px 12px;
-      transition: background-color 0.3s ease, color 0.3s ease;
-      border-radius: 4px;
-      display: block;
-    }
-    nav a:hover, nav a:focus {
-      background-color: #6366f1;
+      padding: 10px 16px;
+      background-color: #3b82f6;
       color: white;
-      outline: none;
+      border-radius: 6px;
+      transition: background 0.3s;
     }
-    /* Dropdown menu */
-    nav ul li ul {
-      display: none;
-      position: absolute;
-      background: #1e293b;
-      top: 36px;
-      left: 0;
-      border-radius: 5px;
-      min-width: 180px;
-      box-shadow: 0 3px 6px rgba(0,0,0,0.4);
-      z-index: 100;
-    }
-    nav ul li:hover > ul {
-      display: block;
-    }
-    nav ul li ul li a {
-      padding: 10px 15px;
-      font-weight: 500;
+    .nav-buttons a:hover {
+      background-color: #2563eb;
     }
     main {
-      flex-grow: 1;
-      padding: 40px 30px;
-      max-width: 900px;
-      margin: 0 auto;
       text-align: center;
+      padding: 60px 20px;
     }
-    main h2 {
-      font-size: 2rem;
-      color: #a5b4fc;
-      margin-bottom: 15px;
+    h1 {
+      font-size: 3em;
+      margin-bottom: 20px;
+      color: #99cc33;
     }
-    main p {
-      font-size: 1.15rem;
-      line-height: 1.6;
+    p {
+      font-size: 1.2em;
       color: #cbd5e1;
-      margin-bottom: 30px;
-    }
-    main .btn {
-      background-color: #6366f1;
-      color: white;
-      border: none;
-      padding: 14px 28px;
-      font-size: 1rem;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-      margin: 0 10px;
-      text-decoration: none;
-      display: inline-block;
-    }
-    main .btn:hover, main .btn:focus {
-      background-color: #4f46e5;
-      outline: none;
+      max-width: 600px;
+      margin: 0 auto;
     }
     footer {
-      background-color: #1e293b;
-      color: #94a3b8;
       text-align: center;
-      padding: 15px 10px;
-      font-size: 0.9rem;
-      box-shadow: 0 -2px 6px rgba(0,0,0,0.4);
+      padding: 20px;
+      background-color: #1e293b;
+      margin-top: 50px;
+      color: #64748b;
     }
   </style>
 </head>
 <body>
+
   <header>
-    <h1>Miriele's Space</h1>
-    <nav>
-      <ul>
-        <li><a href="index.html" aria-current="page">Home</a></li>
-        <li>
-          <a href="#">Games ▼</a>
-          <ul>
-            <li><a href="titans.html">Titans of Time</a></li>
-            <li><a href="wordgame.html">Word Game</a></li>
-          </ul>
-        </li>
-        <li><a href="contact.html">Contact</a></li>
-      </ul>
-    </nav>
+    <h2>Miriele</h2>
+    <div class="nav-buttons">
+      <a href="index.html">Home</a>
+      <a href="chatbox.html">Chat Box</a>
+    </div>
   </header>
 
   <main>
-    <h2>Welcome to Miriele's Space</h2>
-    <p>
-      Dive into a world of fantasy and adventure! Discover exciting games, explore new realms, and enjoy immersive experiences crafted just for you. Whether you love strategy, puzzles, or epic battles, Miriele's Space is your portal to endless fun.
-    </p>
-    <a href="titans.html" class="btn" title="Play Titans of Time">Play Titans of Time</a>
-    <a href="wordgame.html" class="btn" title="Play Word Game">Play Word Game</a>
+    <h1>Welcome to Miriele</h1>
+    <p>Your new favorite place for real-time discussion, community connection, and more.</p>
   </main>
 
   <footer>
-    &copy; 2025 Miriele's Space. All rights reserved.
+    &copy; 2025 Miriele. All rights reserved.
   </footer>
+
 </body>
 </html>
