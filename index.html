@@ -4,135 +4,201 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Miriele - Home</title>
-  <meta name="description" content="Discover unique products and lifestyle essentials at Miriele, your ultimate online shopping destination with worldwide shipping and great deals." />
-  <meta name="keywords" content="online store, gadgets, accessories, home essentials, wellness products, Miriele" />
+  <meta name="description" content="Miriele.com - Your ultimate online store for everyday essentials and unique finds. Quality products, secure shopping, fast shipping." />
+  <meta name="keywords" content="Miriele, online store, everyday essentials, unique finds, quality products, shopping, fast shipping" />
   <meta name="author" content="Miriele" />
-  <meta name="robots" content="index, follow" />
-  <link rel="canonical" href="https://miriele.com" />
+  <meta property="og:title" content="Miriele - Your Online Store for Essentials & More" />
+  <meta property="og:description" content="Discover high-quality products and unique finds at Miriele.com. Shop now with fast, secure delivery." />
+  <meta property="og:url" content="https://miriele.com" />
+  <meta property="og:type" content="website" />
   <style>
+    /* Jungle Background */
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1470&q=80') no-repeat center center fixed;
+      background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1920&q=80') no-repeat center center fixed;
       background-size: cover;
-      color: #f0f0f0;
+      color: #fff;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
     }
     header {
-      background-color: rgba(0, 0, 0, 0.7);
+      background: rgba(0, 64, 32, 0.85);
       padding: 1rem 2rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      position: sticky;
-      top: 0;
-      z-index: 100;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.7);
     }
-    nav a {
-      color: #a8e6cf;
-      margin: 0 15px;
+    header h1 {
+      margin: 0;
+      font-weight: 700;
+      font-size: 1.8rem;
+      color: #a7f432;
+      cursor: default;
+    }
+    nav {
+      display: flex;
+      align-items: center;
+    }
+    nav a, nav .dropdown-btn {
+      color: #a7f432;
       text-decoration: none;
-      font-weight: bold;
+      margin-left: 1.5rem;
+      font-weight: 600;
+      cursor: pointer;
+      position: relative;
+      user-select: none;
       transition: color 0.3s ease;
     }
-    nav a:hover {
-      color: #dcedc1;
+    nav a:hover, nav .dropdown-btn:hover {
+      color: #fff;
     }
+    /* Dropdown */
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background: rgba(0, 64, 32, 0.95);
+      min-width: 160px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.4);
+      border-radius: 6px;
+      z-index: 1000;
+      top: 2rem;
+      left: 0;
+    }
+    .dropdown-content a {
+      color: #a7f432;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+      font-weight: normal;
+      border-bottom: 1px solid rgba(167, 244, 50, 0.3);
+    }
+    .dropdown-content a:last-child {
+      border-bottom: none;
+    }
+    .dropdown-content a:hover {
+      background: #a7f432;
+      color: #004020;
+    }
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
     main {
-      flex: 1;
-      padding: 4rem 2rem 2rem;
-      background-color: rgba(0,0,0,0.55);
+      flex-grow: 1;
+      padding: 3rem 2rem 2rem;
       max-width: 900px;
-      margin: 0 auto 3rem;
-      border-radius: 8px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.6);
+      margin: 0 auto;
+      background: rgba(255,255,255,0.9);
+      border-radius: 12px;
+      color: #111;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
     }
-    main h1 {
-      font-size: 2.8rem;
-      margin-bottom: 1rem;
-      color: #98d98e;
-      text-shadow: 2px 2px 4px #234d20;
+
+    #seo-intro h2 {
+      color: #276749;
+      font-weight: 700;
+      margin-top: 0;
     }
-    main p {
-      font-size: 1.25rem;
-      line-height: 1.6;
-      color: #c8e6c9;
-      margin-bottom: 2rem;
-      text-shadow: 1px 1px 3px #234d20;
+    #seo-intro a {
+      color: #276749;
+      font-weight: 700;
+      text-decoration: none;
     }
+    #seo-intro a:hover {
+      text-decoration: underline;
+    }
+
     footer {
-      background-color: rgba(0,0,0,0.7);
-      color: #b0b0b0;
+      background: rgba(0, 64, 32, 0.9);
+      color: #a7f432;
+      padding: 1rem 2rem;
       text-align: center;
-      padding: 1rem 0;
       font-size: 0.9rem;
-      position: relative;
-      bottom: 0;
-      width: 100%;
+      user-select: none;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.3);
     }
     footer a {
-      color: #88c999;
-      text-decoration: none;
-      margin: 0 10px;
+      color: #d4f58a;
+      margin: 0 8px;
       cursor: pointer;
+      text-decoration: none;
+      font-weight: 600;
     }
     footer a:hover {
       text-decoration: underline;
     }
-    /* Modal Styles */
+
+    /* Modals */
     .modal {
       display: none;
       position: fixed;
-      z-index: 9999;
-      left: 0; top: 0;
-      width: 100%; height: 100%;
-      overflow: auto;
-      background-color: rgba(0,0,0,0.75);
+      z-index: 2000;
+      left: 0;
+      top: 0;
+      width: 100vw;
+      height: 100vh;
+      overflow-y: auto;
+      background-color: rgba(0,0,0,0.7);
+      padding: 2rem;
+      box-sizing: border-box;
     }
     .modal-content {
-      background-color: #1e3524;
-      margin: 10% auto;
-      padding: 20px;
-      border-radius: 10px;
-      width: 90%;
+      background: #f9f9f9;
+      color: #222;
       max-width: 600px;
-      color: #cdeac0;
-      box-shadow: 0 0 20px #78b13f;
+      margin: 5% auto;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 0 12px rgba(0,0,0,0.3);
+      position: relative;
+      font-size: 1rem;
+      line-height: 1.5;
     }
     .close {
-      float: right;
-      font-size: 28px;
-      font-weight: bold;
+      position: absolute;
+      right: 1rem;
+      top: 1rem;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #444;
       cursor: pointer;
-      color: #a6d785;
+      user-select: none;
     }
   </style>
 </head>
 <body>
   <header>
-    <div><a href="index.html" style="color:#98d98e; font-weight:bold; font-size:1.4rem; text-decoration:none;">Miriele</a></div>
+    <h1>Miriele</h1>
     <nav>
       <a href="index.html">Home</a>
-      <a href="game.html">Games</a>
+      <div class="dropdown">
+        <span class="dropdown-btn">Games ▼</span>
+        <div class="dropdown-content">
+          <a href="game.html">Featured Game</a>
+          <a href="titans.html">Titans</a>
+        </div>
+      </div>
       <a href="chatbox.html">Chat Box</a>
-      <a href="titans.html">Titans</a>
+      <a href="https://miriele.com" target="_blank" rel="noopener noreferrer">Store</a>
     </nav>
   </header>
 
   <main>
-    <h1>Welcome to Miriele</h1>
-    <p>Explore the best online store offering innovative gadgets, stylish accessories, and essential wellness products — all curated to improve your everyday lifestyle.</p>
-
-    <section>
-      <h2>Discover Unique Finds at Miriele – Your Ultimate Online Shopping Destination</h2>
-      <p>At Miriele, we curate a diverse selection of high-quality products to enhance your lifestyle. From innovative gadgets and stylish accessories to home essentials and wellness items, our collection is designed to cater to every need. We pride ourselves on offering fast worldwide shipping, secure payment options, and a 30-day money-back guarantee, ensuring a seamless shopping experience. Whether you're seeking the latest tech trends or unique gifts, Miriele is your trusted destination for quality and convenience.</p>
+    <section id="seo-intro">
+      <h2>Welcome to Miriele</h2>
+      <p>
+        Welcome to Miriele, your ultimate online destination for everyday essentials and unique finds. At
+        <a href="https://miriele.com" target="_blank" rel="noopener noreferrer">Miriele.com</a>,
+        we offer a carefully curated selection of high-quality products designed to enrich your lifestyle. Whether you're shopping for home goods, accessories, or special gifts, Miriele ensures a seamless and secure shopping experience with fast shipping and exceptional customer service. Discover why thousands trust Miriele.com for quality, value, and style—all in one place.
+      </p>
     </section>
   </main>
 
   <footer>
-    © 2025 Miriele. All Rights Reserved.
+    © 2025 Miriele. All rights reserved.
     <a onclick="openModal('termsModal')">Terms of Service</a> |
     <a onclick="openModal('privacyModal')">Privacy Policy</a> |
     <a onclick="openModal('accessModal')">Accessibility</a>
@@ -140,42 +206,54 @@
 
   <!-- Modals -->
 
+  <!-- Terms of Service Modal -->
   <div id="termsModal" class="modal">
     <div class="modal-content">
       <span class="close" onclick="closeModal('termsModal')">&times;</span>
       <h2>Terms of Service</h2>
-      <p>By accessing or using Miriele, you agree to comply with our terms. All sales are subject to product availability. We reserve the right to update products and prices without prior notice. Customers are responsible for providing accurate information during purchase.</p>
+      <p>
+        By accessing and using Miriele.com, you agree to our terms and conditions. Use our content and services for lawful purposes only. Unauthorized use of the site’s content, including reproduction or redistribution, is prohibited without explicit permission. We reserve the right to modify or discontinue services without notice.
+      </p>
     </div>
   </div>
 
+  <!-- Privacy Policy Modal -->
   <div id="privacyModal" class="modal">
     <div class="modal-content">
       <span class="close" onclick="closeModal('privacyModal')">&times;</span>
       <h2>Privacy Policy</h2>
-      <p>Miriele respects your privacy. We do not sell or share your personal information. Data collected during transactions is securely processed and stored. Cookies are used only to improve site experience. For more details, please contact us.</p>
+      <p>
+        Miriele respects your privacy and does not collect personal data unless voluntarily provided for orders or inquiries. We use cookies to improve site functionality and user experience. Third-party services, such as payment processors and analytics providers, may collect data governed by their own policies.
+      </p>
     </div>
   </div>
 
+  <!-- Accessibility Modal -->
   <div id="accessModal" class="modal">
     <div class="modal-content">
       <span class="close" onclick="closeModal('accessModal')">&times;</span>
       <h2>Accessibility</h2>
-      <p>We strive to ensure Miriele is accessible to all users. If you experience any barriers using our site, please reach out to us for assistance. We continually work to improve accessibility in accordance with best practices.</p>
+      <p>
+        We strive to make Miriele accessible to all users. If you encounter any difficulties accessing our content or have suggestions for improvement, please contact us. Some third-party embedded content may not fully comply with accessibility standards.
+      </p>
     </div>
   </div>
 
   <script>
     function openModal(id) {
       document.getElementById(id).style.display = 'block';
+      document.body.style.overflow = 'hidden'; // prevent background scroll
     }
     function closeModal(id) {
       document.getElementById(id).style.display = 'none';
+      document.body.style.overflow = 'auto';
     }
     window.onclick = function(event) {
       const modals = document.querySelectorAll('.modal');
       modals.forEach(modal => {
         if (event.target === modal) {
           modal.style.display = 'none';
+          document.body.style.overflow = 'auto';
         }
       });
     }
