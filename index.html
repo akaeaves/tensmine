@@ -119,6 +119,31 @@
     footer a:hover {
       text-decoration: underline;
     }
+
+    /* Floating Share Buttons */
+    .social-share {
+      position: fixed;
+      top: 40%;
+      left: 0;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      background-color: rgba(0, 0, 0, 0.6);
+      border-radius: 0 8px 8px 0;
+      z-index: 1000;
+    }
+    .social-share a {
+      color: white;
+      text-decoration: none;
+      padding: 10px;
+      font-size: 20px;
+      text-align: center;
+      border-bottom: 1px solid rgba(255,255,255,0.2);
+      transition: background 0.3s;
+    }
+    .social-share a:hover {
+      background-color: #007BFF;
+    }
   </style>
 </head>
 <body>
@@ -127,6 +152,14 @@
   <h1 style="position:absolute; left:-9999px; top:auto; width:1px; height:1px; overflow:hidden;">
     Free Website Traffic, Online Shopping, and Casual Games - Jungle Adventuraddict
   </h1>
+
+  <!-- Floating Share Buttons -->
+  <div class="social-share">
+    <a href="https://www.facebook.com/sharer/sharer.php?u=https://yourdomain.com" target="_blank" title="Share on Facebook">📘</a>
+    <a href="https://twitter.com/intent/tweet?url=https://yourdomain.com&text=Check+this+out!" target="_blank" title="Share on Twitter">🐦</a>
+    <a href="https://reddit.com/submit?url=https://yourdomain.com&title=Jungle+Adventuraddict" target="_blank" title="Share on Reddit">👽</a>
+    <a href="https://api.whatsapp.com/send?text=https://yourdomain.com" target="_blank" title="Share on WhatsApp">📱</a>
+  </div>
 
   <header>
     <h1>Welcome to Jungle Adventuraddict</h1>
