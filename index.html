@@ -207,5 +207,93 @@
     };
   </script>
 
+  <!-- Floating draggable Kiss FM player with channel selector -->
+  <div id="kissfm-player" style="position: fixed; bottom: 20px; right: 20px; width: 220px; background: rgba(0,0,0,0.7); color: white; border-radius: 8px; padding: 10px; cursor: move; z-index: 10000; user-select: none; font-family: Arial, sans-serif;">
+    <div id="kissfm-header" style="font-weight: bold; margin-bottom: 8px; cursor: move;">🎵 Kiss FM Live</div>
+
+    <select id="kissfm-channel" style="width: 100%; margin-bottom: 8px; padding: 6px; border-radius: 4px; border: none; font-size: 14px;">
+      <option value="https://ice55.securenetsystems.net/KISSFM">Kiss FM (Generic)</option>
+      <option value="http://kissfm967.com:8000/stream">Kiss FM 96.7 - NYC</option>
+      <option value="https://icecast.kissfm.ro/kissfm_320.mp3">Kiss FM Romania</option>
+      <option value="https://stream.kissfm.ua/kissfm128.mp3">Kiss FM Ukraine</option>
+    </select>
+
+    <audio id="kissfm-audio" preload="none"></audio>
+
+    <button id="kissfm-toggle" style="width: 100%; padding: 6px; background-color: #e91e63; border: none; border-radius: 4px; color: white; font-weight: bold; cursor: pointer;">
+      ▶️ Play
+    </button>
+  </div>
+
+  <script>
+    (function() {
+      const player = document.getElementById('kissfm-player');
+      const header = document.getElementById('kissfm-header');
+      const audio = document.getElementById('kissfm-audio');
+      const toggleBtn = document.getElementById('kissfm-toggle');
+      const channelSelect = document.getElementById('kissfm-channel');
+
+      // Load initial channel URL
+      audio.src = channelSelect.value;
+
+      // Play/pause toggle
+      toggleBtn.addEventListener('click', () => {
+        if (audio.paused) {
+          audio.play().catch(err => console.log('Playback error:', err));
+          toggleBtn.textContent = '⏸️ Pause';
+        } else {
+          audio.pause();
+          toggleBtn.textContent = '▶️ Play';
+        }
+      });
+
+      // Change channel event
+      channelSelect.addEventListener('change', () => {
+        const wasPlaying = !audio.paused;
+        audio.src = channelSelect.value;
+        audio.load();
+        if (wasPlaying) {
+          audio.play().catch(err => console.log('Playback error:', err));
+        }
+        toggleBtn.textContent = wasPlaying ? '⏸️ Pause' : '▶️ Play';
+      });
+
+      // Draggable functionality
+      let isDragging = false;
+      let offsetX, offsetY;
+
+      header.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        offsetX = e.clientX - player.getBoundingClientRect().left;
+        offsetY = e.clientY - player.getBoundingClientRect().top;
+        document.body.style.userSelect = 'none';
+      });
+
+      window.addEventListener('mouseup', () => {
+        isDragging = false;
+        document.body.style.userSelect = '';
+      });
+
+      window.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        let x = e.clientX - offsetX;
+        let y = e.clientY - offsetY;
+
+        const maxX = window.innerWidth - player.offsetWidth;
+        const maxY = window.innerHeight - player.offsetHeight;
+        if (x < 0) x = 0;
+        if (y < 0) y = 0;
+        if (x > maxX) x = maxX;
+        if (y > maxY) y = maxY;
+
+        player.style.left = x + 'px';
+        player.style.top = y + 'px';
+        player.style.right = 'auto';
+        player.style.bottom = 'auto';
+        player.style.position = 'fixed';
+      });
+    })();
+  </script>
+
 </body>
 </html>
