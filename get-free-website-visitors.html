@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CustomHits Referral</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+    }
+    #top-bar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 50px;
+      background: #0077cc;
+      color: white;
+      display: flex;
+      align-items: center;
+      padding: 0 20px;
+      box-sizing: border-box;
+      z-index: 10;
+    }
+    #top-bar a {
+      color: white;
+      text-decoration: none;
+      background: #005fa3;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-weight: bold;
+      transition: background 0.3s;
+    }
+    #top-bar a:hover {
+      background: #004c82;
+    }
+    iframe {
+      position: absolute;
+      top: 50px;
+      left: 0;
+      width: 100%;
+      height: calc(100% - 50px);
+      border: none;
+    }
+  </style>
+</head>
+<body>
+  <div id="top-bar">
+    <a href="index.html">← Home</a>
+  </div>
+  <iframe src="https://customhits.net/?via=jason-eaves" allowfullscreen></iframe>
+</body>
+</html>
