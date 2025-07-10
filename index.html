@@ -47,4 +47,114 @@
     .dropdown-content {
       display: none;
       position: absolute;
-      background-color: rgba(0, 0, 0
+      background-color: rgba(0, 0, 0, 0.9);
+      min-width: 140px;
+      z-index: 1;
+    }
+    .dropdown-content a {
+      color: white;
+      padding: 10px 15px;
+      text-decoration: none;
+      display: block;
+    }
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+    .content {
+      max-width: 960px;
+      margin: auto;
+      padding: 2rem;
+      background-color: rgba(0,0,0,0.6);
+      border-radius: 12px;
+    }
+    footer {
+      background-color: rgba(0, 0, 0, 0.7);
+      text-align: center;
+      padding: 2rem 1rem;
+      font-size: 0.9rem;
+      margin-top: 40px;
+    }
+    footer a {
+      color: #99cc33;
+      text-decoration: none;
+      margin: 0 10px;
+    }
+    footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Welcome to Jungle Adventuraddict</h1>
+  </header>
+
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="chatbox.html">Chat Box</a>
+    <a href="game.html">Featured Game</a>
+    <div class="dropdown">
+      <span class="dropdown-btn">Games ▼</span>
+      <div class="dropdown-content">
+        <a href="titans.html">Titans</a>
+      </div>
+    </div>
+    <a href="https://miriele.com" target="_blank">Shop</a>
+    <a href="get-free-website-visitors.html">Free Website Traffic</a>
+  </nav>
+
+  <div class="content">
+    <h2>Welcome to Our Community Hub</h2>
+    <p>Explore games, chat with friends, and shop everyday essentials — all in one place!</p>
+
+    <h3>About Our Store</h3>
+    <p>
+      Feel free to stop by <a href="https://miriele.com" target="_blank" style="color:#99cc33;">Miriele.com</a>, your trusted online destination for everyday essentials, personal care, home goods, and unique lifestyle products—all at unbeatable prices. Whether you're shopping for household items, wellness must-haves, or trending finds, Miriele.com offers a carefully curated selection designed to elevate your daily life. With fast shipping, secure checkout, and customer-first service, we make online shopping simple and enjoyable. Explore our latest collections and discover why savvy shoppers choose Miriele.com for quality, affordability, and convenience.
+    </p>
+
+    <h3>Get Free Website Visitors with CustomHits</h3>
+    <p>
+      Looking to grow your website traffic for free? Join <a href="https://customhits.net/?via=jason-eaves" target="_blank" style="color:#99cc33;">CustomHits.net</a>, a powerful traffic exchange platform where real users visit your site in return for viewing others. With thousands of active members worldwide, you can earn daily hits and improve your SEO visibility, Alexa rank, and engagement—all without spending a dime. Whether you're a blogger, online seller, or affiliate marketer, CustomHits gives you the exposure you need to thrive. <strong>Sign up free today</strong> and start sending real visitors to your site instantly.
+    </p>
+  </div>
+
+  <footer>
+    <p>© 2025 Jungle Adventuraddict . All Rights Reserved.</p>
+    <a href="#" onclick="openModal('termsModal')">Terms of Service</a> |
+    <a href="#" onclick="openModal('privacyModal')">Privacy Policy</a>
+  </footer>
+
+  <!-- Modals -->
+  <div id="termsModal" class="modal" style="display:none;">
+    <div style="background-color:white; color:black; margin: 10% auto; padding: 20px; border-radius: 8px; max-width: 600px;">
+      <span onclick="closeModal('termsModal')" style="float:right; cursor:pointer;">&times;</span>
+      <h2>Terms of Service</h2>
+      <p>By using this site, you agree to engage respectfully within our community features and use embedded games and content for personal entertainment only. External links and third-party services are governed by their own terms and may change without notice.</p>
+    </div>
+  </div>
+
+  <div id="privacyModal" class="modal" style="display:none;">
+    <div style="background-color:white; color:black; margin: 10% auto; padding: 20px; border-radius: 8px; max-width: 600px;">
+      <span onclick="closeModal('privacyModal')" style="float:right; cursor:pointer;">&times;</span>
+      <h2>Privacy Policy</h2>
+      <p>We do not collect personal information directly on this site. However, external services such as embedded games or links to our store may use cookies or analytics governed by their own privacy policies.</p>
+    </div>
+  </div>
+
+  <script>
+    function openModal(id) {
+      document.getElementById(id).style.display = 'block';
+    }
+    function closeModal(id) {
+      document.getElementById(id).style.display = 'none';
+    }
+    window.onclick = function(event) {
+      if (event.target.className === 'modal') {
+        event.target.style.display = "none";
+      }
+    };
+  </script>
+
+</body>
+</html>
