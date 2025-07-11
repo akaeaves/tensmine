@@ -10,14 +10,38 @@
       padding: 0;
       height: 100%;
       background-color: #eef6fb;
+      font-family: Arial, sans-serif;
+    }
+
+    .home-button {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background-color: #007acc;
+      color: white;
+      padding: 10px 16px;
+      border: none;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 16px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      cursor: pointer;
+    }
+
+    .home-button:hover {
+      background-color: #005f99;
+    }
+
+    .container {
       display: flex;
       justify-content: center;
       align-items: center;
-      font-family: Arial, sans-serif;
+      height: 100%;
     }
+
     iframe {
-      width: 70vw;   /* 70% of viewport width */
-      height: 80vh;  /* 80% of viewport height */
+      width: 70vw;
+      height: 80vh;
       border: 3px solid #007acc;
       border-radius: 8px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.15);
@@ -25,11 +49,19 @@
   </style>
 </head>
 <body>
-  <iframe
-    src="https://play.gamepix.com/battleship-war-multiplayer/embed?sid=1"
-    frameborder="0"
-    scrolling="no"
-    title="Battleship War Multiplayer"
-  ></iframe>
+
+  <!-- Home Button -->
+  <a href="index.html" class="home-button">Home</a>
+
+  <!-- Centered Game -->
+  <div class="container">
+    <iframe
+      src="https://play.gamepix.com/battleship-war-multiplayer/embed?sid=1"
+      frameborder="0"
+      scrolling="no"
+      title="Battleship War Multiplayer"
+    ></iframe>
+  </div>
+
 </body>
 </html>
