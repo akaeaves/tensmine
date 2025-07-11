@@ -43,6 +43,45 @@
       font-size: 0.9rem;
       color: #ccc;
     }
+
+    /* Radio Player Styling */
+    #radio-player {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 240px;
+      background: rgba(0,0,0,0.8);
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+      z-index: 10000;
+      padding: 10px;
+      user-select: none;
+      font-family: Arial, sans-serif;
+      color: white;
+      cursor: move;
+    }
+    #radio-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 5px;
+      cursor: move;
+    }
+    #collapse-btn {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 18px;
+      cursor: pointer;
+      line-height: 1;
+      padding: 0 6px;
+    }
+    #radio-body iframe {
+      width: 100%;
+      height: 180px;
+      border-radius: 6px;
+      border: none;
+    }
   </style>
 </head>
 <body>
@@ -57,5 +96,64 @@
   <footer>
     © 2025 Miriele. All Rights Reserved.
   </footer>
+
+  <!-- Collapsible, Draggable Slim Radio Player -->
+  <div id="radio-player">
+    <div id="radio-header">
+      <span>📻 Kiss FM</span>
+      <button id="collapse-btn" title="Collapse/Expand">+</button>
+    </div>
+    <div id="radio-body" style="display:none;">
+      <iframe allow="autoplay" src="https://www.iheart.com/live/1045-kiss-fm-2201/?embed=true"></iframe>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      const radio = document.getElementById('radio-player');
+      const header = document.getElementById('radio-header');
+      const collapseBtn = document.getElementById('collapse-btn');
+      const body = document.getElementById('radio-body');
+      let isDragging = false;
+      let offsetX = 0, offsetY = 0;
+      let collapsed = true; // Start collapsed
+
+      // Initialize collapsed state on load
+      body.style.display = 'none';
+      collapseBtn.textContent = '+';
+
+      header.addEventListener('mousedown', (e) => {
+        if (e.target === collapseBtn) return; // don't drag when clicking the button
+        isDragging = true;
+        offsetX = e.clientX - radio.getBoundingClientRect().left;
+        offsetY = e.clientY - radio.getBoundingClientRect().top;
+        document.body.style.userSelect = 'none';
+      });
+
+      document.addEventListener('mouseup', () => {
+        isDragging = false;
+        document.body.style.userSelect = '';
+      });
+
+      document.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        let x = e.clientX - offsetX;
+        let y = e.clientY - offsetY;
+        x = Math.max(0, Math.min(x, window.innerWidth - radio.offsetWidth));
+        y = Math.max(0, Math.min(y, window.innerHeight - radio.offsetHeight));
+        radio.style.left = x + 'px';
+        radio.style.top = y + 'px';
+        radio.style.bottom = 'auto';
+        radio.style.right = 'auto';
+      });
+
+      collapseBtn.addEventListener('click', () => {
+        collapsed = !collapsed;
+        body.style.display = collapsed ? 'none' : 'block';
+        collapseBtn.textContent = collapsed ? '+' : '−';
+      });
+    })();
+  </script>
+
 </body>
 </html>
