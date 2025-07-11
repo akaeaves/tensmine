@@ -37,20 +37,20 @@
     }
 
     h1 {
-      margin-top: 10px;
+      margin: 20px 0 10px;
     }
 
     .board {
       display: grid;
-      grid-template-columns: repeat(10, 30px);
-      grid-template-rows: repeat(10, 30px);
+      grid-template-columns: repeat(15, 35px);
+      grid-template-rows: repeat(15, 35px);
       gap: 2px;
-      margin: 10px;
+      margin: 20px 0;
     }
 
     .cell {
-      width: 30px;
-      height: 30px;
+      width: 35px;
+      height: 35px;
       background-color: #0074D9;
       border: 1px solid #001f3f;
       display: flex;
@@ -72,16 +72,17 @@
     }
 
     #points {
-      font-size: 16px;
-      margin: 10px;
+      font-size: 18px;
+      margin-top: 10px;
     }
 
     button {
-      margin-top: 10px;
-      padding: 5px 10px;
+      margin-bottom: 20px;
+      padding: 10px 20px;
       background-color: #39CCCC;
       border: none;
       cursor: pointer;
+      font-size: 16px;
     }
 
     button:hover {
@@ -100,7 +101,7 @@
   <button onclick="startGame()">Start New Game</button>
 
   <script>
-    const boardSize = 10;
+    const boardSize = 15;
     let board = [];
     let score = 0;
 
@@ -122,9 +123,9 @@
         }
       }
 
-      // Randomly place 5 ships
+      // Randomly place 10 ships
       let placed = 0;
-      while (placed < 5) {
+      while (placed < 10) {
         let r = Math.floor(Math.random() * boardSize);
         let c = Math.floor(Math.random() * boardSize);
         if (!board[r][c].hasShip) {
