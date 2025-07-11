@@ -3,32 +3,32 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Battleship Game</title>
+  <title>Battleship Game - Half Page</title>
   <style>
-    body {
-      margin: 40px;
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
       background-color: #eef6fb;
-      font-family: Arial, sans-serif;
       display: flex;
       justify-content: center;
-      align-items: flex-start;
-      min-height: 100vh;
+      align-items: center;
+      font-family: Arial, sans-serif;
     }
     iframe {
-      border: 2px solid #007acc;
+      width: 50vw;   /* 50% of viewport width */
+      height: 50vh;  /* 50% of viewport height */
+      border: 3px solid #007acc;
       border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     }
   </style>
 </head>
 <body>
-  <iframe 
-    src="https://play.gamepix.com/battleship-war-multiplayer/embed?sid=1" 
-    width="480" 
-    height="320" 
-    frameborder="0" 
+  <iframe
+    src="https://play.gamepix.com/battleship-war-multiplayer/embed?sid=1"
+    frameborder="0"
     scrolling="no"
-    style="height: 320px; width: 480px;"
     title="Battleship War Multiplayer"
   ></iframe>
 </body>
