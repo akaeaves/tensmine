@@ -195,7 +195,7 @@
   </nav>
 
   <div class="content">
-    <h2>Welcome to Our Community Hub</h2>
+    <h2>FREE Web Traffic Link Below</h2>
     <p>Explore games, chat with friends, and shop everyday essentials — all in one place!</p>
 
     <h3>About Our Store</h3>
@@ -265,14 +265,13 @@
       const body = document.getElementById('radio-body');
       let isDragging = false;
       let offsetX = 0, offsetY = 0;
-      let collapsed = true; // Start collapsed
+      let collapsed = true;
 
-      // Initialize collapsed state on load
       body.style.display = 'none';
       collapseBtn.textContent = '+';
 
       header.addEventListener('mousedown', (e) => {
-        if (e.target === collapseBtn) return; // don't drag when clicking the button
+        if (e.target === collapseBtn) return;
         isDragging = true;
         offsetX = e.clientX - radio.getBoundingClientRect().left;
         offsetY = e.clientY - radio.getBoundingClientRect().top;
