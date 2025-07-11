@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Open Battleship</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: monospace;
+      background-color: #001f3f;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    h1 {
+      margin-top: 10px;
+    }
+    .board {
+      display: grid;
+      grid-template-columns: repeat(10, 30px);
+      grid-template-rows: repeat(10, 30px);
+      gap: 2px;
+      margin: 10px;
+    }
+    .cell {
+      width: 30px;
+      height: 30px;
+      background-color: #0074D9;
+      border: 1px solid #001f3f;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+    }
+    .hit {
+      background-color: #FF4136 !important;
+    }
+    .miss {
+      background-color: #7FDBFF !important;
+    }
+    .ship {
+      background-color: #2ECC40;
+    }
+    #points {
+      font-size: 16px;
+      margin: 10px;
+    }
+    button {
+      margin-top: 10px;
+      padding: 5px 10px;
+      background-color: #39CCCC;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #3D9970;
+    }
+  </style>
+</head>
+<body>
+  <h1>Open Battleship</h1>
+  <div id="points">Your Points: <span id="score">0</span></div>
+  <div class="board" id="gameBoard"></div>
+  <button onclick="startGame()">Start New Game</button>
+
+  <script>
+    const boardSize = 10;
+    let board = [];
+    let score = 0;
+
+    function createBoard() {
+      const gameBoard = document.getElementById('gameBoard');
+      gameBoard.innerHTML = '';
+      board = [];
+
+      for (let row = 0; row < boardSize; row++) {
+        board[row] = [];
+        for (let col = 0; col < boardSize; col++) {
+          const cell = document.createElement('div');
+          cell.classList.add('cell');
+          cell.dataset.row = row;
+          cell.dataset.col = col;
+          cell.addEventListener('click', handleMove);
+          gameBoard.appendChild(cell);
+          board[row][col] = { hasShip: false, clicked: false };
+        }
+      }
+
+      // Randomly place 5 ships
+      let placed = 0;
+      while (placed < 5) {
+        let r = Math.floor(Math.random() * boardSize);
+        let c = Math.floor(Math.random() * boardSize);
+        if (!board[r][c].hasShip) {
+          board[r][c].hasShip = true;
+          placed++;
+        }
+      }
+    }
+
+    function handleMove(e) {
+      const row = e.target.dataset.row;
+      const col = e.target.dataset.col;
+      const cell = board[row][col];
+      if (cell.clicked) return;
+      cell.clicked = true;
+
+      if (cell.hasShip) {
+        e.target.classList.add('hit');
+        score += 10;
+      } else {
+        e.target.classList.add('miss');
+        score -= 1;
+      }
+      document.getElementById('score').textContent = score;
+    }
+
+    function startGame() {
+      score = 0;
+      document.getElementById('score').textContent = score;
+      createBoard();
+    }
+
+    startGame();
+  </script>
+</body>
+</html>
