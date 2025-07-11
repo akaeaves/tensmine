@@ -241,7 +241,7 @@
     }
     window.onclick = function(event) {
       if (event.target.className === 'modal') {
-        event.target.style.display = \"none\";
+        event.target.style.display = "none";
       }
     };
   </script>
@@ -250,9 +250,9 @@
   <div id="radio-player">
     <div id="radio-header">
       <span>📻 Kiss FM</span>
-      <button id="collapse-btn" title="Collapse/Expand">−</button>
+      <button id="collapse-btn" title="Collapse/Expand">+</button>
     </div>
-    <div id="radio-body">
+    <div id="radio-body" style="display:none;">
       <iframe allow="autoplay" src="https://www.iheart.com/live/1045-kiss-fm-2201/?embed=true"></iframe>
     </div>
   </div>
@@ -265,7 +265,11 @@
       const body = document.getElementById('radio-body');
       let isDragging = false;
       let offsetX = 0, offsetY = 0;
-      let collapsed = false;
+      let collapsed = true; // Start collapsed
+
+      // Initialize collapsed state on load
+      body.style.display = 'none';
+      collapseBtn.textContent = '+';
 
       header.addEventListener('mousedown', (e) => {
         if (e.target === collapseBtn) return; // don't drag when clicking the button
