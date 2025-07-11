@@ -1,159 +1,212 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Open Battleship</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: monospace;
-      background-color: #001f3f;
-      color: white;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-height: 100vh;
-    }
-    nav {
-      width: 100%;
-      background-color: #003366;
-      padding: 10px 0;
-      text-align: center;
-    }
-    nav a {
-      color: white;
-      text-decoration: none;
-      margin: 0 15px;
-      padding: 8px 16px;
-      background-color: #0074D9;
-      border-radius: 4px;
-      transition: background-color 0.3s ease;
-    }
-    nav a:hover {
-      background-color: #005fa3;
-    }
-    h1 {
-      margin: 20px 0 10px;
-    }
-    .board {
-      display: grid;
-      grid-template-columns: repeat(15, 40px);
-      grid-template-rows: repeat(10, 40px);
-      gap: 3px;
-      margin: 20px 0;
-      user-select: none;
-    }
-    .cell {
-      width: 40px;
-      height: 40px;
-      background-color: #0074D9;
-      border: 1px solid #001f3f;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      cursor: pointer;
-      font-size: 18px;
-      font-weight: bold;
-      user-select: none;
-    }
-    .hit {
-      background-color: #FF4136 !important;
-      color: white;
-    }
-    .miss {
-      background-color: #7FDBFF !important;
-      color: white;
-    }
-    #points {
-      font-size: 18px;
-      margin-top: 10px;
-    }
-    button {
-      margin-bottom: 30px;
-      padding: 10px 20px;
-      background-color: #39CCCC;
-      border: none;
-      cursor: pointer;
-      font-size: 16px;
-      border-radius: 6px;
-      user-select: none;
-    }
-    button:hover {
-      background-color: #3D9970;
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Open Battleship</title>
+<style>
+  body {
+    margin: 0;
+    font-family: monospace;
+    background-color: #001f3f;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+  }
+  nav {
+    width: 100%;
+    background-color: #003366;
+    padding: 10px 0;
+    text-align: center;
+  }
+  nav a {
+    color: white;
+    text-decoration: none;
+    margin: 0 15px;
+    padding: 8px 16px;
+    background-color: #0074D9;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+  }
+  nav a:hover {
+    background-color: #005fa3;
+  }
+  h1 {
+    margin: 20px 0 10px;
+  }
+  .board {
+    display: grid;
+    grid-template-columns: repeat(15, 40px);
+    grid-template-rows: repeat(10, 40px);
+    gap: 3px;
+    margin: 20px 0;
+    user-select: none;
+  }
+  .cell {
+    width: 40px;
+    height: 40px;
+    background-color: #0074D9;
+    border: 1px solid #001f3f;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+  }
+  .cell img {
+    width: 30px;
+    height: 30px;
+    pointer-events: none;
+  }
+  #points {
+    font-size: 18px;
+    margin-top: 10px;
+  }
+  button {
+    margin-bottom: 30px;
+    padding: 10px 20px;
+    background-color: #39CCCC;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 6px;
+    user-select: none;
+  }
+  button:hover {
+    background-color: #3D9970;
+  }
+</style>
 </head>
 <body>
-  <nav>
-    <a href="index.html">🏠 Home</a>
-  </nav>
+<nav>
+  <a href="index.html">🏠 Home</a>
+</nav>
 
-  <h1>Open Battleship</h1>
-  <div id="points">Your Points: <span id="score">0</span></div>
-  <div class="board" id="gameBoard" aria-label="Battleship game board" role="grid"></div>
-  <button onclick="startGame()">Start New Game</button>
+<h1>Open Battleship</h1>
+<div id="points">Your Points: <span id="score">0</span></div>
+<div class="board" id="gameBoard" aria-label="Battleship game board" role="grid"></div>
+<button onclick="startGame()">Start New Game</button>
 
-  <script>
-    const cols = 15;
-    const rows = 10;
-    let board = [];
-    let score = 0;
+<script>
+  const cols = 15;
+  const rows = 10;
+  let board = [];
+  let score = 0;
 
-    function createBoard() {
-      const gameBoard = document.getElementById('gameBoard');
-      gameBoard.innerHTML = '';
-      board = [];
+  // Base64 images for hit, miss, ship (shown only on hit)
+  const IMG_SHIP = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC8AAAAvCAYAAACMSP9dAAAACXBIWXMAAAsTAAALEwEAmpwYAAABNklEQVR4nO3VMQ7CMAwE0Mev+RwGmwGvUL4cPYs1fQHqTbYdmtHCDTYfC0RQgNBLQZkeLfAvxo48HACwwjXq07P6ExsoKM8nmJjONpDXWJz6YfGksVfls30y3l2Q1QIEAfCYBNCzVKkJ1vUDHzEM5pgwZpjRZZK5Gsn0pNHHKaESseEGvWx5cPBAFSz0DpHvTy/7YBfYlEYlBXPifQiT+7Jq6uy2o/Rq6oyx4+/DNWHl6SZYcBYhST1yPkoZh8CZFukriSI0XZ2P5C59dJ/25vkVK1QLFqX3zUqfGcYpqcaNs7mANbtBDX5+f4t6CtqJeAUml1YjQAAAABJRU5ErkJggg==';
+  const IMG_HIT = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC8AAAAvCAYAAACMSP9dAAAAX0lEQVR4nO3UsQ0AIAxEQf7/v70QXkUBDp5tX3sy3KwI5TBAhkqPhvXKHJHZEd6ERzoRFujYJCrb6kwL6TZ5iTydRG7EUmYTyCJdhPcTslMd55NZ1sM1aI+0+SoqV3VpCXqSO7WPWfex2BwAYmDw33kP4v9qNcS3y0cMQAAAABJRU5ErkJggg==';
+  const IMG_MISS = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC8AAAAvCAYAAACMSP9dAAAAvUlEQVR4nO3UsQ3AIAxF0ff+/j9lVoQSVRx5qP0ez2hNntzJ7JtkB4QIgBXkL6PipVdV86pYLXLW/AL2IiDYsDXb6sx3Ex4ikSzhHbd0gjmCT8SKV8ykYfgpG3JEt6xPhHTxhCv+L9GG8zRTcfRlE+k6iT2l8uNsn6Mp+ZT3+oXSaRa/If25RE9/pH13wHLuXup3OpaYBW75Rrws0Jq1ip89JAAAAAElFTkSuQmCC';
 
-      for (let row = 0; row < rows; row++) {
-        board[row] = [];
-        for (let col = 0; col < cols; col++) {
-          const cell = document.createElement('div');
-          cell.classList.add('cell');
-          cell.dataset.row = row;
-          cell.dataset.col = col;
-          cell.addEventListener('click', handleMove);
-          gameBoard.appendChild(cell);
-          board[row][col] = { hasShip: false, clicked: false };
+  // Updated ships with bigger sizes for larger grid
+  const ships = [
+    { name: 'Aircraft Carrier', size: 7 },
+    { name: 'Battleship', size: 6 },
+    { name: 'Cruiser', size: 5 },
+    { name: 'Submarine', size: 4 },
+    { name: 'Destroyer', size: 3 }
+  ];
+
+  // Initialize empty board array with objects
+  function initBoard() {
+    board = [];
+    for(let r=0; r<rows; r++) {
+      board[r] = [];
+      for(let c=0; c<cols; c++) {
+        board[r][c] = { hasShip: false, clicked: false, shipId: null, element: null };
+      }
+    }
+  }
+
+  // Place ships randomly on board, horizontal or vertical, no overlaps
+  function placeShips() {
+    for(let i=0; i<ships.length; i++) {
+      let placed = false;
+      while(!placed) {
+        let horizontal = Math.random() < 0.5;
+        let row = Math.floor(Math.random() * (horizontal ? rows : rows - ships[i].size +1));
+        let col = Math.floor(Math.random() * (horizontal ? cols - ships[i].size +1 : cols));
+
+        // Check if space is free
+        let canPlace = true;
+        for(let j=0; j<ships[i].size; j++) {
+          let r = horizontal ? row : row + j;
+          let c = horizontal ? col + j : col;
+          if(board[r][c].hasShip) {
+            canPlace = false;
+            break;
+          }
+        }
+
+        if(canPlace) {
+          for(let j=0; j<ships[i].size; j++) {
+            let r = horizontal ? row : row + j;
+            let c = horizontal ? col + j : col;
+            board[r][c].hasShip = true;
+            board[r][c].shipId = i;
+          }
+          placed = true;
         }
       }
+    }
+  }
 
-      // Randomly place 10 ships
-      let placed = 0;
-      while (placed < 10) {
-        let r = Math.floor(Math.random() * rows);
-        let c = Math.floor(Math.random() * cols);
-        if (!board[r][c].hasShip) {
-          board[r][c].hasShip = true;
-          placed++;
-        }
+  function createBoard() {
+    const gameBoard = document.getElementById('gameBoard');
+    gameBoard.innerHTML = '';
+    initBoard();
+
+    for (let row = 0; row < rows; row++) {
+      for (let col = 0; col < cols; col++) {
+        const cell = document.createElement('div');
+        cell.classList.add('cell');
+        cell.dataset.row = row;
+        cell.dataset.col = col;
+        cell.addEventListener('click', handleMove);
+        gameBoard.appendChild(cell);
+        board[row][col].element = cell;
       }
     }
+    placeShips();
+  }
 
-    function handleMove(e) {
-      const row = e.target.dataset.row;
-      const col = e.target.dataset.col;
-      const cell = board[row][col];
-      if (cell.clicked) return;
-      cell.clicked = true;
+  function handleMove(e) {
+    const row = e.target.dataset.row;
+    const col = e.target.dataset.col;
+    const cell = board[row][col];
+    if (cell.clicked) return;
+    cell.clicked = true;
 
-      if (cell.hasShip) {
-        e.target.classList.add('hit');
-        score += 10;
-      } else {
-        e.target.classList.add('miss');
-        score -= 1;
-      }
-      document.getElementById('score').textContent = score;
+    // Clear content (remove any previous image)
+    cell.element.innerHTML = '';
+
+    if (cell.hasShip) {
+      cell.element.classList.add('hit');
+      const img = document.createElement('img');
+      img.src = IMG_SHIP;
+      img.alt = 'Ship';
+      cell.element.appendChild(img);
+      score += 10;
+    } else {
+      cell.element.classList.add('miss');
+      const img = document.createElement('img');
+      img.src = IMG_MISS;
+      img.alt = 'Miss';
+      cell.element.appendChild(img);
+      score -= 1;
     }
+    document.getElementById('score').textContent = score;
+  }
 
-    function startGame() {
-      score = 0;
-      document.getElementById('score').textContent = score;
-      createBoard();
-    }
+  function startGame() {
+    score = 0;
+    document.getElementById('score').textContent = score;
+    createBoard();
+  }
 
-    startGame();
-  </script>
+  startGame();
+</script>
 </body>
 </html>
