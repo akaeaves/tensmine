@@ -39,7 +39,7 @@
     .board {
       display: grid;
       grid-template-columns: repeat(15, 40px);
-      grid-template-rows: repeat(15, 40px);
+      grid-template-rows: repeat(10, 40px);
       gap: 3px;
       margin: 20px 0;
       user-select: none;
@@ -95,7 +95,8 @@
   <button onclick="startGame()">Start New Game</button>
 
   <script>
-    const boardSize = 15;
+    const cols = 15;
+    const rows = 10;
     let board = [];
     let score = 0;
 
@@ -104,9 +105,9 @@
       gameBoard.innerHTML = '';
       board = [];
 
-      for (let row = 0; row < boardSize; row++) {
+      for (let row = 0; row < rows; row++) {
         board[row] = [];
-        for (let col = 0; col < boardSize; col++) {
+        for (let col = 0; col < cols; col++) {
           const cell = document.createElement('div');
           cell.classList.add('cell');
           cell.dataset.row = row;
@@ -120,8 +121,8 @@
       // Randomly place 10 ships
       let placed = 0;
       while (placed < 10) {
-        let r = Math.floor(Math.random() * boardSize);
-        let c = Math.floor(Math.random() * boardSize);
+        let r = Math.floor(Math.random() * rows);
+        let c = Math.floor(Math.random() * cols);
         if (!board[r][c].hasShip) {
           board[r][c].hasShip = true;
           placed++;
