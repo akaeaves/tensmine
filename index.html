@@ -105,6 +105,33 @@
       height: 24px;
       display: block;
     }
+
+    /* Draggable Radio Player */
+    #radio-player {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 240px;
+      height: 220px;
+      background: rgba(0, 0, 0, 0.8);
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+      z-index: 9999;
+      padding: 10px;
+      cursor: move;
+    }
+    #radio-player iframe {
+      width: 100%;
+      height: 180px;
+      border: none;
+      border-radius: 6px;
+    }
+    #radio-header {
+      color: #fff;
+      font-weight: bold;
+      margin-bottom: 5px;
+      cursor: move;
+    }
   </style>
 </head>
 <body>
@@ -205,6 +232,45 @@
         event.target.style.display = "none";
       }
     };
+  </script>
+
+  <!-- Draggable Kiss FM Radio Player -->
+  <div id="radio-player">
+    <div id="radio-header">📻 Kiss FM</div>
+    <iframe allow="autoplay" src="https://www.iheart.com/live/1045-kiss-fm-2201/?embed=true"></iframe>
+  </div>
+
+  <script>
+    (function() {
+      const radio = document.getElementById('radio-player');
+      const header = document.getElementById('radio-header');
+      let isDragging = false;
+      let offsetX = 0, offsetY = 0;
+
+      header.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        offsetX = e.clientX - radio.getBoundingClientRect().left;
+        offsetY = e.clientY - radio.getBoundingClientRect().top;
+        document.body.style.userSelect = 'none';
+      });
+
+      document.addEventListener('mouseup', () => {
+        isDragging = false;
+        document.body.style.userSelect = '';
+      });
+
+      document.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        let x = e.clientX - offsetX;
+        let y = e.clientY - offsetY;
+        x = Math.max(0, Math.min(x, window.innerWidth - radio.offsetWidth));
+        y = Math.max(0, Math.min(y, window.innerHeight - radio.offsetHeight));
+        radio.style.left = x + 'px';
+        radio.style.top = y + 'px';
+        radio.style.bottom = 'auto';
+        radio.style.right = 'auto';
+      });
+    })();
   </script>
 
 </body>
