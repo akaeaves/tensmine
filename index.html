@@ -1,4 +1,4 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -108,7 +108,7 @@
 
     /* Player Styling */
     .iframe-player {
-      width: 240px;
+      width: 220px;
       background: rgba(0,0,0,0.8);
       border-radius: 10px;
       box-shadow: 0 0 10px rgba(0,0,0,0.5);
@@ -223,8 +223,8 @@
     };
   </script>
 
-  <!-- Kicker 95.1 Player positioned at the bottom right -->
-  <div id="kicker-player" class="iframe-player" style="position:fixed; bottom:20px; right:20px;">
+  <!-- Positioning all players at the bottom and spacing them out -->
+  <div id="kicker-player" class="iframe-player" style="position:fixed; bottom:20px; left:20px;">
     <div class="player-header">
       <span>🎵 Kicker 95.1</span>
       <button class="collapse-btn" title="Collapse/Expand">+</button>
@@ -234,8 +234,7 @@
     </div>
   </div>
 
-  <!-- Big Dog 106 Player positioned at the bottom -->
-  <div id="big-dog-player" class="iframe-player" style="position:fixed; bottom:80px; right:20px;">
+  <div id="big-dog-player" class="iframe-player" style="position:fixed; bottom:20px; left:calc(50% - 120px);"> <!-- Centered -->
     <div class="player-header">
       <span>🎵 Big Dog 106</span>
       <button class="collapse-btn" title="Collapse/Expand">+</button>
@@ -245,8 +244,7 @@
     </div>
   </div>
 
-  <!-- Kiss FM Player positioned at the bottom -->
-  <div id="kiss-fm-player" class="iframe-player" style="position:fixed; bottom:140px; right:20px;">
+  <div id="kiss-fm-player" class="iframe-player" style="position:fixed; bottom:20px; right:calc(50% - 120px);"> <!-- Centered -->
     <div class="player-header">
       <span>📻 Kiss FM</span>
       <button class="collapse-btn" title="Collapse/Expand">+</button>
@@ -256,8 +254,7 @@
     </div>
   </div>
 
-  <!-- Hit Nation Player positioned at the bottom -->
-  <div id="hit-nation-player" class="iframe-player" style="position:fixed; bottom:200px; right:20px;">
+  <div id="hit-nation-player" class="iframe-player" style="position:fixed; bottom:20px; right:20px;">
     <div class="player-header">
       <span>🎵 Hit Nation</span>
       <button class="collapse-btn" title="Collapse/Expand">+</button>
