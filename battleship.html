@@ -9,8 +9,10 @@
       margin: 0;
       padding: 0;
       min-height: 100%;
-      background-color: #eef6fb;
       font-family: Arial, sans-serif;
+      color: white;
+      background: url('https://www.wallpapergap.com/cdn/24/77/dark-green-jungle-wallpaper-3840x2160.jpg') no-repeat center center fixed;
+      background-size: cover;
     }
 
     .home-button {
@@ -46,6 +48,7 @@
       border: 3px solid #007acc;
       border-radius: 8px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      background-color: white; /* ensure game iframe background is visible */
     }
 
     /* Radios fixed on viewport under the game */
@@ -58,8 +61,8 @@
       font-family: Arial, sans-serif;
       color: white;
       cursor: move;
-      position: fixed; /* FIXED position relative to viewport */
-      top: 85vh; /* start near bottom */
+      position: fixed;
+      top: 85vh;
       user-select: none;
       z-index: 10000;
     }
@@ -70,7 +73,7 @@
       align-items: center;
       font-weight: bold;
       cursor: move;
-      position: relative; /* for player-body absolute inside */
+      position: relative;
       z-index: 2;
     }
 
@@ -85,7 +88,7 @@
 
     .player-body {
       position: absolute;
-      bottom: 100%; /* position above header */
+      bottom: 100%;
       left: 0;
       width: 100%;
       border-radius: 10px 10px 0 0;
@@ -93,7 +96,7 @@
       background: rgba(0,0,0,0.85);
       overflow: hidden;
       z-index: 1;
-      display: none; /* hidden by default */
+      display: none;
     }
 
     .player-body iframe {
