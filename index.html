@@ -120,6 +120,7 @@
       color: white;
       cursor: move;
       position: fixed; /* Fixed position for dragging */
+      bottom: 70px;
     }
 
     /* Responsive Styles */
@@ -245,8 +246,8 @@
     };
   </script>
 
-  <!-- Positioning all players at the bottom -->
-  <div id="big-dog-player" class="iframe-player" style="position:fixed; bottom:70px; left:10%;">
+  <!-- Radio Players -->
+  <div id="big-dog-player" class="iframe-player" style="left: 10%; bottom: 70px;">
     <div class="player-header">
       <span>🎵 Big Dog 106</span>
       <button class="collapse-btn" title="Collapse/Expand" onclick="togglePlayer('big-dog-player')">+</button>
@@ -256,7 +257,7 @@
     </div>
   </div>
 
-  <div id="kicker-player" class="iframe-player" style="position:fixed; bottom:70px; left:35%;">
+  <div id="kicker-player" class="iframe-player" style="left: 35%; bottom: 70px;">
     <div class="player-header">
       <span>🎵 Kicker 95.1</span>
       <button class="collapse-btn" title="Collapse/Expand" onclick="togglePlayer('kicker-player')">+</button>
@@ -266,7 +267,7 @@
     </div>
   </div>
 
-  <div id="kiss-fm-player" class="iframe-player" style="position:fixed; bottom:70px; right:35%;">
+  <div id="kiss-fm-player" class="iframe-player" style="right: 35%; bottom: 70px;">
     <div class="player-header">
       <span>📻 Kiss FM</span>
       <button class="collapse-btn" title="Collapse/Expand" onclick="togglePlayer('kiss-fm-player')">+</button>
@@ -276,7 +277,7 @@
     </div>
   </div>
 
-  <div id="hit-nation-player" class="iframe-player" style="position:fixed; bottom:70px; right:10%;">
+  <div id="hit-nation-player" class="iframe-player" style="right: 10%; bottom: 70px;">
     <div class="player-header">
       <span>🎵 Hit Nation</span>
       <button class="collapse-btn" title="Collapse/Expand" onclick="togglePlayer('hit-nation-player')">+</button>
@@ -297,12 +298,11 @@
 
     function makeDraggable(element) {
       const header = element.querySelector('.player-header');
-      const body = element.querySelector('.player-body');
       let isDragging = false;
       let offsetX = 0, offsetY = 0;
 
       header.addEventListener('mousedown', (e) => {
-        if (e.target === header.querySelector('.collapse-btn')) return; // don't drag when clicking the button
+        if (e.target === header.querySelector('.collapse-btn')) return;
         isDragging = true;
         offsetX = e.clientX - element.getBoundingClientRect().left;
         offsetY = e.clientY - element.getBoundingClientRect().top;
@@ -325,7 +325,6 @@
       });
     }
 
-    // Make all players draggable
     makeDraggable(document.getElementById('big-dog-player'));
     makeDraggable(document.getElementById('kicker-player'));
     makeDraggable(document.getElementById('kiss-fm-player'));
