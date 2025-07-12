@@ -231,7 +231,7 @@
     };
   </script>
 
-  <!-- Container for Side-by-Side Players -->
+  <!-- Container for Players -->
   <div id="player-container">
     <div id="radio-player" class="iframe-player">
       <div class="player-header">
@@ -252,15 +252,16 @@
         <iframe allow="autoplay" width="100%" height="200" src="https://www.iheart.com/live/big-dog-106-2193/?embed=true" frameborder="0"></iframe>
       </div>
     </div>
+  </div>
 
-    <div id="second-iframe-player" class="iframe-player">
-      <div class="player-header">
-        <span>🎵 Kicker 95.1</span>
-        <button class="collapse-btn" title="Collapse/Expand">+</button>
-      </div>
-      <div class="player-body" style="display:none;">
-        <iframe allow="autoplay" width="100%" height="200" src="https://www.iheart.com/live/kicker-951-2205/?embed=true" frameborder="0"></iframe>
-      </div>
+  <!-- Kicker 95.1 Player positioned at the bottom right -->
+  <div id="second-iframe-player" class="iframe-player" style="position:fixed; bottom:20px; right:20px;">
+    <div class="player-header">
+      <span>🎵 Kicker 95.1</span>
+      <button class="collapse-btn" title="Collapse/Expand">+</button>
+    </div>
+    <div class="player-body" style="display:none;">
+      <iframe allow="autoplay" width="100%" height="200" src="https://www.iheart.com/live/kicker-951-2205/?embed=true" frameborder="0"></iframe>
     </div>
   </div>
 
