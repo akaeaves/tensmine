@@ -183,6 +183,45 @@
       border-radius: 6px;
       border: none;
     }
+
+    /* New Iframe for iHeart Radio */
+    #second-iframe-player {
+      position: fixed;
+      bottom: 20px;
+      left: 20px; /* Positioned on the bottom left */
+      width: 240px;
+      background: rgba(0,0,0,0.8);
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+      z-index: 10000;
+      padding: 10px;
+      user-select: none;
+      font-family: Arial, sans-serif;
+      color: white;
+      cursor: move;
+    }
+    #second-iframe-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 5px;
+      cursor: move;
+    }
+    #second-iframe-collapse-btn {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 18px;
+      cursor: pointer;
+      line-height: 1;
+      padding: 0 6px;
+    }
+    #second-iframe-body iframe {
+      width: 100%;
+      height: 180px;
+      border-radius: 6px;
+      border: none;
+    }
   </style>
 </head>
 <body>
@@ -308,6 +347,17 @@
     </div>
   </div>
 
+  <!-- New Iframe for iHeart Radio -->
+  <div id="second-iframe-player">
+    <div id="second-iframe-header">
+      <span>🎵 Kicker 95.1</span>
+      <button id="second-iframe-collapse-btn" title="Collapse/Expand">+</button>
+    </div>
+    <div id="second-iframe-body" style="display:none;">
+      <iframe allow="autoplay" width="100%" height="200" src="https://www.iheart.com/live/kicker-951-2205/?embed=true" frameborder="0"></iframe>
+    </div>
+  </div>
+
   <script>
     (function() {
       const radio = document.getElementById('radio-player');
@@ -375,30 +425,4 @@
         document.body.style.userSelect = 'none';
       });
 
-      document.addEventListener('mouseup', () => {
-        isDragging = false;
-        document.body.style.userSelect = '';
-      });
-
-      document.addEventListener('mousemove', (e) => {
-        if (!isDragging) return;
-        let x = e.clientX - offsetX;
-        let y = e.clientY - offsetY;
-        x = Math.max(0, Math.min(x, window.innerWidth - iframe.offsetWidth));
-        y = Math.max(0, Math.min(y, window.innerHeight - iframe.offsetHeight));
-        iframe.style.left = x + 'px';
-        iframe.style.top = y + 'px';
-        iframe.style.bottom = 'auto';
-        iframe.style.right = 'auto';
-      });
-
-      collapseBtn.addEventListener('click', () => {
-        collapsed = !collapsed;
-        body.style.display = collapsed ? 'none' : 'block';
-        collapseBtn.textContent = collapsed ? '+' : '−';
-      });
-    })();
-  </script>
-
-</body>
-</html>
+      document.add
