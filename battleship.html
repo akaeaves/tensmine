@@ -48,7 +48,7 @@
       border: 3px solid #007acc;
       border-radius: 8px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-      background-color: white; /* ensure game iframe background is visible */
+      background-color: white;
     }
 
     /* Radios fixed on viewport under the game */
@@ -106,7 +106,6 @@
       border-radius: 6px 6px 0 0;
     }
 
-    /* Initial positions */
     #big-dog-player { left: 5vw; }
     #kicker-player { left: 30vw; }
     #kiss-fm-player { left: 55vw; }
@@ -131,9 +130,60 @@
         display: none !important;
       }
     }
+
+    /* Social Share Buttons */
+    .social-share {
+      position: fixed;
+      top: 40%;
+      left: 0;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      background-color: rgba(0, 0, 0, 0.6);
+      border-radius: 0 8px 8px 0;
+      z-index: 9999;
+      padding: 5px;
+    }
+    .social-share a {
+      padding: 6px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .social-share img {
+      width: 24px;
+      height: 24px;
+      display: block;
+    }
   </style>
 </head>
 <body>
+
+  <!-- Social Share Buttons -->
+  <div class="social-share">
+    <a href="https://www.facebook.com/sharer/sharer.php?u=https://yourdomain.com" target="_blank" title="Share on Facebook">
+      <img src="https://cdn-icons-png.flaticon.com/32/733/733547.png" alt="Facebook">
+    </a>
+    <a href="https://twitter.com/intent/tweet?url=https://yourdomain.com&text=Check+this+out!" target="_blank" title="Share on Twitter">
+      <img src="https://cdn-icons-png.flaticon.com/32/733/733579.png" alt="Twitter">
+    </a>
+    <a href="https://reddit.com/submit?url=https://yourdomain.com&title=Jungle+Adventuraddict" target="_blank" title="Share on Reddit">
+      <img src="https://cdn-icons-png.flaticon.com/32/3670/3670226.png" alt="Reddit">
+    </a>
+    <a href="https://api.whatsapp.com/send?text=https://yourdomain.com" target="_blank" title="Share on WhatsApp">
+      <img src="https://cdn-icons-png.flaticon.com/32/733/733585.png" alt="WhatsApp">
+    </a>
+    <a href="https://pinterest.com/pin/create/button/?url=https://yourdomain.com" target="_blank" title="Share on Pinterest">
+      <img src="https://cdn-icons-png.flaticon.com/32/733/733558.png" alt="Pinterest">
+    </a>
+    <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://yourdomain.com" target="_blank" title="Share on LinkedIn">
+      <img src="https://cdn-icons-png.flaticon.com/32/145/145807.png" alt="LinkedIn">
+    </a>
+    <a href="mailto:?subject=Check this site out&body=Visit https://yourdomain.com" title="Share via Email">
+      <img src="https://cdn-icons-png.flaticon.com/32/732/732200.png" alt="Email">
+    </a>
+    <a href="https://t.me/share/url?url=https://yourdomain.com&text=Check+this+out!" target="_blank" title="Share on Telegram">
+      <img src="https://cdn-icons-png.flaticon.com/32/2111/2111646.png" alt="Telegram">
+    </a>
+  </div>
 
   <a href="index.html" class="home-button">Home</a>
 
@@ -147,7 +197,7 @@
   </div>
 
   <!-- Radios as fixed elements -->
-  <div id="big-dog-player" class="iframe-player" style="top: 85vh; left: 5vw;">
+  <div id="big-dog-player" class="iframe-player">
     <div class="player-header">
       <span>🎵 Big Dog 106</span>
       <button class="collapse-btn" onclick="togglePlayer('big-dog-player')">+</button>
@@ -157,7 +207,7 @@
     </div>
   </div>
 
-  <div id="kicker-player" class="iframe-player" style="top: 85vh; left: 30vw;">
+  <div id="kicker-player" class="iframe-player">
     <div class="player-header">
       <span>🎵 Kicker 95.1</span>
       <button class="collapse-btn" onclick="togglePlayer('kicker-player')">+</button>
@@ -167,7 +217,7 @@
     </div>
   </div>
 
-  <div id="kiss-fm-player" class="iframe-player" style="top: 85vh; left: 55vw;">
+  <div id="kiss-fm-player" class="iframe-player">
     <div class="player-header">
       <span>📻 Kiss FM</span>
       <button class="collapse-btn" onclick="togglePlayer('kiss-fm-player')">+</button>
@@ -177,7 +227,7 @@
     </div>
   </div>
 
-  <div id="hit-nation-player" class="iframe-player" style="top: 85vh; left: 80vw;">
+  <div id="hit-nation-player" class="iframe-player">
     <div class="player-header">
       <span>🎵 Hit Nation</span>
       <button class="collapse-btn" onclick="togglePlayer('hit-nation-player')">+</button>
@@ -219,17 +269,13 @@
         if (!isDragging) return;
         let x = e.clientX - offsetX;
         let y = e.clientY - offsetY;
-
-        // Keep inside viewport
         x = Math.max(0, Math.min(x, window.innerWidth - element.offsetWidth));
         y = Math.max(0, Math.min(y, window.innerHeight - element.offsetHeight));
-
         element.style.left = x + 'px';
         element.style.top = y + 'px';
       });
     }
 
-    // Init draggable radios
     makeDraggable(document.getElementById('big-dog-player'));
     makeDraggable(document.getElementById('kicker-player'));
     makeDraggable(document.getElementById('kiss-fm-player'));
