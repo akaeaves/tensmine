@@ -105,6 +105,21 @@
       height: 24px;
       display: block;
     }
+
+    /* Player Styling */
+    .iframe-player {
+      width: 240px;
+      background: rgba(0,0,0,0.8);
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+      z-index: 10000;
+      padding: 10px;
+      user-select: none;
+      font-family: Arial, sans-serif;
+      color: white;
+      cursor: move;
+      position: fixed; /* Fixed position for dragging */
+    }
   </style>
 </head>
 <body>
@@ -206,6 +221,65 @@
         event.target.style.display = "none";
       }
     };
+  </script>
+
+  <!-- Kicker 95.1 Player positioned at the bottom right -->
+  <div id="kicker-player" class="iframe-player" style="position:fixed; bottom:20px; right:20px;">
+    <div class="player-header">
+      <span>🎵 Kicker 95.1</span>
+      <button class="collapse-btn" title="Collapse/Expand">+</button>
+    </div>
+    <div class="player-body" style="display:none;">
+      <iframe allow="autoplay" width="100%" height="200" src="https://www.iheart.com/live/kicker-951-2205/?embed=true" frameborder="0"></iframe>
+    </div>
+  </div>
+
+  <script>
+    function makeDraggable(element) {
+      const header = element.querySelector('.player-header');
+      const body = element.querySelector('.player-body');
+      let isDragging = false;
+      let offsetX = 0, offsetY = 0;
+      let collapsed = true; // Start collapsed
+
+      // Initialize collapsed state on load
+      body.style.display = 'none';
+      header.querySelector('.collapse-btn').textContent = '+';
+
+      header.addEventListener('mousedown', (e) => {
+        if (e.target === header.querySelector('.collapse-btn')) return; // don't drag when clicking the button
+        isDragging = true;
+        offsetX = e.clientX - element.getBoundingClientRect().left;
+        offsetY = e.clientY - element.getBoundingClientRect().top;
+        document.body.style.userSelect = 'none';
+      });
+
+      document.addEventListener('mouseup', () => {
+        isDragging = false;
+        document.body.style.userSelect = '';
+      });
+
+      document.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        let x = e.clientX - offsetX;
+        let y = e.clientY - offsetY;
+        x = Math.max(0, Math.min(x, window.innerWidth - element.offsetWidth));
+        y = Math.max(0, Math.min(y, window.innerHeight - element.offsetHeight));
+        element.style.left = x + 'px';
+        element.style.top = y + 'px';
+        element.style.bottom = 'auto';
+        element.style.right = 'auto';
+      });
+
+      header.querySelector('.collapse-btn').addEventListener('click', () => {
+        collapsed = !collapsed;
+        body.style.display = collapsed ? 'none' : 'block';
+        header.querySelector('.collapse-btn').textContent = collapsed ? '+' : '−';
+      });
+    }
+
+    // Make the Kicker 95.1 player draggable
+    makeDraggable(document.getElementById('kicker-player'));
   </script>
 
 </body>
