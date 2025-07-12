@@ -36,7 +36,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100%;
+      padding-top: 80px;
     }
 
     iframe {
@@ -47,6 +47,7 @@
       box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     }
 
+    /* Radio Player Styles (Copied from index.html) */
     .iframe-player {
       width: 220px;
       background: rgba(0,0,0,0.8);
@@ -144,7 +145,6 @@
 
     function makeDraggable(element) {
       const header = element.querySelector('.player-header');
-      const body = element.querySelector('.player-body');
       let isDragging = false;
       let offsetX = 0, offsetY = 0;
 
