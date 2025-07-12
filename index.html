@@ -223,24 +223,24 @@
     };
   </script>
 
-  <!-- Positioning all players at the bottom with two on each side -->
-  <div id="kicker-player" class="iframe-player" style="position:fixed; bottom:20px; left:5%;">
-    <div class="player-header">
-      <span>🎵 Kicker 95.1</span>
-      <button class="collapse-btn" title="Collapse/Expand">+</button>
-    </div>
-    <div class="player-body" style="display:none;">
-      <iframe allow="autoplay" width="100%" height="200" src="https://www.iheart.com/live/kicker-951-2205/?embed=true" frameborder="0"></iframe>
-    </div>
-  </div>
-
-  <div id="big-dog-player" class="iframe-player" style="position:fixed; bottom:20px; left:30%;">
+  <!-- Positioning all players at the bottom -->
+  <div id="big-dog-player" class="iframe-player" style="position:fixed; bottom:20px; left:5%;">
     <div class="player-header">
       <span>🎵 Big Dog 106</span>
       <button class="collapse-btn" title="Collapse/Expand">+</button>
     </div>
     <div class="player-body" style="display:none;">
       <iframe allow="autoplay" width="100%" height="200" src="https://www.iheart.com/live/big-dog-106-2193/?embed=true" frameborder="0"></iframe>
+    </div>
+  </div>
+
+  <div id="kicker-player" class="iframe-player" style="position:fixed; bottom:20px; left:30%;">
+    <div class="player-header">
+      <span>🎵 Kicker 95.1</span>
+      <button class="collapse-btn" title="Collapse/Expand">+</button>
+    </div>
+    <div class="player-body" style="display:none;">
+      <iframe allow="autoplay" width="100%" height="200" src="https://www.iheart.com/live/kicker-951-2205/?embed=true" frameborder="0"></iframe>
     </div>
   </div>
 
@@ -309,8 +309,8 @@
     }
 
     // Make all players draggable
-    makeDraggable(document.getElementById('kicker-player'));
     makeDraggable(document.getElementById('big-dog-player'));
+    makeDraggable(document.getElementById('kicker-player'));
     makeDraggable(document.getElementById('kiss-fm-player'));
     makeDraggable(document.getElementById('hit-nation-player'));
   </script>
