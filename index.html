@@ -249,7 +249,7 @@
   <div id="big-dog-player" class="iframe-player" style="position:fixed; bottom:70px; left:10%;">
     <div class="player-header">
       <span>🎵 Big Dog 106</span>
-      <button class="collapse-btn" title="Collapse/Expand">+</button>
+      <button class="collapse-btn" title="Collapse/Expand" onclick="togglePlayer('big-dog-player')">+</button>
     </div>
     <div class="player-body" style="display:none;">
       <iframe allow="autoplay" width="100%" height="200" src="https://www.iheart.com/live/big-dog-106-2193/?embed=true" frameborder="0"></iframe>
@@ -259,7 +259,7 @@
   <div id="kicker-player" class="iframe-player" style="position:fixed; bottom:70px; left:35%;">
     <div class="player-header">
       <span>🎵 Kicker 95.1</span>
-      <button class="collapse-btn" title="Collapse/Expand">+</button>
+      <button class="collapse-btn" title="Collapse/Expand" onclick="togglePlayer('kicker-player')">+</button>
     </div>
     <div class="player-body" style="display:none;">
       <iframe allow="autoplay" width="100%" height="200" src="https://www.iheart.com/live/kicker-951-2205/?embed=true" frameborder="0"></iframe>
@@ -269,7 +269,7 @@
   <div id="kiss-fm-player" class="iframe-player" style="position:fixed; bottom:70px; right:35%;">
     <div class="player-header">
       <span>📻 Kiss FM</span>
-      <button class="collapse-btn" title="Collapse/Expand">+</button>
+      <button class="collapse-btn" title="Collapse/Expand" onclick="togglePlayer('kiss-fm-player')">+</button>
     </div>
     <div class="player-body" style="display:none;">
       <iframe allow="autoplay" width="100%" height="200" src="https://www.iheart.com/live/1045-kiss-fm-2201/?embed=true" frameborder="0"></iframe>
@@ -279,7 +279,7 @@
   <div id="hit-nation-player" class="iframe-player" style="position:fixed; bottom:70px; right:10%;">
     <div class="player-header">
       <span>🎵 Hit Nation</span>
-      <button class="collapse-btn" title="Collapse/Expand">+</button>
+      <button class="collapse-btn" title="Collapse/Expand" onclick="togglePlayer('hit-nation-player')">+</button>
     </div>
     <div class="player-body" style="display:none;">
       <iframe allow="autoplay" width="100%" height="200" src="https://www.iheart.com/live/hit-nation-4422/?embed=true" frameborder="0"></iframe>
@@ -287,16 +287,19 @@
   </div>
 
   <script>
+    function togglePlayer(playerId) {
+      const playerBody = document.getElementById(playerId).querySelector('.player-body');
+      const button = document.getElementById(playerId).querySelector('.collapse-btn');
+      const isCollapsed = playerBody.style.display === 'none';
+      playerBody.style.display = isCollapsed ? 'block' : 'none';
+      button.textContent = isCollapsed ? '−' : '+';
+    }
+
     function makeDraggable(element) {
       const header = element.querySelector('.player-header');
       const body = element.querySelector('.player-body');
       let isDragging = false;
       let offsetX = 0, offsetY = 0;
-      let collapsed = true; // Start collapsed
-
-      // Initialize collapsed state on load
-      body.style.display = 'none';
-      header.querySelector('.collapse-btn').textContent = '+';
 
       header.addEventListener('mousedown', (e) => {
         if (e.target === header.querySelector('.collapse-btn')) return; // don't drag when clicking the button
@@ -319,14 +322,6 @@
         y = Math.max(0, Math.min(y, window.innerHeight - element.offsetHeight));
         element.style.left = x + 'px';
         element.style.top = y + 'px';
-        element.style.bottom = 'auto';
-        element.style.right = 'auto';
-      });
-
-      header.querySelector('.collapse-btn').addEventListener('click', () => {
-        collapsed = !collapsed;
-        body.style.display = collapsed ? 'none' : 'block';
-        header.querySelector('.collapse-btn').textContent = collapsed ? '+' : '−';
       });
     }
 
