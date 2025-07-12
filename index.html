@@ -120,6 +120,27 @@
       cursor: move;
       position: fixed; /* Fixed position for dragging */
     }
+
+    /* Responsive Styles */
+    @media (max-width: 768px) {
+      nav {
+        flex-direction: column;
+        align-items: center;
+      }
+      .content {
+        padding: 1rem;
+      }
+      .iframe-player {
+        width: 90%; /* Responsive width for mobile */
+        left: 5%; /* Center the players */
+      }
+      #big-dog-player, #kicker-player {
+        left: 5%; /* Position on the left */
+      }
+      #kiss-fm-player, #hit-nation-player {
+        right: 5%; /* Position on the right */
+      }
+    }
   </style>
 </head>
 <body>
