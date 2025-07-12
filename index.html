@@ -234,6 +234,17 @@
     </div>
   </div>
 
+  <!-- Big Dog 106 Player positioned at the bottom -->
+  <div id="big-dog-player" class="iframe-player" style="position:fixed; bottom:80px; right:20px;">
+    <div class="player-header">
+      <span>🎵 Big Dog 106</span>
+      <button class="collapse-btn" title="Collapse/Expand">+</button>
+    </div>
+    <div class="player-body" style="display:none;">
+      <iframe allow="autoplay" width="100%" height="200" src="https://www.iheart.com/live/big-dog-106-2193/?embed=true" frameborder="0"></iframe>
+    </div>
+  </div>
+
   <script>
     function makeDraggable(element) {
       const header = element.querySelector('.player-header');
@@ -278,8 +289,9 @@
       });
     }
 
-    // Make the Kicker 95.1 player draggable
+    // Make both players draggable
     makeDraggable(document.getElementById('kicker-player'));
+    makeDraggable(document.getElementById('big-dog-player'));
   </script>
 
 </body>
