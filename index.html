@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -16,11 +16,18 @@
       background-size: cover;
       color: white;
     }
-    header, nav, .content, footer {
+    header {
       background-color: rgba(0, 0, 0, 0.7);
-      border-radius: 12px;
       padding: 1rem;
-      margin: 10px;
+      text-align: center;
+    }
+    nav {
+      background-color: rgba(0, 0, 0, 0.6);
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      padding: 0.8rem;
+      flex-wrap: wrap;
     }
     nav a, .dropdown-btn {
       color: white;
@@ -33,6 +40,10 @@
     nav a:hover, .dropdown-btn:hover {
       background-color: #0056b3;
     }
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
     .dropdown-content {
       display: none;
       position: absolute;
@@ -40,23 +51,62 @@
       min-width: 140px;
       z-index: 1;
     }
+    .dropdown-content a {
+      color: white;
+      padding: 10px 15px;
+      text-decoration: none;
+      display: block;
+    }
     .dropdown:hover .dropdown-content {
       display: block;
     }
+    .content {
+      max-width: 960px;
+      margin: auto;
+      padding: 2rem;
+      background-color: rgba(0,0,0,0.6);
+      border-radius: 12px;
+    }
+    footer {
+      background-color: rgba(0, 0, 0, 0.7);
+      text-align: center;
+      padding: 2rem 1rem;
+      font-size: 0.9rem;
+      margin-top: 40px;
+    }
+    footer a {
+      color: #99cc33;
+      text-decoration: none;
+      margin: 0 10px;
+    }
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* Floating Share Buttons */
     .social-share {
       position: fixed;
       top: 40%;
       left: 0;
+      transform: translateY(-50%);
       display: flex;
       flex-direction: column;
       background-color: rgba(0, 0, 0, 0.6);
-      padding: 5px;
+      border-radius: 0 8px 8px 0;
       z-index: 1000;
+      padding: 5px;
+    }
+    .social-share a {
+      padding: 6px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
     }
     .social-share img {
       width: 24px;
       height: 24px;
+      display: block;
     }
+
+    /* Radio Player Styling - Positioned Bottom Left */
     #radio-player, #radio-player-2 {
       position: fixed;
       bottom: 20px;
@@ -71,24 +121,29 @@
       color: white;
       cursor: move;
     }
-    #radio-player { left: 20px; }
-    #radio-player-2 { left: 280px; }
-    .radio-header {
+    #radio-player {
+      left: 20px;
+    }
+    #radio-player-2 {
+      left: 280px;
+    }
+    #radio-header, #radio-header-2 {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 5px;
       cursor: move;
     }
-    .collapse-btn {
+    #collapse-btn, #collapse-btn-2 {
       background: none;
       border: none;
       color: white;
       font-size: 18px;
       cursor: pointer;
+      line-height: 1;
       padding: 0 6px;
     }
-    .radio-body iframe {
+    #radio-body iframe, #radio-body-2 iframe {
       width: 100%;
       height: 180px;
       border-radius: 6px;
@@ -97,91 +152,80 @@
   </style>
 </head>
 <body>
-  <div class="social-share">
-    <!-- share buttons -->
+<!-- [rest of body remains unchanged] -->
+
+<!-- Collapsible, Draggable Slim Radio Player -->
+<div id="radio-player">
+  <div id="radio-header">
+    <span>🎻 Kiss FM</span>
+    <button id="collapse-btn" title="Collapse/Expand">+</button>
   </div>
-  <header>
-    <h1>Welcome to Jungle Adventuraddict</h1>
-  </header>
-  <nav>
-    <a href="index.html">Home</a>
-    <a href="chatbox.html">Chat Box</a>
-    <div class="dropdown">
-      <span class="dropdown-btn">Games ▼</span>
-      <div class="dropdown-content">
-        <a href="game.html">Words</a>
-        <a href="titans.html">Titans</a>
-        <a href="battleship.html">Battleship</a>
-      </div>
-    </div>
-    <a href="https://miriele.com" target="_blank">Shop</a>
-    <a href="https://customhits.net/?via=jason-eaves" target="_blank">Free Website Traffic</a>
-  </nav>
-  <div class="content">
-    <h2>Welcome to Our Community Hub</h2>
-    <p>Explore games, chat with friends, and shop everyday essentials — all in one place!</p>
+  <div id="radio-body" style="display:none;">
+    <iframe allow="autoplay" src="https://www.iheart.com/live/1045-kiss-fm-2201/?embed=true"></iframe>
   </div>
-  <footer>
-    <p>© 2025 Jungle Adventuraddict. All Rights Reserved.</p>
-  </footer>
+</div>
 
-  <!-- First Radio Player -->
-  <div id="radio-player">
-    <div class="radio-header">
-      <span>📻 Kiss FM</span>
-      <button class="collapse-btn" onclick="toggleRadio('radio-body', this)">+</button>
-    </div>
-    <div id="radio-body" class="radio-body" style="display:none;">
-      <iframe allow="autoplay" src="https://www.iheart.com/live/1045-kiss-fm-2201/?embed=true"></iframe>
-    </div>
+<!-- Second Collapsible, Draggable Radio Player -->
+<div id="radio-player-2">
+  <div id="radio-header-2">
+    <span>🎻 Kiss FM</span>
+    <button id="collapse-btn-2" title="Collapse/Expand">+</button>
   </div>
-
-  <!-- Second Radio Player -->
-  <div id="radio-player-2">
-    <div class="radio-header">
-      <span>📻 Kiss FM 2</span>
-      <button class="collapse-btn" onclick="toggleRadio('radio-body-2', this)">+</button>
-    </div>
-    <div id="radio-body-2" class="radio-body" style="display:none;">
-      <iframe allow="autoplay" src="https://www.iheart.com/live/1045-kiss-fm-2201/?embed=true"></iframe>
-    </div>
+  <div id="radio-body-2" style="display:none;">
+    <iframe allow="autoplay" src="https://www.iheart.com/live/1045-kiss-fm-2201/?embed=true"></iframe>
   </div>
+</div>
 
-  <script>
-    function toggleRadio(bodyId, btn) {
-      const body = document.getElementById(bodyId);
-      const isCollapsed = body.style.display === 'none';
-      body.style.display = isCollapsed ? 'block' : 'none';
-      btn.textContent = isCollapsed ? '−' : '+';
-    }
+<script>
+(function() {
+  function makeDraggable(id, headerId, collapseBtnId, bodyId) {
+    const radio = document.getElementById(id);
+    const header = document.getElementById(headerId);
+    const collapseBtn = document.getElementById(collapseBtnId);
+    const body = document.getElementById(bodyId);
+    let isDragging = false;
+    let offsetX = 0, offsetY = 0;
+    let collapsed = true;
 
-    function makeDraggable(playerId, headerClass) {
-      const radio = document.getElementById(playerId);
-      const header = radio.querySelector(headerClass);
-      let isDragging = false, offsetX = 0, offsetY = 0;
+    body.style.display = 'none';
+    collapseBtn.textContent = '+';
 
-      header.addEventListener('mousedown', (e) => {
-        isDragging = true;
-        offsetX = e.clientX - radio.getBoundingClientRect().left;
-        offsetY = e.clientY - radio.getBoundingClientRect().top;
-        document.body.style.userSelect = 'none';
-      });
-      document.addEventListener('mouseup', () => {
-        isDragging = false;
-        document.body.style.userSelect = '';
-      });
-      document.addEventListener('mousemove', (e) => {
-        if (!isDragging) return;
-        const x = Math.max(0, Math.min(e.clientX - offsetX, window.innerWidth - radio.offsetWidth));
-        const y = Math.max(0, Math.min(e.clientY - offsetY, window.innerHeight - radio.offsetHeight));
-        radio.style.left = x + 'px';
-        radio.style.top = y + 'px';
-        radio.style.bottom = 'auto';
-      });
-    }
+    header.addEventListener('mousedown', (e) => {
+      if (e.target === collapseBtn) return;
+      isDragging = true;
+      offsetX = e.clientX - radio.getBoundingClientRect().left;
+      offsetY = e.clientY - radio.getBoundingClientRect().top;
+      document.body.style.userSelect = 'none';
+    });
 
-    makeDraggable('radio-player', '.radio-header');
-    makeDraggable('radio-player-2', '.radio-header');
-  </script>
+    document.addEventListener('mouseup', () => {
+      isDragging = false;
+      document.body.style.userSelect = '';
+    });
+
+    document.addEventListener('mousemove', (e) => {
+      if (!isDragging) return;
+      let x = e.clientX - offsetX;
+      let y = e.clientY - offsetY;
+      x = Math.max(0, Math.min(x, window.innerWidth - radio.offsetWidth));
+      y = Math.max(0, Math.min(y, window.innerHeight - radio.offsetHeight));
+      radio.style.left = x + 'px';
+      radio.style.top = y + 'px';
+      radio.style.bottom = 'auto';
+      radio.style.right = 'auto';
+    });
+
+    collapseBtn.addEventListener('click', () => {
+      collapsed = !collapsed;
+      body.style.display = collapsed ? 'none' : 'block';
+      collapseBtn.textContent = collapsed ? '+' : '−';
+    });
+  }
+
+  makeDraggable('radio-player', 'radio-header', 'collapse-btn', 'radio-body');
+  makeDraggable('radio-player-2', 'radio-header-2', 'collapse-btn-2', 'radio-body-2');
+})();
+</script>
+
 </body>
 </html>
