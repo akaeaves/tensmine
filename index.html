@@ -106,7 +106,7 @@
       display: block;
     }
 
-    /* Radio Player and Iframe Player Styling - Positioned Bottom Left */
+    /* Radio Player and Iframe Player Styling */
     #radio-player, #iframe-player {
       position: fixed;
       bottom: 20px;
@@ -245,57 +245,110 @@
         event.target.style.display = "none";
       }
     };
-  </script>
 
-  <!-- Collapsible, Draggable Slim Radio Player -->
-  <div id="radio-player">
-    <div id="radio-header">
-      <span>📻 Kiss FM</span>
-      <button id="collapse-btn" title="Collapse/Expand">+</button>
-    </div>
-    <div id="radio-body" style="display:none;">
-      <iframe allow="autoplay" src="https://www.iheart.com/live/1045-kiss-fm-2201/?embed=true"></iframe>
-    </div>
-  </div>
+    // Collapsible, Draggable Slim Radio Player
+    (function() {
+      const radio = document.getElementById('radio-player');
+      const header = document.getElementById('radio-header');
+      const collapseBtn = document.getElementById('collapse-btn');
+      const body = document.getElementById('radio-body');
+      let isDragging = false;
+      let offsetX = 0, offsetY = 0;
+      let collapsed = true; // Start collapsed
+
+      // Initialize collapsed state on load
+      body.style.display = 'none';
+      collapseBtn.textContent = '+';
+
+      header.addEventListener('mousedown', (e) => {
+        if (e.target === collapseBtn) return; // don't drag when clicking the button
+        isDragging = true;
+        offsetX = e.clientX - radio.getBoundingClientRect().left;
+        offsetY = e.clientY - radio.getBoundingClientRect().top;
+        document.body.style.userSelect = 'none';
+      });
+
+      document.addEventListener('mouseup', () => {
+        isDragging = false;
+        document.body.style.userSelect = '';
+      });
+
+      document.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        let x = e.clientX - offsetX;
+        let y = e.clientY - offsetY;
+        x = Math.max(0, Math.min(x, window.innerWidth - radio.offsetWidth));
+        y = Math.max(0, Math.min(y, window.innerHeight - radio.offsetHeight));
+        radio.style.left = x + 'px';
+        radio.style.top = y + 'px';
+        radio.style.bottom = 'auto';
+        radio.style.right = 'auto';
+      });
+
+      collapseBtn.addEventListener('click', () => {
+        collapsed = !collapsed;
+        body.style.display = collapsed ? 'none' : 'block';
+        collapseBtn.textContent = collapsed ? '+' : '−';
+      });
+    })();
+
+    // Collapsible, Draggable Iframe Player
+    (function() {
+      const iframe = document.getElementById('iframe-player');
+      const header = document.getElementById('iframe-header');
+      const collapseBtn = document.getElementById('iframe-collapse-btn');
+      const body = document.getElementById('iframe-body');
+      let isDragging = false;
+      let offsetX = 0, offsetY = 0;
+      let collapsed = true; // Start collapsed
+
+      // Initialize collapsed state on load
+      body.style.display = 'none';
+      collapseBtn.textContent = '+';
+
+      header.addEventListener('mousedown', (e) => {
+        if (e.target === collapseBtn) return; // don't drag when clicking the button
+        isDragging = true;
+        offsetX = e.clientX - iframe.getBoundingClientRect().left;
+        offsetY = e.clientY - iframe.getBoundingClientRect().top;
+        document.body.style.userSelect = 'none';
+      });
+
+      document.addEventListener('mouseup', () => {
+        isDragging = false;
+        document.body.style.userSelect = '';
+      });
+
+      document.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        let x = e.clientX - offsetX;
+        let y = e.clientY - offsetY;
+        x = Math.max(0, Math.min(x, window.innerWidth - iframe.offsetWidth));
+        y = Math.max(0, Math.min(y, window.innerHeight - iframe.offsetHeight));
+        iframe.style.left = x + 'px';
+        iframe.style.top = y + 'px';
+        iframe.style.bottom = 'auto';
+        iframe.style.right = 'auto';
+      });
+
+      collapseBtn.addEventListener('click', () => {
+        collapsed = !collapsed;
+        body.style.display = collapsed ? 'none' : 'block';
+        collapseBtn.textContent = collapsed ? '+' : '−';
+      });
+    })();
+  </script>
 
   <!-- Collapsible, Draggable Iframe Player -->
   <div id="iframe-player">
     <div id="iframe-header">
-      <span>🎶 Kicker 95.1</span>
+      <span>🎵 Kicker 95.1</span>
       <button id="iframe-collapse-btn" title="Collapse/Expand">+</button>
     </div>
     <div id="iframe-body" style="display:none;">
-      <iframe allow="autoplay" src="https://www.iheart.com/live/kicker-951-2205/?embed=true" frameborder="0"></iframe>
+      <iframe allow="autoplay" width="100%" height="200" src="https://www.iheart.com/live/kicker-951-2205/?embed=true" frameborder="0"></iframe>
     </div>
   </div>
-
-  <script>
-    (function() {
-      const radio = document.getElementById('radio-player');
-      const radioHeader = document.getElementById('radio-header');
-      const radioCollapseBtn = document.getElementById('collapse-btn');
-      const radioBody = document.getElementById('radio-body');
-      let radioCollapsed = true;
-
-      radioCollapseBtn.addEventListener('click', () => {
-        radioCollapsed = !radioCollapsed;
-        radioBody.style.display = radioCollapsed ? 'none' : 'block';
-        radioCollapseBtn.textContent = radioCollapsed ? '+' : '−';
-      });
-
-      const iframe = document.getElementById('iframe-player');
-      const iframeHeader = document.getElementById('iframe-header');
-      const iframeCollapseBtn = document.getElementById('iframe-collapse-btn');
-      const iframeBody = document.getElementById('iframe-body');
-      let iframeCollapsed = true;
-
-      iframeCollapseBtn.addEventListener('click', () => {
-        iframeCollapsed = !iframeCollapsed;
-        iframeBody.style.display = iframeCollapsed ? 'none' : 'block';
-        iframeCollapseBtn.textContent = iframeCollapsed ? '+' : '−';
-      });
-    })();
-  </script>
 
 </body>
 </html>
