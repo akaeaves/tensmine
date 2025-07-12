@@ -106,11 +106,11 @@
       display: block;
     }
 
-    /* Radio Player and Iframe Player Styling */
-    #radio-player, #iframe-player {
+    /* Radio Player Styling - Positioned Bottom Left */
+    #radio-player {
       position: fixed;
       bottom: 20px;
-      left: 20px;      
+      left: 20px;
       width: 240px;
       background: rgba(0,0,0,0.8);
       border-radius: 10px;
@@ -122,14 +122,14 @@
       color: white;
       cursor: move;
     }
-    #radio-header, #iframe-header {
+    #radio-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 5px;
       cursor: move;
     }
-    #collapse-btn, #iframe-collapse-btn {
+    #collapse-btn {
       background: none;
       border: none;
       color: white;
@@ -138,7 +138,46 @@
       line-height: 1;
       padding: 0 6px;
     }
-    #radio-body iframe, #iframe-body iframe {
+    #radio-body iframe {
+      width: 100%;
+      height: 180px;
+      border-radius: 6px;
+      border: none;
+    }
+
+    /* New Iframe Player Styling */
+    #iframe-player {
+      position: fixed;
+      bottom: 20px;
+      left: 270px; /* Positioned beside the radio player */
+      width: 240px;
+      background: rgba(0,0,0,0.8);
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+      z-index: 10000;
+      padding: 10px;
+      user-select: none;
+      font-family: Arial, sans-serif;
+      color: white;
+      cursor: move;
+    }
+    #iframe-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 5px;
+      cursor: move;
+    }
+    #iframe-collapse-btn {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 18px;
+      cursor: pointer;
+      line-height: 1;
+      padding: 0 6px;
+    }
+    #iframe-body iframe {
       width: 100%;
       height: 180px;
       border-radius: 6px;
@@ -245,8 +284,31 @@
         event.target.style.display = "none";
       }
     };
+  </script>
 
-    // Collapsible, Draggable Slim Radio Player
+  <!-- Collapsible, Draggable Slim Radio Player -->
+  <div id="radio-player">
+    <div id="radio-header">
+      <span>📻 Kiss FM</span>
+      <button id="collapse-btn" title="Collapse/Expand">+</button>
+    </div>
+    <div id="radio-body" style="display:none;">
+      <iframe allow="autoplay" src="https://www.iheart.com/live/1045-kiss-fm-2201/?embed=true"></iframe>
+    </div>
+  </div>
+
+  <!-- New Collapsible, Draggable Iframe Player -->
+  <div id="iframe-player">
+    <div id="iframe-header">
+      <span>🎵 Kicker 95.1</span>
+      <button id="iframe-collapse-btn" title="Collapse/Expand">+</button>
+    </div>
+    <div id="iframe-body" style="display:none;">
+      <iframe allow="autoplay" width="100%" height="200" src="https://www.iheart.com/live/kicker-951-2205/?embed=true" frameborder="0"></iframe>
+    </div>
+  </div>
+
+  <script>
     (function() {
       const radio = document.getElementById('radio-player');
       const header = document.getElementById('radio-header');
@@ -292,7 +354,6 @@
       });
     })();
 
-    // Collapsible, Draggable Iframe Player
     (function() {
       const iframe = document.getElementById('iframe-player');
       const header = document.getElementById('iframe-header');
@@ -338,28 +399,6 @@
       });
     })();
   </script>
-
-  <!-- Collapsible, Draggable Slim Radio Player -->
-  <div id="radio-player">
-    <div id="radio-header">
-      <span>📻 Kiss FM</span>
-      <button id="collapse-btn" title="Collapse/Expand">+</button>
-    </div>
-    <div id="radio-body" style="display:none;">
-      <iframe allow="autoplay" src="https://www.iheart.com/live/1045-kiss-fm-2201/?embed=true"></iframe>
-    </div>
-  </div>
-
-  <!-- Collapsible, Draggable Iframe Player -->
-  <div id="iframe-player">
-    <div id="iframe-header">
-      <span>🎵 Kicker 95.1</span>
-      <button id="iframe-collapse-btn" title="Collapse/Expand">+</button>
-    </div>
-    <div id="iframe-body" style="display:none;">
-      <iframe allow="autoplay" width="100%" height="200" src="https://www.iheart.com/live/kicker-951-2205/?embed=true" frameborder="0"></iframe>
-    </div>
-  </div>
 
 </body>
 </html>
