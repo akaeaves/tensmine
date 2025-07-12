@@ -36,18 +36,17 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      padding-top: 80px;
+      padding-top: 40px; /* was 80px, lowered for tighter layout */
     }
 
     iframe {
       width: 70vw;
-      height: 80vh;
+      height: 75vh; /* slight reduction from 80vh */
       border: 3px solid #007acc;
       border-radius: 8px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     }
 
-    /* Draggable Radio Styles (not floating) */
     .iframe-player {
       width: 220px;
       background: rgba(0,0,0,0.8);
@@ -58,7 +57,7 @@
       font-family: Arial, sans-serif;
       color: white;
       cursor: move;
-      margin: 20px auto;
+      margin: 10px auto; /* tighter spacing */
       position: relative;
     }
 
@@ -89,7 +88,7 @@
       flex-wrap: wrap;
       justify-content: center;
       gap: 20px;
-      padding: 40px 20px;
+      padding: 20px 10px; /* less padding */
     }
 
     @media (max-width: 768px) {
@@ -112,7 +111,7 @@
     ></iframe>
   </div>
 
-  <!-- Radios BELOW the game, draggable and collapsible -->
+  <!-- Radios BELOW the game -->
   <div class="radio-wrapper">
     <div id="big-dog-player" class="iframe-player">
       <div class="player-header">
@@ -196,7 +195,7 @@
       });
     }
 
-    // Apply draggable to each player
+    // Enable dragging on all players
     makeDraggable(document.getElementById('big-dog-player'));
     makeDraggable(document.getElementById('kicker-player'));
     makeDraggable(document.getElementById('kiss-fm-player'));
