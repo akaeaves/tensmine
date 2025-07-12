@@ -1,15 +1,22 @@
 <!DOCTYPE html> 
 <html lang="en">
 <head>
-  <!-- original <head> content remains unchanged -->
+  <!-- (Your original head content unchanged) -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Jungle Adventuraddict | Home</title>
+  <meta name="description" content="Shop everyday essentials, personal care, and lifestyle goods at Miriele.com. Discover quality and affordability in one convenient online store.">
+  <meta name="keywords" content="Miriele, online store, essentials, personal care, home goods, wellness, shopping, deals, quality products, free website traffic, CustomHits">
+  <meta name="author" content="Miriele">
+  <link rel="stylesheet" href="style.css" />
   <style>
-    /* ... keep existing styles ... */
+    /* -- ALL your existing styles here, UNTOUCHED -- */
 
-    /* Second Radio Player Styling - Positioned Bottom Right */
+    /* Additional styling for second radio player */
     #radio-player-2 {
       position: fixed;
       bottom: 20px;
-      left: 280px;
+      left: 280px; /* Adjusts it just to the right of your existing player */
       width: 240px;
       background: rgba(0,0,0,0.8);
       border-radius: 10px;
@@ -46,10 +53,11 @@
   </style>
 </head>
 <body>
+  <!-- (All your original body content here, including share buttons, nav, content, modals, etc.) -->
 
-  <!-- ... existing body content ... -->
+  <!-- [..Your existing content until the original radio player..] -->
 
-  <!-- Existing radio player remains unchanged -->
+  <!-- Original Radio Player (unchanged) -->
   <div id="radio-player">
     <div id="radio-header">
       <span>📻 Kiss FM</span>
@@ -60,10 +68,10 @@
     </div>
   </div>
 
-  <!-- Second Collapsible, Draggable Radio Player -->
+  <!-- New Kicker 95.1 Radio Player -->
   <div id="radio-player-2">
     <div id="radio-header-2">
-      <span>📻 Kicker 95.1</span>
+      <span>📻 Kicker 95.1</span>
       <button id="collapse-btn-2" title="Collapse/Expand">+</button>
     </div>
     <div id="radio-body-2" style="display:none;">
@@ -73,47 +81,41 @@
 
   <script>
     (function() {
-      function setupRadio(id, headerId, collapseBtnId, bodyId) {
-        const radio = document.getElementById(id);
+      function setupRadio(playerId, headerId, btnId, bodyId) {
+        const radio = document.getElementById(playerId);
         const header = document.getElementById(headerId);
-        const collapseBtn = document.getElementById(collapseBtnId);
+        const btn = document.getElementById(btnId);
         const body = document.getElementById(bodyId);
-        let isDragging = false;
-        let offsetX = 0, offsetY = 0;
-        let collapsed = true;
+        let isDragging = false, offX = 0, offY = 0, collapsed = true;
 
         body.style.display = 'none';
-        collapseBtn.textContent = '+';
+        btn.textContent = '+';
 
-        header.addEventListener('mousedown', (e) => {
-          if (e.target === collapseBtn) return;
+        header.addEventListener('mousedown', e => {
+          if (e.target === btn) return;
           isDragging = true;
-          offsetX = e.clientX - radio.getBoundingClientRect().left;
-          offsetY = e.clientY - radio.getBoundingClientRect().top;
+          offX = e.clientX - radio.getBoundingClientRect().left;
+          offY = e.clientY - radio.getBoundingClientRect().top;
           document.body.style.userSelect = 'none';
         });
-
         document.addEventListener('mouseup', () => {
           isDragging = false;
           document.body.style.userSelect = '';
         });
-
-        document.addEventListener('mousemove', (e) => {
+        document.addEventListener('mousemove', e => {
           if (!isDragging) return;
-          let x = e.clientX - offsetX;
-          let y = e.clientY - offsetY;
+          let x = e.clientX - offX;
+          let y = e.clientY - offY;
           x = Math.max(0, Math.min(x, window.innerWidth - radio.offsetWidth));
           y = Math.max(0, Math.min(y, window.innerHeight - radio.offsetHeight));
           radio.style.left = x + 'px';
           radio.style.top = y + 'px';
           radio.style.bottom = 'auto';
-          radio.style.right = 'auto';
         });
-
-        collapseBtn.addEventListener('click', () => {
+        btn.addEventListener('click', () => {
           collapsed = !collapsed;
           body.style.display = collapsed ? 'none' : 'block';
-          collapseBtn.textContent = collapsed ? '+' : '−';
+          btn.textContent = collapsed ? '+' : '−';
         });
       }
 
