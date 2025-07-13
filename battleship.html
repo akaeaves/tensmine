@@ -93,11 +93,12 @@
       padding: 10px;
       font-family: Arial, sans-serif;
       color: white;
-      position: fixed;
-      bottom: 5vh;
+      position: absolute;
+      top: calc(82vh + 20px); /* Position just below game iframe */
       user-select: none;
       z-index: 10000;
       cursor: move;
+      transition: top 0.3s ease;
     }
 
     .player-header {
@@ -126,6 +127,7 @@
       overflow: hidden;
       z-index: 1;
       display: none;
+      transition: all 0.3s ease;
     }
 
     .player-body iframe {
@@ -135,10 +137,10 @@
       border-radius: 6px 6px 0 0;
     }
 
-    #big-dog-player { left: 5vw; }
-    #kicker-player { left: 30vw; }
-    #kiss-fm-player { left: 55vw; }
-    #hit-nation-player { left: 80vw; }
+    #big-dog-player   { left: 5vw; }
+    #kicker-player    { left: 30vw; }
+    #kiss-fm-player   { left: 55vw; }
+    #hit-nation-player{ left: 80vw; }
   </style>
 </head>
 <body>
@@ -243,7 +245,9 @@
     }
 
     ['big-dog-player', 'kicker-player', 'kiss-fm-player', 'hit-nation-player'].forEach(id => {
-      makeDraggable(document.getElementById(id));
+      const el = document.getElementById(id);
+      el.querySelector('.player-body').style.display = 'none';
+      makeDraggable(el);
     });
   </script>
 </body>
