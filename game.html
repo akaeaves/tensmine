@@ -102,6 +102,15 @@
     #kicker-player { top: 260px; }
     #kiss-fm-player { top: 460px; }
     #hit-nation-player { top: 660px; }
+
+    /* Elfsight Banner Styling */
+    .elfsight-banner-left {
+      position: fixed;
+      top: 100px;
+      left: 10px;
+      z-index: 9999;
+      width: 160px; /* Typical skyscraper banner width */
+    }
   </style>
 </head>
 <body>
@@ -111,11 +120,18 @@
     <a class="btn" href="https://miriele.com" target="_blank">Shop</a>
   </header>
 
+  <!-- Game Embed -->
   <iframe src="https://play.gamepix.com/words/embed?sid=S1N6E" allowfullscreen scrolling="no"></iframe>
 
   <footer>
     © 2025 Miriele. All Rights Reserved.
   </footer>
+
+  <!-- Elfsight Banner (Left Skyscraper) -->
+  <div class="elfsight-banner-left">
+    <script src="https://static.elfsight.com/platform/platform.js" async></script>
+    <div class="elfsight-app-71306753-8067-4e85-92f7-545e18860eb0" data-elfsight-app-lazy></div>
+  </div>
 
   <!-- 4 Radio Players, Right Side Vertical Stack -->
   <div id="big-dog-player" class="iframe-player">
@@ -202,6 +218,5 @@
       makeDraggable(document.getElementById(id));
     });
   </script>
-
 </body>
 </html>
