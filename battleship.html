@@ -239,12 +239,17 @@
         y = Math.max(0, Math.min(y, window.innerHeight - element.offsetHeight));
         element.style.left = x + 'px';
         element.style.top = y + 'px';
+        element.style.right = 'auto';
       });
     }
 
     ['big-dog-player', 'kicker-player', 'kiss-fm-player', 'hit-nation-player'].forEach(id => {
       makeDraggable(document.getElementById(id));
     });
+  </script>    ['big-dog-player', 'kicker-player', 'kiss-fm-player', 'hit-nation-player'].forEach(id => {
+      makeDraggable(document.getElementById(id));
+    });
   </script>
+  
 </body>
 </html>
