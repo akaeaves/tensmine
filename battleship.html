@@ -5,12 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Battleship Game</title>
   <style>
-    body {
+    html, body {
       margin: 0;
+      padding: 0;
+      min-height: 100%;
       font-family: Arial, sans-serif;
+      color: white;
       background: url('https://www.wallpapergap.com/cdn/24/77/dark-green-jungle-wallpaper-3840x2160.jpg') no-repeat center center fixed;
       background-size: cover;
-      color: white;
+      overflow-x: hidden;
     }
 
     .nav-buttons {
@@ -20,8 +23,24 @@
       z-index: 10000;
     }
 
-    .home-button, .shop-button {
+    .home-button {
       background-color: #007acc;
+      color: white;
+      padding: 10px 16px;
+      border: none;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 16px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      cursor: pointer;
+    }
+
+    .home-button:hover {
+      background-color: #005f99;
+    }
+
+    .shop-button {
+      background-color: #28a745;
       color: white;
       padding: 10px 16px;
       border: none;
@@ -33,14 +52,6 @@
       cursor: pointer;
     }
 
-    .home-button:hover {
-      background-color: #005f99;
-    }
-
-    .shop-button {
-      background-color: #28a745;
-    }
-
     .shop-button:hover {
       background-color: #1e7e34;
     }
@@ -49,40 +60,15 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      padding-top: 100px;
+      padding-top: 80px;
     }
 
-    iframe.game-frame {
-      width: 960px;
-      height: 640px;
+    iframe {
+      height: 320px;
+      width: 480px;
       border: 3px solid #007acc;
       border-radius: 8px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-      background-color: white;
-    }
-
-    .social-share {
-      position: fixed;
-      top: 40%;
-      left: 0;
-      transform: translateY(-50%);
-      display: flex;
-      flex-direction: column;
-      background-color: rgba(0, 0, 0, 0.6);
-      border-radius: 0 8px 8px 0;
-      z-index: 1000;
-      padding: 5px;
-    }
-
-    .social-share a {
-      padding: 6px;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
-    }
-
-    .social-share img {
-      width: 24px;
-      height: 24px;
-      display: block;
     }
 
     .iframe-player {
@@ -95,7 +81,6 @@
       color: white;
       cursor: move;
       position: fixed;
-      bottom: 20px;
       user-select: none;
       z-index: 10000;
     }
@@ -125,6 +110,7 @@
       box-shadow: 0 0 10px rgba(0,0,0,0.7);
       background: rgba(0,0,0,0.85);
       overflow: hidden;
+      z-index: 1;
       display: none;
     }
 
@@ -133,6 +119,35 @@
       height: 200px;
       border: none;
       border-radius: 6px 6px 0 0;
+    }
+
+    #big-dog-player { bottom: 10px; left: 5vw; }
+    #kicker-player { bottom: 10px; left: 30vw; }
+    #kiss-fm-player { bottom: 10px; left: 55vw; }
+    #hit-nation-player { bottom: 10px; left: 80vw; }
+
+    .social-share {
+      position: fixed;
+      top: 40%;
+      left: 0;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      background-color: rgba(0, 0, 0, 0.6);
+      border-radius: 0 8px 8px 0;
+      z-index: 1000;
+      padding: 5px;
+    }
+
+    .social-share a {
+      padding: 6px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .social-share img {
+      width: 24px;
+      height: 24px;
+      display: block;
     }
   </style>
 </head>
@@ -154,11 +169,10 @@
   </div>
 
   <div class="container">
-    <iframe class="game-frame" src="https://play.gamepix.com/battleship-war-multiplayer/embed?sid=1" frameborder="0" scrolling="no"></iframe>
+    <iframe style="height: 320px; width: 480px;" src="https://play.gamepix.com/battleship-war-multiplayer/embed?sid=1" frameborder="0" scrolling="no"></iframe>
   </div>
 
-  <!-- Radios -->
-  <div id="big-dog-player" class="iframe-player" style="left: 5vw;">
+  <div id="big-dog-player" class="iframe-player">
     <div class="player-header">
       <span>🎵 Big Dog 106</span>
       <button class="collapse-btn" onclick="togglePlayer('big-dog-player')">+</button>
@@ -168,7 +182,7 @@
     </div>
   </div>
 
-  <div id="kicker-player" class="iframe-player" style="left: 30vw;">
+  <div id="kicker-player" class="iframe-player">
     <div class="player-header">
       <span>🎵 Kicker 95.1</span>
       <button class="collapse-btn" onclick="togglePlayer('kicker-player')">+</button>
@@ -178,7 +192,7 @@
     </div>
   </div>
 
-  <div id="kiss-fm-player" class="iframe-player" style="left: 55vw;">
+  <div id="kiss-fm-player" class="iframe-player">
     <div class="player-header">
       <span>📻 Kiss FM</span>
       <button class="collapse-btn" onclick="togglePlayer('kiss-fm-player')">+</button>
@@ -188,7 +202,7 @@
     </div>
   </div>
 
-  <div id="hit-nation-player" class="iframe-player" style="left: 80vw;">
+  <div id="hit-nation-player" class="iframe-player">
     <div class="player-header">
       <span>🎵 Hit Nation</span>
       <button class="collapse-btn" onclick="togglePlayer('hit-nation-player')">+</button>
@@ -208,35 +222,40 @@
       btn.textContent = isCollapsed ? '−' : '+';
     }
 
-    function makeDraggable(el) {
+    function makeDraggable(element) {
+      const header = element.querySelector('.player-header');
       let isDragging = false;
-      let offsetX, offsetY;
+      let offsetX = 0, offsetY = 0;
 
-      const header = el.querySelector('.player-header');
-
-      header.addEventListener('mousedown', function(e) {
+      header.addEventListener('mousedown', (e) => {
         if (e.target.classList.contains('collapse-btn')) return;
         isDragging = true;
-        offsetX = e.clientX - el.offsetLeft;
-        offsetY = e.clientY - el.offsetTop;
-        document.addEventListener('mousemove', onMouseMove);
-        document.addEventListener('mouseup', onMouseUp);
+        offsetX = e.clientX - element.getBoundingClientRect().left;
+        offsetY = e.clientY - element.getBoundingClientRect().top;
+        document.body.style.userSelect = 'none';
       });
 
-      function onMouseMove(e) {
-        if (!isDragging) return;
-        el.style.left = `${e.clientX - offsetX}px`;
-        el.style.top = `${e.clientY - offsetY}px`;
-      }
-
-      function onMouseUp() {
+      document.addEventListener('mouseup', () => {
         isDragging = false;
-        document.removeEventListener('mousemove', onMouseMove);
-        document.removeEventListener('mouseup', onMouseUp);
-      }
+        document.body.style.userSelect = '';
+      });
+
+      document.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        let x = e.clientX - offsetX;
+        let y = e.clientY - offsetY;
+
+        x = Math.max(0, Math.min(x, window.innerWidth - element.offsetWidth));
+        y = Math.max(0, Math.min(y, window.innerHeight - element.offsetHeight));
+
+        element.style.left = x + 'px';
+        element.style.top = y + 'px';
+      });
     }
 
-    ['big-dog-player', 'kicker-player', 'kiss-fm-player', 'hit-nation-player'].forEach(id => makeDraggable(document.getElementById(id)));
+    ['big-dog-player', 'kicker-player', 'kiss-fm-player', 'hit-nation-player'].forEach(id => {
+      makeDraggable(document.getElementById(id));
+    });
   </script>
 </body>
 </html>
