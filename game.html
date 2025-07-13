@@ -15,11 +15,13 @@
       background-position: center;
       color: white;
     }
+
     header {
       background-color: rgba(0, 0, 0, 0.7);
       color: white;
       padding: 1rem;
     }
+
     .btn {
       background-color: #28a745;
       color: white;
@@ -29,6 +31,7 @@
       border-radius: 5px;
       display: inline-block;
     }
+
     iframe {
       border: none;
       width: 800px;
@@ -36,6 +39,7 @@
       max-width: 100%;
       margin-top: 20px;
     }
+
     footer {
       background-color: rgba(0, 0, 0, 0.7);
       padding: 1rem;
@@ -103,14 +107,14 @@
     #kiss-fm-player { top: 460px; }
     #hit-nation-player { top: 660px; }
 
-    /* Elfsight Banner Styling - moved higher and closer to iframe */
+    /* Elfsight Banner - now fixed and fully visible */
     .elfsight-banner-left {
-      position: absolute;
-      top: 130px;
-      left: 10px;
+      position: fixed;
+      top: 100px;   /* Visible on page load */
+      left: 10px;   /* Close to the game iframe */
       z-index: 9999;
       width: 160px;
-      height: 525px;
+      height: 525px; /* Same height as game iframe */
       overflow: hidden;
     }
   </style>
@@ -122,7 +126,7 @@
     <a class="btn" href="https://miriele.com" target="_blank">Shop</a>
   </header>
 
-  <!-- Elfsight Banner (Left Side) -->
+  <!-- Elfsight Banner (Left Side, fully visible and fixed) -->
   <div class="elfsight-banner-left">
     <script src="https://static.elfsight.com/platform/platform.js" async></script>
     <div class="elfsight-app-71306753-8067-4e85-92f7-545e18860eb0" data-elfsight-app-lazy></div>
