@@ -94,7 +94,7 @@
       font-family: Arial, sans-serif;
       color: white;
       position: absolute;
-      top: calc(82vh + 20px); /* Position just below game iframe */
+      top: calc(82vh + 20px);
       user-select: none;
       z-index: 10000;
       cursor: move;
@@ -216,24 +216,24 @@
     }
 
     function makeDraggable(element) {
-      const header = element.querySelector('.player-header');
       let isDragging = false;
       let offsetX = 0, offsetY = 0;
 
-      header.addEventListener('mousedown', (e) => {
+      element.addEventListener('mousedown', (e) => {
         if (e.target.classList.contains('collapse-btn')) return;
         isDragging = true;
         offsetX = e.clientX - element.getBoundingClientRect().left;
         offsetY = e.clientY - element.getBoundingClientRect().top;
         document.body.style.userSelect = 'none';
+        element.style.zIndex = 10001; // bring to front while dragging
       });
 
-      document.addEventListener('mouseup', () => {
+      window.addEventListener('mouseup', () => {
         isDragging = false;
         document.body.style.userSelect = '';
       });
 
-      document.addEventListener('mousemove', (e) => {
+      window.addEventListener('mousemove', (e) => {
         if (!isDragging) return;
         let x = e.clientX - offsetX;
         let y = e.clientY - offsetY;
