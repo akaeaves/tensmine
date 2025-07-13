@@ -7,18 +7,19 @@
   <style>
     body {
       margin: 0;
-      padding: 0;
       font-family: Arial, sans-serif;
       background: url('https://www.wallpapergap.com/cdn/24/77/dark-green-jungle-wallpaper-3840x2160.jpg') no-repeat center center fixed;
       background-size: cover;
       color: white;
     }
+
     .nav-buttons {
       position: absolute;
       top: 20px;
       right: 20px;
       z-index: 10000;
     }
+
     .home-button, .shop-button {
       background-color: #007acc;
       color: white;
@@ -27,69 +28,39 @@
       border-radius: 6px;
       text-decoration: none;
       font-size: 16px;
+      margin-left: 10px;
       box-shadow: 0 2px 6px rgba(0,0,0,0.15);
       cursor: pointer;
-      margin-left: 10px;
     }
-    .home-button:hover, .shop-button:hover {
+
+    .shop-button {
+      background-color: #28a745;
+    }
+
+    .home-button:hover {
       background-color: #005f99;
     }
+
+    .shop-button:hover {
+      background-color: #1e7e34;
+    }
+
     .container {
       display: flex;
       justify-content: center;
       align-items: center;
-      padding-top: 80px;
+      height: 82vh;
     }
-    iframe.game-frame {
-      width: 640px;
-      height: 360px;
+
+    iframe {
+      width: 900px;
+      height: 550px;
       border: 3px solid #007acc;
       border-radius: 8px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.15);
       background-color: white;
     }
-    .iframe-player {
-      width: 220px;
-      background: rgba(0,0,0,0.8);
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.5);
-      padding: 10px;
-      color: white;
-      position: absolute;
-      user-select: none;
-      z-index: 10000;
-      cursor: grab;
-    }
-    .player-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-weight: bold;
-    }
-    .collapse-btn {
-      background: none;
-      border: none;
-      color: white;
-      font-size: 20px;
-      cursor: pointer;
-    }
-    .player-body {
-      position: absolute;
-      bottom: 100%;
-      left: 0;
-      width: 100%;
-      border-radius: 10px 10px 0 0;
-      box-shadow: 0 0 10px rgba(0,0,0,0.7);
-      background: rgba(0,0,0,0.85);
-      overflow: hidden;
-      display: none;
-    }
-    .player-body iframe {
-      width: 100%;
-      height: 200px;
-      border: none;
-      border-radius: 6px 6px 0 0;
-    }
+
     .social-share {
       position: fixed;
       top: 40%;
@@ -102,15 +73,72 @@
       z-index: 1000;
       padding: 5px;
     }
+
     .social-share a {
       padding: 6px;
       border-bottom: 1px solid rgba(255,255,255,0.1);
     }
+
     .social-share img {
       width: 24px;
       height: 24px;
       display: block;
     }
+
+    .iframe-player {
+      width: 220px;
+      background: rgba(0,0,0,0.8);
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+      padding: 10px;
+      font-family: Arial, sans-serif;
+      color: white;
+      position: fixed;
+      bottom: 5vh;
+      user-select: none;
+      z-index: 10000;
+      cursor: move;
+    }
+
+    .player-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: bold;
+    }
+
+    .collapse-btn {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    .player-body {
+      position: absolute;
+      bottom: 100%;
+      left: 0;
+      width: 100%;
+      border-radius: 10px 10px 0 0;
+      box-shadow: 0 0 10px rgba(0,0,0,0.7);
+      background: rgba(0,0,0,0.85);
+      overflow: hidden;
+      z-index: 1;
+      display: none;
+    }
+
+    .player-body iframe {
+      width: 100%;
+      height: 200px;
+      border: none;
+      border-radius: 6px 6px 0 0;
+    }
+
+    #big-dog-player { left: 5vw; }
+    #kicker-player { left: 30vw; }
+    #kiss-fm-player { left: 55vw; }
+    #hit-nation-player { left: 80vw; }
   </style>
 </head>
 <body>
@@ -129,10 +157,13 @@
     <a href="#"><img src="https://cdn-icons-png.flaticon.com/32/732/732200.png" alt="Email"></a>
     <a href="#"><img src="https://cdn-icons-png.flaticon.com/32/2111/2111646.png" alt="Telegram"></a>
   </div>
-  
-<iframe src="" allowfullscreen scrolling="no">game-frame" src="https://play.gamepix.com/battleship-war-multiplayer/embed?sid=1//iframe>
-  
-  <div id="big-dog-player" class="iframe-player" style="top: 500px; left: 5vw;">
+
+  <div class="container">
+    <iframe src="https://play.gamepix.com/battleship-war-multiplayer/embed?sid=1" frameborder="0" scrolling="no"></iframe>
+  </div>
+
+  <!-- Radios -->
+  <div id="big-dog-player" class="iframe-player">
     <div class="player-header">
       <span>🎵 Big Dog 106</span>
       <button class="collapse-btn" onclick="togglePlayer('big-dog-player')">+</button>
@@ -142,7 +173,7 @@
     </div>
   </div>
 
-  <div id="kicker-player" class="iframe-player" style="top: 500px; left: 30vw;">
+  <div id="kicker-player" class="iframe-player">
     <div class="player-header">
       <span>🎵 Kicker 95.1</span>
       <button class="collapse-btn" onclick="togglePlayer('kicker-player')">+</button>
@@ -152,7 +183,7 @@
     </div>
   </div>
 
-  <div id="kiss-fm-player" class="iframe-player" style="top: 500px; left: 55vw;">
+  <div id="kiss-fm-player" class="iframe-player">
     <div class="player-header">
       <span>📻 Kiss FM</span>
       <button class="collapse-btn" onclick="togglePlayer('kiss-fm-player')">+</button>
@@ -162,7 +193,7 @@
     </div>
   </div>
 
-  <div id="hit-nation-player" class="iframe-player" style="top: 500px; left: 80vw;">
+  <div id="hit-nation-player" class="iframe-player">
     <div class="player-header">
       <span>🎵 Hit Nation</span>
       <button class="collapse-btn" onclick="togglePlayer('hit-nation-player')">+</button>
