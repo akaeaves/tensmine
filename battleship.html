@@ -18,47 +18,34 @@
       right: 20px;
       z-index: 10000;
     }
-    .nav-buttons a {
-      background-color: #007BFF;
+    .home-button, .shop-button {
+      background-color: #007acc;
       color: white;
-      padding: 10px 15px;
-      margin-left: 10px;
+      padding: 10px 16px;
+      border: none;
+      border-radius: 6px;
       text-decoration: none;
-      border-radius: 5px;
+      font-size: 16px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      cursor: pointer;
+      margin-left: 10px;
     }
-    .social-share {
-      position: fixed;
-      top: 40%;
-      left: 0;
-      transform: translateY(-50%);
-      display: flex;
-      flex-direction: column;
-      background-color: rgba(0, 0, 0, 0.6);
-      border-radius: 0 8px 8px 0;
-      z-index: 1000;
-      padding: 5px;
+    .shop-button {
+      background-color: #28a745;
     }
-    .social-share a {
-      padding: 6px;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
-    }
-    .social-share img {
-      width: 24px;
-      height: 24px;
-      display: block;
-    }
-    .game-container {
+    .container {
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
-      padding-top: 60px;
+      padding-top: 100px;
     }
     iframe {
-      width: 90vw;
-      height: 70vh;
-      border: none;
-      border-radius: 10px;
+      width: 720px;
+      height: 460px;
+      border: 3px solid #007acc;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      background-color: white;
     }
     .iframe-player {
       width: 220px;
@@ -70,7 +57,8 @@
       color: white;
       cursor: move;
       position: fixed;
-      bottom: 10px;
+      top: auto;
+      bottom: 5vh;
       user-select: none;
       z-index: 10000;
     }
@@ -106,23 +94,55 @@
       border: none;
       border-radius: 6px 6px 0 0;
     }
+    #big-dog-player { left: 5vw; }
+    #kicker-player { left: 30vw; }
+    #kiss-fm-player { left: 55vw; }
+    #hit-nation-player { left: 80vw; }
+    .social-share {
+      position: fixed;
+      top: 40%;
+      left: 0;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      background-color: rgba(0, 0, 0, 0.6);
+      border-radius: 0 8px 8px 0;
+      z-index: 1000;
+      padding: 5px;
+    }
+    .social-share a {
+      padding: 6px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .social-share img {
+      width: 24px;
+      height: 24px;
+      display: block;
+    }
   </style>
 </head>
 <body>
   <div class="nav-buttons">
-    <a href="index.html">Home</a>
-    <a href="https://miriele.com" target="_blank">Shop</a>
+    <a href="index.html" class="home-button">Home</a>
+    <a href="https://miriele.com" target="_blank" class="shop-button">Shop</a>
   </div>
+
   <div class="social-share">
-    <a href="#"><img src="https://cdn-icons-png.flaticon.com/32/733/733547.png" alt="Facebook"></a>
-    <a href="#"><img src="https://cdn-icons-png.flaticon.com/32/733/733579.png" alt="Twitter"></a>
-    <a href="#"><img src="https://cdn-icons-png.flaticon.com/32/3670/3670226.png" alt="Reddit"></a>
-    <a href="#"><img src="https://cdn-icons-png.flaticon.com/32/733/733585.png" alt="WhatsApp"></a>
+    <a href="https://www.facebook.com/sharer/sharer.php?u=https://yourdomain.com" target="_blank"><img src="https://cdn-icons-png.flaticon.com/32/733/733547.png" alt="Facebook"></a>
+    <a href="https://twitter.com/intent/tweet?url=https://yourdomain.com&text=Check+this+out!" target="_blank"><img src="https://cdn-icons-png.flaticon.com/32/733/733579.png" alt="Twitter"></a>
+    <a href="https://reddit.com/submit?url=https://yourdomain.com&title=Jungle+Adventuraddict" target="_blank"><img src="https://cdn-icons-png.flaticon.com/32/3670/3670226.png" alt="Reddit"></a>
+    <a href="https://api.whatsapp.com/send?text=https://yourdomain.com" target="_blank"><img src="https://cdn-icons-png.flaticon.com/32/733/733585.png" alt="WhatsApp"></a>
+    <a href="https://pinterest.com/pin/create/button/?url=https://yourdomain.com" target="_blank"><img src="https://cdn-icons-png.flaticon.com/32/733/733558.png" alt="Pinterest"></a>
+    <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://yourdomain.com" target="_blank"><img src="https://cdn-icons-png.flaticon.com/32/145/145807.png" alt="LinkedIn"></a>
+    <a href="mailto:?subject=Check this site out&body=Visit https://yourdomain.com"><img src="https://cdn-icons-png.flaticon.com/32/732/732200.png" alt="Email"></a>
+    <a href="https://t.me/share/url?url=https://yourdomain.com&text=Check+this+out!" target="_blank"><img src="https://cdn-icons-png.flaticon.com/32/2111/2111646.png" alt="Telegram"></a>
   </div>
-  <div class="game-container">
-    <iframe src="https://play.gamepix.com/battleship-war-multiplayer/embed?sid=1" scrolling="no"></iframe>
+
+  <div class="container">
+    <iframe src="https://play.gamepix.com/battleship-war-multiplayer/embed?sid=1" frameborder="0" scrolling="no" title="Battleship Game"></iframe>
   </div>
-  <div id="big-dog-player" class="iframe-player" style="left: 5vw;">
+
+  <div id="big-dog-player" class="iframe-player">
     <div class="player-header">
       <span>🎵 Big Dog 106</span>
       <button class="collapse-btn" onclick="togglePlayer('big-dog-player')">+</button>
@@ -131,7 +151,8 @@
       <iframe allow="autoplay" src="https://www.iheart.com/live/big-dog-106-2193/?embed=true"></iframe>
     </div>
   </div>
-  <div id="kicker-player" class="iframe-player" style="left: 30vw;">
+
+  <div id="kicker-player" class="iframe-player">
     <div class="player-header">
       <span>🎵 Kicker 95.1</span>
       <button class="collapse-btn" onclick="togglePlayer('kicker-player')">+</button>
@@ -140,7 +161,8 @@
       <iframe allow="autoplay" src="https://www.iheart.com/live/kicker-951-2205/?embed=true"></iframe>
     </div>
   </div>
-  <div id="kiss-fm-player" class="iframe-player" style="left: 55vw;">
+
+  <div id="kiss-fm-player" class="iframe-player">
     <div class="player-header">
       <span>📻 Kiss FM</span>
       <button class="collapse-btn" onclick="togglePlayer('kiss-fm-player')">+</button>
@@ -149,7 +171,8 @@
       <iframe allow="autoplay" src="https://www.iheart.com/live/1045-kiss-fm-2201/?embed=true"></iframe>
     </div>
   </div>
-  <div id="hit-nation-player" class="iframe-player" style="left: 80vw;">
+
+  <div id="hit-nation-player" class="iframe-player">
     <div class="player-header">
       <span>🎵 Hit Nation</span>
       <button class="collapse-btn" onclick="togglePlayer('hit-nation-player')">+</button>
@@ -158,6 +181,7 @@
       <iframe allow="autoplay" src="https://www.iheart.com/live/hit-nation-4422/?embed=true"></iframe>
     </div>
   </div>
+
   <script>
     function togglePlayer(playerId) {
       const player = document.getElementById(playerId);
@@ -168,16 +192,16 @@
       btn.textContent = isCollapsed ? '−' : '+';
     }
 
-    document.querySelectorAll('.iframe-player').forEach(el => {
-      const header = el.querySelector('.player-header');
+    function makeDraggable(element) {
+      const header = element.querySelector('.player-header');
       let isDragging = false;
-      let offsetX, offsetY;
+      let offsetX = 0, offsetY = 0;
 
       header.addEventListener('mousedown', (e) => {
         if (e.target.classList.contains('collapse-btn')) return;
         isDragging = true;
-        offsetX = e.clientX - el.getBoundingClientRect().left;
-        offsetY = e.clientY - el.getBoundingClientRect().top;
+        offsetX = e.clientX - element.getBoundingClientRect().left;
+        offsetY = e.clientY - element.getBoundingClientRect().top;
         document.body.style.userSelect = 'none';
       });
 
@@ -190,11 +214,15 @@
         if (!isDragging) return;
         let x = e.clientX - offsetX;
         let y = e.clientY - offsetY;
-        x = Math.max(0, Math.min(x, window.innerWidth - el.offsetWidth));
-        y = Math.max(0, Math.min(y, window.innerHeight - el.offsetHeight));
-        el.style.left = x + 'px';
-        el.style.top = y + 'px';
+        x = Math.max(0, Math.min(x, window.innerWidth - element.offsetWidth));
+        y = Math.max(0, Math.min(y, window.innerHeight - element.offsetHeight));
+        element.style.left = x + 'px';
+        element.style.top = y + 'px';
       });
+    }
+
+    ['big-dog-player', 'kicker-player', 'kiss-fm-player', 'hit-nation-player'].forEach(id => {
+      makeDraggable(document.getElementById(id));
     });
   </script>
 </body>
