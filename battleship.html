@@ -5,42 +5,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Battleship Game</title>
   <style>
-    html, body {
+    body {
       margin: 0;
-      padding: 0;
-      min-height: 100%;
       font-family: Arial, sans-serif;
-      color: white;
       background: url('https://www.wallpapergap.com/cdn/24/77/dark-green-jungle-wallpaper-3840x2160.jpg') no-repeat center center fixed;
       background-size: cover;
-      overflow-x: hidden;
+      color: white;
     }
-
     .nav-buttons {
       position: absolute;
       top: 20px;
       right: 20px;
       z-index: 10000;
     }
-
-    .home-button {
+    .home-button, .shop-button {
       background-color: #007acc;
-      color: white;
-      padding: 10px 16px;
-      border: none;
-      border-radius: 6px;
-      text-decoration: none;
-      font-size: 16px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-      cursor: pointer;
-    }
-
-    .home-button:hover {
-      background-color: #005f99;
-    }
-
-    .shop-button {
-      background-color: #28a745;
       color: white;
       padding: 10px 16px;
       border: none;
@@ -51,81 +30,29 @@
       box-shadow: 0 2px 6px rgba(0,0,0,0.15);
       cursor: pointer;
     }
-
+    .shop-button {
+      background-color: #28a745;
+    }
+    .home-button:hover {
+      background-color: #005f99;
+    }
     .shop-button:hover {
       background-color: #1e7e34;
     }
-
     .container {
       display: flex;
       justify-content: center;
       align-items: center;
-      padding-top: 80px;
+      padding-top: 100px;
     }
-
     iframe {
-      height: 320px;
-      width: 480px;
+      width: 960px;
+      height: 640px;
       border: 3px solid #007acc;
       border-radius: 8px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      background-color: white;
     }
-
-    .iframe-player {
-      width: 220px;
-      background: rgba(0,0,0,0.8);
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.5);
-      padding: 10px;
-      font-family: Arial, sans-serif;
-      color: white;
-      cursor: move;
-      position: fixed;
-      user-select: none;
-      z-index: 10000;
-    }
-
-    .player-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-weight: bold;
-      cursor: move;
-    }
-
-    .collapse-btn {
-      background: none;
-      border: none;
-      color: white;
-      font-size: 20px;
-      cursor: pointer;
-    }
-
-    .player-body {
-      position: absolute;
-      bottom: 100%;
-      left: 0;
-      width: 100%;
-      border-radius: 10px 10px 0 0;
-      box-shadow: 0 0 10px rgba(0,0,0,0.7);
-      background: rgba(0,0,0,0.85);
-      overflow: hidden;
-      z-index: 1;
-      display: none;
-    }
-
-    .player-body iframe {
-      width: 100%;
-      height: 200px;
-      border: none;
-      border-radius: 6px 6px 0 0;
-    }
-
-    #big-dog-player { bottom: 10px; left: 5vw; }
-    #kicker-player { bottom: 10px; left: 30vw; }
-    #kiss-fm-player { bottom: 10px; left: 55vw; }
-    #hit-nation-player { bottom: 10px; left: 80vw; }
-
     .social-share {
       position: fixed;
       top: 40%;
@@ -138,16 +65,61 @@
       z-index: 1000;
       padding: 5px;
     }
-
     .social-share a {
       padding: 6px;
       border-bottom: 1px solid rgba(255,255,255,0.1);
     }
-
     .social-share img {
       width: 24px;
       height: 24px;
       display: block;
+    }
+    .iframe-player {
+      width: 220px;
+      background: rgba(0,0,0,0.8);
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+      padding: 10px;
+      font-family: Arial, sans-serif;
+      color: white;
+      cursor: move;
+      position: fixed;
+      top: 85vh;
+      user-select: none;
+      z-index: 10000;
+    }
+    .player-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: bold;
+      cursor: move;
+    }
+    .collapse-btn {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .player-body {
+      position: absolute;
+      bottom: 100%;
+      left: 0;
+      width: 100%;
+      border-radius: 10px 10px 0 0;
+      box-shadow: 0 0 10px rgba(0,0,0,0.7);
+      background: rgba(0,0,0,0.85);
+      overflow: hidden;
+      z-index: 1;
+      display: none;
+    }
+    .player-body iframe {
+      width: 100%;
+      height: 200px;
+      border: none;
+      border-radius: 6px 6px 0 0;
     }
   </style>
 </head>
@@ -164,15 +136,13 @@
     <a href="#"><img src="https://cdn-icons-png.flaticon.com/32/733/733585.png" alt="WhatsApp"></a>
     <a href="#"><img src="https://cdn-icons-png.flaticon.com/32/733/733558.png" alt="Pinterest"></a>
     <a href="#"><img src="https://cdn-icons-png.flaticon.com/32/145/145807.png" alt="LinkedIn"></a>
-    <a href="#"><img src="https://cdn-icons-png.flaticon.com/32/732/732200.png" alt="Email"></a>
-    <a href="#"><img src="https://cdn-icons-png.flaticon.com/32/2111/2111646.png" alt="Telegram"></a>
   </div>
 
   <div class="container">
-    <iframe style="height: 320px; width: 480px;" src="https://play.gamepix.com/battleship-war-multiplayer/embed?sid=1" frameborder="0" scrolling="no"></iframe>
+    <iframe src="https://play.gamepix.com/battleship-war-multiplayer/embed?sid=1" frameborder="0" scrolling="no"></iframe>
   </div>
 
-  <div id="big-dog-player" class="iframe-player">
+  <div id="big-dog-player" class="iframe-player" style="left: 5vw;">
     <div class="player-header">
       <span>🎵 Big Dog 106</span>
       <button class="collapse-btn" onclick="togglePlayer('big-dog-player')">+</button>
@@ -182,7 +152,7 @@
     </div>
   </div>
 
-  <div id="kicker-player" class="iframe-player">
+  <div id="kicker-player" class="iframe-player" style="left: 30vw;">
     <div class="player-header">
       <span>🎵 Kicker 95.1</span>
       <button class="collapse-btn" onclick="togglePlayer('kicker-player')">+</button>
@@ -192,7 +162,7 @@
     </div>
   </div>
 
-  <div id="kiss-fm-player" class="iframe-player">
+  <div id="kiss-fm-player" class="iframe-player" style="left: 55vw;">
     <div class="player-header">
       <span>📻 Kiss FM</span>
       <button class="collapse-btn" onclick="togglePlayer('kiss-fm-player')">+</button>
@@ -202,7 +172,7 @@
     </div>
   </div>
 
-  <div id="hit-nation-player" class="iframe-player">
+  <div id="hit-nation-player" class="iframe-player" style="left: 80vw;">
     <div class="player-header">
       <span>🎵 Hit Nation</span>
       <button class="collapse-btn" onclick="togglePlayer('hit-nation-player')">+</button>
@@ -244,10 +214,8 @@
         if (!isDragging) return;
         let x = e.clientX - offsetX;
         let y = e.clientY - offsetY;
-
         x = Math.max(0, Math.min(x, window.innerWidth - element.offsetWidth));
         y = Math.max(0, Math.min(y, window.innerHeight - element.offsetHeight));
-
         element.style.left = x + 'px';
         element.style.top = y + 'px';
       });
