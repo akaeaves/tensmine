@@ -73,7 +73,7 @@
       padding: 2rem 1rem;
       font-size: 0.9rem;
       margin-top: 40px;
-      position: relative;
+      position: relative; /* Ensures footer is positioned correctly */
     }
     footer a {
       color: #99cc33;
@@ -83,6 +83,8 @@
     footer a:hover {
       text-decoration: underline;
     }
+
+    /* Floating Share Buttons */
     .social-share {
       position: fixed;
       top: 40%;
@@ -104,12 +106,78 @@
       height: 24px;
       display: block;
     }
+
+    /* Player Styling */
+    .iframe-player {
+      width: 220px;
+      background: rgba(0,0,0,0.8);
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+      z-index: 10000;
+      padding: 10px;
+      user-select: none;
+      font-family: Arial, sans-serif;
+      color: white;
+      cursor: move;
+      position: fixed; /* Fixed position for dragging */
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 768px) {
+      nav {
+        flex-direction: column;
+        align-items: center;
+      }
+      .content {
+        padding: 1rem;
+      }
+      .iframe-player {
+        width: 90%; /* Responsive width for mobile */
+        left: 5%; /* Center the players */
+      }
+      #big-dog-player, #kicker-player {
+        left: 5%; /* Position on the left */
+      }
+      #kiss-fm-player, #hit-nation-player {
+        right: 5%; /* Position on the right */
+      }
+    }
   </style>
 </head>
 <body>
+
+  <!-- Floating Share Buttons -->
+  <div class="social-share">
+    <a href="https://www.facebook.com/sharer/sharer.php?u=https://yourdomain.com" target="_blank" title="Share on Facebook">
+      <img src="https://cdn-icons-png.flaticon.com/32/733/733547.png" alt="Facebook">
+    </a>
+    <a href="https://twitter.com/intent/tweet?url=https://yourdomain.com&text=Check+this+out!" target="_blank" title="Share on Twitter">
+      <img src="https://cdn-icons-png.flaticon.com/32/733/733579.png" alt="Twitter">
+    </a>
+    <a href="https://reddit.com/submit?url=https://yourdomain.com&title=Jungle+Adventuraddict" target="_blank" title="Share on Reddit">
+      <img src="https://cdn-icons-png.flaticon.com/32/3670/3670226.png" alt="Reddit">
+    </a>
+    <a href="https://api.whatsapp.com/send?text=https://yourdomain.com" target="_blank" title="Share on WhatsApp">
+      <img src="https://cdn-icons-png.flaticon.com/32/733/733585.png" alt="WhatsApp">
+    </a>
+    <a href="https://pinterest.com/pin/create/button/?url=https://yourdomain.com" target="_blank" title="Share on Pinterest">
+      <img src="https://cdn-icons-png.flaticon.com/32/733/733558.png" alt="Pinterest">
+    </a>
+    <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://yourdomain.com" target="_blank" title="Share on LinkedIn">
+      <img src="https://cdn-icons-png.flaticon.com/32/145/145807.png" alt="LinkedIn">
+    </a>
+    <a href="mailto:?subject=Check this site out&body=Visit https://yourdomain.com" title="Share via Email">
+      <img src="https://cdn-icons-png.flaticon.com/32/732/732200.png" alt="Email">
+    </a>
+    <a href="https://t.me/share/url?url=https://yourdomain.com&text=Check+this+out!" target="_blank" title="Share on Telegram">
+      <img src="https://cdn-icons-png.flaticon.com/32/2111/2111646.png" alt="Telegram">
+    </a>
+  </div>
+
   <header>
     <h1>Welcome to Jungle Adventuraddict</h1>
   </header>
+
   <nav>
     <a href="index.html">Home</a>
     <a href="chatbox.html">Chat Box</a>
@@ -124,23 +192,145 @@
     <a href="https://miriele.com" target="_blank">Shop</a>
     <a href="https://customhits.net/?via=jason-eaves" target="_blank">Free Website Traffic</a>
   </nav>
+
   <div class="content">
     <h2>FREE Traffic Link Below</h2>
     <p>Explore games, chat with friends, and shop everyday essentials — all in one place!</p>
+
     <h3>About Our Store</h3>
     <p>
       Feel free to stop by <a href="https://miriele.com" target="_blank" style="color:#99cc33;">Miriele.com</a>, your trusted online destination for everyday essentials, personal care, home goods, and unique lifestyle products—all at unbeatable prices. Whether you're shopping for household items, wellness must-haves, or trending finds, Miriele.com offers a carefully curated selection designed to elevate your daily life.
     </p>
+
     <h3>Get Free Website Visitors with CustomHits</h3>
     <p>
       Looking to grow your website traffic for free? Join <a href="https://customhits.net/?via=jason-eaves" target="_blank" style="color:#99cc33;">CustomHits.net</a>, a powerful traffic exchange platform where real users visit your site in return for viewing others. With thousands of active members worldwide, you can earn daily hits and improve your SEO visibility, Alexa rank, and engagement—all without spending a dime. <strong>Sign up free today</strong> and start sending real visitors to your site instantly.
     </p>
   </div>
+
   <footer>
     <p>© 2025 Jungle Adventuraddict. All Rights Reserved.</p>
     <a href="#" onclick="openModal('termsModal')">Terms of Service</a> |
     <a href="#" onclick="openModal('privacyModal')">Privacy Policy</a>
   </footer>
-  <!-- Add your radios, modals, and scripts back here -->
+
+  <!-- Modals -->
+  <div id="termsModal" class="modal" style="display:none;">
+    <div style="background-color:white; color:black; margin: 10% auto; padding: 20px; border-radius: 8px; max-width: 600px;">
+      <span onclick="closeModal('termsModal')" style="float:right; cursor:pointer;">&times;</span>
+      <h2>Terms of Service</h2>
+      <p>By using this site, you agree to engage respectfully within our community features and use embedded games and content for personal entertainment only. External links and third-party services are governed by their own terms and may change without notice.</p>
+    </div>
+  </div>
+
+  <div id="privacyModal" class="modal" style="display:none;">
+    <div style="background-color:white; color:black; margin: 10% auto; padding: 20px; border-radius: 8px; max-width: 600px;">
+      <span onclick="closeModal('privacyModal')" style="float:right; cursor:pointer;">&times;</span>
+      <h2>Privacy Policy</h2>
+      <p>We do not collect personal information directly on this site. However, external services such as embedded games or links to our store may use cookies or analytics governed by their own privacy policies.</p>
+    </div>
+  </div>
+
+  <script>
+    function openModal(id) {
+      document.getElementById(id).style.display = 'block';
+    }
+    function closeModal(id) {
+      document.getElementById(id).style.display = 'none';
+    }
+    window.onclick = function(event) {
+      if (event.target.className === 'modal') {
+        event.target.style.display = "none";
+      }
+    };
+  </script>
+
+  <!-- Positioning all players at the bottom -->
+  <div id="big-dog-player" class="iframe-player" style="position:fixed; bottom:70px; left:10%;">
+    <div class="player-header">
+      <span>🎵 Big Dog 106</span>
+      <button class="collapse-btn" title="Collapse/Expand" onclick="togglePlayer('big-dog-player')">+</button>
+    </div>
+    <div class="player-body" style="display:none;">
+      <iframe allow="autoplay" width="100%" height="200" src="https://www.iheart.com/live/big-dog-106-2193/?embed=true" frameborder="0"></iframe>
+    </div>
+  </div>
+
+  <div id="kicker-player" class="iframe-player" style="position:fixed; bottom:70px; left:35%;">
+    <div class="player-header">
+      <span>🎵 Kicker 95.1</span>
+      <button class="collapse-btn" title="Collapse/Expand" onclick="togglePlayer('kicker-player')">+</button>
+    </div>
+    <div class="player-body" style="display:none;">
+      <iframe allow="autoplay" width="100%" height="200" src="https://www.iheart.com/live/kicker-951-2205/?embed=true" frameborder="0"></iframe>
+    </div>
+  </div>
+
+  <div id="kiss-fm-player" class="iframe-player" style="position:fixed; bottom:70px; right:35%;">
+    <div class="player-header">
+      <span>📻 Kiss FM</span>
+      <button class="collapse-btn" title="Collapse/Expand" onclick="togglePlayer('kiss-fm-player')">+</button>
+    </div>
+    <div class="player-body" style="display:none;">
+      <iframe allow="autoplay" width="100%" height="200" src="https://www.iheart.com/live/1045-kiss-fm-2201/?embed=true" frameborder="0"></iframe>
+    </div>
+  </div>
+
+  <div id="hit-nation-player" class="iframe-player" style="position:fixed; bottom:70px; right:10%;">
+    <div class="player-header">
+      <span>🎵 Hit Nation</span>
+      <button class="collapse-btn" title="Collapse/Expand" onclick="togglePlayer('hit-nation-player')">+</button>
+    </div>
+    <div class="player-body" style="display:none;">
+      <iframe allow="autoplay" width="100%" height="200" src="https://www.iheart.com/live/hit-nation-4422/?embed=true" frameborder="0"></iframe>
+    </div>
+  </div>
+
+  <script>
+    function togglePlayer(playerId) {
+      const playerBody = document.getElementById(playerId).querySelector('.player-body');
+      const button = document.getElementById(playerId).querySelector('.collapse-btn');
+      const isCollapsed = playerBody.style.display === 'none';
+      playerBody.style.display = isCollapsed ? 'block' : 'none';
+      button.textContent = isCollapsed ? '−' : '+';
+    }
+
+    function makeDraggable(element) {
+      const header = element.querySelector('.player-header');
+      const body = element.querySelector('.player-body');
+      let isDragging = false;
+      let offsetX = 0, offsetY = 0;
+
+      header.addEventListener('mousedown', (e) => {
+        if (e.target === header.querySelector('.collapse-btn')) return; // don't drag when clicking the button
+        isDragging = true;
+        offsetX = e.clientX - element.getBoundingClientRect().left;
+        offsetY = e.clientY - element.getBoundingClientRect().top;
+        document.body.style.userSelect = 'none';
+      });
+
+      document.addEventListener('mouseup', () => {
+        isDragging = false;
+        document.body.style.userSelect = '';
+      });
+
+      document.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        let x = e.clientX - offsetX;
+        let y = e.clientY - offsetY;
+        x = Math.max(0, Math.min(x, window.innerWidth - element.offsetWidth));
+        y = Math.max(0, Math.min(y, window.innerHeight - element.offsetHeight));
+        element.style.left = x + 'px';
+        element.style.top = y + 'px';
+      });
+    }
+
+    // Make all players draggable
+    makeDraggable(document.getElementById('big-dog-player'));
+    makeDraggable(document.getElementById('kicker-player'));
+    makeDraggable(document.getElementById('kiss-fm-player'));
+    makeDraggable(document.getElementById('hit-nation-player'));
+  </script>
+
 </body>
 </html>
