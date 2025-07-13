@@ -104,129 +104,43 @@
       height: 24px;
       display: block;
     }
-    .iframe-player {
-      width: 220px;
-      background: rgba(0,0,0,0.8);
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.5);
-      padding: 10px;
-      font-family: Arial, sans-serif;
-      color: white;
-      cursor: move;
-      position: fixed;
-      user-select: none;
-      z-index: 10000;
-    }
-    .player-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-weight: bold;
-      cursor: move;
-    }
-    .collapse-btn {
-      background: none;
-      border: none;
-      color: white;
-      font-size: 20px;
-      cursor: pointer;
-      user-select: none;
-    }
-    .player-body {
-      margin-top: 10px;
-      display: block;
-    }
-    .player-body iframe {
-      width: 100%;
-      height: 200px;
-      border: none;
-      border-radius: 6px;
-    }
   </style>
 </head>
 <body>
-  <!-- ... content unchanged ... -->
-
-  <!-- Radios Injected (Corrected Station URLs) -->
-  <div id="big-dog-player" class="iframe-player" style="top: 70vh; left: 1vw;">
-    <div class="player-header">
-      <span>🎵 Big Dog 106</span>
-      <button class="collapse-btn" onclick="togglePlayer('big-dog-player')">−</button>
+  <header>
+    <h1>Welcome to Jungle Adventuraddict</h1>
+  </header>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="chatbox.html">Chat Box</a>
+    <div class="dropdown">
+      <span class="dropdown-btn">Games ▼</span>
+      <div class="dropdown-content">
+        <a href="game.html">Words</a>
+        <a href="titans.html">Titans</a>
+        <a href="battleship.html">Battleship</a>
+      </div>
     </div>
-    <div class="player-body">
-      <iframe allow="autoplay" src="https://www.iheart.com/live/big-dog-106-2193/?embed=true"></iframe>
-    </div>
+    <a href="https://miriele.com" target="_blank">Shop</a>
+    <a href="https://customhits.net/?via=jason-eaves" target="_blank">Free Website Traffic</a>
+  </nav>
+  <div class="content">
+    <h2>FREE Traffic Link Below</h2>
+    <p>Explore games, chat with friends, and shop everyday essentials — all in one place!</p>
+    <h3>About Our Store</h3>
+    <p>
+      Feel free to stop by <a href="https://miriele.com" target="_blank" style="color:#99cc33;">Miriele.com</a>, your trusted online destination for everyday essentials, personal care, home goods, and unique lifestyle products—all at unbeatable prices. Whether you're shopping for household items, wellness must-haves, or trending finds, Miriele.com offers a carefully curated selection designed to elevate your daily life.
+    </p>
+    <h3>Get Free Website Visitors with CustomHits</h3>
+    <p>
+      Looking to grow your website traffic for free? Join <a href="https://customhits.net/?via=jason-eaves" target="_blank" style="color:#99cc33;">CustomHits.net</a>, a powerful traffic exchange platform where real users visit your site in return for viewing others. With thousands of active members worldwide, you can earn daily hits and improve your SEO visibility, Alexa rank, and engagement—all without spending a dime. <strong>Sign up free today</strong> and start sending real visitors to your site instantly.
+    </p>
   </div>
-
-  <div id="kicker-player" class="iframe-player" style="top: 70vh; left: 25vw;">
-    <div class="player-header">
-      <span>🎵 Kicker 95.1</span>
-      <button class="collapse-btn" onclick="togglePlayer('kicker-player')">−</button>
-    </div>
-    <div class="player-body">
-      <iframe allow="autoplay" src="https://www.iheart.com/live/kicker-951-2205/?embed=true"></iframe>
-    </div>
-  </div>
-
-  <div id="kiss-fm-player" class="iframe-player" style="top: 70vh; left: 50vw;">
-    <div class="player-header">
-      <span>📻 Kiss FM</span>
-      <button class="collapse-btn" onclick="togglePlayer('kiss-fm-player')">−</button>
-    </div>
-    <div class="player-body">
-      <iframe allow="autoplay" src="https://www.iheart.com/live/1045-kiss-fm-2201/?embed=true"></iframe>
-    </div>
-  </div>
-
-  <div id="hit-nation-player" class="iframe-player" style="top: 70vh; left: 75vw;">
-    <div class="player-header">
-      <span>🎵 Hit Nation</span>
-      <button class="collapse-btn" onclick="togglePlayer('hit-nation-player')">−</button>
-    </div>
-    <div class="player-body">
-      <iframe allow="autoplay" src="https://www.iheart.com/live/hit-nation-4422/?embed=true"></iframe>
-    </div>
-  </div>
-
-  <script>
-    function togglePlayer(playerId) {
-      const player = document.getElementById(playerId);
-      const body = player.querySelector('.player-body');
-      const btn = player.querySelector('.collapse-btn');
-      const isCollapsed = body.style.display === 'none';
-      body.style.display = isCollapsed ? 'block' : 'none';
-      btn.textContent = isCollapsed ? '−' : '+';
-    }
-
-    function makeDraggable(element) {
-      const header = element.querySelector('.player-header');
-      let isDragging = false;
-      let offsetX = 0, offsetY = 0;
-      header.addEventListener('mousedown', (e) => {
-        if (e.target.classList.contains('collapse-btn')) return;
-        isDragging = true;
-        offsetX = e.clientX - element.getBoundingClientRect().left;
-        offsetY = e.clientY - element.getBoundingClientRect().top;
-        document.body.style.userSelect = 'none';
-      });
-      document.addEventListener('mouseup', () => {
-        isDragging = false;
-        document.body.style.userSelect = '';
-      });
-      document.addEventListener('mousemove', (e) => {
-        if (!isDragging) return;
-        let x = e.clientX - offsetX;
-        let y = e.clientY - offsetY;
-        x = Math.max(0, Math.min(x, window.innerWidth - element.offsetWidth));
-        y = Math.max(0, Math.min(y, window.innerHeight - element.offsetHeight));
-        element.style.left = x + 'px';
-        element.style.top = y + 'px';
-      });
-    }
-
-    ['big-dog-player', 'kicker-player', 'kiss-fm-player', 'hit-nation-player'].forEach(id => {
-      makeDraggable(document.getElementById(id));
-    });
-  </script>
+  <footer>
+    <p>© 2025 Jungle Adventuraddict. All Rights Reserved.</p>
+    <a href="#" onclick="openModal('termsModal')">Terms of Service</a> |
+    <a href="#" onclick="openModal('privacyModal')">Privacy Policy</a>
+  </footer>
+  <!-- Add your radios, modals, and scripts back here -->
 </body>
 </html>
