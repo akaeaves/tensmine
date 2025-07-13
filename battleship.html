@@ -60,3 +60,93 @@
       top: 40%;
       left: 0;
       transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      background-color: rgba(0, 0, 0, 0.6);
+      border-radius: 0 8px 8px 0;
+      z-index: 1000;
+      padding: 5px;
+    }
+    .social-share a {
+      padding: 6px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .social-share img {
+      width: 24px;
+      height: 24px;
+      display: block;
+    }
+    .iframe-player {
+      width: 220px;
+      background: rgba(0,0,0,0.8);
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+      padding: 10px;
+      font-family: Arial, sans-serif;
+      color: white;
+      cursor: move;
+      position: absolute;
+      user-select: none;
+    }
+    .player-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: bold;
+      cursor: move;
+      position: relative;
+      z-index: 2;
+    }
+    .collapse-btn {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .player-body {
+      position: absolute;
+      bottom: 100%;
+      left: 0;
+      width: 100%;
+      border-radius: 10px 10px 0 0;
+      box-shadow: 0 0 10px rgba(0,0,0,0.7);
+      background: rgba(0,0,0,0.85);
+      overflow: hidden;
+      z-index: 1;
+      display: none;
+    }
+    .player-body iframe {
+      width: 100%;
+      height: 200px;
+      border: none;
+      border-radius: 6px 6px 0 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="nav-buttons">
+    <a href="index.html" class="home-button">Home</a>
+    <a href="https://miriele.com" target="_blank" class="shop-button">Shop</a>
+  </div>
+
+  <div class="social-share">
+    <a href="#"><img src="https://cdn-icons-png.flaticon.com/32/733/733547.png" alt="Facebook"></a>
+    <a href="#"><img src="https://cdn-icons-png.flaticon.com/32/733/733579.png" alt="Twitter"></a>
+    <a href="#"><img src="https://cdn-icons-png.flaticon.com/32/3670/3670226.png" alt="Reddit"></a>
+    <a href="#"><img src="https://cdn-icons-png.flaticon.com/32/733/733585.png" alt="WhatsApp"></a>
+    <a href="#"><img src="https://cdn-icons-png.flaticon.com/32/733/733558.png" alt="Pinterest"></a>
+    <a href="#"><img src="https://cdn-icons-png.flaticon.com/32/145/145807.png" alt="LinkedIn"></a>
+    <a href="#"><img src="https://cdn-icons-png.flaticon.com/32/732/732200.png" alt="Email"></a>
+    <a href="#"><img src="https://cdn-icons-png.flaticon.com/32/2111/2111646.png" alt="Telegram"></a>
+  </div>
+
+  <div class="container">
+    <iframe class="game-frame" src="https://play.gamepix.com/battleship-war-multiplayer/embed?sid=1" frameborder="0" scrolling="no"></iframe>
+  </div>
+
+  <!-- Radios will go here if needed -->
+
+</body>
+</html>
