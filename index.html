@@ -234,6 +234,11 @@
   </p>
 </div>
 
+   // Make each player draggable
+  ['big-dog-player', 'kicker-player', 'kiss-fm-player', 'hit-nation-player'].forEach(id => {
+    makeDraggable(document.getElementById(id));
+  });
+
 <footer>
   <p>© 2025 Jungle Adventuraddict. All Rights Reserved.</p>
   <a href="#" onclick="openModal('termsModal')">Terms of Service</a> |
@@ -309,11 +314,6 @@
       element.style.top = y + 'px';
     });
   }
-
-  // Make each player draggable
-  ['big-dog-player', 'kicker-player', 'kiss-fm-player', 'hit-nation-player'].forEach(id => {
-    makeDraggable(document.getElementById(id));
-  });
 
   function openModal(id) {
     document.getElementById(id).style.display = 'block';
