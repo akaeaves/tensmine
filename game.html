@@ -107,11 +107,11 @@
     #kiss-fm-player { top: 460px; }
     #hit-nation-player { top: 660px; }
 
-    /* Elfsight Banner - fixed, scrollable if too tall */
+    /* Elfsight Banner - positioned just left of game iframe */
     .elfsight-banner-left {
       position: fixed;
-      top: 100px;
-      left: 10px;
+      top: 150px; /* level with game iframe */
+      left: calc(50% - 800px / 2 - 190px); /* game is 800px wide; this places banner ~30px left of it */
       z-index: 9999;
       width: 160px;
       height: 525px;
@@ -126,7 +126,7 @@
     <a class="btn" href="https://miriele.com" target="_blank">Shop</a>
   </header>
 
-  <!-- Elfsight Banner (Left Side, scrollable) -->
+  <!-- Elfsight Banner (Left of iframe, vertically aligned) -->
   <div class="elfsight-banner-left">
     <script src="https://static.elfsight.com/platform/platform.js" async></script>
     <div class="elfsight-app-71306753-8067-4e85-92f7-545e18860eb0" data-elfsight-app-lazy></div>
