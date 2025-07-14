@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Words - Miriele</title>
+  <title>Games - Miriele</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -14,6 +14,12 @@
       background-position: center;
       color: white;
       overflow-x: hidden;
+    }
+
+    .noselect {
+      user-select: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
     }
 
     header {
@@ -132,7 +138,7 @@
 <body>
 
   <header>
-    <h1>Words</h1></h1>
+    <h1>Enjoy Our Featured Game</h1>
     <a class="btn" href="index.html">Home</a>
     <a class="btn" href="https://miriele.com" target="_blank">Shop</a>
   </header>
@@ -148,15 +154,10 @@
     © 2025 Miriele. All Rights Reserved.
   </footer>
 
-  <!-- Radio Widget 4: Big Dog 106 (TOP) -->
+  <!-- Radio Widgets -->
   <div class="radio-widget" id="radioWidget4" style="bottom: 236px; right: 20px;">
     <div class="radio-panel">
-      <iframe
-        src="https://beta.iheart.com/live/big-dog-106-2193/?embed=true"
-        allow="autoplay"
-        allowfullscreen
-        title="Big Dog 106"
-      ></iframe>
+      <iframe src="https://beta.iheart.com/live/big-dog-106-2193/?embed=true" allow="autoplay" allowfullscreen title="Big Dog 106"></iframe>
     </div>
     <div class="radio-header" id="radioHeader4">
       Big Dog 106
@@ -164,15 +165,9 @@
     </div>
   </div>
 
-  <!-- Radio Widget 3: Hit Nation -->
   <div class="radio-widget" id="radioWidget3" style="bottom: 164px; right: 20px;">
     <div class="radio-panel">
-      <iframe
-        src="https://beta.iheart.com/live/hit-nation-4422/?embed=true"
-        allow="autoplay"
-        allowfullscreen
-        title="Hit Nation"
-      ></iframe>
+      <iframe src="https://beta.iheart.com/live/hit-nation-4422/?embed=true" allow="autoplay" allowfullscreen title="Hit Nation"></iframe>
     </div>
     <div class="radio-header" id="radioHeader3">
       Hit Nation
@@ -180,15 +175,9 @@
     </div>
   </div>
 
-  <!-- Radio Widget 2: 104.5 KISS FM -->
   <div class="radio-widget" id="radioWidget2" style="bottom: 92px; right: 20px;">
     <div class="radio-panel">
-      <iframe
-        src="https://beta.iheart.com/live/1045-kiss-fm-2201/?embed=true"
-        allow="autoplay"
-        allowfullscreen
-        title="104.5 KISS FM"
-      ></iframe>
+      <iframe src="https://beta.iheart.com/live/1045-kiss-fm-2201/?embed=true" allow="autoplay" allowfullscreen title="104.5 KISS FM"></iframe>
     </div>
     <div class="radio-header" id="radioHeader2">
       104.5 KISS FM
@@ -196,15 +185,9 @@
     </div>
   </div>
 
-  <!-- Radio Widget 1: Kicker 95.1 -->
   <div class="radio-widget" id="radioWidget1" style="bottom: 20px; right: 20px;">
     <div class="radio-panel">
-      <iframe
-        src="https://www.iheart.com/live/kicker-951-2205/?embed=true"
-        allow="autoplay"
-        allowfullscreen
-        title="Kicker 95.1"
-      ></iframe>
+      <iframe src="https://www.iheart.com/live/kicker-951-2205/?embed=true" allow="autoplay" allowfullscreen title="Kicker 95.1"></iframe>
     </div>
     <div class="radio-header" id="radioHeader1">
       Kicker 95.1
@@ -222,6 +205,16 @@
 
       toggle.addEventListener('click', () => {
         expanded = !expanded;
+
+        // Collapse all others
+        document.querySelectorAll('.radio-widget').forEach(w => {
+          if (w !== widget) {
+            w.classList.remove('expanded');
+            const t = w.querySelector('.radio-toggle');
+            if (t) t.textContent = '+';
+          }
+        });
+
         widget.classList.toggle('expanded', expanded);
         toggle.textContent = expanded ? '−' : '+';
       });
@@ -234,6 +227,7 @@
         offsetX = e.clientX - rect.left;
         offsetY = e.clientY - rect.top;
         header.style.cursor = 'grabbing';
+        document.body.classList.add('noselect'); // prevent text selection
       });
 
       document.addEventListener('mousemove', (e) => {
@@ -258,10 +252,11 @@
       document.addEventListener('mouseup', () => {
         isDragging = false;
         header.style.cursor = 'grab';
+        document.body.classList.remove('noselect'); // allow selection again
       });
     }
 
-    // Init all 4 widgets
+    // Initialize all widgets
     setupRadioWidget('radioWidget1', 'radioHeader1', 'radioToggle1');
     setupRadioWidget('radioWidget2', 'radioHeader2', 'radioToggle2');
     setupRadioWidget('radioWidget3', 'radioHeader3', 'radioToggle3');
