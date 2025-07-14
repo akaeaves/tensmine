@@ -68,74 +68,65 @@
       color: #ccc;
     }
 
-    /* Floating Radio Player */
-    .radio-container {
+    /* Floating Radio Widget */
+    .radio-widget {
       position: fixed;
       bottom: 20px;
       right: 20px;
-      width: 200px;
-      height: 60px;
-      background: rgba(30, 30, 30, 0.6);
-      backdrop-filter: blur(8px);
-      border-radius: 16px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
-      overflow: hidden;
       z-index: 9999;
-      transition: height 0.3s ease, width 0.3s ease, transform 0.3s ease;
-      cursor: grab;
-    }
-
-    .radio-container.expanded {
-      height: 300px;
-      width: 340px;
-      transform: translateY(-240px);
+      font-family: Arial, sans-serif;
     }
 
     .radio-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 10px 16px;
-      background: rgba(0, 0, 0, 0.5);
+      background: rgba(30, 30, 30, 0.75);
+      backdrop-filter: blur(10px);
       color: white;
-      font-weight: bold;
-      font-size: 16px;
-      user-select: none;
+      padding: 10px 16px;
+      border-radius: 14px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5);
       cursor: grab;
+      min-width: 200px;
     }
 
-    .radio-toggle-btn {
+    .radio-toggle {
       background: none;
       border: none;
-      color: #fff;
-      font-size: 22px;
+      color: white;
+      font-size: 20px;
       cursor: pointer;
       user-select: none;
     }
 
-    .radio-iframe-wrapper {
+    .radio-panel {
+      position: absolute;
+      bottom: 60px;
+      right: 0;
+      width: 320px;
       height: 0;
-      opacity: 0;
+      overflow: hidden;
+      border-radius: 16px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+      background: rgba(0,0,0,0.85);
       transition: height 0.3s ease, opacity 0.3s ease;
+      opacity: 0;
     }
 
-    .radio-container.expanded .radio-iframe-wrapper {
-      height: 240px;
-      opacity: 1;
-    }
-
-    .radio-iframe-wrapper iframe {
+    .radio-panel iframe {
       width: 100%;
       height: 100%;
       border: none;
     }
 
-    @media (max-width: 400px) {
-      .radio-container {
-        width: 160px;
-      }
+    .radio-widget.expanded .radio-panel {
+      height: 240px;
+      opacity: 1;
+    }
 
-      .radio-container.expanded {
+    @media (max-width: 400px) {
+      .radio-panel {
         width: 90vw;
       }
     }
@@ -160,74 +151,68 @@
     © 2025 Miriele. All Rights Reserved.
   </footer>
 
-  <!-- Radio Widget -->
-  <div class="radio-container" id="radioContainer">
-    <div class="radio-header" id="radioHeader">
-      Kicker 95.1
-      <button id="radioToggleBtn" class="radio-toggle-btn">+</button>
-    </div>
-    <div class="radio-iframe-wrapper">
+  <!-- Floating Radio Widget -->
+  <div class="radio-widget" id="radioWidget">
+    <div class="radio-panel">
       <iframe
         src="https://www.iheart.com/live/kicker-951-2205/?embed=true"
         allow="autoplay"
         allowfullscreen
-        title="Kicker 95.1 Live Stream"
+        title="Kicker 95.1"
       ></iframe>
+    </div>
+    <div class="radio-header" id="radioHeader">
+      Kicker 95.1
+      <button class="radio-toggle" id="radioToggle">+</button>
     </div>
   </div>
 
   <script>
-    const radioContainer = document.getElementById('radioContainer');
-    const radioHeader = document.getElementById('radioHeader');
-    const radioToggleBtn = document.getElementById('radioToggleBtn');
+    const widget = document.getElementById('radioWidget');
+    const toggle = document.getElementById('radioToggle');
+    const header = document.getElementById('radioHeader');
 
-    let isExpanded = false;
-    radioToggleBtn.addEventListener('click', () => {
-      isExpanded = !isExpanded;
-      radioContainer.classList.toggle('expanded', isExpanded);
-      radioToggleBtn.textContent = isExpanded ? '−' : '+';
+    let expanded = false;
+
+    toggle.addEventListener('click', () => {
+      expanded = !expanded;
+      widget.classList.toggle('expanded', expanded);
+      toggle.textContent = expanded ? '−' : '+';
     });
 
     // Dragging logic with bounds
-    let isDragging = false;
-    let offsetX = 0, offsetY = 0;
+    let isDragging = false, offsetX = 0, offsetY = 0;
 
-    radioHeader.addEventListener('mousedown', (e) => {
+    header.addEventListener('mousedown', (e) => {
       isDragging = true;
-      const rect = radioContainer.getBoundingClientRect();
+      const rect = widget.getBoundingClientRect();
       offsetX = e.clientX - rect.left;
       offsetY = e.clientY - rect.top;
-      radioHeader.style.cursor = 'grabbing';
+      header.style.cursor = 'grabbing';
     });
 
     document.addEventListener('mousemove', (e) => {
       if (!isDragging) return;
 
       e.preventDefault();
-      let newX = e.clientX - offsetX;
-      let newY = e.clientY - offsetY;
+      let x = e.clientX - offsetX;
+      let y = e.clientY - offsetY;
 
-      // Restrict movement inside window
-      const containerWidth = radioContainer.offsetWidth;
-      const containerHeight = isExpanded ? 300 : 60;
+      const maxX = window.innerWidth - widget.offsetWidth;
+      const maxY = window.innerHeight - 60; // Height of header
 
-      const maxX = window.innerWidth - containerWidth;
-      const maxY = window.innerHeight - containerHeight;
+      x = Math.max(0, Math.min(x, maxX));
+      y = Math.max(0, Math.min(y, maxY));
 
-      if (newX < 0) newX = 0;
-      if (newY < 0) newY = 0;
-      if (newX > maxX) newX = maxX;
-      if (newY > maxY) newY = maxY;
-
-      radioContainer.style.left = `${newX}px`;
-      radioContainer.style.top = `${newY}px`;
-      radioContainer.style.right = 'auto';
-      radioContainer.style.bottom = 'auto';
+      widget.style.left = `${x}px`;
+      widget.style.top = `${y}px`;
+      widget.style.right = 'auto';
+      widget.style.bottom = 'auto';
     });
 
     document.addEventListener('mouseup', () => {
       isDragging = false;
-      radioHeader.style.cursor = 'grab';
+      header.style.cursor = 'grab';
     });
   </script>
 
