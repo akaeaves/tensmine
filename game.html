@@ -68,7 +68,6 @@
       color: #ccc;
     }
 
-    /* Floating Radio Widget */
     .radio-widget {
       position: fixed;
       z-index: 9999;
@@ -149,7 +148,23 @@
     © 2025 Miriele. All Rights Reserved.
   </footer>
 
-  <!-- Radio Widget 3: Hit Nation (TOP) -->
+  <!-- Radio Widget 4: Big Dog 106 (TOP) -->
+  <div class="radio-widget" id="radioWidget4" style="bottom: 236px; right: 20px;">
+    <div class="radio-panel">
+      <iframe
+        src="https://beta.iheart.com/live/big-dog-106-2193/?embed=true"
+        allow="autoplay"
+        allowfullscreen
+        title="Big Dog 106"
+      ></iframe>
+    </div>
+    <div class="radio-header" id="radioHeader4">
+      Big Dog 106
+      <button class="radio-toggle" id="radioToggle4">+</button>
+    </div>
+  </div>
+
+  <!-- Radio Widget 3: Hit Nation -->
   <div class="radio-widget" id="radioWidget3" style="bottom: 164px; right: 20px;">
     <div class="radio-panel">
       <iframe
@@ -246,9 +261,11 @@
       });
     }
 
+    // Init all 4 widgets
     setupRadioWidget('radioWidget1', 'radioHeader1', 'radioToggle1');
     setupRadioWidget('radioWidget2', 'radioHeader2', 'radioToggle2');
     setupRadioWidget('radioWidget3', 'radioHeader3', 'radioToggle3');
+    setupRadioWidget('radioWidget4', 'radioHeader4', 'radioToggle4');
   </script>
 
 </body>
