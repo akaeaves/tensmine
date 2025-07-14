@@ -71,8 +71,6 @@
     /* Floating Radio Widget */
     .radio-widget {
       position: fixed;
-      bottom: 20px;
-      right: 20px;
       z-index: 9999;
       font-family: Arial, sans-serif;
     }
@@ -151,8 +149,24 @@
     © 2025 Miriele. All Rights Reserved.
   </footer>
 
-  <!-- Floating Radio Widget -->
-  <div class="radio-widget" id="radioWidget">
+  <!-- Radio Widget 1: 104.5 KISS FM -->
+  <div class="radio-widget" id="radioWidget1" style="bottom: 280px; right: 20px;">
+    <div class="radio-panel">
+      <iframe
+        src="https://beta.iheart.com/live/1045-kiss-fm-2201/?embed=true"
+        allow="autoplay"
+        allowfullscreen
+        title="104.5 KISS FM"
+      ></iframe>
+    </div>
+    <div class="radio-header" id="radioHeader1">
+      104.5 KISS FM
+      <button class="radio-toggle" id="radioToggle1">+</button>
+    </div>
+  </div>
+
+  <!-- Radio Widget 2: Kicker 95.1 -->
+  <div class="radio-widget" id="radioWidget2" style="bottom: 20px; right: 20px;">
     <div class="radio-panel">
       <iframe
         src="https://www.iheart.com/live/kicker-951-2205/?embed=true"
@@ -161,59 +175,64 @@
         title="Kicker 95.1"
       ></iframe>
     </div>
-    <div class="radio-header" id="radioHeader">
+    <div class="radio-header" id="radioHeader2">
       Kicker 95.1
-      <button class="radio-toggle" id="radioToggle">+</button>
+      <button class="radio-toggle" id="radioToggle2">+</button>
     </div>
   </div>
 
   <script>
-    const widget = document.getElementById('radioWidget');
-    const toggle = document.getElementById('radioToggle');
-    const header = document.getElementById('radioHeader');
+    function setupRadioWidget(widgetId, headerId, toggleId) {
+      const widget = document.getElementById(widgetId);
+      const header = document.getElementById(headerId);
+      const toggle = document.getElementById(toggleId);
 
-    let expanded = false;
+      let expanded = false;
 
-    toggle.addEventListener('click', () => {
-      expanded = !expanded;
-      widget.classList.toggle('expanded', expanded);
-      toggle.textContent = expanded ? '−' : '+';
-    });
+      toggle.addEventListener('click', () => {
+        expanded = !expanded;
+        widget.classList.toggle('expanded', expanded);
+        toggle.textContent = expanded ? '−' : '+';
+      });
 
-    // Dragging logic with bounds
-    let isDragging = false, offsetX = 0, offsetY = 0;
+      let isDragging = false, offsetX = 0, offsetY = 0;
 
-    header.addEventListener('mousedown', (e) => {
-      isDragging = true;
-      const rect = widget.getBoundingClientRect();
-      offsetX = e.clientX - rect.left;
-      offsetY = e.clientY - rect.top;
-      header.style.cursor = 'grabbing';
-    });
+      header.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        const rect = widget.getBoundingClientRect();
+        offsetX = e.clientX - rect.left;
+        offsetY = e.clientY - rect.top;
+        header.style.cursor = 'grabbing';
+      });
 
-    document.addEventListener('mousemove', (e) => {
-      if (!isDragging) return;
+      document.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        e.preventDefault();
 
-      e.preventDefault();
-      let x = e.clientX - offsetX;
-      let y = e.clientY - offsetY;
+        let x = e.clientX - offsetX;
+        let y = e.clientY - offsetY;
 
-      const maxX = window.innerWidth - widget.offsetWidth;
-      const maxY = window.innerHeight - 60; // Height of header
+        const maxX = window.innerWidth - widget.offsetWidth;
+        const maxY = window.innerHeight - 60; // height of collapsed widget
 
-      x = Math.max(0, Math.min(x, maxX));
-      y = Math.max(0, Math.min(y, maxY));
+        x = Math.max(0, Math.min(x, maxX));
+        y = Math.max(0, Math.min(y, maxY));
 
-      widget.style.left = `${x}px`;
-      widget.style.top = `${y}px`;
-      widget.style.right = 'auto';
-      widget.style.bottom = 'auto';
-    });
+        widget.style.left = `${x}px`;
+        widget.style.top = `${y}px`;
+        widget.style.right = 'auto';
+        widget.style.bottom = 'auto';
+      });
 
-    document.addEventListener('mouseup', () => {
-      isDragging = false;
-      header.style.cursor = 'grab';
-    });
+      document.addEventListener('mouseup', () => {
+        isDragging = false;
+        header.style.cursor = 'grab';
+      });
+    }
+
+    // Setup both radio widgets
+    setupRadioWidget('radioWidget1', 'radioHeader1', 'radioToggle1');
+    setupRadioWidget('radioWidget2', 'radioHeader2', 'radioToggle2');
   </script>
 
 </body>
