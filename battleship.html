@@ -39,6 +39,7 @@
       align-items: flex-start;
       gap: 20px;
       margin: 20px;
+      flex-wrap: wrap;
     }
 
     .ad-image {
@@ -54,8 +55,8 @@
 
     .game-iframe {
       border: none;
-      width: 800px;
-      height: 450px;
+      width: 1000px;
+      height: 600px;
       max-width: 100%;
     }
 
@@ -141,14 +142,14 @@
     <a href="https://miriele.com/indoor-hydroponic-garden-system/" target="_blank">
       <img class="ad-image" src="https://i.imgur.com/DQNlKRU.png" alt="Hydroponic Ad">
     </a>
-   <iframe class="game-iframe" src="https://play.gamepix.com/battleship-war-multiplayer/embed?sid=1" allowfullscreen scrolling="no"></iframe>
+    <iframe class="game-iframe" src="https://play.gamepix.com/battleship-war-multiplayer/embed?sid=1" allowfullscreen scrolling="no"></iframe>
   </div>
 
   <footer>
     © 2025 Miriele. All Rights Reserved.
   </footer>
 
-  <!-- Radio Widget 4: Big Dog 106 (TOP) -->
+  <!-- Radio Widget 4: Big Dog 106 -->
   <div class="radio-widget" id="radioWidget4" style="bottom: 236px; right: 20px;">
     <div class="radio-panel">
       <iframe
@@ -261,7 +262,6 @@
       });
     }
 
-    // Init all 4 widgets
     setupRadioWidget('radioWidget1', 'radioHeader1', 'radioToggle1');
     setupRadioWidget('radioWidget2', 'radioHeader2', 'radioToggle2');
     setupRadioWidget('radioWidget3', 'radioHeader3', 'radioToggle3');
