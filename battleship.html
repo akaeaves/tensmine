@@ -149,7 +149,7 @@
     © 2025 Miriele. All Rights Reserved.
   </footer>
 
-  <!-- Radio Widget 4: Big Dog 106 -->
+  <!-- Radio Widget 4 -->
   <div class="radio-widget" id="radioWidget4" style="bottom: 236px; right: 20px;">
     <div class="radio-panel">
       <iframe
@@ -165,7 +165,7 @@
     </div>
   </div>
 
-  <!-- Radio Widget 3: Hit Nation -->
+  <!-- Radio Widget 3 -->
   <div class="radio-widget" id="radioWidget3" style="bottom: 164px; right: 20px;">
     <div class="radio-panel">
       <iframe
@@ -181,7 +181,7 @@
     </div>
   </div>
 
-  <!-- Radio Widget 2: 104.5 KISS FM -->
+  <!-- Radio Widget 2 -->
   <div class="radio-widget" id="radioWidget2" style="bottom: 92px; right: 20px;">
     <div class="radio-panel">
       <iframe
@@ -197,7 +197,7 @@
     </div>
   </div>
 
-  <!-- Radio Widget 1: Kicker 95.1 -->
+  <!-- Radio Widget 1 -->
   <div class="radio-widget" id="radioWidget1" style="bottom: 20px; right: 20px;">
     <div class="radio-panel">
       <iframe
@@ -235,6 +235,9 @@
         offsetX = e.clientX - rect.left;
         offsetY = e.clientY - rect.top;
         header.style.cursor = 'grabbing';
+
+        // Prevent text selection
+        document.body.style.userSelect = 'none';
       });
 
       document.addEventListener('mousemove', (e) => {
@@ -259,6 +262,9 @@
       document.addEventListener('mouseup', () => {
         isDragging = false;
         header.style.cursor = 'grab';
+
+        // Re-enable text selection
+        document.body.style.userSelect = '';
       });
     }
 
