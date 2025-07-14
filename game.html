@@ -13,6 +13,7 @@
       background-size: cover;
       background-position: center;
       color: white;
+      overflow-x: hidden;
     }
 
     header {
@@ -180,7 +181,6 @@
     const radioHeader = document.getElementById('radioHeader');
     const radioToggleBtn = document.getElementById('radioToggleBtn');
 
-    // Expand/Collapse toggle
     let isExpanded = false;
     radioToggleBtn.addEventListener('click', () => {
       isExpanded = !isExpanded;
@@ -188,9 +188,9 @@
       radioToggleBtn.textContent = isExpanded ? '−' : '+';
     });
 
-    // Dragging
+    // Dragging logic with bounds
     let isDragging = false;
-    let offsetX, offsetY;
+    let offsetX = 0, offsetY = 0;
 
     radioHeader.addEventListener('mousedown', (e) => {
       isDragging = true;
@@ -202,20 +202,25 @@
 
     document.addEventListener('mousemove', (e) => {
       if (!isDragging) return;
+
       e.preventDefault();
+      let newX = e.clientX - offsetX;
+      let newY = e.clientY - offsetY;
 
-      let x = e.clientX - offsetX;
-      let y = e.clientY - offsetY;
+      // Restrict movement inside window
+      const containerWidth = radioContainer.offsetWidth;
+      const containerHeight = isExpanded ? 300 : 60;
 
-      // prevent dragging off-screen
-      const maxX = window.innerWidth - radioContainer.offsetWidth;
-      const maxY = window.innerHeight - radioContainer.offsetHeight;
+      const maxX = window.innerWidth - containerWidth;
+      const maxY = window.innerHeight - containerHeight;
 
-      x = Math.max(0, Math.min(x, maxX));
-      y = Math.max(0, Math.min(y, maxY));
+      if (newX < 0) newX = 0;
+      if (newY < 0) newY = 0;
+      if (newX > maxX) newX = maxX;
+      if (newY > maxY) newY = maxY;
 
-      radioContainer.style.left = x + 'px';
-      radioContainer.style.top = y + 'px';
+      radioContainer.style.left = `${newX}px`;
+      radioContainer.style.top = `${newY}px`;
       radioContainer.style.right = 'auto';
       radioContainer.style.bottom = 'auto';
     });
