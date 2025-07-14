@@ -70,109 +70,72 @@
     /* Floating Radio Player */
     .radio-container {
       position: fixed;
-      right: 20px;
       bottom: 20px;
-      width: 180px;
+      right: 20px;
+      width: 200px;
       height: 60px;
-      background: rgba(0,0,0,0.75);
-      border-radius: 14px 14px 0 0;
-      box-shadow: 0 10px 20px rgba(0,0,0,0.5);
-      color: white;
-      font-family: Arial, sans-serif;
-      user-select: none;
-      z-index: 10000;
-      cursor: default;
-      display: flex;
-      flex-direction: column;
+      background: rgba(30, 30, 30, 0.6);
+      backdrop-filter: blur(8px);
+      border-radius: 16px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
       overflow: hidden;
-      transition: height 0.3s ease, width 0.3s ease;
+      z-index: 9999;
+      transition: height 0.3s ease, width 0.3s ease, transform 0.3s ease;
+      cursor: grab;
     }
 
-    /* When expanded: increase height upward by adjusting bottom */
     .radio-container.expanded {
-      height: 280px;
-      width: 320px;
-      border-radius: 14px;
-      /* We'll shift the container upward by subtracting extra height */
-      bottom: 20px; /* base bottom */
-      /* We'll use transform to shift it upward */
-      transform-origin: bottom right;
-      animation: expandUp 0.3s forwards;
-    }
-
-    @keyframes expandUp {
-      from {
-        transform: translateY(0);
-      }
-      to {
-        transform: translateY(-220px);
-      }
-    }
-
-    /* Reset transform when collapsed */
-    .radio-container:not(.expanded) {
-      transform: translateY(0);
+      height: 300px;
+      width: 340px;
+      transform: translateY(-240px);
     }
 
     .radio-header {
       display: flex;
       align-items: center;
-      padding: 10px 12px;
-      cursor: grab;
-      background: rgba(0,0,0,0.65);
-      user-select: none;
-      flex-shrink: 0;
-    }
-
-    .radio-label {
-      flex-grow: 1;
+      justify-content: space-between;
+      padding: 10px 16px;
+      background: rgba(0, 0, 0, 0.5);
+      color: white;
       font-weight: bold;
       font-size: 16px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
       user-select: none;
+      cursor: grab;
     }
 
     .radio-toggle-btn {
       background: none;
       border: none;
-      color: white;
-      font-size: 24px;
+      color: #fff;
+      font-size: 22px;
       cursor: pointer;
-      padding: 0 8px;
       user-select: none;
-      line-height: 1;
     }
 
     .radio-iframe-wrapper {
-      flex-grow: 1;
-      background: black;
-      overflow: hidden;
-      opacity: 0;
       height: 0;
-      transition: opacity 0.3s ease, height 0.3s ease;
+      opacity: 0;
+      transition: height 0.3s ease, opacity 0.3s ease;
     }
 
     .radio-container.expanded .radio-iframe-wrapper {
+      height: 240px;
       opacity: 1;
-      height: 220px;
     }
 
-    iframe {
-      border: none;
+    .radio-iframe-wrapper iframe {
       width: 100%;
       height: 100%;
-      pointer-events: auto;
+      border: none;
     }
 
-    /* Responsive */
     @media (max-width: 400px) {
-      .radio-container.expanded {
-        width: 90vw;
-      }
       .radio-container {
         width: 160px;
+      }
+
+      .radio-container.expanded {
+        width: 90vw;
       }
     }
   </style>
@@ -182,17 +145,13 @@
   <header>
     <h1>Enjoy Our Featured Game</h1>
     <a class="btn" href="index.html">Home</a>
-    <a class="btn" href="https://miriele.com" target="_blank" rel="noopener">Shop</a>
+    <a class="btn" href="https://miriele.com" target="_blank">Shop</a>
   </header>
 
-  <!-- Ad + Game Layout -->
   <div class="main-container">
-    <!-- Clickable Ad Image -->
-    <a href="https://miriele.com/indoor-hydroponic-garden-system/" target="_blank" rel="noopener">
-      <img class="ad-image" src="https://i.imgur.com/DQNlKRU.png" alt="Shop Hydroponic Garden System at Miriele">
+    <a href="https://miriele.com/indoor-hydroponic-garden-system/" target="_blank">
+      <img class="ad-image" src="https://i.imgur.com/DQNlKRU.png" alt="Hydroponic Ad">
     </a>
-
-    <!-- Game Embed -->
     <iframe class="game-iframe" src="https://play.gamepix.com/words/embed?sid=S1N6E" allowfullscreen scrolling="no"></iframe>
   </div>
 
@@ -200,18 +159,18 @@
     © 2025 Miriele. All Rights Reserved.
   </footer>
 
-  <!-- Floating Radio Player -->
-  <div class="radio-container" id="radioContainer" title="Drag me and click toggle button">
+  <!-- Radio Widget -->
+  <div class="radio-container" id="radioContainer">
     <div class="radio-header" id="radioHeader">
-      <div class="radio-label" title="Kicker 95.1 Live Radio">Kicker 95.1</div>
-      <button class="radio-toggle-btn" id="radioToggleBtn" aria-label="Expand radio player" title="Expand/Collapse radio player">+</button>
+      Kicker 95.1
+      <button id="radioToggleBtn" class="radio-toggle-btn">+</button>
     </div>
     <div class="radio-iframe-wrapper">
       <iframe
         src="https://www.iheart.com/live/kicker-951-2205/?embed=true"
         allow="autoplay"
         allowfullscreen
-        title="Live Radio Stream"
+        title="Kicker 95.1 Live Stream"
       ></iframe>
     </div>
   </div>
@@ -221,31 +180,23 @@
     const radioHeader = document.getElementById('radioHeader');
     const radioToggleBtn = document.getElementById('radioToggleBtn');
 
-    let expanded = false;
-
-    // Toggle expand/collapse on button click
-    radioToggleBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      expanded = !expanded;
-      if (expanded) {
-        radioContainer.classList.add('expanded');
-        radioToggleBtn.textContent = '−';
-        radioToggleBtn.setAttribute('aria-label', 'Collapse radio player');
-      } else {
-        radioContainer.classList.remove('expanded');
-        radioToggleBtn.textContent = '+';
-        radioToggleBtn.setAttribute('aria-label', 'Expand radio player');
-      }
+    // Expand/Collapse toggle
+    let isExpanded = false;
+    radioToggleBtn.addEventListener('click', () => {
+      isExpanded = !isExpanded;
+      radioContainer.classList.toggle('expanded', isExpanded);
+      radioToggleBtn.textContent = isExpanded ? '−' : '+';
     });
 
-    // Dragging logic on header only
+    // Dragging
     let isDragging = false;
     let offsetX, offsetY;
 
     radioHeader.addEventListener('mousedown', (e) => {
       isDragging = true;
-      offsetX = e.clientX - radioContainer.getBoundingClientRect().left;
-      offsetY = e.clientY - radioContainer.getBoundingClientRect().top;
+      const rect = radioContainer.getBoundingClientRect();
+      offsetX = e.clientX - rect.left;
+      offsetY = e.clientY - rect.top;
       radioHeader.style.cursor = 'grabbing';
     });
 
@@ -253,31 +204,25 @@
       if (!isDragging) return;
       e.preventDefault();
 
-      let newX = e.clientX - offsetX;
-      let newY = e.clientY - offsetY;
+      let x = e.clientX - offsetX;
+      let y = e.clientY - offsetY;
 
-      const dockRect = radioContainer.getBoundingClientRect();
-      const winWidth = window.innerWidth;
-      const winHeight = window.innerHeight;
+      // prevent dragging off-screen
+      const maxX = window.innerWidth - radioContainer.offsetWidth;
+      const maxY = window.innerHeight - radioContainer.offsetHeight;
 
-      // Keep inside viewport bounds
-      if (newX < 0) newX = 0;
-      if (newY < 0) newY = 0;
-      if (newX + dockRect.width > winWidth) newX = winWidth - dockRect.width;
-      if (newY + dockRect.height > winHeight) newY = winHeight - dockRect.height;
+      x = Math.max(0, Math.min(x, maxX));
+      y = Math.max(0, Math.min(y, maxY));
 
-      radioContainer.style.left = newX + 'px';
-      radioContainer.style.top = newY + 'px';
-
+      radioContainer.style.left = x + 'px';
+      radioContainer.style.top = y + 'px';
       radioContainer.style.right = 'auto';
       radioContainer.style.bottom = 'auto';
     });
 
     document.addEventListener('mouseup', () => {
-      if (isDragging) {
-        isDragging = false;
-        radioHeader.style.cursor = 'grab';
-      }
+      isDragging = false;
+      radioHeader.style.cursor = 'grab';
     });
   </script>
 
