@@ -14,38 +14,6 @@
       overflow-x: hidden;
     }
 
-    .nav-buttons {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      z-index: 10000;
-    }
-
-    .home-button, .shop-button {
-      background-color: #007acc;
-      color: white;
-      padding: 10px 16px;
-      border: none;
-      border-radius: 6px;
-      text-decoration: none;
-      font-size: 16px;
-      margin-left: 10px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-      cursor: pointer;
-    }
-
-    .shop-button {
-      background-color: #28a745;
-    }
-
-    .home-button:hover {
-      background-color: #005f99;
-    }
-
-    .shop-button:hover {
-      background-color: #1e7e34;
-    }
-
     .container {
       display: flex;
       justify-content: center;
@@ -62,44 +30,24 @@
       background-color: white;
     }
 
-    .social-share {
-      position: fixed;
-      top: 40%;
-      left: 0;
-      transform: translateY(-50%);
-      display: flex;
-      flex-direction: column;
-      background-color: rgba(0, 0, 0, 0.6);
-      border-radius: 0 8px 8px 0;
-      z-index: 1000;
-      padding: 5px;
-    }
-
-    .social-share a {
-      padding: 6px;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
-    }
-
-    .social-share img {
-      width: 24px;
-      height: 24px;
-      display: block;
-    }
-
     .iframe-player {
       width: 220px;
-      background: rgba(0,0,0,0.8);
+      background: rgba(0,0,0,0.85);
       border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+      box-shadow: 0 0 12px rgba(0,0,0,0.5);
       padding: 10px;
       font-family: Arial, sans-serif;
       color: white;
-      position: absolute;
+      position: fixed;
       top: calc(82vh + 20px);
       user-select: none;
       z-index: 10000;
-      cursor: move;
+      cursor: grab;
       transition: top 0.3s ease;
+    }
+
+    .iframe-player:active {
+      cursor: grabbing;
     }
 
     .player-header {
@@ -124,7 +72,7 @@
       width: 100%;
       border-radius: 10px 10px 0 0;
       box-shadow: 0 0 10px rgba(0,0,0,0.7);
-      background: rgba(0,0,0,0.85);
+      background: rgba(0,0,0,0.9);
       overflow: hidden;
       z-index: 1;
       display: none;
@@ -142,31 +90,16 @@
     #kicker-player    { left: 30vw; }
     #kiss-fm-player   { left: 55vw; }
     #hit-nation-player{ left: 80vw; }
+
   </style>
 </head>
 <body>
-
-  <div class="nav-buttons">
-    <a href="index.html" class="home-button">Home</a>
-    <a href="https://miriele.com" target="_blank" class="shop-button">Shop</a>
-  </div>
-
-  <div class="social-share">
-    <a href="#"><img src="https://cdn-icons-png.flaticon.com/32/733/733547.png" alt="Facebook"></a>
-    <a href="#"><img src="https://cdn-icons-png.flaticon.com/32/733/733579.png" alt="Twitter"></a>
-    <a href="#"><img src="https://cdn-icons-png.flaticon.com/32/3670/3670226.png" alt="Reddit"></a>
-    <a href="#"><img src="https://cdn-icons-png.flaticon.com/32/733/733585.png" alt="WhatsApp"></a>
-    <a href="#"><img src="https://cdn-icons-png.flaticon.com/32/733/733558.png" alt="Pinterest"></a>
-    <a href="#"><img src="https://cdn-icons-png.flaticon.com/32/145/145807.png" alt="LinkedIn"></a>
-    <a href="#"><img src="https://cdn-icons-png.flaticon.com/32/732/732200.png" alt="Email"></a>
-    <a href="#"><img src="https://cdn-icons-png.flaticon.com/32/2111/2111646.png" alt="Telegram"></a>
-  </div>
 
   <div class="container">
     <iframe src="https://play.gamepix.com/battleship-war-multiplayer/embed?sid=1" frameborder="0" scrolling="no"></iframe>
   </div>
 
-  <!-- 🎵 Radios (Draggable + Expandable) -->
+  <!-- Radios -->
   <div id="big-dog-player" class="iframe-player">
     <div class="player-header">
       <span>🎵 Big Dog 106</span>
@@ -208,41 +141,41 @@
   </div>
 
   <script>
-    function togglePlayer(playerId) {
-      const player = document.getElementById(playerId);
-      const body = player.querySelector('.player-body');
-      const btn = player.querySelector('.collapse-btn');
-      const isCollapsed = body.style.display === 'none' || body.style.display === '';
-      body.style.display = isCollapsed ? 'block' : 'none';
-      btn.textContent = isCollapsed ? '−' : '+';
+    function togglePlayer(id) {
+      const el = document.getElementById(id);
+      const body = el.querySelector('.player-body');
+      const btn = el.querySelector('.collapse-btn');
+      const show = body.style.display !== 'block';
+      body.style.display = show ? 'block' : 'none';
+      btn.textContent = show ? '−' : '+';
     }
 
-    function makeDraggable(element) {
+    function makeDraggable(el) {
       let isDragging = false;
       let offsetX = 0, offsetY = 0;
 
-      element.addEventListener('mousedown', (e) => {
+      el.addEventListener('mousedown', (e) => {
         if (e.target.classList.contains('collapse-btn')) return;
         isDragging = true;
-        offsetX = e.clientX - element.getBoundingClientRect().left;
-        offsetY = e.clientY - element.getBoundingClientRect().top;
-        document.body.style.userSelect = 'none';
-        element.style.zIndex = 10001;
+        const rect = el.getBoundingClientRect();
+        offsetX = e.clientX - rect.left;
+        offsetY = e.clientY - rect.top;
+        el.style.cursor = 'grabbing';
       });
 
-      window.addEventListener('mouseup', () => {
+      document.addEventListener('mouseup', () => {
         isDragging = false;
         document.body.style.userSelect = '';
       });
 
-      window.addEventListener('mousemove', (e) => {
+      document.addEventListener('mousemove', (e) => {
         if (!isDragging) return;
         let x = e.clientX - offsetX;
         let y = e.clientY - offsetY;
-        x = Math.max(0, Math.min(x, window.innerWidth - element.offsetWidth));
-        y = Math.max(0, Math.min(y, window.innerHeight - element.offsetHeight));
-        element.style.left = x + 'px';
-        element.style.top = y + 'px';
+        x = Math.max(0, Math.min(x, window.innerWidth - el.offsetWidth));
+        y = Math.max(0, Math.min(y, window.innerHeight - el.offsetHeight));
+        el.style.left = `${x}px`;
+        el.style.top = `${y}px`;
       });
     }
 
