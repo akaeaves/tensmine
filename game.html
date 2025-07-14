@@ -34,11 +34,22 @@
 
     .main-container {
       display: flex;
-      justify-content: flex-start; /* align content to the left */
+      justify-content: flex-start;
       align-items: flex-start;
-      gap: 10px; /* spacing between widget and game */
-      margin-top: 30px;
-      margin-left: 20px; /* move closer to left edge */
+      gap: 20px;
+      margin-top: 20px;
+      margin-left: 20px;
+    }
+
+    .ad-image {
+      width: 160px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.6);
+      transition: transform 0.2s ease;
+    }
+
+    .ad-image:hover {
+      transform: scale(1.03);
     }
 
     .game-iframe {
@@ -56,65 +67,6 @@
       font-size: 0.9rem;
       color: #ccc;
     }
-
-    .iframe-player {
-      width: 220px;
-      background: rgba(0,0,0,0.8);
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.5);
-      padding: 10px;
-      font-family: Arial, sans-serif;
-      color: white;
-      cursor: move;
-      position: fixed;
-      right: 10px;
-      user-select: none;
-      z-index: 10000;
-    }
-
-    .player-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-weight: bold;
-      cursor: move;
-      position: relative;
-      z-index: 2;
-    }
-
-    .collapse-btn {
-      background: none;
-      border: none;
-      color: white;
-      font-size: 20px;
-      cursor: pointer;
-      user-select: none;
-    }
-
-    .player-body {
-      position: absolute;
-      bottom: 100%;
-      left: 0;
-      width: 100%;
-      border-radius: 10px 10px 0 0;
-      box-shadow: 0 0 10px rgba(0,0,0,0.7);
-      background: rgba(0,0,0,0.85);
-      overflow: hidden;
-      z-index: 1;
-      display: none;
-    }
-
-    .player-body iframe {
-      width: 100%;
-      height: 200px;
-      border: none;
-      border-radius: 6px 6px 0 0;
-    }
-
-    #big-dog-player { top: 60px; }
-    #kicker-player { top: 260px; }
-    #kiss-fm-player { top: 460px; }
-    #hit-nation-player { top: 660px; }
   </style>
 </head>
 <body>
@@ -125,6 +77,13 @@
     <a class="btn" href="https://miriele.com" target="_blank">Shop</a>
   </header>
 
+  <!-- Ad + Game Layout -->
+  <div class="main-container">
+    <!-- Clickable Ad Image -->
+    <a href="https://miriele.com/indoor-hydroponic-garden-system/" target="_blank">
+      <img class="ad-image" src="https://i.imgur.com/rRnCyzL.jpeg" alt="Ad Image">
+    </a>
+
     <!-- Game Embed -->
     <iframe class="game-iframe" src="https://play.gamepix.com/words/embed?sid=S1N6E" allowfullscreen scrolling="no"></iframe>
   </div>
@@ -133,90 +92,5 @@
     © 2025 Miriele. All Rights Reserved.
   </footer>
 
-  <!-- 4 Radio Players, Right Side Vertical Stack -->
-  <div id="big-dog-player" class="iframe-player">
-    <div class="player-header">
-      <span>🎵 Big Dog 106</span>
-      <button class="collapse-btn" onclick="togglePlayer('big-dog-player')">+</button>
-    </div>
-    <div class="player-body">
-      <iframe allow="autoplay" src="https://www.iheart.com/live/big-dog-106-2193/?embed=true"></iframe>
-    </div>
-  </div>
-
-  <div id="kicker-player" class="iframe-player">
-    <div class="player-header">
-      <span>🎵 Kicker 95.1</span>
-      <button class="collapse-btn" onclick="togglePlayer('kicker-player')">+</button>
-    </div>
-    <div class="player-body">
-      <iframe allow="autoplay" src="https://www.iheart.com/live/kicker-951-2205/?embed=true"></iframe>
-    </div>
-  </div>
-
-  <div id="kiss-fm-player" class="iframe-player">
-    <div class="player-header">
-      <span>📻 Kiss FM</span>
-      <button class="collapse-btn" onclick="togglePlayer('kiss-fm-player')">+</button>
-    </div>
-    <div class="player-body">
-      <iframe allow="autoplay" src="https://www.iheart.com/live/1045-kiss-fm-2201/?embed=true"></iframe>
-    </div>
-  </div>
-
-  <div id="hit-nation-player" class="iframe-player">
-    <div class="player-header">
-      <span>🎵 Hit Nation</span>
-      <button class="collapse-btn" onclick="togglePlayer('hit-nation-player')">+</button>
-    </div>
-    <div class="player-body">
-      <iframe allow="autoplay" src="https://www.iheart.com/live/hit-nation-4422/?embed=true"></iframe>
-    </div>
-  </div>
-
-  <script>
-    function togglePlayer(playerId) {
-      const player = document.getElementById(playerId);
-      const body = player.querySelector('.player-body');
-      const btn = player.querySelector('.collapse-btn');
-      const isCollapsed = body.style.display === 'none' || body.style.display === '';
-      body.style.display = isCollapsed ? 'block' : 'none';
-      btn.textContent = isCollapsed ? '−' : '+';
-    }
-
-    function makeDraggable(element) {
-      const header = element.querySelector('.player-header');
-      let isDragging = false;
-      let offsetX = 0, offsetY = 0;
-
-      header.addEventListener('mousedown', (e) => {
-        if (e.target.classList.contains('collapse-btn')) return;
-        isDragging = true;
-        offsetX = e.clientX - element.getBoundingClientRect().left;
-        offsetY = e.clientY - element.getBoundingClientRect().top;
-        document.body.style.userSelect = 'none';
-      });
-
-      document.addEventListener('mouseup', () => {
-        isDragging = false;
-        document.body.style.userSelect = '';
-      });
-
-      document.addEventListener('mousemove', (e) => {
-        if (!isDragging) return;
-        let x = e.clientX - offsetX;
-        let y = e.clientY - offsetY;
-        x = Math.max(0, Math.min(x, window.innerWidth - element.offsetWidth));
-        y = Math.max(0, Math.min(y, window.innerHeight - element.offsetHeight));
-        element.style.left = x + 'px';
-        element.style.top = y + 'px';
-        element.style.right = 'auto';
-      });
-    }
-
-    ['big-dog-player', 'kicker-player', 'kiss-fm-player', 'hit-nation-player'].forEach(id => {
-      makeDraggable(document.getElementById(id));
-    });
-  </script>
 </body>
 </html>
