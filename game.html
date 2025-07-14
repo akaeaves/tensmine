@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Games - Miriele</title>
   <style>
     body {
@@ -70,9 +70,10 @@
     /* Floating Radio Player */
     .radio-container {
       position: fixed;
-      bottom: 20px;
       right: 20px;
+      bottom: 20px;
       width: 180px;
+      height: 60px;
       background: rgba(0,0,0,0.75);
       border-radius: 14px 14px 0 0;
       box-shadow: 0 10px 20px rgba(0,0,0,0.5);
@@ -80,21 +81,37 @@
       font-family: Arial, sans-serif;
       user-select: none;
       z-index: 10000;
-      transition: height 0.3s ease, width 0.3s ease;
-      overflow: hidden;
       cursor: default;
       display: flex;
       flex-direction: column;
-      max-height: 60px;
-      height: 60px;
+      overflow: hidden;
+      transition: height 0.3s ease, width 0.3s ease;
     }
 
+    /* When expanded: increase height upward by adjusting bottom */
     .radio-container.expanded {
       height: 280px;
-      border-radius: 14px;
-      max-height: none;
       width: 320px;
-      cursor: default;
+      border-radius: 14px;
+      /* We'll shift the container upward by subtracting extra height */
+      bottom: 20px; /* base bottom */
+      /* We'll use transform to shift it upward */
+      transform-origin: bottom right;
+      animation: expandUp 0.3s forwards;
+    }
+
+    @keyframes expandUp {
+      from {
+        transform: translateY(0);
+      }
+      to {
+        transform: translateY(-220px);
+      }
+    }
+
+    /* Reset transform when collapsed */
+    .radio-container:not(.expanded) {
+      transform: translateY(0);
     }
 
     .radio-header {
@@ -132,9 +149,9 @@
       flex-grow: 1;
       background: black;
       overflow: hidden;
-      transition: opacity 0.3s ease;
       opacity: 0;
       height: 0;
+      transition: opacity 0.3s ease, height 0.3s ease;
     }
 
     .radio-container.expanded .radio-iframe-wrapper {
