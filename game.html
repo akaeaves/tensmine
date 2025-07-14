@@ -67,86 +67,95 @@
       color: #ccc;
     }
 
-    /* Floating Radio Player Styles */
-    .radio-dock {
+    /* Floating Radio Player */
+    .radio-container {
       position: fixed;
-      bottom: 15px;
-      right: 15px;
-      width: 220px;
+      bottom: 20px;
+      right: 20px;
+      width: 180px;
       background: rgba(0,0,0,0.75);
-      border-radius: 12px;
-      box-shadow: 0 8px 16px rgba(0,0,0,0.4);
+      border-radius: 14px 14px 0 0;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.5);
       color: white;
       font-family: Arial, sans-serif;
       user-select: none;
+      z-index: 10000;
       transition: height 0.3s ease, width 0.3s ease;
       overflow: hidden;
       cursor: default;
-      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      max-height: 60px;
+      height: 60px;
+    }
+
+    .radio-container.expanded {
+      height: 280px;
+      border-radius: 14px;
+      max-height: none;
+      width: 320px;
+      cursor: default;
     }
 
     .radio-header {
       display: flex;
       align-items: center;
-      padding: 8px 12px;
+      padding: 10px 12px;
       cursor: grab;
-    }
-
-    .radio-icon {
-      font-size: 20px;
-      margin-right: 8px;
+      background: rgba(0,0,0,0.65);
       user-select: none;
+      flex-shrink: 0;
     }
 
     .radio-label {
       flex-grow: 1;
       font-weight: bold;
+      font-size: 16px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
       user-select: none;
     }
 
-    #radioCloseBtn {
+    .radio-toggle-btn {
       background: none;
       border: none;
       color: white;
-      font-size: 22px;
-      line-height: 1;
+      font-size: 24px;
       cursor: pointer;
-      padding: 0 5px;
+      padding: 0 8px;
       user-select: none;
+      line-height: 1;
+    }
+
+    .radio-iframe-wrapper {
+      flex-grow: 1;
+      background: black;
+      overflow: hidden;
+      transition: opacity 0.3s ease;
+      opacity: 0;
+      height: 0;
+    }
+
+    .radio-container.expanded .radio-iframe-wrapper {
+      opacity: 1;
+      height: 220px;
     }
 
     iframe {
-      width: 100%;
-      height: 0;
       border: none;
-      transition: height 0.3s ease;
-      pointer-events: none; /* Disable clicks when collapsed */
+      width: 100%;
+      height: 100%;
+      pointer-events: auto;
     }
 
-    .radio-dock.expanded iframe {
-      height: 200px;
-      pointer-events: auto; /* Enable clicks when expanded */
-    }
-
-    /* Collapsed state */
-    .radio-dock:not(.expanded) {
-      width: 140px;
-      height: 40px;
-    }
-
-    /* Expanded state */
-    .radio-dock.expanded {
-      width: 300px;
-      height: 250px;
-    }
-
-    /* Responsive adjustments */
+    /* Responsive */
     @media (max-width: 400px) {
-      .radio-dock.expanded {
+      .radio-container.expanded {
         width: 90vw;
       }
-      .radio-dock:not(.expanded) {
-        width: 80px;
+      .radio-container {
+        width: 160px;
       }
     }
   </style>
@@ -156,7 +165,7 @@
   <header>
     <h1>Enjoy Our Featured Game</h1>
     <a class="btn" href="index.html">Home</a>
-    <a class="btn" href="https://miriele.com" target="_blank">Shop</a>
+    <a class="btn" href="https://miriele.com" target="_blank" rel="noopener">Shop</a>
   </header>
 
   <!-- Ad + Game Layout -->
@@ -175,51 +184,51 @@
   </footer>
 
   <!-- Floating Radio Player -->
-  <div class="radio-dock" id="radioDock" style="left:auto; top:auto;">
-    <div class="radio-header" id="radioHeader" title="Drag me and click to expand/collapse">
-      <span class="radio-icon">🎵</span>
-      <span class="radio-label">Live Radio</span>
-      <button id="radioCloseBtn" aria-label="Close radio player" title="Close radio player">&times;</button>
+  <div class="radio-container" id="radioContainer" title="Drag me and click toggle button">
+    <div class="radio-header" id="radioHeader">
+      <div class="radio-label" title="Kicker 95.1 Live Radio">Kicker 95.1</div>
+      <button class="radio-toggle-btn" id="radioToggleBtn" aria-label="Expand radio player" title="Expand/Collapse radio player">+</button>
     </div>
-    <iframe
-      allow="autoplay"
-      src="https://www.iheart.com/live/kicker-951-2205/?embed=true"
-      frameborder="0"
-      allowfullscreen
-      title="Live Radio Stream"
-    ></iframe>
+    <div class="radio-iframe-wrapper">
+      <iframe
+        src="https://www.iheart.com/live/kicker-951-2205/?embed=true"
+        allow="autoplay"
+        allowfullscreen
+        title="Live Radio Stream"
+      ></iframe>
+    </div>
   </div>
 
   <script>
-    const radioDock = document.getElementById('radioDock');
+    const radioContainer = document.getElementById('radioContainer');
     const radioHeader = document.getElementById('radioHeader');
-    const radioCloseBtn = document.getElementById('radioCloseBtn');
+    const radioToggleBtn = document.getElementById('radioToggleBtn');
 
     let expanded = false;
 
-    // Toggle expand on header click
-    radioHeader.addEventListener('click', () => {
-      if (!expanded) {
-        radioDock.classList.add('expanded');
-        expanded = true;
+    // Toggle expand/collapse on button click
+    radioToggleBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      expanded = !expanded;
+      if (expanded) {
+        radioContainer.classList.add('expanded');
+        radioToggleBtn.textContent = '−';
+        radioToggleBtn.setAttribute('aria-label', 'Collapse radio player');
+      } else {
+        radioContainer.classList.remove('expanded');
+        radioToggleBtn.textContent = '+';
+        radioToggleBtn.setAttribute('aria-label', 'Expand radio player');
       }
     });
 
-    // Close button collapses
-    radioCloseBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      radioDock.classList.remove('expanded');
-      expanded = false;
-    });
-
-    // Dragging logic
+    // Dragging logic on header only
     let isDragging = false;
     let offsetX, offsetY;
 
     radioHeader.addEventListener('mousedown', (e) => {
       isDragging = true;
-      offsetX = e.clientX - radioDock.getBoundingClientRect().left;
-      offsetY = e.clientY - radioDock.getBoundingClientRect().top;
+      offsetX = e.clientX - radioContainer.getBoundingClientRect().left;
+      offsetY = e.clientY - radioContainer.getBoundingClientRect().top;
       radioHeader.style.cursor = 'grabbing';
     });
 
@@ -230,7 +239,7 @@
       let newX = e.clientX - offsetX;
       let newY = e.clientY - offsetY;
 
-      const dockRect = radioDock.getBoundingClientRect();
+      const dockRect = radioContainer.getBoundingClientRect();
       const winWidth = window.innerWidth;
       const winHeight = window.innerHeight;
 
@@ -240,12 +249,11 @@
       if (newX + dockRect.width > winWidth) newX = winWidth - dockRect.width;
       if (newY + dockRect.height > winHeight) newY = winHeight - dockRect.height;
 
-      radioDock.style.left = newX + 'px';
-      radioDock.style.top = newY + 'px';
+      radioContainer.style.left = newX + 'px';
+      radioContainer.style.top = newY + 'px';
 
-      // Remove fixed right/bottom to allow free dragging
-      radioDock.style.right = 'auto';
-      radioDock.style.bottom = 'auto';
+      radioContainer.style.right = 'auto';
+      radioContainer.style.bottom = 'auto';
     });
 
     document.addEventListener('mouseup', () => {
