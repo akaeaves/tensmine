@@ -30,6 +30,38 @@
       background-color: white;
     }
 
+    .nav-buttons {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 10001;
+    }
+
+    .home-button, .shop-button {
+      background-color: #007acc;
+      color: white;
+      padding: 10px 16px;
+      border: none;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 16px;
+      margin-left: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      cursor: pointer;
+    }
+
+    .shop-button {
+      background-color: #28a745;
+    }
+
+    .home-button:hover {
+      background-color: #005f99;
+    }
+
+    .shop-button:hover {
+      background-color: #1e7e34;
+    }
+
     .iframe-player {
       width: 220px;
       background: rgba(0,0,0,0.85);
@@ -95,6 +127,13 @@
 </head>
 <body>
 
+  <!-- Top Buttons -->
+  <div class="nav-buttons">
+    <a href="index.html" class="home-button">Home</a>
+    <a href="https://miriele.com" target="_blank" class="shop-button">Shop</a>
+  </div>
+
+  <!-- Game Embed -->
   <div class="container">
     <iframe src="https://play.gamepix.com/battleship-war-multiplayer/embed?sid=1" frameborder="0" scrolling="no"></iframe>
   </div>
@@ -140,6 +179,7 @@
     </div>
   </div>
 
+  <!-- JS: Toggle + Drag -->
   <script>
     function togglePlayer(id) {
       const el = document.getElementById(id);
