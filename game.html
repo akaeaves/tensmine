@@ -36,8 +36,8 @@
       display: flex;
       justify-content: center;
       align-items: flex-start;
-      gap: 30px;
-      margin-top: 40px;
+      gap: 10px; /* tighter spacing */
+      margin-top: 30px;
     }
 
     .game-iframe {
@@ -124,11 +124,13 @@
     <a class="btn" href="https://miriele.com" target="_blank">Shop</a>
   </header>
 
-  <!-- Main Container with Widget + Game Side-by-Side -->
+  <!-- Main Container: Widget on left, game on right, tight spacing -->
   <div class="main-container">
-    <!-- Elfsight Widget (NO iframe or container) -->
-    <script src="https://static.elfsight.com/platform/platform.js" async></script>
-    <div class="elfsight-app-71306753-8067-4e85-92f7-545e18860eb0" data-elfsight-app-lazy></div>
+    <!-- Elfsight Widget -->
+    <div>
+      <script src="https://static.elfsight.com/platform/platform.js" async></script>
+      <div class="elfsight-app-71306753-8067-4e85-92f7-545e18860eb0" data-elfsight-app-lazy></div>
+    </div>
 
     <!-- Game Embed -->
     <iframe class="game-iframe" src="https://play.gamepix.com/words/embed?sid=S1N6E" allowfullscreen scrolling="no"></iframe>
