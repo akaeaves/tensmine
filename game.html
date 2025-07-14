@@ -67,44 +67,87 @@
       color: #ccc;
     }
 
-    /* Draggable Radio Widget */
+    /* Floating Radio Player Styles */
     .radio-dock {
       position: fixed;
-      bottom: 10px;
-      right: 10px;
-      width: 60px;
-      height: 60px;
-      z-index: 9999;
-      background-color: rgba(0, 0, 0, 0.7);
-      border-radius: 50%;
-      cursor: pointer;
+      bottom: 15px;
+      right: 15px;
+      width: 220px;
+      background: rgba(0,0,0,0.75);
+      border-radius: 12px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.4);
+      color: white;
+      font-family: Arial, sans-serif;
+      user-select: none;
+      transition: height 0.3s ease, width 0.3s ease;
       overflow: hidden;
+      cursor: default;
+      z-index: 9999;
+    }
+
+    .radio-header {
       display: flex;
       align-items: center;
-      justify-content: center;
-    }
-
-    .radio-dock.open {
-      width: 300px;
-      height: 220px;
-      border-radius: 12px;
-      padding: 5px;
-    }
-
-    .radio-dock iframe {
-      width: 100%;
-      height: 200px;
-      display: none;
-    }
-
-    .radio-dock.open iframe {
-      display: block;
+      padding: 8px 12px;
+      cursor: grab;
     }
 
     .radio-icon {
-      font-size: 28px;
+      font-size: 20px;
+      margin-right: 8px;
+      user-select: none;
+    }
+
+    .radio-label {
+      flex-grow: 1;
+      font-weight: bold;
+      user-select: none;
+    }
+
+    #radioCloseBtn {
+      background: none;
+      border: none;
       color: white;
-      pointer-events: none;
+      font-size: 22px;
+      line-height: 1;
+      cursor: pointer;
+      padding: 0 5px;
+      user-select: none;
+    }
+
+    iframe {
+      width: 100%;
+      height: 0;
+      border: none;
+      transition: height 0.3s ease;
+      pointer-events: none; /* Disable clicks when collapsed */
+    }
+
+    .radio-dock.expanded iframe {
+      height: 200px;
+      pointer-events: auto; /* Enable clicks when expanded */
+    }
+
+    /* Collapsed state */
+    .radio-dock:not(.expanded) {
+      width: 140px;
+      height: 40px;
+    }
+
+    /* Expanded state */
+    .radio-dock.expanded {
+      width: 300px;
+      height: 250px;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 400px) {
+      .radio-dock.expanded {
+        width: 90vw;
+      }
+      .radio-dock:not(.expanded) {
+        width: 80px;
+      }
     }
   </style>
 </head>
@@ -119,8 +162,8 @@
   <!-- Ad + Game Layout -->
   <div class="main-container">
     <!-- Clickable Ad Image -->
-    <a href="https://miriele.com/indoor-hydroponic-garden-system/" target="_blank">
-      <img class="ad-image" src="https://i.imgur.com/DQNlKRU.png" alt="Hydroponic Ad">
+    <a href="https://miriele.com/indoor-hydroponic-garden-system/" target="_blank" rel="noopener">
+      <img class="ad-image" src="https://i.imgur.com/DQNlKRU.png" alt="Shop Hydroponic Garden System at Miriele">
     </a>
 
     <!-- Game Embed -->
@@ -131,39 +174,85 @@
     © 2025 Miriele. All Rights Reserved.
   </footer>
 
-  <!-- Draggable Radio Player -->
-  <div class="radio-dock" id="radioDock">
-    <div class="radio-icon">🎵</div>
-    <iframe allow="autoplay" src="https://www.iheart.com/live/kicker-951-2205/?embed=true" frameborder="0"></iframe>
+  <!-- Floating Radio Player -->
+  <div class="radio-dock" id="radioDock" style="left:auto; top:auto;">
+    <div class="radio-header" id="radioHeader" title="Drag me and click to expand/collapse">
+      <span class="radio-icon">🎵</span>
+      <span class="radio-label">Live Radio</span>
+      <button id="radioCloseBtn" aria-label="Close radio player" title="Close radio player">&times;</button>
+    </div>
+    <iframe
+      allow="autoplay"
+      src="https://www.iheart.com/live/kicker-951-2205/?embed=true"
+      frameborder="0"
+      allowfullscreen
+      title="Live Radio Stream"
+    ></iframe>
   </div>
 
   <script>
-    const dock = document.getElementById('radioDock');
+    const radioDock = document.getElementById('radioDock');
+    const radioHeader = document.getElementById('radioHeader');
+    const radioCloseBtn = document.getElementById('radioCloseBtn');
 
-    // Toggle expand/collapse
-    dock.addEventListener('click', () => {
-      dock.classList.toggle('open');
+    let expanded = false;
+
+    // Toggle expand on header click
+    radioHeader.addEventListener('click', () => {
+      if (!expanded) {
+        radioDock.classList.add('expanded');
+        expanded = true;
+      }
     });
 
-    // Make draggable
-    let isDragging = false, offsetX, offsetY;
+    // Close button collapses
+    radioCloseBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      radioDock.classList.remove('expanded');
+      expanded = false;
+    });
 
-    dock.addEventListener('mousedown', (e) => {
+    // Dragging logic
+    let isDragging = false;
+    let offsetX, offsetY;
+
+    radioHeader.addEventListener('mousedown', (e) => {
       isDragging = true;
-      offsetX = e.clientX - dock.getBoundingClientRect().left;
-      offsetY = e.clientY - dock.getBoundingClientRect().top;
+      offsetX = e.clientX - radioDock.getBoundingClientRect().left;
+      offsetY = e.clientY - radioDock.getBoundingClientRect().top;
+      radioHeader.style.cursor = 'grabbing';
     });
 
     document.addEventListener('mousemove', (e) => {
       if (!isDragging) return;
-      dock.style.left = (e.clientX - offsetX) + 'px';
-      dock.style.top = (e.clientY - offsetY) + 'px';
-      dock.style.bottom = 'auto';
-      dock.style.right = 'auto';
+      e.preventDefault();
+
+      let newX = e.clientX - offsetX;
+      let newY = e.clientY - offsetY;
+
+      const dockRect = radioDock.getBoundingClientRect();
+      const winWidth = window.innerWidth;
+      const winHeight = window.innerHeight;
+
+      // Keep inside viewport bounds
+      if (newX < 0) newX = 0;
+      if (newY < 0) newY = 0;
+      if (newX + dockRect.width > winWidth) newX = winWidth - dockRect.width;
+      if (newY + dockRect.height > winHeight) newY = winHeight - dockRect.height;
+
+      radioDock.style.left = newX + 'px';
+      radioDock.style.top = newY + 'px';
+
+      // Remove fixed right/bottom to allow free dragging
+      radioDock.style.right = 'auto';
+      radioDock.style.bottom = 'auto';
     });
 
     document.addEventListener('mouseup', () => {
-      isDragging = false;
+      if (isDragging) {
+        isDragging = false;
+        radioHeader.style.cursor = 'grab';
+      }
     });
   </script>
 
