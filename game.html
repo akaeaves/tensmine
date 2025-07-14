@@ -37,20 +37,14 @@
       justify-content: center;
       align-items: flex-start;
       gap: 30px;
-      margin-top: 150px;
+      margin-top: 40px;
     }
 
     .game-iframe {
       border: none;
       width: 800px;
-      height: 450px; /* shortened height */
-      max-width: 100%;
-    }
-
-    .elfsight-banner-left {
-      width: 160px;
       height: 450px;
-      overflow: auto;
+      max-width: 100%;
     }
 
     footer {
@@ -129,6 +123,12 @@
     <a class="btn" href="index.html">Home</a>
     <a class="btn" href="https://miriele.com" target="_blank">Shop</a>
   </header>
+
+  <!-- Main Container with Widget + Game Side-by-Side -->
+  <div class="main-container">
+    <!-- Elfsight Widget (NO iframe or container) -->
+    <script src="https://static.elfsight.com/platform/platform.js" async></script>
+    <div class="elfsight-app-71306753-8067-4e85-92f7-545e18860eb0" data-elfsight-app-lazy></div>
 
     <!-- Game Embed -->
     <iframe class="game-iframe" src="https://play.gamepix.com/words/embed?sid=S1N6E" allowfullscreen scrolling="no"></iframe>
