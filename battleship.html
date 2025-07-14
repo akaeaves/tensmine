@@ -76,5 +76,125 @@
     <iframe src="https://play.gamepix.com/battleship-war-multiplayer/embed?sid=1" frameborder="0" scrolling="no"></iframe>
   </div>
 
+   <!-- Radio Widget 4: Big Dog 106 (TOP) -->
+  <div class="radio-widget" id="radioWidget4" style="bottom: 236px; right: 20px;">
+    <div class="radio-panel">
+      <iframe
+        src="https://beta.iheart.com/live/big-dog-106-2193/?embed=true"
+        allow="autoplay"
+        allowfullscreen
+        title="Big Dog 106"
+      ></iframe>
+    </div>
+    <div class="radio-header" id="radioHeader4">
+      Big Dog 106
+      <button class="radio-toggle" id="radioToggle4">+</button>
+    </div>
+  </div>
+
+  <!-- Radio Widget 3: Hit Nation -->
+  <div class="radio-widget" id="radioWidget3" style="bottom: 164px; right: 20px;">
+    <div class="radio-panel">
+      <iframe
+        src="https://beta.iheart.com/live/hit-nation-4422/?embed=true"
+        allow="autoplay"
+        allowfullscreen
+        title="Hit Nation"
+      ></iframe>
+    </div>
+    <div class="radio-header" id="radioHeader3">
+      Hit Nation
+      <button class="radio-toggle" id="radioToggle3">+</button>
+    </div>
+  </div>
+
+  <!-- Radio Widget 2: 104.5 KISS FM -->
+  <div class="radio-widget" id="radioWidget2" style="bottom: 92px; right: 20px;">
+    <div class="radio-panel">
+      <iframe
+        src="https://beta.iheart.com/live/1045-kiss-fm-2201/?embed=true"
+        allow="autoplay"
+        allowfullscreen
+        title="104.5 KISS FM"
+      ></iframe>
+    </div>
+    <div class="radio-header" id="radioHeader2">
+      104.5 KISS FM
+      <button class="radio-toggle" id="radioToggle2">+</button>
+    </div>
+  </div>
+
+  <!-- Radio Widget 1: Kicker 95.1 -->
+  <div class="radio-widget" id="radioWidget1" style="bottom: 20px; right: 20px;">
+    <div class="radio-panel">
+      <iframe
+        src="https://www.iheart.com/live/kicker-951-2205/?embed=true"
+        allow="autoplay"
+        allowfullscreen
+        title="Kicker 95.1"
+      ></iframe>
+    </div>
+    <div class="radio-header" id="radioHeader1">
+      Kicker 95.1
+      <button class="radio-toggle" id="radioToggle1">+</button>
+    </div>
+  </div>
+
+  <script>
+    function setupRadioWidget(widgetId, headerId, toggleId) {
+      const widget = document.getElementById(widgetId);
+      const header = document.getElementById(headerId);
+      const toggle = document.getElementById(toggleId);
+
+      let expanded = false;
+
+      toggle.addEventListener('click', () => {
+        expanded = !expanded;
+        widget.classList.toggle('expanded', expanded);
+        toggle.textContent = expanded ? '−' : '+';
+      });
+
+      let isDragging = false, offsetX = 0, offsetY = 0;
+
+      header.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        const rect = widget.getBoundingClientRect();
+        offsetX = e.clientX - rect.left;
+        offsetY = e.clientY - rect.top;
+        header.style.cursor = 'grabbing';
+      });
+
+      document.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        e.preventDefault();
+
+        let x = e.clientX - offsetX;
+        let y = e.clientY - offsetY;
+
+        const maxX = window.innerWidth - widget.offsetWidth;
+        const maxY = window.innerHeight - 60;
+
+        x = Math.max(0, Math.min(x, maxX));
+        y = Math.max(0, Math.min(y, maxY));
+
+        widget.style.left = `${x}px`;
+        widget.style.top = `${y}px`;
+        widget.style.right = 'auto';
+        widget.style.bottom = 'auto';
+      });
+
+      document.addEventListener('mouseup', () => {
+        isDragging = false;
+        header.style.cursor = 'grab';
+      });
+    }
+
+    // Init all 4 widgets
+    setupRadioWidget('radioWidget1', 'radioHeader1', 'radioToggle1');
+    setupRadioWidget('radioWidget2', 'radioHeader2', 'radioToggle2');
+    setupRadioWidget('radioWidget3', 'radioHeader3', 'radioToggle3');
+    setupRadioWidget('radioWidget4', 'radioHeader4', 'radioToggle4');
+  </script>
+
 </body>
 </html>
