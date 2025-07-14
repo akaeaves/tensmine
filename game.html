@@ -9,7 +9,6 @@
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
-      text-align: center;
       background-image: url('https://www.wallpapergap.com/cdn/24/77/dark-green-jungle-wallpaper-3840x2160.jpg');
       background-size: cover;
       background-position: center;
@@ -20,6 +19,7 @@
       background-color: rgba(0, 0, 0, 0.7);
       color: white;
       padding: 1rem;
+      text-align: center;
     }
 
     .btn {
@@ -32,15 +32,29 @@
       display: inline-block;
     }
 
-    iframe {
+    .main-container {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 30px;
+      margin-top: 150px;
+    }
+
+    .game-iframe {
       border: none;
       width: 800px;
-      height: 525px;
+      height: 450px; /* shortened height */
       max-width: 100%;
-      margin-top: 20px;
+    }
+
+    .elfsight-banner-left {
+      width: 160px;
+      height: 450px;
+      overflow: auto;
     }
 
     footer {
+      text-align: center;
       background-color: rgba(0, 0, 0, 0.7);
       padding: 1rem;
       margin-top: 30px;
@@ -106,34 +120,27 @@
     #kicker-player { top: 260px; }
     #kiss-fm-player { top: 460px; }
     #hit-nation-player { top: 660px; }
-
-    /* Elfsight Banner - positioned just left of game iframe */
-    .elfsight-banner-left {
-      position: fixed;
-      top: 150px; /* level with game iframe */
-      left: calc(50% - 800px / 2 - 190px); /* game is 800px wide; this places banner ~30px left of it */
-      z-index: 9999;
-      width: 160px;
-      height: 525px;
-      overflow: auto;
-    }
   </style>
 </head>
 <body>
+
   <header>
     <h1>Enjoy Our Featured Game</h1>
     <a class="btn" href="index.html">Home</a>
     <a class="btn" href="https://miriele.com" target="_blank">Shop</a>
   </header>
 
-  <!-- Elfsight Banner (Left of iframe, vertically aligned) -->
-  <div class="elfsight-banner-left">
-    <script src="https://static.elfsight.com/platform/platform.js" async></script>
-    <div class="elfsight-app-71306753-8067-4e85-92f7-545e18860eb0" data-elfsight-app-lazy></div>
-  </div>
+  <!-- Main Container with Widget + Game Side-by-Side -->
+  <div class="main-container">
+    <!-- Elfsight Widget -->
+    <div class="elfsight-banner-left">
+      <script src="https://static.elfsight.com/platform/platform.js" async></script>
+      <div class="elfsight-app-71306753-8067-4e85-92f7-545e18860eb0" data-elfsight-app-lazy></div>
+    </div>
 
-  <!-- Game Embed -->
-  <iframe src="https://play.gamepix.com/words/embed?sid=S1N6E" allowfullscreen scrolling="no"></iframe>
+    <!-- Game Embed -->
+    <iframe class="game-iframe" src="https://play.gamepix.com/words/embed?sid=S1N6E" allowfullscreen scrolling="no"></iframe>
+  </div>
 
   <footer>
     © 2025 Miriele. All Rights Reserved.
