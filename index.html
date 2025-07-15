@@ -3,234 +3,53 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Jungle Adventuraddict | Home</title>
-  <meta name="description" content="Shop everyday essentials, personal care, and lifestyle goods at Miriele.com. Discover quality and affordability in one convenient online store.">
-  <meta name="keywords" content="Miriele, online store, essentials, personal care, home goods, wellness, shopping, deals, quality products, free website traffic, CustomHits">
-  <meta name="author" content="Miriele">
-  <link rel="stylesheet" href="style.css" />
+  <title>Tensmine | Home</title>
   <style>
     body {
       margin: 0;
       font-family: Arial, sans-serif;
-      background: url('https://www.wallpapergap.com/cdn/24/77/dark-green-jungle-wallpaper-3840x2160.jpg') no-repeat center center fixed;
-      background-size: cover;
+      background: linear-gradient(135deg, #0e0e0e, #1a1a1a);
       color: white;
-    }
-    header {
-      background-color: rgba(0, 0, 0, 0.7);
-      padding: 1rem;
-      text-align: center;
-    }
-    nav {
-      background-color: rgba(0, 0, 0, 0.6);
-      display: flex;
-      justify-content: center;
-      gap: 15px;
-      padding: 0.8rem;
-      flex-wrap: wrap;
-    }
-    nav a, .dropdown-btn {
-      color: white;
-      text-decoration: none;
-      padding: 10px 15px;
-      background-color: #007BFF;
-      border-radius: 5px;
-      transition: background-color 0.3s ease;
-    }
-    nav a:hover, .dropdown-btn:hover {
-      background-color: #0056b3;
-    }
-    .dropdown {
-      position: relative;
-      display: inline-block;
-    }
-    .dropdown-content {
-      display: none;
-      position: absolute;
-      background-color: rgba(0, 0, 0, 0.9);
-      min-width: 140px;
-      z-index: 1;
-    }
-    .dropdown-content a {
-      color: white;
-      padding: 10px 15px;
-      text-decoration: none;
-      display: block;
-    }
-    .dropdown:hover .dropdown-content {
-      display: block;
-    }
-    .content {
-      max-width: 960px;
-      margin: auto;
-      padding: 2rem;
-      background-color: rgba(0,0,0,0.6);
-      border-radius: 12px;
-    }
-    footer {
-      background-color: rgba(0, 0, 0, 0.7);
-      text-align: center;
-      padding: 2rem 1rem;
-      font-size: 0.9rem;
-      margin-top: 40px;
-      position: relative;
-    }
-    footer a {
-      color: #99cc33;
-      text-decoration: none;
-      margin: 0 10px;
-    }
-    footer a:hover {
-      text-decoration: underline;
-    }
-    .social-share {
-      position: fixed;
-      top: 40%;
-      left: 0;
-      transform: translateY(-50%);
       display: flex;
       flex-direction: column;
-      background-color: rgba(0, 0, 0, 0.6);
-      border-radius: 0 8px 8px 0;
-      z-index: 1000;
-      padding: 5px;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      text-align: center;
     }
-    .social-share a {
-      padding: 6px;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
+    h1 {
+      font-size: 2.5rem;
+      color: #00e6e6;
     }
-    .social-share img {
-      width: 24px;
-      height: 24px;
-      display: block;
+    p {
+      max-width: 600px;
+      font-size: 1.1rem;
+      color: #ccc;
     }
-    iframe.battleship-game {
-      width: 100%;
-      height: 80vh;
-      border: none;
-      display: block;
-      margin: 2rem auto;
-      border-radius: 12px;
-    }
-    .circle-btn {
-      background-color: #00e6e6;
-      color: #000;
-      padding: 12px 24px;
-      border-radius: 30px;
-      text-decoration: none;
-      font-weight: bold;
+    a.button {
       display: inline-block;
       margin-top: 2rem;
+      padding: 0.8rem 1.5rem;
+      font-size: 1.1rem;
+      font-weight: bold;
+      color: #000;
+      background-color: #00e6e6;
+      border: none;
+      border-radius: 30px;
+      text-decoration: none;
       transition: background 0.3s ease;
     }
-    .circle-btn:hover {
+    a.button:hover {
       background-color: #00cccc;
     }
   </style>
 </head>
 <body>
-  <div class="social-share">
-    <a href="https://www.facebook.com/sharer/sharer.php?u=https://yourdomain.com" target="_blank" title="Share on Facebook">
-      <img src="https://cdn-icons-png.flaticon.com/32/733/733547.png" alt="Facebook">
-    </a>
-    <a href="https://twitter.com/intent/tweet?url=https://yourdomain.com&text=Check+this+out!" target="_blank" title="Share on Twitter">
-      <img src="https://cdn-icons-png.flaticon.com/32/733/733579.png" alt="Twitter">
-    </a>
-    <a href="https://reddit.com/submit?url=https://yourdomain.com&title=Jungle+Adventuraddict" target="_blank" title="Share on Reddit">
-      <img src="https://cdn-icons-png.flaticon.com/32/3670/3670226.png" alt="Reddit">
-    </a>
-    <a href="https://api.whatsapp.com/send?text=https://yourdomain.com" target="_blank" title="Share on WhatsApp">
-      <img src="https://cdn-icons-png.flaticon.com/32/733/733585.png" alt="WhatsApp">
-    </a>
-    <a href="https://pinterest.com/pin/create/button/?url=https://yourdomain.com" target="_blank" title="Share on Pinterest">
-      <img src="https://cdn-icons-png.flaticon.com/32/733/733558.png" alt="Pinterest">
-    </a>
-    <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://yourdomain.com" target="_blank" title="Share on LinkedIn">
-      <img src="https://cdn-icons-png.flaticon.com/32/145/145807.png" alt="LinkedIn">
-    </a>
-    <a href="mailto:?subject=Check this site out&body=Visit https://yourdomain.com" title="Share via Email">
-      <img src="https://cdn-icons-png.flaticon.com/32/732/732200.png" alt="Email">
-    </a>
-    <a href="https://t.me/share/url?url=https://yourdomain.com&text=Check+this+out!" target="_blank" title="Share on Telegram">
-      <img src="https://cdn-icons-png.flaticon.com/32/2111/2111646.png" alt="Telegram">
-    </a>
-  </div>
+  <h1>Welcome to Tensmine</h1>
+  <p>Explore everything from tools to games — and now, our new social site!</p>
 
-  <header>
-    <h1>Welcome to Jungle Adventuraddict</h1>
-  </header>
+  <!-- ✅ Button linking to CircleNet -->
+  <a class="button" href="circlenet/circlenet.html">Visit CircleNet</a>
 
-  <nav>
-    <a href="index.html">Home</a>
-    <a href="chatbox.html">Chat Box</a>
-    <div class="dropdown">
-      <span class="dropdown-btn">Games ▼</span>
-      <div class="dropdown-content">
-        <a href="game.html">Words</a>
-        <a href="titans.html">Titans</a>
-        <a href="battleship.html">Battleship</a>
-      </div>
-    </div>
-    <a href="https://miriele.com" target="_blank">Shop</a>
-    <a href="https://customhits.net/?via=jason-eaves" target="_blank">Free Website Traffic</a>
-  </nav>
-
-  <div class="content">
-    <h2>FREE Traffic Link Below</h2>
-    <p>Explore games, chat with friends, and shop everyday essentials — all in one place!</p>
-
-    <h3>About Our Store</h3>
-    <p>
-      Feel free to stop by <a href="https://miriele.com" target="_blank" style="color:#99cc33;">Miriele.com</a>, your trusted online destination for everyday essentials, personal care, home goods, and unique lifestyle products—all at unbeatable prices. Whether you're shopping for household items, wellness must-haves, or trending finds, Miriele.com offers a carefully curated selection designed to elevate your daily life.
-    </p>
-
-    <h3>Get Free Website Visitors with CustomHits</h3>
-    <p>
-      Looking to grow your website traffic for free? Join <a href="https://customhits.net/?via=jason-eaves" target="_blank" style="color:#99cc33;">CustomHits.net</a>, a powerful traffic exchange platform where real users visit your site in return for viewing others. With thousands of active members worldwide, you can earn daily hits and improve your SEO visibility, Alexa rank, and engagement—all without spending a dime. <strong>Sign up free today</strong> and start sending real visitors to your site instantly.
-    </p>
-
-    <div style="text-align:center;">
-      <a href="circlenet.html" class="circle-btn">
-        Visit CircleNet - Our New Social Platform
-      </a>
-    </div>
-  </div>
-
-  <footer>
-    <p>© 2025 Jungle Adventuraddict. All Rights Reserved.</p>
-    <a href="#" onclick="openModal('termsModal')">Terms of Service</a> |
-    <a href="#" onclick="openModal('privacyModal')">Privacy Policy</a>
-  </footer>
-
-  <!-- Modals -->
-  <div id="termsModal" class="modal" style="display:none;">
-    <div style="background-color:white; color:black; margin: 10% auto; padding: 20px; border-radius: 8px; max-width: 600px;">
-      <span onclick="closeModal('termsModal')" style="float:right; cursor:pointer;">&times;</span>
-      <h2>Terms of Service</h2>
-      <p>By using this site, you agree to engage respectfully within our community features and use embedded games and content for personal entertainment only. External links and third-party services are governed by their own terms and may change without notice.</p>
-    </div>
-  </div>
-
-  <div id="privacyModal" class="modal" style="display:none;">
-    <div style="background-color:white; color:black; margin: 10% auto; padding: 20px; border-radius: 8px; max-width: 600px;">
-      <span onclick="closeModal('privacyModal')" style="float:right; cursor:pointer;">&times;</span>
-      <h2>Privacy Policy</h2>
-      <p>We do not collect personal information directly on this site. However, external services such as embedded games or links to our store may use cookies or analytics governed by their own privacy policies.</p>
-    </div>
-  </div>
-
-  <script>
-    function openModal(id) {
-      document.getElementById(id).style.display = 'block';
-    }
-    function closeModal(id) {
-      document.getElementById(id).style.display = 'none';
-    }
-    window.onclick = function(event) {
-      if (event.target.className === 'modal') {
-        event.target.style.display = \"none\";
-      }
-    };
-  </script>
 </body>
 </html>
