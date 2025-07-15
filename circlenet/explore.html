@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Explore | CircleNet</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(to bottom right, #111, #1c1c1c);
+      color: #fff;
+    }
+    header {
+      background-color: #1f1f1f;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.6);
+    }
+    header h1 {
+      color: #00e6e6;
+      font-size: 1.5rem;
+      margin: 0;
+    }
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      margin-left: 1.5rem;
+      font-weight: 600;
+    }
+    nav a:hover {
+      color: #00e6e6;
+    }
+    main {
+      padding: 2rem;
+    }
+    h2 {
+      text-align: center;
+      color: #00e6e6;
+      margin-bottom: 2rem;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+    .card {
+      background: #2a2a2a;
+      border-radius: 12px;
+      padding: 1rem;
+      box-shadow: 0 0 12px rgba(0, 255, 255, 0.08);
+      transition: transform 0.2s ease;
+    }
+    .card:hover {
+      transform: scale(1.02);
+    }
+    .card img {
+      width: 100%;
+      border-radius: 8px;
+    }
+    .card h3 {
+      margin: 1rem 0 0.5rem;
+      color: #00e6e6;
+    }
+    .card p {
+      color: #ccc;
+    }
+    footer {
+      text-align: center;
+      padding: 2rem;
+      background: #1f1f1f;
+      color: #999;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>CircleNet</h1>
+    <nav>
+      <a href="circlenet.html">Home</a>
+      <a href="explore.html">Explore</a>
+      <a href="create.html">Create</a>
+      <a href="join.html">Join</a>
+    </nav>
+  </header>
+
+  <main>
+    <h2>Explore What's New</h2>
+    <div class="grid">
+      <div class="card">
+        <img src="https://source.unsplash.com/400x250/?nature,water" alt="Post Image">
+        <h3>Peaceful Escape</h3>
+        <p>Check out this serene view captured on a morning hike. 🌄</p>
+      </div>
+      <div class="card">
+        <img src="https://source.unsplash.com/400x250/?technology,futuristic" alt="Post Image">
+        <h3>AI Futures</h3>
+        <p>Thoughts on where machine learning will take us in the next 10 years?</p>
+      </div>
+      <div class="card">
+        <img src="https://source.unsplash.com/400x250/?city,night" alt="Post Image">
+        <h3>City Pulse</h3>
+        <p>Late-night photo walk. The energy never sleeps. 🏙️</p>
+      </div>
+      <div class="card">
+        <img src="https://source.unsplash.com/400x250/?art,abstract" alt="Post Image">
+        <h3>Vision in Color</h3>
+        <p>Original artwork exploring emotion through minimalism.</p>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    &copy; 2025 CircleNet. Explore. Connect. Create.
+  </footer>
+</body>
+</html>
