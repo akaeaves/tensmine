@@ -112,6 +112,20 @@
       margin: 2rem auto;
       border-radius: 12px;
     }
+    .circle-btn {
+      background-color: #00e6e6;
+      color: #000;
+      padding: 12px 24px;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: bold;
+      display: inline-block;
+      margin-top: 2rem;
+      transition: background 0.3s ease;
+    }
+    .circle-btn:hover {
+      background-color: #00cccc;
+    }
   </style>
 </head>
 <body>
@@ -174,6 +188,12 @@
     <p>
       Looking to grow your website traffic for free? Join <a href="https://customhits.net/?via=jason-eaves" target="_blank" style="color:#99cc33;">CustomHits.net</a>, a powerful traffic exchange platform where real users visit your site in return for viewing others. With thousands of active members worldwide, you can earn daily hits and improve your SEO visibility, Alexa rank, and engagement—all without spending a dime. <strong>Sign up free today</strong> and start sending real visitors to your site instantly.
     </p>
+
+    <div style="text-align:center;">
+      <a href="circlenet.html" class="circle-btn">
+        Visit CircleNet - Our New Social Platform
+      </a>
+    </div>
   </div>
 
   <footer>
@@ -208,7 +228,7 @@
     }
     window.onclick = function(event) {
       if (event.target.className === 'modal') {
-        event.target.style.display = "none";
+        event.target.style.display = \"none\";
       }
     };
   </script>
