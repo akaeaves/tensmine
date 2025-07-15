@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CircleNet - Your World, Reimagined</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(to bottom right, #181818, #2b2b2b);
+      color: white;
+    }
+    header {
+      background: #1f1f1f;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    }
+    header h1 {
+      font-size: 1.8rem;
+      color: #00e6e6;
+      margin: 0;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin-left: 1.5rem;
+      font-weight: 600;
+    }
+    nav a:hover {
+      color: #00e6e6;
+    }
+    .hero {
+      text-align: center;
+      padding: 5rem 2rem;
+      background: url('https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=1600&q=80') center/cover;
+      background-blend-mode: multiply;
+      background-color: rgba(0,0,0,0.6);
+    }
+    .hero h2 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+    .hero p {
+      font-size: 1.2rem;
+      color: #ccc;
+    }
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      padding: 3rem 2rem;
+    }
+    .feature {
+      background: #292929;
+      border-radius: 1rem;
+      padding: 2rem;
+      text-align: center;
+      box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+    }
+    .feature h3 {
+      color: #00e6e6;
+      margin-bottom: 1rem;
+    }
+    .feature p {
+      color: #ccc;
+    }
+    footer {
+      text-align: center;
+      padding: 2rem;
+      background: #1f1f1f;
+      color: #999;
+    }
+    .join-btn {
+      background: #00e6e6;
+      border: none;
+      padding: 1rem 2rem;
+      font-size: 1rem;
+      font-weight: bold;
+      color: #000;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .join-btn:hover {
+      background: #00cccc;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>CircleNet</h1>
+    <nav>
+      <a href="#">Home</a>
+      <a href="#">Explore</a>
+      <a href="#">Create</a>
+      <a href="#">Join</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <h2>Connect Freely. Share Boldly.</h2>
+    <p>The next-generation social platform designed to put **you** first.</p>
+    <button class="join-btn">Join the Circle</button>
+  </section>
+
+  <section class="features">
+    <div class="feature">
+      <h3>No Algorithms, Just People</h3>
+      <p>See content from friends and creators in real time, without manipulation.</p>
+    </div>
+    <div class="feature">
+      <h3>Open Media Sharing</h3>
+      <p>Photos, videos, podcasts, or even livestreams — no limits, no fees.</p>
+    </div>
+    <div class="feature">
+      <h3>Fully Custom Profiles</h3>
+      <p>Design your online identity with drag-and-drop profile blocks.</p>
+    </div>
+    <div class="feature">
+      <h3>Community Circles</h3>
+      <p>Join or build communities based on shared interests, passions, or causes.</p>
+    </div>
+  </section>
+
+  <footer>
+    &copy; 2025 CircleNet. Built for the people.
+  </footer>
+</body>
+</html>
