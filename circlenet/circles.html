@@ -1,37 +1,38 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" >
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Community Circles | CircleNet</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
+  <title>Circles | CircleNet</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   <style>
     body {
       margin: 0;
       font-family: 'Inter', sans-serif;
-      background: linear-gradient(to bottom right, #111, #1b1b1b);
-      color: #fff;
+      background: linear-gradient(135deg, #111, #1b1b1b);
+      color: #eee;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
     }
     header {
-      background-color: #1f1f1f;
+      background: #222;
+      padding: 1rem 2rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.7);
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 1rem 2rem;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.6);
     }
     header h1 {
       color: #00e6e6;
-      font-size: 1.5rem;
       margin: 0;
+      font-weight: 600;
+      font-size: 1.5rem;
     }
     nav a {
-      color: #fff;
-      text-decoration: none;
+      color: #eee;
       margin-left: 1.5rem;
+      text-decoration: none;
       font-weight: 600;
     }
     nav a:hover {
@@ -44,55 +45,68 @@
       background: #222;
       padding: 2rem;
       border-radius: 12px;
-      box-shadow: 0 0 15px rgba(0, 255, 255, 0.1);
+      box-shadow: 0 0 15px rgba(0, 230, 230, 0.15);
     }
     h2 {
-      text-align: center;
       color: #00e6e6;
-      margin-bottom: 2rem;
+      margin-bottom: 1.5rem;
+      text-align: center;
     }
     .circle-list {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 1.5rem;
     }
     .circle-card {
-      background: #2a2a2a;
-      padding: 1rem;
+      background: #1a1a1a;
       border-radius: 12px;
-      box-shadow: 0 0 12px rgba(0, 255, 255, 0.1);
-      transition: transform 0.2s ease;
+      padding: 1.5rem;
+      box-shadow: 0 0 10px rgba(0, 230, 230, 0.1);
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-    }
-    .circle-card:hover {
-      transform: scale(1.05);
-    }
-    .circle-header {
-      font-size: 1.25rem;
-      font-weight: 700;
-      color: #00e6e6;
-      margin-bottom: 0.5rem;
-    }
-    .circle-desc {
-      color: #ccc;
-      flex-grow: 1;
-    }
-    .join-btn {
-      margin-top: 1rem;
-      background-color: #00e6e6;
-      color: #000;
-      font-weight: 700;
-      border: none;
-      padding: 0.6rem 1rem;
-      border-radius: 30px;
       cursor: pointer;
       transition: background 0.3s ease;
-      align-self: center;
     }
-    .join-btn:hover {
-      background-color: #00cccc;
+    .circle-card:hover {
+      background: #003f3f;
+    }
+    .circle-title {
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: #00e6e6;
+      margin: 0 0 0.6rem 0;
+    }
+    .circle-desc {
+      flex-grow: 1;
+      color: #ccc;
+      font-size: 0.95rem;
+      line-height: 1.3;
+      margin-bottom: 1rem;
+    }
+    .circle-members {
+      font-size: 0.9rem;
+      color: #99eeff;
+      font-weight: 600;
+    }
+    .btn-create {
+      display: block;
+      width: max-content;
+      margin: 0 auto 2rem auto;
+      background: #00e6e6;
+      border: none;
+      padding: 0.8rem 1.5rem;
+      border-radius: 30px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      text-align: center;
+      color: #000;
+      text-decoration: none;
+    }
+    .btn-create:hover {
+      background: #00cccc;
     }
     footer {
       text-align: center;
@@ -113,45 +127,46 @@
       <a href="join.html">Join</a>
       <a href="profile.html">Profile</a>
       <a href="circles.html">Circles</a>
+      <a href="messenger.html">Messenger</a>
+      <a href="notifications.html">Notifications</a>
+      <a href="settings.html">Settings</a>
+      <a href="search.html">Search</a>
+      <a href="help.html">Help</a>
     </nav>
   </header>
 
   <main>
-    <h2>Community Circles</h2>
-    <p style="text-align:center; color:#bbb; margin-bottom:2rem;">
-      Join groups that share your passions, discuss ideas, and connect with like-minded people.
-    </p>
-    <div class="circle-list">
-      <div class="circle-card">
-        <div class="circle-header">Tech Innovators</div>
-        <div class="circle-desc">Discuss the latest in AI, robotics, and future tech breakthroughs.</div>
-        <button class="join-btn">Join Circle</button>
-      </div>
-      <div class="circle-card">
-        <div class="circle-header">Nature Explorers</div>
-        <div class="circle-desc">Share photos, tips, and stories from your outdoor adventures.</div>
-        <button class="join-btn">Join Circle</button>
-      </div>
-      <div class="circle-card">
-        <div class="circle-header">Book Lovers</div>
-        <div class="circle-desc">Swap book recommendations and chat about your favorite reads.</div>
-        <button class="join-btn">Join Circle</button>
-      </div>
-      <div class="circle-card">
-        <div class="circle-header">Creative Artists</div>
-        <div class="circle-desc">Showcase your art and get feedback from a supportive community.</div>
-        <button class="join-btn">Join Circle</button>
-      </div>
-      <div class="circle-card">
-        <div class="circle-header">Fitness Fans</div>
-        <div class="circle-desc">Discuss workouts, nutrition, and motivate each other.</div>
-        <button class="join-btn">Join Circle</button>
-      </div>
-    </div>
+    <h2>Your Circles</h2>
+    <a href="create.html" class="btn-create" aria-label="Create new Circle">+ Create New Circle</a>
+    <section class="circle-list" aria-live="polite" aria-relevant="additions">
+      <article class="circle-card" tabindex="0" role="button" aria-pressed="false" onclick="alert('Entering Circle: Tech Innovators')">
+        <h3 class="circle-title">Tech Innovators</h3>
+        <p class="circle-desc">A vibrant community of creators and developers pushing technology forward.</p>
+        <div class="circle-members">125 Members</div>
+      </article>
+
+      <article class="circle-card" tabindex="0" role="button" aria-pressed="false" onclick="alert('Entering Circle: Book Lovers')">
+        <h3 class="circle-title">Book Lovers</h3>
+        <p class="circle-desc">Discuss your favorite books, share reviews, and join reading challenges.</p>
+        <div class="circle-members">87 Members</div>
+      </article>
+
+      <article class="circle-card" tabindex="0" role="button" aria-pressed="false" onclick="alert('Entering Circle: Outdoor Adventurers')">
+        <h3 class="circle-title">Outdoor Adventurers</h3>
+        <p class="circle-desc">Plan hikes, share photos, and connect with fellow nature lovers.</p>
+        <div class="circle-members">64 Members</div>
+      </article>
+
+      <article class="circle-card" tabindex="0" role="button" aria-pressed="false" onclick="alert('Entering Circle: Creative Artists')">
+        <h3 class="circle-title">Creative Artists</h3>
+        <p class="circle-desc">A space to showcase your art, collaborate, and inspire others.</p>
+        <div class="circle-members">43 Members</div>
+      </article>
+    </section>
   </main>
 
   <footer>
-    &copy; 2025 CircleNet. Build your circle, build your world.
+    &copy; 2025 CircleNet. Connect, create, belong.
   </footer>
 </body>
 </html>
