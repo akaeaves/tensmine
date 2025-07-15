@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Notifications | CircleNet</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #111, #1b1b1b);
+      color: #eee;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      background: #222;
+      padding: 1rem 2rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.7);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    header h1 {
+      color: #00e6e6;
+      margin: 0;
+      font-weight: 600;
+      font-size: 1.5rem;
+    }
+    nav a {
+      color: #eee;
+      margin-left: 1.5rem;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    nav a:hover {
+      color: #00e6e6;
+    }
+    main {
+      flex-grow: 1;
+      max-width: 700px;
+      margin: 3rem auto 4rem;
+      background: #222;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0, 230, 230, 0.15);
+    }
+    h2 {
+      text-align: center;
+      color: #00e6e6;
+      margin-bottom: 1.5rem;
+    }
+    .notification-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .notification {
+      background: #1a1a1a;
+      padding: 1rem 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0, 230, 230, 0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      transition: background 0.25s ease;
+    }
+    .notification:hover {
+      background: #003f3f;
+    }
+    .notification.unread {
+      border-left: 6px solid #00e6e6;
+      font-weight: 700;
+    }
+    .notification-content {
+      flex-grow: 1;
+      color: #ccc;
+    }
+    .notification-time {
+      color: #666;
+      font-size: 0.85rem;
+      margin-left: 1rem;
+      white-space: nowrap;
+    }
+    .mark-read-btn {
+      background: #00e6e6;
+      border: none;
+      color: #000;
+      padding: 6px 14px;
+      font-weight: 600;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+      font-size: 0.9rem;
+      margin-left: 1rem;
+    }
+    .mark-read-btn:hover {
+      background: #00cccc;
+    }
+    footer {
+      text-align: center;
+      padding: 2rem;
+      background: #1f1f1f;
+      color: #999;
+      margin-top: auto;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>CircleNet</h1>
+    <nav>
+      <a href="circlenet.html">Home</a>
+      <a href="explore.html">Explore</a>
+      <a href="create.html">Create</a>
+      <a href="join.html">Join</a>
+      <a href="profile.html">Profile</a>
+      <a href="circles.html">Circles</a>
+      <a href="messenger.html">Messenger</a>
+      <a href="notifications.html">Notifications</a>
+    </nav>
+  </header>
+
+  <main>
+    <h2>Notifications</h2>
+    <ul class="notification-list" id="notificationList" role="list" aria-live="polite" aria-relevant="additions">
+      <!-- Notifications will be inserted here by JavaScript -->
+    </ul>
+  </main>
+
+  <footer>
+    &copy; 2025 CircleNet. Stay connected.
+  </footer>
+
+  <script>
+    const notifications = [
+      { id: 1, text: "John Doe sent you a friend request.", time: "2h ago", unread: true },
+      { id: 2, text: "You have been invited to join 'Tech Innovators' circle.", time: "5h ago", unread: true },
+      { id: 3, text: "Jane Smith liked your recent post.", time: "1d ago", unread: false },
+      { id: 4, text: "Your password was changed successfully.", time: "3d ago", unread: false }
+    ];
+
+    const list = document.getElementById('notificationList');
+
+    function renderNotifications() {
+      list.innerHTML = '';
+      notifications.forEach(notif => {
+        const li = document.createElement('li');
+        li.className = 'notification' + (notif.unread ? ' unread' : '');
+        li.setAttribute('tabindex', '0');
+        li.setAttribute('role', 'listitem');
+        
+        const content = document.createElement('div');
+        content.className = 'notification-content';
+        content.textContent = notif.text;
+        li.appendChild(content);
+        
+        const time = document.createElement('div');
+        time.className = 'notification-time';
+        time.textContent = notif.time;
+        li.appendChild(time);
+        
+        if (notif.unread) {
+          const btn = document.createElement('button');
+          btn.className = 'mark-read-btn';
+          btn.textContent = 'Mark Read';
+          btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            markAsRead(notif.id);
+          });
+          li.appendChild(btn);
+        }
+
+        li.addEventListener('click', () => {
+          alert(`Notification clicked:\n${notif.text}`);
+        });
+
+        list.appendChild(li);
+      });
+    }
+
+    function markAsRead(id) {
+      const notif = notifications.find(n => n.id === id);
+      if (notif) {
+        notif.unread = false;
+        renderNotifications();
+      }
+    }
+
+    renderNotifications();
+  </script>
+</body>
+</html>
