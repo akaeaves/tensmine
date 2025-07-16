@@ -1,4 +1,4 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>  
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -268,12 +268,11 @@
       let offsetX = 0, offsetY = 0;
       let collapsed = true; // Start collapsed
 
-      // Initialize collapsed state on load
       body.style.display = 'none';
       collapseBtn.textContent = '+';
 
       header.addEventListener('mousedown', (e) => {
-        if (e.target === collapseBtn) return; // don't drag when clicking the button
+        if (e.target === collapseBtn) return;
         isDragging = true;
         offsetX = e.clientX - radio.getBoundingClientRect().left;
         offsetY = e.clientY - radio.getBoundingClientRect().top;
