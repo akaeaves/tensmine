@@ -83,6 +83,7 @@
       text-decoration: underline;
     }
 
+    /* Floating Share Buttons */
     .social-share {
       position: fixed;
       top: 40%;
@@ -105,6 +106,7 @@
       display: block;
     }
 
+    /* Radio Player Styling */
     #radio-player {
       position: fixed;
       bottom: 20px;
@@ -146,31 +148,16 @@
 </head>
 <body>
 
+  <!-- Floating Share Buttons -->
   <div class="social-share">
-    <a href="https://www.facebook.com/sharer/sharer.php?u=https://yourdomain.com" target="_blank" title="Share on Facebook">
-      <img src="https://cdn-icons-png.flaticon.com/32/733/733547.png" alt="Facebook">
-    </a>
-    <a href="https://twitter.com/intent/tweet?url=https://yourdomain.com&text=Check+this+out!" target="_blank" title="Share on Twitter">
-      <img src="https://cdn-icons-png.flaticon.com/32/733/733579.png" alt="Twitter">
-    </a>
-    <a href="https://reddit.com/submit?url=https://yourdomain.com&title=Jungle+Adventuraddict" target="_blank" title="Share on Reddit">
-      <img src="https://cdn-icons-png.flaticon.com/32/3670/3670226.png" alt="Reddit">
-    </a>
-    <a href="https://api.whatsapp.com/send?text=https://yourdomain.com" target="_blank" title="Share on WhatsApp">
-      <img src="https://cdn-icons-png.flaticon.com/32/733/733585.png" alt="WhatsApp">
-    </a>
-    <a href="https://pinterest.com/pin/create/button/?url=https://yourdomain.com" target="_blank" title="Share on Pinterest">
-      <img src="https://cdn-icons-png.flaticon.com/32/733/733558.png" alt="Pinterest">
-    </a>
-    <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://yourdomain.com" target="_blank" title="Share on LinkedIn">
-      <img src="https://cdn-icons-png.flaticon.com/32/145/145807.png" alt="LinkedIn">
-    </a>
-    <a href="mailto:?subject=Check this site out&body=Visit https://yourdomain.com" title="Share via Email">
-      <img src="https://cdn-icons-png.flaticon.com/32/732/732200.png" alt="Email">
-    </a>
-    <a href="https://t.me/share/url?url=https://yourdomain.com&text=Check+this+out!" target="_blank" title="Share on Telegram">
-      <img src="https://cdn-icons-png.flaticon.com/32/2111/2111646.png" alt="Telegram">
-    </a>
+    <a href="https://www.facebook.com/sharer/sharer.php?u=https://tensmine.com" target="_blank"><img src="https://cdn-icons-png.flaticon.com/32/733/733547.png" alt="Facebook"></a>
+    <a href="https://twitter.com/intent/tweet?url=https://tensmine.com&text=Check+this+out!" target="_blank"><img src="https://cdn-icons-png.flaticon.com/32/733/733579.png" alt="Twitter"></a>
+    <a href="https://reddit.com/submit?url=https://tensmine.com&title=Jungle+Adventuraddict" target="_blank"><img src="https://cdn-icons-png.flaticon.com/32/3670/3670226.png" alt="Reddit"></a>
+    <a href="https://api.whatsapp.com/send?text=https://tensmine.com" target="_blank"><img src="https://cdn-icons-png.flaticon.com/32/733/733585.png" alt="WhatsApp"></a>
+    <a href="https://pinterest.com/pin/create/button/?url=https://tensmine.com" target="_blank"><img src="https://cdn-icons-png.flaticon.com/32/733/733558.png" alt="Pinterest"></a>
+    <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://tensmine.com" target="_blank"><img src="https://cdn-icons-png.flaticon.com/32/145/145807.png" alt="LinkedIn"></a>
+    <a href="mailto:?subject=Check this site out&body=Visit https://tensmine.com"><img src="https://cdn-icons-png.flaticon.com/32/732/732200.png" alt="Email"></a>
+    <a href="https://t.me/share/url?url=https://tensmine.com&text=Check+this+out!" target="_blank"><img src="https://cdn-icons-png.flaticon.com/32/2111/2111646.png" alt="Telegram"></a>
   </div>
 
   <header>
@@ -188,10 +175,9 @@
         <a href="battleship.html">Battleship</a>
       </div>
     </div>
+    <a href="circlenet/circlenet.html">CircleNet</a>
     <a href="https://miriele.com" target="_blank">Shop</a>
     <a href="https://customhits.net/?via=jason-eaves" target="_blank">Free Website Traffic</a>
-    <!-- ✅ New CircleNet Link -->
-    <a href="circlenet/circlenet.html">CircleNet</a>
   </nav>
 
   <div class="content">
@@ -215,11 +201,12 @@
     <a href="#" onclick="openModal('privacyModal')">Privacy Policy</a>
   </footer>
 
+  <!-- Modals -->
   <div id="termsModal" class="modal" style="display:none;">
     <div style="background-color:white; color:black; margin: 10% auto; padding: 20px; border-radius: 8px; max-width: 600px;">
       <span onclick="closeModal('termsModal')" style="float:right; cursor:pointer;">&times;</span>
       <h2>Terms of Service</h2>
-      <p>By using this site, you agree to engage respectfully within our community features and use embedded games and content for personal entertainment only.</p>
+      <p>By using this site, you agree to engage respectfully and use embedded games and content for personal entertainment only. External links may change without notice.</p>
     </div>
   </div>
 
@@ -227,7 +214,7 @@
     <div style="background-color:white; color:black; margin: 10% auto; padding: 20px; border-radius: 8px; max-width: 600px;">
       <span onclick="closeModal('privacyModal')" style="float:right; cursor:pointer;">&times;</span>
       <h2>Privacy Policy</h2>
-      <p>We do not collect personal information directly on this site. External services may use cookies or analytics.</p>
+      <p>We do not collect personal information directly. External services may use cookies or analytics governed by their own privacy policies.</p>
     </div>
   </div>
 
@@ -245,6 +232,7 @@
     };
   </script>
 
+  <!-- Collapsible, Draggable Slim Radio Player -->
   <div id="radio-player">
     <div id="radio-header">
       <span>📻 Kiss FM</span>
@@ -300,8 +288,5 @@
       });
     })();
   </script>
-
 </body>
 </html>
-
-<!-- 🟢 Everything after here remains unchanged -->
